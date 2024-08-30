@@ -4,11 +4,6 @@
 class Map : public sf::Drawable, public sf::Transformable
 {
 public:
-    int x=0,y=0;
-    void setmap(int temp1, int temp2){
-        x=temp1;
-        y=temp2;
-    }
 
     bool load(const std::string& tileset, unsigned char* tiles)
     {
@@ -24,16 +19,16 @@ public:
             for (unsigned int j = 0; j < 9; ++j)
             {
                 // get the current tile number
-                int tilenum = tiles[x+j + (i+y) * 640]-32;
+                int tilenum = int(tiles[j + i*9])-32;
 
                 // get a pointer to the current tile's quad
                 sf::Vertex* quad = &m_vertices[(j + i * 9) * 4];
 
                 // define its 4 corners
-                quad[0].position = sf::Vector2f(j*16,i*16);
-                quad[1].position = sf::Vector2f(16+j*16,16+i*16);
-                quad[2].position = sf::Vector2f(16+j*16,16+i*16);
-                quad[3].position = sf::Vector2f(j*16,i*16);
+                quad[0].position = sf::Vector2f(i*16,j*16);
+                quad[1].position = sf::Vector2f(16+i*16,j*16);
+                quad[2].position = sf::Vector2f(16+i*16,16+j*16);
+                quad[3].position = sf::Vector2f(i*16,16+j*16);
 
                 // define its 4 texture coordinates
                 quad[0].texCoords = sf::Vector2f((tilenum%10)*16, 16*(tilenum/10));
@@ -252,12 +247,12 @@ private:
 
 int main()
 {
-	int i=0,charx=0,chary=0,walk=0,cursorx,cursory;
-	unsigned char map[368640]={};
+	int i=0,charx=0,chary=0,walk=0;
+	unsigned char map[90]={};
 	unsigned int dir=0,facing=3;
 	FILE *fp;
 	fp = fopen("map.txt", "r");
-	fread(map, 368640, 1, fp);
+	fread(map, 90, 1, fp);
 	fclose(fp);
 
 	sf::RenderWindow window(sf::VideoMode(160,144), "Rpg game thing");
@@ -384,25 +379,17 @@ int main()
             while (window.pollEvent(event))if (event.type == sf::Event::Closed){window.close();}
             sf::Texture texture;
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){dir=4;charx-=1;}
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){dir=1;charx+=1;}
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){dir=3;chary-=1;}
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){dir=2;chary+=1;}
-            else dir=0;
-            if(charx<0)charx=0;
-            if(charx>599)charx=599;
-            if(chary<0)chary=0;
-            if(chary>599)chary=599;
-            sf::Vector2i mousep = sf::Mouse::getPosition(window);
-            cursorx=mousep.x;
-            cursory=mousep.y;
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){charx-=1;}
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){charx+=1;}
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){chary-=1;}
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)&&!sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){chary+=1;}
 
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))map[charx*10+chary*640+cursorx%16+cursory%16*640]++;
-
-
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))map[charx*9+chary]++;
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))map[charx*9+chary]--;
 
             if (!mapdraw.load("citytile.png",map)){}
-            mapdraw.setmap(charx,chary);
+            Sinclair.setTextureRect(sf::IntRect(facing*48-32,0,16,16));
+            Sinclair.setPosition(16*float(charx),16*float(chary));
 
             float screenWidth = 160.f;
             float screenHeight = 144.f;
@@ -422,6 +409,7 @@ int main()
 
             window.clear();
             window.draw(mapdraw);
+            window.draw(Sinclair);
             window.display();
             }
 	}
