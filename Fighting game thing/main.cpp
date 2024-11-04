@@ -13,7 +13,7 @@ int main()
 	sf::Text text,utext,itext,otext,ktext;
 	sf::Font font;
 	char keydir='5';
-	float p1x=100.0,p1y=100.0,p1jump=0.0;
+	float p1x=100.0,p1y=192.0,p1jumpx=0.0,p1jumpy=0.0;
 	bool p1air=false;
 	if(!font.loadFromFile("PerfectDOSVGA437.ttf")){}
 	text.setFont(font);
@@ -33,10 +33,10 @@ int main()
 	ktext.setFillColor(sf::Color::White);
 
 	convex.setPointCount(4);
-	convex.setPoint(0,sf::Vector2f(10, 10));
-    convex.setPoint(1,sf::Vector2f(30, 10));
-    convex.setPoint(2,sf::Vector2f(30, 30));
-    convex.setPoint(3,sf::Vector2f(10, 30));
+	convex.setPoint(0,sf::Vector2f(-16, -16));
+    convex.setPoint(1,sf::Vector2f(16, -16));
+    convex.setPoint(2,sf::Vector2f(16, 16));
+    convex.setPoint(3,sf::Vector2f(-16, 16));
 
     char u='0',i='0',o='0',k='0';
 	vector<sf::ConvexShape>P1Colbox;
@@ -99,19 +99,72 @@ int main()
         else if(w==true&&a==false&&s==false&&d==true)keydir='9';
         else keydir='5';
 
-        if(keydir=='4') p1x-=4;
-        else if(keydir=='6') p1x+=4;
+        dirkeys.push_front(keydir);
+        ukey.push_front(u);
+        ikey.push_front(i);
+        okey.push_front(o);
+        kkey.push_front(k);
+        if(dirkeys.size()>20)dirkeys.pop_back();
+        if(ukey.size()>20)ukey.pop_back();
+        if(ikey.size()>20)ikey.pop_back();
+        if(okey.size()>20)okey.pop_back();
+        if(kkey.size()>20)kkey.pop_back();
 
-        dirkeys.push_back(keydir);
-        ukey.push_back(u);
-        ikey.push_back(i);
-        okey.push_back(o);
-        kkey.push_back(k);
-        if(dirkeys.size()>20)dirkeys.pop_front();
-        if(ukey.size()>20)ukey.pop_front();
-        if(ikey.size()>20)ikey.pop_front();
-        if(okey.size()>20)okey.pop_front();
-        if(kkey.size()>20)kkey.pop_front();
+        if(p1air==false){
+            if(keydir=='4'){
+                char temp='0';
+                for(int i=0;i<15;i++){
+                    if((dirkeys[i]!='4'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
+                    if(temp=='0'&&dirkeys[i]=='5')temp++;
+                    if(temp=='1'&&dirkeys[i]=='4')temp++;
+                }
+                if(temp=='2'){
+                    p1air=true;
+                    p1jumpy=-2.0;
+                    p1jumpx=-8;
+                }
+                else p1x-=4;
+            }
+            else if(keydir=='6'){
+                char temp='0';
+                for(int i=0;i<15;i++){
+                    if((dirkeys[i]!='6'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
+                    if(temp=='0'&&dirkeys[i]=='5')temp++;
+                    if(temp=='1'&&dirkeys[i]=='6')temp++;
+                }
+                if(temp=='2'){
+                    p1air=true;
+                    p1jumpy=-2.0;
+                    p1jumpx=8;
+                }
+                else p1x+=4;
+            }
+            else if(keydir=='8'){
+                p1air=true;
+                p1jumpy=-15.0;
+            }
+            else if(keydir=='7'){
+                p1air=true;
+                p1jumpy=-15.0;
+                p1jumpx=-4;
+            }
+            else if(keydir=='9'){
+                p1air=true;
+                p1jumpy=-15.0;
+                p1jumpx=4;
+            }
+        }
+        else{
+            p1x+=p1jumpx;
+            p1y+=p1jumpy;
+            p1jumpy+=1;
+            if(p1y>191){
+                p1air=false;
+                p1jumpx=0;
+                p1jumpy=0;
+                p1y=192;
+            }
+        }
 
         std::string str(dirkeys.begin(), dirkeys.end());
         text.setString(str);
@@ -124,11 +177,11 @@ int main()
         std::string str5(kkey.begin(), kkey.end());
         ktext.setString(str5);
 
-        text.setPosition(0.f, 160.f);
-        utext.setPosition(0.f, 176.f);
-        itext.setPosition(0.f, 192.f);
-        otext.setPosition(0.f, 208.f);
-        ktext.setPosition(0.f, 224.f);
+        text.setPosition(0.f, 0.f);
+        utext.setPosition(0.f, 16.f);
+        itext.setPosition(0.f, 32.f);
+        otext.setPosition(0.f, 48.f);
+        ktext.setPosition(0.f, 64.f);
         convex.setPosition(p1x, p1y);
 
 		window.clear();
