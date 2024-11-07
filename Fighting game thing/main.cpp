@@ -103,10 +103,10 @@ int main()
 	ktext.setFillColor(sf::Color::White);
 
 	convex.setPointCount(4);
-	convex.setPoint(0,sf::Vector2f(-16, 0));
-    convex.setPoint(1,sf::Vector2f(16, 0));
-    convex.setPoint(2,sf::Vector2f(16, 32));
-    convex.setPoint(3,sf::Vector2f(-16, 32));
+	convex.setPoint(0,sf::Vector2f(-8, -15));
+    convex.setPoint(1,sf::Vector2f(10, -15));
+    convex.setPoint(2,sf::Vector2f(10, 32));
+    convex.setPoint(3,sf::Vector2f(-8, 32));
 
     char u='0',i='0',o='0',k='0';
 	vector<sf::ConvexShape>P1Colbox;
@@ -190,10 +190,10 @@ int main()
                     }
                     if(temp=='2'){
                         p1air=true;
-                        p1jumpy=-2.0;
+                        p1jumpy=-3.0;
                         p1jumpx=-8;
                     }
-                    else p1x-=4;
+                    else p1x-=3;
                 }
                 else if(keydir=='6'){
                     char temp='0';
@@ -204,10 +204,10 @@ int main()
                     }
                     if(temp=='2'){
                         p1air=true;
-                        p1jumpy=-2.0;
+                        p1jumpy=-3.0;
                         p1jumpx=8;
                     }
-                    else p1x+=4;
+                    else p1x+=3;
                 }
                 else if(keydir=='8'){
                     p1air=true;
@@ -216,12 +216,12 @@ int main()
                 else if(keydir=='7'){
                     p1air=true;
                     p1jumpy=-15.0;
-                    p1jumpx=-4;
+                    p1jumpx=-3;
                 }
                 else if(keydir=='9'){
                     p1air=true;
                     p1jumpy=-15.0;
-                    p1jumpx=4;
+                    p1jumpx=3;
                 }
             }
             else{
@@ -230,7 +230,8 @@ int main()
                 p1jumpy+=1;
                 if(p1y>191){
                     p1air=false;
-                    if(p1jumpx!=15&&p1jumpx!=-15)p1delay=4;
+                    if(p1jumpx!=8&&p1jumpx!=-8)p1delay=4;
+                    else p1delay=8;
                     p1jumpx=0;
                     p1jumpy=0;
                     p1y=192;
