@@ -2,7 +2,9 @@
 #include <iostream>
 #include <stdio.h>
 #include <deque>
+#include <string.h>
 
+using namespace std;
 
 class testchar : public sf::Drawable, public sf::Transformable
 {
@@ -63,8 +65,6 @@ private:
 };
 
 
-using namespace std;
-
 int main()
 {
 
@@ -76,14 +76,31 @@ int main()
 	if (!p1.load("char_sprites.png")){}
 	char keydir='5';
 	float p1x=100.0,p1y=192.0,p1jumpx=0.0,p1jumpy=0.0;
-	short p1delay=0,p1cancel=0,p1anim[64][2]={{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+	short p1act=0,p1delay=0,p1cancel=0,p1anim[64][2],animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                                                {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                                                {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                                                {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
                                                {-1},{-1},{-1},{0,1},{1,1},{-1},{-1},{-1},
                                                {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
                                                {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}};
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{0,1},{2,0},{3,0},{-1},{-1},
+                                               {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{0,1},{2,1},{3,1},{-1},{-1},
+                                               {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}}
+                                               };
 	bool p1air=false;
 	if(!font.loadFromFile("PerfectDOSVGA437.ttf")){}
 	text.setFont(font);
@@ -179,68 +196,117 @@ int main()
         if(ikey.size()>20)ikey.pop_back();
         if(okey.size()>20)okey.pop_back();
         if(kkey.size()>20)kkey.pop_back();
+
+        if(p1air==false){
+            //grounded actions
+            if(u=='2'){
+                //weak normals
+                p1act=8;
+            }
+            else if(keydir=='4'){
+                char temp='0';
+                for(int i=0;i<15;i++){
+                    if((dirkeys[i]!='4'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
+                    if(temp=='0'&&dirkeys[i]=='5')temp++;
+                    if(temp=='1'&&dirkeys[i]=='4')temp++;
+                }
+                if(temp=='2'){
+                    //leftdash
+                    p1act=2;
+                }
+                //leftwalk
+                else p1act=1;
+            }
+            else if(keydir=='6'){
+                char temp='0';
+                for(int i=0;i<15;i++){
+                    if((dirkeys[i]!='6'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
+                    if(temp=='0'&&dirkeys[i]=='5')temp++;
+                    if(temp=='1'&&dirkeys[i]=='6')temp++;
+                }
+                if(temp=='2'){
+                    //rightdash
+                    p1act=4;
+                }
+                //rightwalk
+                else p1act=3;
+            }
+            else if(keydir=='8'){
+                //upjump
+                p1act=5;
+            }
+            else if(keydir=='7'){
+                //leftjump
+                p1act=6;
+            }
+            else if(keydir=='9'){
+                //rightjump
+                p1act=7;
+            }
+            else{
+                p1act=0;
+            }
+        }
+        else{
+            //jumpactions
+            p1act=0;
+            }
+
+
+
+
         if(p1delay==0){
-            if(p1air==false){
-                if(keydir=='4'){
-                    char temp='0';
-                    for(int i=0;i<15;i++){
-                        if((dirkeys[i]!='4'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
-                        if(temp=='0'&&dirkeys[i]=='5')temp++;
-                        if(temp=='1'&&dirkeys[i]=='4')temp++;
-                    }
-                    if(temp=='2'){
-                        p1air=true;
-                        p1jumpy=-3.0;
-                        p1jumpx=-8;
-                    }
-                    else p1x-=3;
+                if(p1act==0){
+                    memcpy(p1anim,animlib[0],sizeof(animlib[0]));
                 }
-                else if(keydir=='6'){
-                    char temp='0';
-                    for(int i=0;i<15;i++){
-                        if((dirkeys[i]!='6'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
-                        if(temp=='0'&&dirkeys[i]=='5')temp++;
-                        if(temp=='1'&&dirkeys[i]=='6')temp++;
-                    }
-                    if(temp=='2'){
-                        p1air=true;
-                        p1jumpy=-3.0;
-                        p1jumpx=8;
-                    }
-                    else p1x+=3;
+                if(p1act==1) p1x-=3;
+                else if(p1act==2){
+                    p1air=true;
+                    p1jumpy=-3.0;
+                    p1jumpx=-7;
                 }
-                else if(keydir=='8'){
+                else if(p1act==3) p1x+=3;
+                if(p1act==4){
+                    p1air=true;
+                    p1jumpy=-3.0;
+                    p1jumpx=7;
+                }
+                else if(p1act==5){
                     p1air=true;
                     p1jumpy=-15.0;
                 }
-                else if(keydir=='7'){
+                else if(p1act==6){
                     p1air=true;
                     p1jumpy=-15.0;
                     p1jumpx=-3;
                 }
-                else if(keydir=='9'){
+                else if(p1act==7){
                     p1air=true;
                     p1jumpy=-15.0;
                     p1jumpx=3;
                 }
-            }
-            else{
+                else if(p1act==8)
+                    p1delay=4;
+        }
+        else{
+            p1delay--;
+        }
+        if(p1air==true){
                 p1x+=p1jumpx;
                 p1y+=p1jumpy;
                 p1jumpy+=1;
                 if(p1y>191){
                     p1air=false;
-                    if(p1jumpx!=8&&p1jumpx!=-8)p1delay=4;
+                    if(p1jumpx!=7&&p1jumpx!=-7)p1delay=4;
                     else p1delay=8;
                     p1jumpx=0;
                     p1jumpy=0;
                     p1y=192;
                 }
             }
-        }
-        else{
-            p1delay--;
-        }
+
+
+
 
         p1.setanim(p1anim);
 
