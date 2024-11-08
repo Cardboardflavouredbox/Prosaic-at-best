@@ -5,6 +5,8 @@
 #include <string.h>
 
 using namespace std;
+std::deque<char>dirkeys,ukey,ikey,okey,kkey;
+std::deque<int> animq;
 
 class testchar : public sf::Drawable, public sf::Transformable
 {
@@ -21,7 +23,6 @@ public:
         for (unsigned int i = 0; i < 8; ++i)
             for (unsigned int j = 0; j < 8; ++j)
             {
-
                 // get a pointer to the current tile's quad
                 sf::Vertex* quad = &m_vertices[(j + i * 8) * 4];
 
@@ -64,6 +65,18 @@ private:
     sf::Texture m_tileset;
 };
 
+bool cmdcheck(int len,char s[][5]){
+    //s[][0]==num,s[][1]==u,s[][2]==i,s[][3]==o,s[][4]==k
+    short temp=0;
+    for(int i=0;i<15;i++){
+        if((dirkeys[i]!=s[temp][0]&&dirkeys[i]!=s[temp-1][0])||ukey[i]!=s[temp][1]||ikey[i]!=s[temp][2]||okey[i]!=s[temp][3]||kkey[i]!=s[temp][4])break;
+        if(dirkeys[i]==s[temp][0]&&ukey[i]==s[temp][1]&&ikey[i]==s[temp][2]&&okey[i]==s[temp][3]&&kkey[i]==s[temp][4])temp++;
+        if(temp==len)break;
+    }
+    if(temp==len)return true;
+    else return false;
+
+}
 
 int main()
 {
@@ -127,7 +140,6 @@ int main()
 
     char u='0',i='0',o='0',k='0';
 	vector<sf::ConvexShape>P1Colbox;
-	std::deque<char>dirkeys,ukey,ikey,okey,kkey;
 	window.setFramerateLimit(60);
 	while (window.isOpen()){
 		sf::Event event;
@@ -204,13 +216,8 @@ int main()
                 p1act=8;
             }
             else if(keydir=='4'){
-                char temp='0';
-                for(int i=0;i<15;i++){
-                    if((dirkeys[i]!='4'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
-                    if(temp=='0'&&dirkeys[i]=='5')temp++;
-                    if(temp=='1'&&dirkeys[i]=='4')temp++;
-                }
-                if(temp=='2'){
+                char temp[3][5]={{'4','0','0','0','0'},{'5','0','0','0','0'},{'4','0','0','0','0'}};
+                if(cmdcheck(3,temp)){
                     //leftdash
                     p1act=2;
                 }
@@ -218,13 +225,8 @@ int main()
                 else p1act=1;
             }
             else if(keydir=='6'){
-                char temp='0';
-                for(int i=0;i<15;i++){
-                    if((dirkeys[i]!='6'&&dirkeys[i]!='5')||ukey[i]=='2'||ikey[i]=='2'||okey[i]=='2'||kkey[i]=='2')break;
-                    if(temp=='0'&&dirkeys[i]=='5')temp++;
-                    if(temp=='1'&&dirkeys[i]=='6')temp++;
-                }
-                if(temp=='2'){
+                char temp[3][5]={{'6','0','0','0','0'},{'5','0','0','0','0'},{'6','0','0','0','0'}};
+                if(cmdcheck(3,temp)){
                     //rightdash
                     p1act=4;
                 }
@@ -253,11 +255,8 @@ int main()
             }
 
 
-
-
         if(p1delay==0){
                 if(p1act==0){
-                    memcpy(p1anim,animlib[0],sizeof(animlib[0]));
                 }
                 if(p1act==1) p1x-=3;
                 else if(p1act==2){
@@ -285,11 +284,18 @@ int main()
                     p1jumpy=-15.0;
                     p1jumpx=3;
                 }
-                else if(p1act==8)
+                else if(p1act==8){
                     p1delay=4;
+                    animq.insert(animq.begin(), {1,2,1});
+                }
+        }
+        if(!animq.empty()){
+            memcpy(p1anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
+            animq.pop_front();
         }
         else{
-            p1delay--;
+            memcpy(p1anim,animlib[0],sizeof(animlib[0]));
+            if(p1delay>0)p1delay--;
         }
         if(p1air==true){
                 p1x+=p1jumpx;
