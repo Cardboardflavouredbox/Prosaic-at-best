@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1730985366 source:d:\문서\codeblocks\fighting game thing\main.cpp
+1731137792 source:d:\문서\codeblocks\fighting game thing\main.cpp
 	<SFML/Graphics.hpp>
 	<iostream>
 	<stdio.h>
