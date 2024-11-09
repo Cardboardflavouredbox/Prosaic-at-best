@@ -89,79 +89,118 @@ int main()
 {
 
 	sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
-	sf::ConvexShape convex;
 	sf::Text text,utext,itext,otext,ktext;
 	sf::Font font;
 	testchar p1;
 	if (!p1.load("char_sprites.png")){}
+	sf::Texture bgtexture;
+	if (!bgtexture.loadFromFile("teststage.png")){}
+    sf::Sprite background;
+    background.setTexture(bgtexture);
 	char keydir='5';
-	float p1x=100.0,p1y=192.0,p1jumpx=0.0,p1jumpy=0.0;
-	short p1act=0,p1rec=0,p1anim[64][2],animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{1,1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{2,0},{3,0},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{2,1},{3,1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{4,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{4,1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{5,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{5,1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{6,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{6,1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{7,0},{8,0},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{7,1},{8,1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                                               {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{0,1},{9,0},{10,0},{-1},{-1},
-                                               {-1},{-1},{-1},{0,2},{9,1},{10,1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                                               {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}}
-                                               };
-	bool p1air=false;
+	short p1frame=0,p1act=0,p1col=0,p1rec=0,p1anim[64][2],
+	animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{1,1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //idle (0)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{2,0},{3,0},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //stand u1 (1)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{2,1},{3,1},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //stand u2 (2)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{4,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{4,1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //stand i1 (3)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{5,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{5,1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //stand i2 (4)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{6,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{6,1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //stand i3 (5)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{7,0},{8,0},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{7,1},{8,1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //stand i4 (6)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,1},{9,0},{10,0},{-1},{-1},
+                       {-1},{-1},{-1},{0,2},{9,1},{10,1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                       //stand i5 (7)
+                       {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,3},{1,3},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,4},{1,4},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{0,5},{1,5},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                       {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}}
+                       //crouch (8)
+                       },
+                       hurtboxcount[256]={2,3,3,1};
+    float p1x=100.0,p1y=192.0,p1jumpx=0.0,p1jumpy=0.0,
+    colbox[256][4][2]={{{-7,-10},{9,-10},{9,32},{-7,32}},//standing
+                        {{-7,0},{9,0},{9,32},{-7,32}},//crouching
+                        },
+    hurtbox[256][16][4][2]={{{{-11,0},{11,0},{11,32},{-11,32}},{{-7,-15},{9,-15},{9,0},{-7,0}}},
+                        //idle (0)
+                        {{{-11,0},{11,0},{11,32},{-11,32}},{{-7,-15},{9,-15},{9,0},{-7,0}},{{0,4},{16,4},{16,16},{0,16}}},
+                        //stand u1 (1)
+                        {{{-11,0},{11,0},{11,32},{-11,32}},{{-7,-15},{9,-15},{9,0},{-7,0}},{{0,4},{16,4},{16,16},{0,16}}},
+                        //stand u2 (2)
+                        //stand i1 (3)
+                        //stand i2 (4)
+                        //stand i3 (5)
+                        //stand i4 (6)
+                        //stand i5 (7)
+                        {{{-8,-6},{10,-6},{10,32},{-8,32}}},
+                        //crouch (8)
+                        };
+	bool p1air=false,seeboxes=true,F1key=false;
 	if(!font.loadFromFile("PerfectDOSVGA437.ttf")){}
 	text.setFont(font);
 	utext.setFont(font);
@@ -178,19 +217,20 @@ int main()
 	itext.setFillColor(sf::Color::White);
 	otext.setFillColor(sf::Color::White);
 	ktext.setFillColor(sf::Color::White);
-
-	convex.setPointCount(4);
-	convex.setPoint(0,sf::Vector2f(-8, -15));
-    convex.setPoint(1,sf::Vector2f(10, -15));
-    convex.setPoint(2,sf::Vector2f(10, 32));
-    convex.setPoint(3,sf::Vector2f(-8, 32));
-
     char u='0',i='0',o='0',k='0';
-	vector<sf::ConvexShape>P1Colbox;
 	window.setFramerateLimit(60);
 	while (window.isOpen()){
 		sf::Event event;
 		while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::F1)){
+            if(F1key==false){
+                F1key=true;
+                if(seeboxes==true)seeboxes=false;
+                else seeboxes=true;
+            }
+        }
+        else F1key=false;
 
         float screenWidth = 256.f;
         float screenHeight = 240.f;
@@ -258,58 +298,81 @@ int main()
 
 
         if(p1air==false){
-            //grounded actions
-            if(i=='2'){
-                //middle normals
-                p1act=9;
-            }
-            else if(u=='2'){
-                //weak normals
-                p1act=8;
-            }
-            else if(keydir=='4'){
-                char temp[3][5]={{'4','0','0','0','0'},{'5','0','0','0','0'},{'4','0','0','0','0'}};
-                if(cmdcheck(3,temp)){
-                    //leftdash
-                    p1act=2;
+            if(keydir=='1'||keydir=='2'||keydir=='3'){
+                //crouching actions
+                if(o=='2'){
+                    //strong normals
+                    p1act=14;
                 }
-                //leftwalk
+                if(i=='2'){
+                    //middle normals
+                    p1act=13;
+                }
+                else if(u=='2'){
+                    //weak normals
+                    p1act=12;
+                }
                 else{
-                    p1act=1;
+                    p1act=11;
                 }
-            }
-            else if(keydir=='6'){
-                char temp[3][5]={{'6','0','0','0','0'},{'5','0','0','0','0'},{'6','0','0','0','0'}};
-                if(cmdcheck(3,temp)){
-                    //rightdash
-                    p1act=4;
-                }
-                //rightwalk
-                else{
-                    p1act=3;
-                }
-            }
-            else if(keydir=='8'){
-                //upjump
-                p1act=5;
-            }
-            else if(keydir=='7'){
-                //leftjump
-                p1act=6;
-            }
-            else if(keydir=='9'){
-                //rightjump
-                p1act=7;
             }
             else{
-                p1act=0;
+                //grounded actions
+                if(o=='2'){
+                    //strong normals
+                    p1act=10;
+                }
+                if(i=='2'){
+                    //middle normals
+                    p1act=9;
+                }
+                else if(u=='2'){
+                    //weak normals
+                    p1act=8;
+                }
+                else if(keydir=='4'){
+                    char temp[3][5]={{'4','0','0','0','0'},{'5','0','0','0','0'},{'4','0','0','0','0'}};
+                    if(cmdcheck(3,temp)){
+                        //leftdash
+                        p1act=2;
+                    }
+                    //leftwalk
+                    else{
+                        p1act=1;
+                    }
+                }
+                else if(keydir=='6'){
+                    char temp[3][5]={{'6','0','0','0','0'},{'5','0','0','0','0'},{'6','0','0','0','0'}};
+                    if(cmdcheck(3,temp)){
+                        //rightdash
+                        p1act=4;
+                    }
+                    //rightwalk
+                    else{
+                        p1act=3;
+                    }
+                }
+                else if(keydir=='8'){
+                    //upjump
+                    p1act=5;
+                }
+                else if(keydir=='7'){
+                    //leftjump
+                    p1act=6;
+                }
+                else if(keydir=='9'){
+                    //rightjump
+                    p1act=7;
+                }
+                else{
+                    p1act=0;
+                }
             }
         }
         else{
-            //jumpactions
+            //jump actions
             p1act=0;
             }
-
 
         if(animq.empty()||(p1cancel[p1act]==true)){
                 if(p1cancel[p1act]==true){
@@ -317,49 +380,70 @@ int main()
                     memset(p1cancel,false,sizeof(p1cancel));
                 }
                 if(p1act==0){
+                    p1col=0;
                     memcpy(p1anim,animlib[0],sizeof(animlib[0]));
+                    p1frame=0;
                 }
-                else if(p1act==1) p1x-=3;
+                else if(p1act==1){
+                    p1col=0;
+                    p1x-=3;
+                }
                 else if(p1act==2){
+                    p1col=0;
                     p1air=true;
                     p1jumpy=-3.0;
                     p1jumpx=-7;
                 }
-                else if(p1act==3) p1x+=3;
+                else if(p1act==3){
+                    p1col=0;
+                    p1x+=3;
+                }
                 if(p1act==4){
+                    p1col=0;
                     p1air=true;
                     p1jumpy=-3.0;
                     p1jumpx=7;
                 }
                 else if(p1act==5){
+                    p1col=0;
                     p1air=true;
-                    p1jumpy=-15.0;
+                    p1jumpy=-14.0;
                 }
                 else if(p1act==6){
+                    p1col=0;
                     p1air=true;
-                    p1jumpy=-15.0;
+                    p1jumpy=-14.0;
                     p1jumpx=-3;
                 }
                 else if(p1act==7){
+                    p1col=0;
                     p1air=true;
-                    p1jumpy=-15.0;
+                    p1jumpy=-14.0;
                     p1jumpx=3;
                 }
                 else if(p1act==8){
-                    animq.insert(animq.begin(), {1,2,1,1,1,1});
+                    p1col=0;
+                    animq.insert(animq.begin(), {1,2,2,2,1,1,1});
                     int temp[1]={9};
                     cancellist(1,temp);
-                    p1rec=2;
+                    p1rec=4;
                 }
                 else if(p1act==9){
+                    p1col=0;
                     animq.insert(animq.begin(), {3,5,6,7,7,7,7,6,5,5,5,4,4,4,3,3,3});
                     int temp[1]={10};
                     cancellist(1,temp);
                     p1rec=7;
                 }
+                else if(p1act==11){
+                    p1col=1;
+                    memcpy(p1anim,animlib[8],sizeof(animlib[8]));
+                    p1frame=8;
+                }
         }
         else{
             memcpy(p1anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
+            p1frame=animq[0];
             animq.pop_front();
             if(p1rec>0)p1rec--;
             if(animq.empty())memset(p1cancel,false,sizeof(p1cancel));
@@ -372,11 +456,13 @@ int main()
                     p1air=false;
                     if(p1jumpx!=7&&p1jumpx!=-7){
                             p1rec=0;
-                            animq.insert(animq.begin(), {0,0,0,0});
+                            p1col=1;
+                            animq.insert(animq.begin(), {8,8,8,8});
                     }
                     else {
                             p1rec=0;
-                            animq.insert(animq.begin(), {0,0,0,0,0,0,0,0});
+                            p1col=1;
+                            animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});
                     }
                     int temp[2]={8,9};
                     cancellist(2,temp);
@@ -387,9 +473,37 @@ int main()
             }
 
 
-
-
         p1.setanim(p1anim);
+
+
+        sf::VertexArray collisionbox(sf::LinesStrip, 5);
+        collisionbox[0].position = sf::Vector2f(colbox[p1col][0][0]+p1x, colbox[p1col][0][1]+p1y);
+        collisionbox[1].position = sf::Vector2f(colbox[p1col][1][0]+p1x, colbox[p1col][1][1]+p1y);
+        collisionbox[2].position = sf::Vector2f(colbox[p1col][2][0]+p1x, colbox[p1col][2][1]+p1y);
+        collisionbox[3].position = sf::Vector2f(colbox[p1col][3][0]+p1x, colbox[p1col][3][1]+p1y);
+        collisionbox[4].position = sf::Vector2f(colbox[p1col][0][0]+p1x, colbox[p1col][0][1]+p1y);
+
+        sf::VertexArray Hurtbox(sf::Lines,hurtboxcount[p1frame]*8);
+        for(int i=0;i<hurtboxcount[p1frame];i++){
+            Hurtbox[0+i*8].position = sf::Vector2f(hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
+            Hurtbox[0+i*8].color  = sf::Color::Blue;
+            Hurtbox[1+i*8].position = sf::Vector2f(hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
+            Hurtbox[1+i*8].color  = sf::Color::Blue;
+            Hurtbox[2+i*8].position = sf::Vector2f(hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
+            Hurtbox[2+i*8].color  = sf::Color::Blue;
+            Hurtbox[3+i*8].position = sf::Vector2f(hurtbox[p1frame][i][2][0]+p1x, hurtbox[p1frame][i][2][1]+p1y);
+            Hurtbox[3+i*8].color  = sf::Color::Blue;
+            Hurtbox[4+i*8].position = sf::Vector2f(hurtbox[p1frame][i][2][0]+p1x, hurtbox[p1frame][i][2][1]+p1y);
+            Hurtbox[4+i*8].color  = sf::Color::Blue;
+            Hurtbox[5+i*8].position = sf::Vector2f(hurtbox[p1frame][i][3][0]+p1x, hurtbox[p1frame][i][3][1]+p1y);
+            Hurtbox[5+i*8].color  = sf::Color::Blue;
+            Hurtbox[6+i*8].position = sf::Vector2f(hurtbox[p1frame][i][3][0]+p1x, hurtbox[p1frame][i][3][1]+p1y);
+            Hurtbox[6+i*8].color  = sf::Color::Blue;
+            Hurtbox[7+i*8].position = sf::Vector2f(hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
+            Hurtbox[7+i*8].color  = sf::Color::Blue;
+
+        }
+
 
         std::string str(dirkeys.begin(), dirkeys.end());
         text.setString(str);
@@ -407,17 +521,21 @@ int main()
         itext.setPosition(0.f, 32.f);
         otext.setPosition(0.f, 48.f);
         ktext.setPosition(0.f, 64.f);
-        convex.setPosition(p1x, p1y);
         p1.setPosition(p1x-64,p1y-64);
 
+
 		window.clear();
-		window.draw(convex);
+		window.draw(background);
 		window.draw(p1);
 		window.draw(text);
 		window.draw(utext);
 		window.draw(itext);
 		window.draw(otext);
 		window.draw(ktext);
+		if(seeboxes==true){
+            window.draw(collisionbox);
+            window.draw(Hurtbox);
+		}
 		window.display();
 	}
 	return 0;
