@@ -96,7 +96,7 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    hurtboxcount[256]={2,3,3,2,2,2,3,3,2},
                    hitboxcount[256]={0,1,1,0,0,0,1,1,0};
 float p1x=100.0,p1y=192.0,p1jumpx=0.0,p1jumpy=0.0,
-        p2x=100.0,p2y=192.0,p2jumpx=0.0,p2jumpy=0.0,
+        p2x=156.0,p2y=192.0,p2jumpx=0.0,p2jumpy=0.0,
 colbox[256][4][2]={{{-7,-10},{9,-10},{9,32},{-7,32}},//standing
                     {{-7,-1},{9,-1},{9,32},{-7,32}},//crouching
                     },
@@ -208,12 +208,6 @@ bool cmdcheck(int len,char s[][5]){
     if(temp==len)return true;
     else return false;
 
-}
-
-void cancellist(int len,int s[]){
-    for(int i=0;i<len;i++){
-        p1cancel[s[i]]=true;
-    }
 }
 
 int chooseaction(bool p1air, char keydir, char u, char i, char o){
@@ -346,15 +340,13 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         else if(act==8){
             col=0;
             animq.insert(animq.begin(), {1,2,2,2,1,1,1});
-            int temp[1]={9};
-            cancellist(1,temp);
+            cancel[9]=true;
             rec=4;
         }
         else if(act==9){
             col=0;
             animq.insert(animq.begin(), {3,5,6,7,7,7,7,6,5,5,5,4,4,4,3,3,3});
-            int temp[1]={10};
-            cancellist(1,temp);
+            cancel[10]=true;
             rec=7;
         }
         else if(act==11){
@@ -386,8 +378,8 @@ if(air==true){
                     col=1;
                     animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});
             }
-            int temp[2]={8,9};
-            cancellist(2,temp);
+            cancel[8]=true;
+            cancel[9]=true;
             jumpx=0;
             jumpy=0;
             y=192;
@@ -406,6 +398,20 @@ if(playercode==1){
     p1x=x,p1y=y;
     p1jumpx=jumpx;
     p1jumpy=jumpy;
+}
+else if(playercode==2){
+    animq2.clear();
+    animq2.insert(animq2.begin(), animq.begin(),animq.end());
+    memcpy(p2cancel,cancel,sizeof(cancel));
+    p2air=air;
+    memcpy(p2anim,anim,sizeof(anim));
+    p2act=act;
+    p2col=col;
+    p2frame=frame;
+    p2rec=rec;
+    p2x=x,p2y=y;
+    p2jumpx=jumpx;
+    p2jumpy=jumpy;
 }
 }
 
@@ -534,6 +540,7 @@ int main()
             if(kkey.size()>20)kkey.pop_back();
 
             characterdata(1,animq1,p1cancel,p1air,p1anim,chooseaction(p1air,keydir,u,i,o),p1col,p1frame,p1rec,p1x,p1y,p1jumpx,p1jumpy);
+            characterdata(2,animq2,p2cancel,p2air,p2anim,chooseaction(p2air,keydir,u,i,o),p2col,p2frame,p2rec,p2x,p2y,p2jumpx,p2jumpy);
             p1.setanim(p1anim);
             p2.setanim(p2anim);
         }
