@@ -9,8 +9,8 @@ using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
 std::deque<int> animq1,animq2;
 
-short p1frame=0,p1act=0,p1col=0,p1rec=0,p1anim[64][2],
-        p2frame=0,p2act=0,p2col=0,p2rec=0,p2anim[64][2],
+short p1frame=0,p1act=0,p1col=0,p1rec=0,p1anim[64][2],p1hitstun=0,
+        p2frame=0,p2act=0,p2col=0,p2rec=0,p2anim[64][2],p2hitstun=0,
 animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -95,8 +95,8 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    },
                    hurtboxcount[256]={2,3,3,2,2,2,3,3,2},
                    hitboxcount[256]={0,1,1,0,0,0,1,1,0};
-float p1x=100.0,p1y=192.0,p1jumpx=0.0,p1jumpy=0.0,
-        p2x=156.0,p2y=192.0,p2jumpx=0.0,p2jumpy=0.0,
+float p1x=100.0,p1y=192.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,
+        p2x=156.0,p2y=192.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,
 colbox[256][2][2]={{{-7,-10},{9,32}},//standing
                     {{-7,-1},{9,32},},//crouching
                     },
@@ -138,7 +138,8 @@ hitbox[256][8][2][2]={{-1},
                     {-1},
                     //crouch (8)
                     };
-bool p1air=false,p2air=false,seeboxes=true,F1key=false,pause=false,Enterkey=false,p1cancel[256],p2cancel[256],p1right=true,p2right=false;
+bool p1air=false,p2air=false,seeboxes=true,F1key=false,pause=false,Enterkey=false,p1cancel[256],p2cancel[256],
+p1right=true,p2right=false,p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false;
 
 struct character : public sf::Drawable, public sf::Transformable
 {
@@ -304,9 +305,28 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
                 }
 }
 
-void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool air,short anim[64][2],short act,short col,short frame,short rec,float x,float y,float jumpx,float jumpy,bool right,float enemyx){
-    if(animq.empty()||((cancel[act]==true)&&(rec==0))){
+void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool air,short anim[64][2],short act,short col,short frame,short rec,float x,float y,float jumpx,float jumpy,bool right,bool hit,bool block,float enemyx,short hitstun,short enemyhitstun,float kback,float enemykback,bool slide,bool multihit){
+    if(hit==true){
+        slide=true;
+        hit=false;
+        animq.clear();
+        col=0;
+        rec=0;
+        for(short i=0;i<enemyhitstun;i++){
+            rec=7;
+            animq.push_back(0);
+        }
+        if(x<enemyx)jumpx=-enemykback;
+        else if(x>enemyx) jumpx=enemykback;
+        memset(cancel,false,sizeof(cancel));
+        if(playercode==1)memset(p1cancel,false,sizeof(p1cancel));
+        else if(playercode==2)memset(p2cancel,false,sizeof(p2cancel));
+    }
+    else if(animq.empty()||((cancel[act]==true)&&(rec==0))){
         if(cancel[act]==true){
+            slide=false;
+            hitstun=0;
+            kback=0;
             memset(cancel,false,sizeof(cancel));
             if(playercode==1)memset(p1cancel,false,sizeof(p1cancel));
             else if(playercode==2)memset(p2cancel,false,sizeof(p2cancel));
@@ -360,13 +380,19 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         }
         else if(act==8){
             col=0;
+            multihit=false;
             animq.insert(animq.begin(), {1,2,2,2,1,1,1});
+            kback=3;
+            hitstun=7;
             cancel[9]=true;
             rec=4;
         }
         else if(act==9){
             col=0;
+            multihit=false;
             animq.insert(animq.begin(), {3,5,6,7,7,7,7,6,5,5,5,4,4,3,3});
+            kback=5;
+            hitstun=14;
             cancel[10]=true;
             rec=7;
         }
@@ -377,39 +403,43 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
             memcpy(anim,animlib[8],sizeof(animlib[8]));
             frame=8;
         }
-}
-else{
-    memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
-    frame=animq[0];
-    animq.pop_front();
-    if(rec>0)rec--;
-    if(animq.empty())memset(cancel,false,sizeof(cancel));
-}
-if(air==true){
-        x+=jumpx;
-        y+=jumpy;
-        jumpy+=1;
-        if(y>191){
-            air=false;
-            if(x<enemyx)right=true;
-                else right=false;
-            if(jumpx!=7&&jumpx!=-7){
-                    rec=0;
-                    col=1;
-                    animq.insert(animq.begin(), {8,8,8,8});
-            }
-            else {
-                    rec=0;
-                    col=1;
-                    animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});
-            }
-            cancel[8]=true;
-            cancel[9]=true;
-            jumpx=0;
-            jumpy=0;
-            y=192;
-        }
     }
+    x+=jumpx;
+    y+=jumpy;
+    if(slide==true){
+        if(jumpx>0)jumpx-=1;
+        else if(jumpx<0) jumpx+=1;
+    }
+    if(!animq.empty()){
+        memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
+        frame=animq[0];
+        animq.pop_front();
+        if(rec>0)rec--;
+        if(animq.empty()){memset(cancel,false,sizeof(cancel));hit==false;jumpx=0;jumpy=0;hitstun=0;kback=0;slide=false;multihit=false;}
+    }
+    if(air==true){
+            jumpy+=1;
+            if(y>191){
+                air=false;
+                if(x<enemyx)right=true;
+                    else right=false;
+                if(jumpx!=7&&jumpx!=-7){
+                        rec=0;
+                        col=1;
+                        animq.insert(animq.begin(), {8,8,8,8});
+                }
+                else {
+                        rec=0;
+                        col=1;
+                        animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});
+                }
+                cancel[8]=true;
+                cancel[9]=true;
+                jumpx=0;
+                jumpy=0;
+                y=192;
+            }
+        }
 if(playercode==1){
     p1right=right;
     animq1.clear();
@@ -424,6 +454,12 @@ if(playercode==1){
     p1x=x,p1y=y;
     p1jumpx=jumpx;
     p1jumpy=jumpy;
+    p1hit=hit;
+    p1block=block;
+    p1hitstun=hitstun;
+    p1kback=kback;
+    p1slide=slide;
+    p1multihit=multihit;
 }
 else if(playercode==2){
     p2right=right;
@@ -439,12 +475,18 @@ else if(playercode==2){
     p2x=x,p2y=y;
     p2jumpx=jumpx;
     p2jumpy=jumpy;
+    p2hit=hit;
+    p2block=block;
+    p2hitstun=hitstun;
+    p2kback=kback;
+    p2slide=slide;
+    p2multihit=multihit;
 }
 }
 
 int main()
 {
-
+    short hitstop=0;
 	sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
 	sf::Text pausetext;
 	sf::Font font;
@@ -582,7 +624,7 @@ int main()
         else keydir2='5';
 
 
-        if(pause==false){
+        if(pause==false&&hitstop==0){
             dirkeys.push_front(keydir1);
             ukey.push_front(u);
             ikey.push_front(i);
@@ -605,8 +647,8 @@ int main()
             if(okey2.size()>20)okey2.pop_back();
             if(kkey2.size()>20)kkey2.pop_back();
 
-            characterdata(1,animq1,p1cancel,p1air,p1anim,chooseaction(1,p1air,keydir1,u,i,o),p1col,p1frame,p1rec,p1x,p1y,p1jumpx,p1jumpy,p1right,p2x);
-            characterdata(2,animq2,p2cancel,p2air,p2anim,chooseaction(2,p2air,keydir2,u2,i2,o2),p2col,p2frame,p2rec,p2x,p2y,p2jumpx,p2jumpy,p2right,p1x);
+            characterdata(1,animq1,p1cancel,p1air,p1anim,chooseaction(1,p1air,keydir1,u,i,o),p1col,p1frame,p1rec,p1x,p1y,p1jumpx,p1jumpy,p1right,p1hit,p1block,p2x,p1hitstun,p2hitstun,p1kback,p2kback,p1slide,p1multihit);
+            characterdata(2,animq2,p2cancel,p2air,p2anim,chooseaction(2,p2air,keydir2,u2,i2,o2),p2col,p2frame,p2rec,p2x,p2y,p2jumpx,p2jumpy,p2right,p2hit,p2block,p1x,p2hitstun,p1hitstun,p2kback,p1kback,p2slide,p2multihit);
             p1.setanim(p1anim,p1right);
             p2.setanim(p2anim,p2right);
 
@@ -637,16 +679,101 @@ int main()
             }
             if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
                 if(p1x<p2x){
-                    p1x-=3;
-                    p2x+=3;
+                    if(p1air==true){
+                        if(p1jumpx<0)p1x+=p1jumpx;
+                        else p1x-=p1jumpx;
+                    }
+                    else p1x-=3;
+                    if(p2air==true){
+                        if(p2jumpx<0)p2x-=p2jumpx;
+                        else p2x+=p2jumpx;
+                    }
+                    else p2x+=3;
                 }
                 else{
-                    p1x+=3;
-                    p2x-=3;
+                    if(p1air==true){
+                        if(p1jumpx<0)p1x-=p1jumpx;
+                        else p1x+=p1jumpx;
+                    }
+                    else p1x+=3;
+                    if(p2air==true){
+                        if(p2jumpx<0)p2x+=p2jumpx;
+                        else p2x-=p2jumpx;
+                    }
+                    else p2x-=3;
                 }
             }
 
+            for(int i=0;i<hurtboxcount[p1frame];i++){
+                if(p1right==true){
+                    temp[0]=hurtbox[p1frame][i][0][0]+p1x;
+                    temp[1]=hurtbox[p1frame][i][0][1]+p1y;
+                    temp2[0]=hurtbox[p1frame][i][1][0]+p1x;
+                    temp2[1]=hurtbox[p1frame][i][1][1]+p1y;
+                }
+                else{
+                    temp[0]=-hurtbox[p1frame][i][1][0]+p1x;
+                    temp[1]=hurtbox[p1frame][i][0][1]+p1y;
+                    temp2[0]=-hurtbox[p1frame][i][0][0]+p1x;
+                    temp2[1]=hurtbox[p1frame][i][1][1]+p1y;
+                }
+                for(int j=0;j<hitboxcount[p2frame];j++){
+                    if(p2right==true){
+                        temp3[0]=hitbox[p2frame][j][0][0]+p2x;
+                        temp3[1]=hitbox[p2frame][j][0][1]+p2y;
+                        temp4[0]=hitbox[p2frame][j][1][0]+p2x;
+                        temp4[1]=hitbox[p2frame][j][1][1]+p2y;
+                    }
+                    else{
+                        temp3[0]=-hitbox[p2frame][j][1][0]+p2x;
+                        temp3[1]=hitbox[p2frame][j][0][1]+p2y;
+                        temp4[0]=-hitbox[p2frame][j][0][0]+p2x;
+                        temp4[1]=hitbox[p2frame][j][1][1]+p2y;
+                    }
+                if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){p1hit=true;break;}
+                }
+            }
+            if(p1hit==false)hitbefore==false;
+            else if(p1hit==true&&p2multihit==false)hitbefore=true;
+            else if(hitbefore==true)p1hit=false;
+            if(p1hit==true)hitstop=10;
+
+            for(int i=0;i<hurtboxcount[p2frame];i++){
+                if(p2right==true){
+                    temp[0]=hurtbox[p2frame][i][0][0]+p2x;
+                    temp[1]=hurtbox[p2frame][i][0][1]+p2y;
+                    temp2[0]=hurtbox[p2frame][i][1][0]+p2x;
+                    temp2[1]=hurtbox[p2frame][i][1][1]+p2y;
+                }
+                else{
+                    temp[0]=-hurtbox[p2frame][i][1][0]+p2x;
+                    temp[1]=hurtbox[p2frame][i][0][1]+p2y;
+                    temp2[0]=-hurtbox[p2frame][i][0][0]+p2x;
+                    temp2[1]=hurtbox[p2frame][i][1][1]+p2y;
+                }
+                for(int j=0;j<hitboxcount[p1frame];j++){
+                    if(p1right==true){
+                        temp3[0]=hitbox[p1frame][j][0][0]+p1x;
+                        temp3[1]=hitbox[p1frame][j][0][1]+p1y;
+                        temp4[0]=hitbox[p1frame][j][1][0]+p1x;
+                        temp4[1]=hitbox[p1frame][j][1][1]+p1y;
+                    }
+                    else{
+                        temp3[0]=-hitbox[p1frame][j][1][0]+p1x;
+                        temp3[1]=hitbox[p1frame][j][0][1]+p1y;
+                        temp4[0]=-hitbox[p1frame][j][0][0]+p1x;
+                        temp4[1]=hitbox[p1frame][j][1][1]+p1y;
+                    }
+                if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){p2hit=true;break;}
+                }
+            }
+            if(p2hit==false)hitbefore2==false;
+            else if(p2hit==true&&p1multihit==false)hitbefore2=true;
+            else if(hitbefore2==true)p2hit=false;
+            if(p2hit==true)hitstop=10;
+
         }
+        if(hitstop>0)hitstop--;
 
         sf::VertexArray collisionbox1(sf::LinesStrip, 5);
         if(p1right==true){
