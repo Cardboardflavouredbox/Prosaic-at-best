@@ -133,7 +133,7 @@ hitbox[256][8][2][2]={{-1},
                     //stand i3 (5)
                     {{{0,12},{24,19}}},
                     //stand i4 (6)
-                    {{{4,12},{26,18}}},
+                    {{{5,11},{30,20}}},
                     //stand i5 (7)
                     {-1},
                     //crouch (8)
@@ -366,7 +366,7 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         }
         else if(act==9){
             col=0;
-            animq.insert(animq.begin(), {3,5,6,7,7,7,7,6,5,5,5,4,4,4,3,3,3});
+            animq.insert(animq.begin(), {3,5,6,7,7,7,7,6,5,5,5,4,4,3,3});
             cancel[10]=true;
             rec=7;
         }
@@ -610,6 +610,42 @@ int main()
             p1.setanim(p1anim,p1right);
             p2.setanim(p2anim,p2right);
 
+            float temp[2],temp2[2],temp3[2],temp4[2];
+            if(p1right==true){
+                temp[0]=colbox[p1col][0][0]+p1x;
+                temp[1]=colbox[p1col][0][1]+p1y;
+                temp2[0]=colbox[p1col][1][0]+p1x;
+                temp2[1]=colbox[p1col][1][1]+p1y;
+            }
+            else{
+                temp[0]=-colbox[p1col][1][0]+p1x;
+                temp[1]=colbox[p1col][0][1]+p1y;
+                temp2[0]=-colbox[p1col][0][0]+p1x;
+                temp2[1]=colbox[p1col][1][1]+p1y;
+            }
+            if(p2right==true){
+                temp3[0]=colbox[p2col][0][0]+p2x;
+                temp3[1]=colbox[p2col][0][1]+p2y;
+                temp4[0]=colbox[p2col][1][0]+p2x;
+                temp4[1]=colbox[p2col][1][1]+p2y;
+            }
+            else{
+                temp3[0]=-colbox[p2col][1][0]+p2x;
+                temp3[1]=colbox[p2col][0][1]+p2y;
+                temp4[0]=-colbox[p2col][0][0]+p2x;
+                temp4[1]=colbox[p2col][1][1]+p2y;
+            }
+            if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
+                if(p1x<p2x){
+                    p1x-=3;
+                    p2x+=3;
+                }
+                else{
+                    p1x+=3;
+                    p2x-=3;
+                }
+            }
+
         }
 
         sf::VertexArray collisionbox1(sf::LinesStrip, 5);
@@ -778,7 +814,6 @@ int main()
         pausetext.setPosition(200.f, 0.f);
         p1.setPosition(p1x-64,p1y-64);
         p2.setPosition(p2x-64,p2y-64);
-
 
 		window.clear();
 		window.draw(background);
