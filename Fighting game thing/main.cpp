@@ -9,8 +9,8 @@ using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
 std::deque<int> animq1,animq2;
 
-short p1frame=0,p1act=0,p1col=0,p1rec=0,p1anim[64][2],p1hitstun=0,p1hitstop=0,combo=0,
-        p2frame=0,p2act=0,p2col=0,p2rec=0,p2anim[64][2],p2hitstun=0,p2hitstop=0,
+short p1frame=0,p1act=0,p1col=0,p1anim[64][2],p1hitstun=0,p1hitstop=0,p1buffer=0,combo=0,
+        p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2hitstop=0,p2buffer,
 animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -101,9 +101,27 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //hit (9)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,3},{1,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,4},{1,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,5},{0,7},{1,7},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch u1 (10)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,3},{1,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,4},{1,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,5},{0,6},{1,6},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch u2 (11)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2},
-                   hitboxcount[256]={0,1,1,0,0,0,1,1,0,0};
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3},
+                   hitboxcount[256]={0,1,1,0,0,0,1,1,0,0,1,1};
 float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,
         p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,
 colbox[256][2][2]={{{-7,-10},{9,32}},//standing
@@ -129,29 +147,37 @@ hurtbox[256][8][2][2]={{{{-11,0},{11,32}},{{-7,-15},{9,0}}},
                     //crouch (8)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
                     //hit (9)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}},{{4,24},{22,32}}},
+                    //crouch u1 (10)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}},{{4,26},{24,32}}},
+                    //crouch u2 (11)
                     },
-hitbox[256][8][2][2]={{-1},
+hitbox[256][8][2][2]={{0},
                     //idle (0)
-                    {-1},
+                    {0},
                     //stand u1 (1)
                     {{{4,-1},{22,7}}},
                     //stand u2 (2)
-                    {-1},
+                    {0},
                     //stand i1 (3)
-                    {-1},
+                    {0},
                     //stand i2 (4)
-                    {-1},
+                    {0},
                     //stand i3 (5)
-                    {-1},
+                    {0},
                     //stand i4 (6)
                     {{{5,11},{30,20}}},
                     //stand i5 (7)
-                    {-1},
+                    {0},
                     //crouch (8)
-                    {-1}
+                    {0},
                     //hit (9)
+                    {0},
+                    //crouch u1 (10)
+                    {{{5,25},{26,32}}},
+                    //crouch u2 (11)
                     };
-bool p1air=false,p2air=false,seeboxes=true,F1key=false,pause=false,Enterkey=false,p1cancel[256],p2cancel[256],
+bool p1air=false,p2air=false,seeboxes=true,F1key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],p1whiff=false,p2whiff=false,p1neutural,p2neutural,
 p1right=true,p2right=false,p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false;
 
 struct character : public sf::Drawable, public sf::Transformable
@@ -318,16 +344,16 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
                 }
 }
 
-void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool air,short anim[64][2],short act,short col,short frame,short rec,float x,float y,float jumpx,float jumpy,bool right,bool hit,bool block,float enemyx,short hitstun,short enemyhitstun,float kback,float enemykback,bool slide,bool multihit,short hitstop,short hitwait){
+void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool air,short anim[64][2],short act,short col,short frame,
+        bool whiff,float x,float y,float jumpx,float jumpy,bool right,bool hit,bool block,float enemyx,short hitstun,short enemyhitstun,
+        float kback,float enemykback,bool slide,bool multihit,short hitstop,unsigned int hitwait,short buffer,bool neutural){
     if(hit==true){
         combo++;
         slide=true;
         hit=false;
         animq.clear();
         col=0;
-        rec=0;
-        for(short i=0;i<hitwait+enemyhitstun;i++){
-            rec=7;
+        for(short i=0;i<hitwait+enemyhitstun+1;i++){
             animq.push_back(9);
         }
         if(x<enemyx)jumpx=-enemykback;
@@ -336,8 +362,18 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         if(playercode==1)memset(p1cancel,false,sizeof(p1cancel));
         else if(playercode==2)memset(p2cancel,false,sizeof(p2cancel));
     }
-    else if(animq.empty()||((cancel[act]==true)&&(rec==0))){
+    else if(animq.empty()){
+        memset(cancel,false,sizeof(cancel));
+        hit=false;
+        if(neutural=false){jumpx=0;jumpy=0;}
+        hitstun=0;kback=0;
+        slide=false;multihit=false;
+        if(frame==9)combo=0;
+        neutural=true;
+    }
+    if(hit==false&&(animq.empty()||((cancel[act]==true)&&(whiff==false)))){
         if(cancel[act]==true){
+            buffer=0;
             slide=false;
             hitstun=0;
             kback=0;
@@ -396,21 +432,19 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
             col=0;
             multihit=false;
             hitstop=5;
-            animq.insert(animq.begin(), {1,2,2,2,1,1,1});
-            kback=3;
+            animq.insert(animq.begin(), {1,1,1,2,2,1,1,1});
+            kback=4;
             hitstun=4;
             cancel[9]=true;
-            rec=2;
         }
         else if(act==9){
             col=0;
             multihit=false;
-            hitstop=7;
-            animq.insert(animq.begin(), {3,5,6,7,7,7,7,6,5,5,5,4,4,3,3});
+            hitstop=5;
+            animq.insert(animq.begin(), {3,4,5,6,7,7,7,7,6,5,5,5,4,4,3,3});
             kback=5;
-            hitstun=3;
+            hitstun=5;
             cancel[10]=true;
-            rec=4;
         }
         else if(act==11){
             if(x<enemyx)right=true;
@@ -418,6 +452,15 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
             col=1;
             memcpy(anim,animlib[8],sizeof(animlib[8]));
             frame=8;
+        }
+        else if(act==12){
+            col=1;
+            multihit=false;
+            hitstop=5;
+            animq.insert(animq.begin(), {10,10,11,11,11,10,10,10});
+            kback=3;
+            hitstun=3;
+            cancel[13]=true;
         }
     }
     x+=jumpx;
@@ -427,18 +470,10 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         else if(jumpx<0) jumpx+=1;
     }
     if(!animq.empty()){
+        neutural=false;
         memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
         frame=animq[0];
         animq.pop_front();
-        if(rec>0)rec--;
-        if(animq.empty()){
-                memset(cancel,false,sizeof(cancel));
-                hit==false;
-                jumpx=0;jumpy=0;
-                hitstun=0;kback=0;
-                slide=false;multihit=false;
-                if(frame==9)combo=0;
-        }
     }
     if(air==true){
             jumpy+=1;
@@ -447,12 +482,10 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
                 if(x<enemyx)right=true;
                     else right=false;
                 if(jumpx!=7&&jumpx!=-7){
-                        rec=0;
                         col=1;
                         animq.insert(animq.begin(), {8,8,8,8});
                 }
                 else {
-                        rec=0;
                         col=1;
                         animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});
                 }
@@ -473,7 +506,7 @@ if(playercode==1){
     p1act=act;
     p1col=col;
     p1frame=frame;
-    p1rec=rec;
+    p1whiff=whiff;
     p1x=x,p1y=y;
     p1jumpx=jumpx;
     p1jumpy=jumpy;
@@ -484,6 +517,8 @@ if(playercode==1){
     p1slide=slide;
     p1multihit=multihit;
     p1hitstop=hitstop;
+    p1buffer=buffer;
+    p1neutural=neutural;
 }
 else if(playercode==2){
     p2right=right;
@@ -495,7 +530,7 @@ else if(playercode==2){
     p2act=act;
     p2col=col;
     p2frame=frame;
-    p2rec=rec;
+    p2whiff=whiff;
     p2x=x,p2y=y;
     p2jumpx=jumpx;
     p2jumpy=jumpy;
@@ -506,6 +541,8 @@ else if(playercode==2){
     p2slide=slide;
     p2multihit=multihit;
     p2hitstop=hitstop;
+    p2buffer=buffer;
+    p2neutural=neutural;
 }
 }
 
@@ -571,6 +608,14 @@ int main()
             }
         }
         else Enterkey=false;
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Backslash)){
+            if(backslash==false){
+                backslash=true;
+                nextframe=true;
+            }
+        }
+        else backslash=false;
 
         bool w=false,a=false,s=false,d=false;
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))w=true;
@@ -652,34 +697,48 @@ int main()
         else if(w2==false&&a2==false&&s2==true&&d2==true)keydir2='3';
         else if(w2==true&&a2==false&&s2==false&&d2==true)keydir2='9';
         else keydir2='5';
+        dirkeys.push_front(keydir1);
+        ukey.push_front(u);
+        ikey.push_front(i);
+        okey.push_front(o);
+        kkey.push_front(k);
+        if(dirkeys.size()>20)dirkeys.pop_back();
+        if(ukey.size()>20)ukey.pop_back();
+        if(ikey.size()>20)ikey.pop_back();
+        if(okey.size()>20)okey.pop_back();
+        if(kkey.size()>20)kkey.pop_back();
 
+        dirkeys2.push_front(keydir2);
+        ukey2.push_front(u2);
+        ikey2.push_front(i2);
+        okey2.push_front(o2);
+        kkey2.push_front(k2);
+        if(dirkeys2.size()>20)dirkeys2.pop_back();
+        if(ukey2.size()>20)ukey2.pop_back();
+        if(ikey2.size()>20)ikey2.pop_back();
+        if(okey2.size()>20)okey2.pop_back();
+        if(kkey2.size()>20)kkey2.pop_back();
+        if((hitstop>0||!animq1.empty()&&p1hit==false)&&p1buffer==0){
+                p1buffer=chooseaction(1,p1air,keydir1,u,i,o);
+                if(p1buffer==1||p1buffer==3||p1buffer==11)p1buffer=0;
+        }
+        if((hitstop>0||!animq2.empty()&&p2hit==false)&&p2buffer==0){
+                p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2);
+                if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
+        }
 
-        if(pause==false&&hitstop==0){
-            dirkeys.push_front(keydir1);
-            ukey.push_front(u);
-            ikey.push_front(i);
-            okey.push_front(o);
-            kkey.push_front(k);
-            if(dirkeys.size()>20)dirkeys.pop_back();
-            if(ukey.size()>20)ukey.pop_back();
-            if(ikey.size()>20)ikey.pop_back();
-            if(okey.size()>20)okey.pop_back();
-            if(kkey.size()>20)kkey.pop_back();
-
-            dirkeys2.push_front(keydir2);
-            ukey2.push_front(u2);
-            ikey2.push_front(i2);
-            okey2.push_front(o2);
-            kkey2.push_front(k2);
-            if(dirkeys2.size()>20)dirkeys2.pop_back();
-            if(ukey2.size()>20)ukey2.pop_back();
-            if(ikey2.size()>20)ikey2.pop_back();
-            if(okey2.size()>20)okey2.pop_back();
-            if(kkey2.size()>20)kkey2.pop_back();
-
-            characterdata(1,animq1,p1cancel,p1air,p1anim,chooseaction(1,p1air,keydir1,u,i,o),p1col,p1frame,p1rec,p1x,p1y,p1jumpx,p1jumpy,p1right,p1hit,p1block,p2x,p1hitstun,p2hitstun,p1kback,p2kback,p1slide,p1multihit,p1hitstop,animq2.size());
-            characterdata(2,animq2,p2cancel,p2air,p2anim,chooseaction(2,p2air,keydir2,u2,i2,o2),p2col,p2frame,p2rec,p2x,p2y,p2jumpx,p2jumpy,p2right,p2hit,p2block,p1x,p2hitstun,p1hitstun,p2kback,p1kback,p2slide,p2multihit,p2hitstop,animq1.size());
-
+        if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
+            nextframe=false;
+            if(p1buffer==0)p1act=chooseaction(1,p1air,keydir1,u,i,o);
+            else if(!animq1.empty())p1act=p1buffer;
+            else {p1act=p1buffer;p1buffer=0;}
+            if(p2buffer==0)p2act=chooseaction(2,p2air,keydir2,u2,i2,o2);
+            else if(!animq2.empty())p2act=p2buffer;
+            else {p2act=p2buffer;p2buffer=0;}
+            characterdata(1,animq1,p1cancel,p1air,p1anim,p1act,p1col,p1frame,p1whiff,p1x,p1y,p1jumpx,p1jumpy,p1right,p1hit,
+                          p1block,p2x,p1hitstun,p2hitstun,p1kback,p2kback,p1slide,p1multihit,p1hitstop,animq2.size(),p1buffer,p1neutural);
+            characterdata(2,animq2,p2cancel,p2air,p2anim,p2act,p2col,p2frame,p2whiff,p2x,p2y,p2jumpx,p2jumpy,p2right,p2hit,
+                          p2block,p1x,p2hitstun,p1hitstun,p2kback,p1kback,p2slide,p2multihit,p2hitstop,animq1.size(),p2buffer,p2neutural);
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
                 temp[0]=colbox[p1col][0][0]+p1x;
@@ -774,7 +833,8 @@ int main()
                     }
                 }
             }
-            if(p1hit==false)hitbefore=false;
+            if(p1hit==true)p2whiff=false;
+            if(p1hit==false){hitbefore=false;p2whiff=true;}
             else if(p1hit==true&&p2multihit==false&&hitbefore==false)hitbefore=true;
             else if(hitbefore==true)p1hit=false;
             if(p1hit==true){hitstop=p2hitstop;memcpy(p1anim,animlib[9],sizeof(animlib[9]));}
@@ -821,7 +881,8 @@ int main()
                     }
                 }
             }
-            if(p2hit==false)hitbefore2=false;
+            if(p2hit==true)p1whiff=false;
+            if(p2hit==false){hitbefore2=false;p1whiff=true;}
             else if(p2hit==true&&p1multihit==false&&hitbefore2==false)hitbefore2=true;
             else if(hitbefore2==true)p2hit=false;
             if(p2hit==true){hitstop=p1hitstop;memcpy(p2anim,animlib[9],sizeof(animlib[9]));}
