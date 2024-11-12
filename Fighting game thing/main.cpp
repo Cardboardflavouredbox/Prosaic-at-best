@@ -679,8 +679,6 @@ int main()
 
             characterdata(1,animq1,p1cancel,p1air,p1anim,chooseaction(1,p1air,keydir1,u,i,o),p1col,p1frame,p1rec,p1x,p1y,p1jumpx,p1jumpy,p1right,p1hit,p1block,p2x,p1hitstun,p2hitstun,p1kback,p2kback,p1slide,p1multihit,p1hitstop,animq2.size());
             characterdata(2,animq2,p2cancel,p2air,p2anim,chooseaction(2,p2air,keydir2,u2,i2,o2),p2col,p2frame,p2rec,p2x,p2y,p2jumpx,p2jumpy,p2right,p2hit,p2block,p1x,p2hitstun,p1hitstun,p2kback,p1kback,p2slide,p2multihit,p2hitstop,animq1.size());
-            p1.setanim(p1anim,p1right);
-            p2.setanim(p2anim,p2right);
 
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
@@ -779,7 +777,7 @@ int main()
             if(p1hit==false)hitbefore=false;
             else if(p1hit==true&&p2multihit==false&&hitbefore==false)hitbefore=true;
             else if(hitbefore==true)p1hit=false;
-            if(p1hit==true)hitstop=p2hitstop;
+            if(p1hit==true){hitstop=p2hitstop;memcpy(p1anim,animlib[9],sizeof(animlib[9]));}
 
             for(int i=hurtboxcount[p2frame]-1;i>=0;i--){
                 if(p2right==true){
@@ -826,7 +824,7 @@ int main()
             if(p2hit==false)hitbefore2=false;
             else if(p2hit==true&&p1multihit==false&&hitbefore2==false)hitbefore2=true;
             else if(hitbefore2==true)p2hit=false;
-            if(p2hit==true)hitstop=p1hitstop;
+            if(p2hit==true){hitstop=p1hitstop;memcpy(p2anim,animlib[9],sizeof(animlib[9]));}
 
         }
         if(hitstop>0)hitstop--;
@@ -1019,6 +1017,9 @@ int main()
         pausetext.setPosition(200.f, 0.f);
         p1.setPosition(p1x-64,p1y-64);
         p2.setPosition(p2x-64,p2y-64);
+
+        p1.setanim(p1anim,p1right);
+        p2.setanim(p2anim,p2right);
 
 		window.clear();
 		window.draw(background);
