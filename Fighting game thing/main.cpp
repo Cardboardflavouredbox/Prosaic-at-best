@@ -730,11 +730,11 @@ int main()
         if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
             nextframe=false;
             if(p1buffer==0)p1act=chooseaction(1,p1air,keydir1,u,i,o);
-            else if(!animq1.empty())p1act=p1buffer;
-            else {p1act=p1buffer;p1buffer=0;}
+            else if(!animq1.empty()&&!p1whiff)p1act=p1buffer;
+            else {if(!p1whiff){p1act=p1buffer;}p1buffer=0;}
             if(p2buffer==0)p2act=chooseaction(2,p2air,keydir2,u2,i2,o2);
-            else if(!animq2.empty())p2act=p2buffer;
-            else {p2act=p2buffer;p2buffer=0;}
+            else if(!animq2.empty()&&!p2whiff)p2act=p2buffer;
+            else {if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
             characterdata(1,animq1,p1cancel,p1air,p1anim,p1act,p1col,p1frame,p1whiff,p1x,p1y,p1jumpx,p1jumpy,p1right,p1hit,
                           p1block,p2x,p1hitstun,p2hitstun,p1kback,p2kback,p1slide,p1multihit,p1hitstop,animq2.size(),p1buffer,p1neutural);
             characterdata(2,animq2,p2cancel,p2air,p2anim,p2act,p2col,p2frame,p2whiff,p2x,p2y,p2jumpx,p2jumpy,p2right,p2hit,
