@@ -1,13 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stdio.h>
+#include <random>
 #include <deque>
 #include <string.h>
+#include <math.h>
 
 
 using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
 std::deque<int> animq1,animq2;
+std::random_device rd;
+std::mt19937 gen(rd());
 
 short p1frame=0,p1act=0,p1col=0,p1anim[64][2],p1hitstun=0,p1hitstop=0,p1buffer=0,combo=0,
         p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2hitstop=0,p2buffer,
@@ -119,9 +123,72 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //crouch u2 (11)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,3},{2,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,4},{2,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,5},{2,5},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i1 (12)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,3},{3,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,4},{3,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,5},{3,5},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i2 (13)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,3},{4,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,4},{4,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,5},{4,5},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i3 (14)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,1},{1,1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{5,4},{6,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //walk left1 (15)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,1},{1,1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{7,4},{8,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //walk left2 (16)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,1},{1,1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{5,5},{6,5},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //walk right1 (17)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,1},{1,1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{7,5},{8,5},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //walk right2 (18)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3},
-                   hitboxcount[256]={0,1,1,0,0,0,1,1,0,0,1,1};
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2},
+                   hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0};
 float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,
         p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,
 colbox[256][2][2]={{{-7,-10},{9,32}},//standing
@@ -151,6 +218,20 @@ hurtbox[256][8][2][2]={{{{-11,0},{11,32}},{{-7,-15},{9,0}}},
                     //crouch u1 (10)
                     {{{-11,9},{13,32}},{{-7,-6},{9,9}},{{4,26},{24,32}}},
                     //crouch u2 (11)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}}},
+                    //crouch i1 (12)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}},{{6,-8},{15,20}}},
+                    //crouch i2 (13)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}},{{6,-11},{15,20}}},
+                    //crouch i3 (14)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //walk left1 (15)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //walk left2 (16)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //walk right1 (17)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //walk right2 (18)
                     },
 hitbox[256][8][2][2]={{0},
                     //idle (0)
@@ -176,6 +257,16 @@ hitbox[256][8][2][2]={{0},
                     //crouch u1 (10)
                     {{{5,25},{26,32}}},
                     //crouch u2 (11)
+                    {-1},
+                    //crouch i1 (12)
+                    {-1},
+                    //crouch i2 (13)
+                    {{{6,-13},{19,20}}},
+                    //crouch i3 (14)
+                    //walk left1 (15)
+                    //walk left2 (16)
+                    //walk right1 (17)
+                    //walk right2 (18)
                     };
 bool p1air=false,p2air=false,seeboxes=true,F1key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],p1whiff=false,p2whiff=false,p1neutural,p2neutural,
 p1right=true,p2right=false,p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false;
@@ -196,10 +287,8 @@ public:
         for (unsigned int i = 0; i < 8; ++i)
             for (unsigned int j = 0; j < 8; ++j)
             {
-                // get a pointer to the current tile's quad
                 sf::Vertex* quad = &m_vertices[(j + i * 8) * 4];
 
-                // define its 4 corners
                 quad[0].position = sf::Vector2f(0+j*16,0+i*16);
                 quad[1].position = sf::Vector2f(16+j*16,0+i*16);
                 quad[2].position = sf::Vector2f(16+j*16,16+i*16);
@@ -232,19 +321,18 @@ private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        // apply the transform
         states.transform *= getTransform();
 
-        // apply the tileset texture
         states.texture = &m_tileset;
 
-        // draw the vertex array
         target.draw(m_vertices, states);
     }
 
     sf::VertexArray m_vertices;
     sf::Texture m_tileset;
 };
+
+
 
 bool cmdcheck(int playercode,int len,char s[][5]){
     //s[][0]==num,s[][1]==u,s[][2]==i,s[][3]==o,s[][4]==k
@@ -393,6 +481,8 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         }
         else if(act==1){
             col=0;
+            if(right)memcpy(anim,animlib[15],sizeof(animlib[0]));
+            else memcpy(anim,animlib[17],sizeof(animlib[0]));
             x-=3;
         }
         else if(act==2){
@@ -403,6 +493,8 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         }
         else if(act==3){
             col=0;
+            if(right)memcpy(anim,animlib[17],sizeof(animlib[0]));
+            else memcpy(anim,animlib[15],sizeof(animlib[0]));
             x+=3;
         }
         if(act==4){
@@ -431,21 +523,26 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         else if(act==8){
             col=0;
             multihit=false;
-            hitstop=5;
+            hitstop=7;
             animq.insert(animq.begin(), {1,1,1,2,2,1,1,1});
             kback=4;
             hitstun=4;
             cancel[9]=true;
+            cancel[10]=true;
         }
         else if(act==9){
             col=0;
             multihit=false;
-            hitstop=5;
-            animq.insert(animq.begin(), {3,4,5,6,7,7,7,7,6,5,5,5,4,4,3,3});
+            hitstop=10;
+            animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,6,5,5,5,4,3});
             kback=5;
             hitstun=5;
             cancel[10]=true;
+            slide=true;
+            if(right)jumpx=3;
+            else jumpx=-3;
         }
+        else if(act==10){}
         else if(act==11){
             if(x<enemyx)right=true;
             else right=false;
@@ -456,11 +553,21 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         else if(act==12){
             col=1;
             multihit=false;
-            hitstop=5;
+            hitstop=7;
             animq.insert(animq.begin(), {10,10,11,11,11,10,10,10});
             kback=3;
             hitstun=3;
             cancel[13]=true;
+            cancel[14]=true;
+        }
+        else if(act==13){}
+        else if(act==14){
+            col=1;
+            multihit=false;
+            hitstop=7;
+            animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12});
+            kback=4;
+            hitstun=5;
         }
     }
     x+=jumpx;
@@ -548,7 +655,7 @@ else if(playercode==2){
 
 int main()
 {
-    short hitstop=0;
+    short hitstop=0,p1hitwait=0,p2hitwait=0;
     float overlap[2],overlap2[2];
 	sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
 	sf::Text pausetext;
@@ -718,27 +825,31 @@ int main()
         if(ikey2.size()>20)ikey2.pop_back();
         if(okey2.size()>20)okey2.pop_back();
         if(kkey2.size()>20)kkey2.pop_back();
-        if((hitstop>0||!animq1.empty()&&p1hit==false)&&p1buffer==0){
+        if(p1buffer==0&&!animq1.empty()){
                 p1buffer=chooseaction(1,p1air,keydir1,u,i,o);
-                if(p1buffer==1||p1buffer==3||p1buffer==11)p1buffer=0;
+                if(p1cancel[p1buffer]==false&&animq1.size()>5)p1buffer=0;
+                else if(p1buffer==1||p1buffer==3||p1buffer==11)p1buffer=0;
         }
-        if((hitstop>0||!animq2.empty()&&p2hit==false)&&p2buffer==0){
+        if(p2buffer==0&&!animq2.empty()){
                 p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2);
-                if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
+                if(p2cancel[p2buffer]==false&&animq2.size()>5)p2buffer=0;
+                else if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
         }
 
         if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
             nextframe=false;
             if(p1buffer==0)p1act=chooseaction(1,p1air,keydir1,u,i,o);
             else if(!animq1.empty()&&!p1whiff)p1act=p1buffer;
-            else {if(!p1whiff){p1act=p1buffer;}p1buffer=0;}
+            if(animq1.empty()){if(!p1whiff){p1act=p1buffer;}p1buffer=0;}
+
             if(p2buffer==0)p2act=chooseaction(2,p2air,keydir2,u2,i2,o2);
             else if(!animq2.empty()&&!p2whiff)p2act=p2buffer;
-            else {if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
+            if(animq2.empty()){if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
+
             characterdata(1,animq1,p1cancel,p1air,p1anim,p1act,p1col,p1frame,p1whiff,p1x,p1y,p1jumpx,p1jumpy,p1right,p1hit,
-                          p1block,p2x,p1hitstun,p2hitstun,p1kback,p2kback,p1slide,p1multihit,p1hitstop,animq2.size(),p1buffer,p1neutural);
+                          p1block,p2x,p1hitstun,p2hitstun,p1kback,p2kback,p1slide,p1multihit,p1hitstop,p2hitwait,p1buffer,p1neutural);
             characterdata(2,animq2,p2cancel,p2air,p2anim,p2act,p2col,p2frame,p2whiff,p2x,p2y,p2jumpx,p2jumpy,p2right,p2hit,
-                          p2block,p1x,p2hitstun,p1hitstun,p2kback,p1kback,p2slide,p2multihit,p2hitstop,animq1.size(),p2buffer,p2neutural);
+                          p2block,p1x,p2hitstun,p1hitstun,p2kback,p1kback,p2slide,p2multihit,p2hitstop,p1hitwait,p2buffer,p2neutural);
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
                 temp[0]=colbox[p1col][0][0]+p1x;
@@ -790,7 +901,8 @@ int main()
                     else p2x-=3;
                 }
             }
-
+            p1hitwait=animq1.size();
+            p2hitwait=animq2.size();
             for(int i=hurtboxcount[p1frame]-1;i>=0;i--){
                 if(p1right==true){
                     temp[0]=hurtbox[p1frame][i][0][0]+p1x;
@@ -1074,6 +1186,7 @@ int main()
         combotext.setString(temp);
         pausetext.setString("Paused");
 
+
         combotext.setPosition(0.f,0.f);
         pausetext.setPosition(200.f, 0.f);
         p1.setPosition(p1x-64,p1y-64);
@@ -1084,7 +1197,7 @@ int main()
 
 		window.clear();
 		window.draw(background);
-		if(p1hit==true){
+		if(p1hit){
             window.draw(p1);
             window.draw(p2);
 		}
@@ -1094,7 +1207,8 @@ int main()
 		}
 		if(p1hit)window.draw(impact);
 		if(p2hit)window.draw(impact2);
-		if(seeboxes==true){
+		//if(hitstop>0)window.draw(hitflash);
+		if(seeboxes){
             window.draw(collisionbox1);
             window.draw(Hurtbox1);
             window.draw(Hitbox1);
@@ -1103,7 +1217,7 @@ int main()
             window.draw(Hitbox2);
 		}
 		if(combo>0)window.draw(combotext);
-		if(pause==true)window.draw(pausetext);
+		if(pause)window.draw(pausetext);
 		window.display();
 	}
 	return 0;
