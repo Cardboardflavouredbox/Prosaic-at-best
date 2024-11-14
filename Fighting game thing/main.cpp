@@ -332,6 +332,56 @@ private:
     sf::Texture m_tileset;
 };
 
+struct hitflash : public sf::Drawable, public sf::Transformable
+{
+public:
+    void create(float px,float py){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(21);
+        std::uniform_int_distribution<int> dis(0,1);
+        for(unsigned int i=0;i<5;i++){
+            float x,y,x2,y2;
+            if(dis(gen)==0){
+                if(dis(gen)==0)y=0;
+                else y=239;
+                std::uniform_int_distribution<int> dis(0,255);
+                x=dis(gen);
+                std::uniform_int_distribution<int> dis2(-16,16);
+                x2=x+dis2(gen);
+                y2=y;
+            }
+            else {
+                if(dis(gen)==0)x=0;
+                else x=255;
+                std::uniform_int_distribution<int> dis(0,239);
+                y=dis(gen);
+                std::uniform_int_distribution<int> dis2(-16,16);
+                x2=x;
+                y2=y+dis2(gen);
+            }
+            sf::Vertex* triangles = &m_vertices[i*3];
+            triangles[i].position = sf::Vector2f(px,py);
+            triangles[i+1].position = sf::Vector2f(x,y);
+            triangles[i+2].position = sf::Vector2f(x2,y2);
+        }
+
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        // apply the transform
+        states.transform *= getTransform();
+
+        // our particles don't use a texture
+        states.texture = NULL;
+
+        // draw the vertex array
+        target.draw(m_vertices, states);
+    }
+   sf::VertexArray m_vertices;
+};
 
 
 bool cmdcheck(int playercode,int len,char s[][5]){
@@ -564,10 +614,13 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         else if(act==14){
             col=1;
             multihit=false;
-            hitstop=7;
+            hitstop=10;
             animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12});
             kback=4;
-            hitstun=5;
+            hitstun=2;
+            slide=true;
+            if(right)jumpx=4;
+            else jumpx=-4;
         }
     }
     x+=jumpx;
@@ -655,7 +708,11 @@ else if(playercode==2){
 
 int main()
 {
+    hitflash hf;
     short hitstop=0,p1hitwait=0,p2hitwait=0;
+    sf::RenderTexture renderTexture;
+    if (!renderTexture.create(256, 240)){}
+    bool sfxcheck=false;
     float overlap[2],overlap2[2];
 	sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
 	sf::Text pausetext;
@@ -1000,7 +1057,7 @@ int main()
             if(p2hit==true){hitstop=p1hitstop;memcpy(p2anim,animlib[9],sizeof(animlib[9]));}
 
         }
-        if(hitstop>0)hitstop--;
+        if(hitstop>0&&(!pause||nextframe))hitstop--;
 
         sf::VertexArray collisionbox1(sf::LinesStrip, 5);
         if(p1right==true){
@@ -1181,6 +1238,16 @@ int main()
         impact2[1].color= sf::Color::Yellow;
         impact2[2].color= sf::Color::Yellow;
         impact2[3].color= sf::Color::Yellow;
+        if(hitstop==0)sfxcheck=false;
+        if(p1hit&&!p2hit&&!pause&&!sfxcheck){
+            sfxcheck=true;
+            hf.create(overlap[0],overlap[1]);
+        }
+        else if(p2hit&&!p1hit&&!pause&&!sfxcheck){
+            sfxcheck=true;
+            hf.create(overlap2[0],overlap2[1]);
+        }
+
         std::string temp="combo: ";
         temp += std::to_string(combo);
         combotext.setString(temp);
@@ -1196,18 +1263,28 @@ int main()
         p2.setanim(p2anim,p2right);
 
 		window.clear();
-		window.draw(background);
+		renderTexture.clear();
+		renderTexture.draw(background);
 		if(p1hit){
-            window.draw(p1);
-            window.draw(p2);
+            renderTexture.draw(p1);
+            renderTexture.draw(p2);
 		}
 		else{
-            window.draw(p2);
-            window.draw(p1);
+            renderTexture.draw(p2);
+            renderTexture.draw(p1);
 		}
-		if(p1hit)window.draw(impact);
-		if(p2hit)window.draw(impact2);
-		//if(hitstop>0)window.draw(hitflash);
+		if(p1hit)renderTexture.draw(impact);
+		if(p2hit)renderTexture.draw(impact2);
+		if(combo>0)renderTexture.draw(combotext);
+		if(pause)renderTexture.draw(pausetext);
+		if(hitstop>0)renderTexture.draw(hf);
+
+		renderTexture.display();
+		const sf::Texture& texture = renderTexture.getTexture();
+		sf::Sprite rt(texture);
+
+		window.draw(rt);
+
 		if(seeboxes){
             window.draw(collisionbox1);
             window.draw(Hurtbox1);
@@ -1216,8 +1293,6 @@ int main()
             window.draw(Hurtbox2);
             window.draw(Hitbox2);
 		}
-		if(combo>0)window.draw(combotext);
-		if(pause)window.draw(pausetext);
 		window.display();
 	}
 	return 0;

@@ -1,10 +1,12 @@
 # depslib dependency file v1.0
-1731575471 source:d:\문서\codeblocks\fighting game thing\main.cpp
+1731598708 source:d:\문서\codeblocks\fighting game thing\main.cpp
 	<SFML/Graphics.hpp>
 	<iostream>
 	<stdio.h>
+	<random>
 	<deque>
 	<string.h>
+	<math.h>
 
 1719558231 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
