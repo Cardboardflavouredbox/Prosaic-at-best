@@ -337,10 +337,10 @@ struct hitflash : public sf::Drawable, public sf::Transformable
 public:
     void create(float px,float py){
         m_vertices.setPrimitiveType(sf::Triangles);
-        m_vertices.resize(21);
-        std::uniform_int_distribution<int> dis(0,1);
-        for(unsigned int i=0;i<5;i++){
+        m_vertices.resize(32);
+        for(unsigned int i=0;i<3;i++){
             float x,y,x2,y2;
+            std::uniform_int_distribution<int> dis(0,1);
             if(dis(gen)==0){
                 if(dis(gen)==0)y=0;
                 else y=239;
@@ -360,9 +360,9 @@ public:
                 y2=y+dis2(gen);
             }
             sf::Vertex* triangles = &m_vertices[i*3];
-            triangles[i].position = sf::Vector2f(px,py);
-            triangles[i+1].position = sf::Vector2f(x,y);
-            triangles[i+2].position = sf::Vector2f(x2,y2);
+            triangles[i*3].position = sf::Vector2f(px,py);
+            triangles[i*3+1].position = sf::Vector2f(x,y);
+            triangles[i*3+2].position = sf::Vector2f(x2,y2);
         }
 
     }
