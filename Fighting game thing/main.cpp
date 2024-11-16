@@ -268,7 +268,7 @@ hitbox[256][8][2][2]={{0},
                     //walk right1 (17)
                     //walk right2 (18)
                     };
-bool p1air=false,p2air=false,seeboxes=true,F1key=false,F2key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],p1whiff=false,p2whiff=false,p1neutural,p2neutural,
+bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],p1whiff=false,p2whiff=false,p1neutural,p2neutural,
 p1right=true,p2right=false,p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,flash=true;
 
 struct character : public sf::Drawable, public sf::Transformable
@@ -601,7 +601,7 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
         hit=false;
         animq.clear();
         col=0;
-        for(short i=0;i<hitwait+enemyhitstun+1;i++){
+        for(short i=0;i<hitwait+enemyhitstun;i++){
             animq.push_back(9);
         }
         if(x<enemyx)jumpx=-enemykback;
@@ -684,7 +684,7 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
             col=0;
             multihit=false;
             hitstop=7;
-            animq.insert(animq.begin(), {1,1,1,2,2,1,1,1});
+            animq.insert(animq.begin(), {1,1,1,2,2,1,1,1,1});
             kback=4;
             hitstun=4;
             cancel[9]=true;
@@ -694,7 +694,7 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
             col=0;
             multihit=false;
             hitstop=10;
-            animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,6,5,5,5,4,3});
+            animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,6,5,5,5,4,4,3,3});
             kback=5;
             hitstun=5;
             cancel[10]=true;
@@ -715,7 +715,7 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
             multihit=false;
             hitstop=7;
             animq.insert(animq.begin(), {10,10,11,11,11,10,10,10});
-            kback=3;
+            kback=5;
             hitstun=3;
             cancel[13]=true;
             cancel[14]=true;
@@ -1270,10 +1270,10 @@ int main()
 
 		if(seeboxes){
             window.draw(collisionbox1);
-            window.draw(Hurtbox1);
-            window.draw(Hitbox1);
             window.draw(collisionbox2);
+            window.draw(Hurtbox1);
             window.draw(Hurtbox2);
+            window.draw(Hitbox1);
             window.draw(Hitbox2);
 		}
 		window.display();
