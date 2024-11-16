@@ -443,6 +443,56 @@ private:
 
 };
 
+struct box : public sf::Drawable, public sf::Transformable
+{
+public:
+    void create(float px,float py,float xy[][2][2],bool right,short count,sf::Color col){
+        m_vertices.setPrimitiveType(sf::Lines);
+        m_vertices.resize(64);
+        for(unsigned int i=0;i<count;i++){
+            sf::Vertex* box = &m_vertices[i*8];
+            if(right){
+            box[i*8].position = sf::Vector2f(xy[i][0][0]+px,xy[i][0][1]+py);
+            box[i*8+1].position = sf::Vector2f(xy[i][1][0]+px,xy[i][0][1]+py);
+            box[i*8+2].position = sf::Vector2f(xy[i][1][0]+px,xy[i][0][1]+py);
+            box[i*8+3].position = sf::Vector2f(xy[i][1][0]+px,xy[i][1][1]+py);
+            box[i*8+4].position = sf::Vector2f(xy[i][1][0]+px,xy[i][1][1]+py);
+            box[i*8+5].position = sf::Vector2f(xy[i][0][0]+px,xy[i][1][1]+py);
+            box[i*8+6].position = sf::Vector2f(xy[i][0][0]+px,xy[i][1][1]+py);
+            box[i*8+7].position = sf::Vector2f(xy[i][0][0]+px,xy[i][0][1]+py);
+            }
+            else{
+            box[i*8].position = sf::Vector2f(-xy[i][1][0]+px,xy[i][0][1]+py);
+            box[i*8+1].position = sf::Vector2f(-xy[i][0][0]+px,xy[i][0][1]+py);
+            box[i*8+2].position = sf::Vector2f(-xy[i][0][0]+px,xy[i][0][1]+py);
+            box[i*8+3].position = sf::Vector2f(-xy[i][0][0]+px,xy[i][1][1]+py);
+            box[i*8+4].position = sf::Vector2f(-xy[i][0][0]+px,xy[i][1][1]+py);
+            box[i*8+5].position = sf::Vector2f(-xy[i][1][0]+px,xy[i][1][1]+py);
+            box[i*8+6].position = sf::Vector2f(-xy[i][1][0]+px,xy[i][1][1]+py);
+            box[i*8+7].position = sf::Vector2f(-xy[i][1][0]+px,xy[i][0][1]+py);
+            }
+            for(unsigned int j=0;j<8;j++)box[i*8+j].color = col;
+        }
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        // apply the transform
+        states.transform *= getTransform();
+
+        // our particles don't use a texture
+        states.texture = NULL;
+
+        // draw the vertex array
+        target.draw(m_vertices,states);
+    }
+   sf::VertexArray m_vertices;
+
+};
+
+
 
 bool cmdcheck(int playercode,int len,char s[][5]){
     //s[][0]==num,s[][1]==u,s[][2]==i,s[][3]==o,s[][4]==k
@@ -675,9 +725,9 @@ void characterdata(short playercode,std::deque<int>animq,bool cancel[256],bool a
             col=1;
             multihit=false;
             hitstop=10;
-            animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12});
+            animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12});
             kback=4;
-            hitstun=2;
+            hitstun=1;
             slide=true;
             if(right)jumpx=4;
             else jumpx=-4;
@@ -1143,71 +1193,6 @@ int main()
         collisionbox1[4].position = sf::Vector2f(-colbox[p1col][1][0]+p1x, colbox[p1col][0][1]+p1y);
         }
 
-        sf::VertexArray Hurtbox1(sf::Lines,hurtboxcount[p1frame]*8);
-        for(int i=0;i<hurtboxcount[p1frame];i++){
-            Hurtbox1[0+i*8].color=sf::Color::Blue;
-            Hurtbox1[1+i*8].color=sf::Color::Blue;
-            Hurtbox1[2+i*8].color=sf::Color::Blue;
-            Hurtbox1[3+i*8].color=sf::Color::Blue;
-            Hurtbox1[4+i*8].color=sf::Color::Blue;
-            Hurtbox1[5+i*8].color=sf::Color::Blue;
-            Hurtbox1[6+i*8].color=sf::Color::Blue;
-            Hurtbox1[7+i*8].color=sf::Color::Blue;
-            if(p1right==true){
-            Hurtbox1[0+i*8].position = sf::Vector2f(hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            Hurtbox1[1+i*8].position = sf::Vector2f(hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            Hurtbox1[2+i*8].position = sf::Vector2f(hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            Hurtbox1[3+i*8].position = sf::Vector2f(hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[4+i*8].position = sf::Vector2f(hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[5+i*8].position = sf::Vector2f(hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[6+i*8].position = sf::Vector2f(hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[7+i*8].position = sf::Vector2f(hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            }
-            else{
-            Hurtbox1[1+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            Hurtbox1[0+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            Hurtbox1[7+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            Hurtbox1[5+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[6+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][1][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[3+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[4+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][1][1]+p1y);
-            Hurtbox1[2+i*8].position = sf::Vector2f(-hurtbox[p1frame][i][0][0]+p1x, hurtbox[p1frame][i][0][1]+p1y);
-            }
-        }
-
-        sf::VertexArray Hitbox1(sf::Lines,hitboxcount[p1frame]*8);
-        for(int i=0;i<hitboxcount[p1frame];i++){
-            Hitbox1[0+i*8].color=sf::Color::Red;
-            Hitbox1[1+i*8].color=sf::Color::Red;
-            Hitbox1[2+i*8].color=sf::Color::Red;
-            Hitbox1[3+i*8].color=sf::Color::Red;
-            Hitbox1[4+i*8].color=sf::Color::Red;
-            Hitbox1[5+i*8].color=sf::Color::Red;
-            Hitbox1[6+i*8].color=sf::Color::Red;
-            Hitbox1[7+i*8].color=sf::Color::Red;
-            if(p1right==true){
-            Hitbox1[0+i*8].position = sf::Vector2f(hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            Hitbox1[1+i*8].position = sf::Vector2f(hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            Hitbox1[2+i*8].position = sf::Vector2f(hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            Hitbox1[3+i*8].position = sf::Vector2f(hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[4+i*8].position = sf::Vector2f(hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[5+i*8].position = sf::Vector2f(hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[6+i*8].position = sf::Vector2f(hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[7+i*8].position = sf::Vector2f(hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            }
-            else{
-            Hitbox1[1+i*8].position = sf::Vector2f(-hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            Hitbox1[0+i*8].position = sf::Vector2f(-hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            Hitbox1[7+i*8].position = sf::Vector2f(-hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            Hitbox1[5+i*8].position = sf::Vector2f(-hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[6+i*8].position = sf::Vector2f(-hitbox[p1frame][i][1][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[3+i*8].position = sf::Vector2f(-hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[4+i*8].position = sf::Vector2f(-hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][1][1]+p1y);
-            Hitbox1[2+i*8].position = sf::Vector2f(-hitbox[p1frame][i][0][0]+p1x, hitbox[p1frame][i][0][1]+p1y);
-            }
-        }
-
-
         sf::VertexArray collisionbox2(sf::LinesStrip, 5);
         if(p2right==true){
         collisionbox2[0].position = sf::Vector2f(colbox[p2col][0][0]+p2x, colbox[p2col][0][1]+p2y);
@@ -1224,69 +1209,12 @@ int main()
         collisionbox2[4].position = sf::Vector2f(-colbox[p2col][1][0]+p2x, colbox[p2col][0][1]+p2y);
         }
 
-        sf::VertexArray Hurtbox2(sf::Lines,hurtboxcount[p2frame]*8);
-        for(int i=0;i<hurtboxcount[p2frame];i++){
-            Hurtbox2[0+i*8].color=sf::Color::Blue;
-            Hurtbox2[1+i*8].color=sf::Color::Blue;
-            Hurtbox2[2+i*8].color=sf::Color::Blue;
-            Hurtbox2[3+i*8].color=sf::Color::Blue;
-            Hurtbox2[4+i*8].color=sf::Color::Blue;
-            Hurtbox2[5+i*8].color=sf::Color::Blue;
-            Hurtbox2[6+i*8].color=sf::Color::Blue;
-            Hurtbox2[7+i*8].color=sf::Color::Blue;
-            if(p2right==true){
-            Hurtbox2[0+i*8].position = sf::Vector2f(hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            Hurtbox2[1+i*8].position = sf::Vector2f(hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            Hurtbox2[2+i*8].position = sf::Vector2f(hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            Hurtbox2[3+i*8].position = sf::Vector2f(hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[4+i*8].position = sf::Vector2f(hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[5+i*8].position = sf::Vector2f(hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[6+i*8].position = sf::Vector2f(hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[7+i*8].position = sf::Vector2f(hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            }
-            else{
-            Hurtbox2[1+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            Hurtbox2[0+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            Hurtbox2[7+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            Hurtbox2[5+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[6+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][1][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[3+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[4+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][1][1]+p2y);
-            Hurtbox2[2+i*8].position = sf::Vector2f(-hurtbox[p2frame][i][0][0]+p2x, hurtbox[p2frame][i][0][1]+p2y);
-            }
-        }
+        box Hitbox1,Hurtbox1,Hitbox2,Hurtbox2;
+        Hurtbox1.create(p1x,p1y,hurtbox[p1frame],p1right,hurtboxcount[p1frame],sf::Color::Blue);
+        Hitbox1.create(p1x,p1y,hitbox[p1frame],p1right,hitboxcount[p1frame],sf::Color::Red);
+        Hurtbox2.create(p2x,p2y,hurtbox[p2frame],p2right,hurtboxcount[p2frame],sf::Color::Blue);
+        Hitbox2.create(p2x,p2y,hitbox[p2frame],p2right,hitboxcount[p2frame],sf::Color::Red);
 
-        sf::VertexArray Hitbox2(sf::Lines,hitboxcount[p2frame]*8);
-        for(int i=0;i<hitboxcount[p2frame];i++){
-            Hitbox2[0+i*8].color=sf::Color::Red;
-            Hitbox2[1+i*8].color=sf::Color::Red;
-            Hitbox2[2+i*8].color=sf::Color::Red;
-            Hitbox2[3+i*8].color=sf::Color::Red;
-            Hitbox2[4+i*8].color=sf::Color::Red;
-            Hitbox2[5+i*8].color=sf::Color::Red;
-            Hitbox2[6+i*8].color=sf::Color::Red;
-            Hitbox2[7+i*8].color=sf::Color::Red;
-            if(p2right==true){
-            Hitbox2[0+i*8].position = sf::Vector2f(hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            Hitbox2[1+i*8].position = sf::Vector2f(hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            Hitbox2[2+i*8].position = sf::Vector2f(hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            Hitbox2[3+i*8].position = sf::Vector2f(hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[4+i*8].position = sf::Vector2f(hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[5+i*8].position = sf::Vector2f(hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[6+i*8].position = sf::Vector2f(hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[7+i*8].position = sf::Vector2f(hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            }
-            else{
-            Hitbox2[1+i*8].position = sf::Vector2f(-hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            Hitbox2[0+i*8].position = sf::Vector2f(-hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            Hitbox2[7+i*8].position = sf::Vector2f(-hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            Hitbox2[5+i*8].position = sf::Vector2f(-hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[6+i*8].position = sf::Vector2f(-hitbox[p2frame][i][1][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[3+i*8].position = sf::Vector2f(-hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[4+i*8].position = sf::Vector2f(-hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][1][1]+p2y);
-            Hitbox2[2+i*8].position = sf::Vector2f(-hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
-            }
-        }
         if(hitstop==0)sfx=0;
         if(p1hit&&!p2hit&&!pause&&sfx==0){
             sfx=1;
