@@ -268,8 +268,8 @@ hitbox[256][8][2][2]={{0},
                     //walk right1 (17)
                     //walk right2 (18)
                     };
-bool p1air=false,p2air=false,seeboxes=true,F1key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],p1whiff=false,p2whiff=false,p1neutural,p2neutural,
-p1right=true,p2right=false,p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false;
+bool p1air=false,p2air=false,seeboxes=true,F1key=false,F2key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],p1whiff=false,p2whiff=false,p1neutural,p2neutural,
+p1right=true,p2right=false,p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,flash=true;
 
 struct character : public sf::Drawable, public sf::Transformable
 {
@@ -364,7 +364,64 @@ public:
             triangles[i*3+1].position = sf::Vector2f(x,y);
             triangles[i*3+2].position = sf::Vector2f(x2,y2);
         }
+        m_lines.setPrimitiveType(sf::Lines);
+        m_lines.resize(32);
+        for(unsigned int i=0;i<8;i++){
+            float angle=i * 3.14f / 4.f;
+            float x=std::cos(angle),y=std::sin(angle);
+            sf::Vertex* line = &m_lines[i*2];
+            line[i*2].position = sf::Vector2f(px+x,py+y);
+            line[i*2+1].position = sf::Vector2f(x*16+px,y*16+py);
+        }
+        m_circle.setPrimitiveType(sf::Lines);
+        m_circle.resize(64);
+        sf::Vertex* circle = &m_circle[32];
+        for(unsigned int i=0;i<12;i++){
+            float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;;
+            circle[i*2].position = sf::Vector2f((std::cos(angle))*4+px,(std::sin(angle))*4+py);
+            circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*4+px,(std::sin(angle2))*4+py);
+        }
+    }
 
+
+    void update(float px,float py,int pass){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(32);
+        for(unsigned int i=0;i<3;i++){
+            sf::Vertex* triangles = &m_vertices[i*3];
+            if(pass%2==0&&pass>3&&flash){
+            triangles[i*3].color = sf::Color::Transparent;
+            triangles[i*3+1].color = sf::Color::Transparent;
+            triangles[i*3+2].color = sf::Color::Transparent;
+            }
+            else{
+            triangles[i*3].color = sf::Color::White;
+            triangles[i*3+1].color = sf::Color::White;
+            triangles[i*3+2].color = sf::Color::White;
+            }
+        }
+        m_lines.setPrimitiveType(sf::Lines);
+        m_lines.resize(32);
+        for(unsigned int i=0;i<8;i++){
+            float angle=i * 3.14f / 4.f;
+            float x=std::cos(angle),y=std::sin(angle);
+            sf::Vertex* line = &m_lines[i*2];
+            line[i*2].position = sf::Vector2f(px+x*(pass+8),py+y*(pass+8));
+            line[i*2+1].position = sf::Vector2f(x*(float(pass)/8+16)+px,y*(float(pass)/8+16)+py);
+            if(pass>3&&pass%2==1&&flash){line[i*2].color=sf::Color::Transparent;line[i*2+1].color=sf::Color::Transparent;}
+            else {line[i*2].color=sf::Color::White;line[i*2+1].color=sf::Color::White;}
+        }
+        m_circle.setPrimitiveType(sf::Lines);
+        m_circle.resize(64);
+        sf::Vertex* circle = &m_circle[32];
+        for(unsigned int i=0;i<12;i++){
+            float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;;
+            circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+pass)+px,(std::sin(angle))*(4+pass)+py);
+            circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+pass)+px,(std::sin(angle2))*(4+pass)+py);
+
+            if(pass>3&&pass%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
+            else {circle[i*2].color=sf::Color::White;circle[i*2+1].color=sf::Color::White;}
+        }
     }
 
 private:
@@ -378,9 +435,12 @@ private:
         states.texture = NULL;
 
         // draw the vertex array
-        target.draw(m_vertices, states);
+        target.draw(m_vertices);
+        target.draw(m_lines);
+        target.draw(m_circle, states);
     }
-   sf::VertexArray m_vertices;
+   sf::VertexArray m_vertices,m_lines,m_circle;
+
 };
 
 
@@ -709,10 +769,9 @@ else if(playercode==2){
 int main()
 {
     hitflash hf;
-    short hitstop=0,p1hitwait=0,p2hitwait=0;
+    short hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0;
     sf::RenderTexture renderTexture;
     if (!renderTexture.create(256, 240)){}
-    bool sfxcheck=false;
     float overlap[2],overlap2[2];
 	sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
 	sf::Text pausetext;
@@ -756,18 +815,27 @@ int main()
 
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::F1)){
-            if(F1key==false){
+            if(!F1key){
                 F1key=true;
-                if(seeboxes==true)seeboxes=false;
+                if(seeboxes)seeboxes=false;
                 else seeboxes=true;
             }
         }
         else F1key=false;
 
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::F2)){
+            if(!F2key){
+                F2key=true;
+                if(flash)flash=false;
+                else flash=true;
+            }
+        }
+        else F2key=false;
+
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-            if(Enterkey==false){
+            if(!Enterkey){
                 Enterkey=true;
-                if(pause==true)pause=false;
+                if(pause)pause=false;
                 else pause=true;
             }
         }
@@ -1219,33 +1287,22 @@ int main()
             Hitbox2[2+i*8].position = sf::Vector2f(-hitbox[p2frame][i][0][0]+p2x, hitbox[p2frame][i][0][1]+p2y);
             }
         }
-        sf::VertexArray impact(sf::Quads, 4);
-        impact[0].position = sf::Vector2f(-8.f+overlap[0], -8.f+overlap[1]);
-        impact[1].position = sf::Vector2f(-8.f+overlap[0], 8.f+overlap[1]);
-        impact[2].position = sf::Vector2f(8.f+overlap[0], 8.f+overlap[1]);
-        impact[3].position = sf::Vector2f(8.f+overlap[0], -8.f+overlap[1]);
-        sf::VertexArray impact2(sf::Quads, 4);
-        impact2[0].position = sf::Vector2f(-8.f+overlap2[0], -8.f+overlap2[1]);
-        impact2[1].position = sf::Vector2f(-8.f+overlap2[0], 8.f+overlap2[1]);
-        impact2[2].position = sf::Vector2f(8.f+overlap2[0], 8.f+overlap2[1]);
-        impact2[3].position = sf::Vector2f(8.f+overlap2[0], -8.f+overlap2[1]);
-
-        impact[0].color= sf::Color::Yellow;
-        impact[1].color= sf::Color::Yellow;
-        impact[2].color= sf::Color::Yellow;
-        impact[3].color= sf::Color::Yellow;
-        impact2[0].color= sf::Color::Yellow;
-        impact2[1].color= sf::Color::Yellow;
-        impact2[2].color= sf::Color::Yellow;
-        impact2[3].color= sf::Color::Yellow;
-        if(hitstop==0)sfxcheck=false;
-        if(p1hit&&!p2hit&&!pause&&!sfxcheck){
-            sfxcheck=true;
+        if(hitstop==0)sfx=0;
+        if(p1hit&&!p2hit&&!pause&&sfx==0){
+            sfx=1;
             hf.create(overlap[0],overlap[1]);
         }
-        else if(p2hit&&!p1hit&&!pause&&!sfxcheck){
-            sfxcheck=true;
+        else if(p2hit&&!p1hit&&!pause&&sfx==0){
+            sfx=1;
             hf.create(overlap2[0],overlap2[1]);
+        }
+        else if(sfx>0&&p1hit&&!p2hit&&!pause){
+            sfx++;
+            hf.update(overlap[0],overlap[1],sfx);
+        }
+        else if(sfx>0&&!p1hit&&p2hit&&!pause){
+            sfx++;
+            hf.update(overlap2[0],overlap2[1],sfx);
         }
 
         std::string temp="combo: ";
@@ -1273,8 +1330,6 @@ int main()
             renderTexture.draw(p2);
             renderTexture.draw(p1);
 		}
-		if(p1hit)renderTexture.draw(impact);
-		if(p2hit)renderTexture.draw(impact2);
 		if(combo>0)renderTexture.draw(combotext);
 		if(pause)renderTexture.draw(pausetext);
 		if(hitstop>0)renderTexture.draw(hf);
