@@ -186,13 +186,23 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //walk right2 (18)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{2,8},{3,8},{4,8},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //knockdown (19)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2},
-                   hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0};
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0},
+                   hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0};
 float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,
         p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,
 colbox[256][1][2][2]={{{{-7,-10},{9,32}}},//standing
                     {{{-7,-1},{9,32}}},//crouching
+                    {{{-26,-1},{16,32}}},//knockdown
                     },
 hurtbox[256][8][2][2]={{{{-11,0},{11,32}},{{-7,-15},{9,0}}},
                     //idle (0)
@@ -232,6 +242,8 @@ hurtbox[256][8][2][2]={{{{-11,0},{11,32}},{{-7,-15},{9,0}}},
                     //walk right1 (17)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
                     //walk right2 (18)
+                    {-1},
+                    //knockdown (19)
                     },
 hitbox[256][8][2][2]={{0},
                     //idle (0)
@@ -263,19 +275,23 @@ hitbox[256][8][2][2]={{0},
                     //crouch i2 (13)
                     {{{6,-13},{19,20}}},
                     //crouch i3 (14)
+                    {-1},
                     //walk left1 (15)
+                    {-1},
                     //walk left2 (16)
+                    {-1},
                     //walk right1 (17)
+                    {-1},
                     //walk right2 (18)
+                    {-1},
+                    //knockdown (19)
                     };
-bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],p1whiff=false,p2whiff=false,p1neutural,p2neutural,
-p1right=true,p2right=false,p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,flash=true;
-
-void initialize(int * arr, std::initializer_list<std::size_t> list, int value) {
-    for (auto i : list) {
-        arr[i] = value;
-    }
-}
+bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,
+pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],
+p1whiff=false,p2whiff=false,p1neutural,p2neutural,p1right=true,p2right=false,
+p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,
+hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,flash=true,
+p1knockdown=false,p2knockdown=false;
 
 
 struct character : public sf::Drawable, public sf::Transformable
@@ -288,18 +304,20 @@ public:
             return false;
         m_tileset.setRepeated(true);
 
-        m_vertices.setPrimitiveType(sf::Quads);
-        m_vertices.resize(256);
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(512);
 
         for (unsigned int i = 0; i < 8; ++i)
             for (unsigned int j = 0; j < 8; ++j)
             {
-                sf::Vertex* quad = &m_vertices[(j + i * 8) * 4];
+                sf::Vertex* tri = &m_vertices[(j + i * 8) * 6];
 
-                quad[0].position = sf::Vector2f(0+j*16,0+i*16);
-                quad[1].position = sf::Vector2f(16+j*16,0+i*16);
-                quad[2].position = sf::Vector2f(16+j*16,16+i*16);
-                quad[3].position = sf::Vector2f(0+j*16,16+i*16);
+                tri[0].position = sf::Vector2f(0+j*16,0+i*16);
+                tri[1].position = sf::Vector2f(16+j*16,0+i*16);
+                tri[2].position = sf::Vector2f(0+j*16,16+i*16);
+                tri[3].position = sf::Vector2f(0+j*16,16+i*16);
+                tri[4].position = sf::Vector2f(16+j*16,0+i*16);
+                tri[5].position = sf::Vector2f(16+j*16,16+i*16);
             }
         return true;
     }
@@ -308,18 +326,24 @@ public:
             for (unsigned int i = 0; i < 8; ++i)
                 for (unsigned int j = 0; j < 8; ++j){
                 if(right==true){
-                    sf::Vertex* quad = &m_vertices[(j + i * 8) * 4];
-                    quad[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
-                    quad[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
-                    quad[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
-                    quad[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+                    sf::Vertex* tri = &m_vertices[(j + i * 8) * 6];
+                    tri[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
+                    tri[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
+                    tri[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+                    tri[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+                    tri[4].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
+                    tri[5].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
+
                 }
                 else{
-                    sf::Vertex* quad = &m_vertices[(7-j + i * 8) * 4];
-                    quad[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
-                    quad[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
-                    quad[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
-                    quad[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
+                    sf::Vertex* tri = &m_vertices[(7-j + i * 8) * 6];
+                    tri[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
+                    tri[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
+                    tri[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
+                    tri[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
+                    tri[4].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
+                    tri[5].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+
                 }
                 }
     }
@@ -499,8 +523,6 @@ private:
 
 };
 
-
-
 bool cmdcheck(int playercode,int len,char s[][5]){
     //s[][0]==num,s[][1]==u,s[][2]==i,s[][3]==o,s[][4]==k
     short temp=0;
@@ -603,13 +625,11 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
 
 
 void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
-        bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,bool *block,float enemyx,short *hitstun,short enemyhitstun,
-        float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch){
+    bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,bool *block,float enemyx,short *hitstun,short enemyhitstun,
+    float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch){
     if(*hit==true){
         combo++;*slide=true;*hit=false;animq.clear();*col=0;
-        for(short i=0;i<hitwait+enemyhitstun;i++){
-            animq.push_back(9);
-        }
+        for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
         if(*x<enemyx)*jumpx=-enemykback;
         else if(*x>enemyx) *jumpx=enemykback;
         memset(cancel,false,256);
@@ -639,26 +659,16 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             if(*right)memcpy(anim,animlib[15],sizeof(animlib[0]));
             else memcpy(anim,animlib[17],sizeof(animlib[0]));
         }
-        else if(*act==2){
-            *col=0;*air=true;*jumpy=-3.0;*jumpx=-7;
-        }
+        else if(*act==2){*col=0;*air=true;*jumpy=-3.0;*jumpx=-7;}
         else if(*act==3){
             *col=0;*x+=3;
             if(*right)memcpy(anim,animlib[17],sizeof(animlib[0]));
             else memcpy(anim,animlib[15],sizeof(animlib[0]));
         }
-        if(*act==4){
-            *col=0;*air=true;*jumpy=-3.0;*jumpx=7;
-        }
-        else if(*act==5){
-            *col=0;*air=true;*jumpy=-14.0;
-        }
-        else if(*act==6){
-            *col=0;*air=true;*jumpy=-14.0;*jumpx=-3;
-        }
-        else if(*act==7){
-            *col=0;*air=true;*jumpy=-14.0;*jumpx=3;
-        }
+        else if(*act==4){*col=0;*air=true;*jumpy=-3.0;*jumpx=7;}
+        else if(*act==5){*col=0;*air=true;*jumpy=-14.0;}
+        else if(*act==6){*col=0;*air=true;*jumpy=-14.0;*jumpx=-3;}
+        else if(*act==7){*col=0;*air=true;*jumpy=-14.0;*jumpx=3;}
         else if(*act==8){
             *col=0;*multihit=false;*hitstop=7;*kback=4;*hitstun=4;
             animq.insert(animq.begin(), {1,1,1,2,2,1,1,1,1});
@@ -692,8 +702,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             else *jumpx=-4;
         }
     }
-    *x+=*jumpx;
-    *y+=*jumpy;
+    *x+=*jumpx;*y+=*jumpy;
     if(*slide){
         if(*jumpx>0)*jumpx-=1;
         else if(*jumpx<0)*jumpx+=1;
@@ -706,22 +715,14 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
     if(*air){
             *jumpy+=1;
             if(*y>175){
-                *air=false;
                 if(*x<enemyx)*right=true;
-                    else *right=false;
-                if(*jumpx!=7&&*jumpx!=-7){
-                        *col=1;
-                        animq.insert(animq.begin(), {8,8,8,8});
-                }
-                else {
-                        *col=1;
-                        animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});
-                }
+                else *right=false;
+                if(*jumpx!=7&&*jumpx!=-7){*col=1;animq.insert(animq.begin(), {8,8,8,8});}
+                else {*col=1;animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});}
                 cancel[8]=true;cancel[9]=true;
-                *jumpx=0;*jumpy=0;*y=176;
+                *jumpx=0;*jumpy=0;*y=176;*air=false;
             }
         }
-
 }
 
 int main()
