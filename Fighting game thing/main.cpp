@@ -198,8 +198,8 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    },
                    hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0},
                    hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0};
-float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,
-        p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,
+float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=100.0,p1dmg=0.0,
+        p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=100.0,p2dmg=0.0,
 colbox[256][1][2][2]={{{{-7,-10},{9,32}}},//standing
                     {{{-7,-1},{9,32}}},//crouching
                     {{{-26,-1},{16,32}}},//knockdown
@@ -474,6 +474,81 @@ private:
 
 };
 
+struct healthbar : public sf::Drawable, public sf::Transformable
+{
+public:
+    void create(float hp,float hp2){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices2.setPrimitiveType(sf::Triangles);
+        m_vertices3.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(32);
+        m_vertices2.resize(32);
+        m_vertices3.resize(32);
+        sf::Vertex* triangles = &m_vertices[12];
+        triangles[0].position = sf::Vector2f(18,10);
+        triangles[1].position = sf::Vector2f(106,10);
+        triangles[2].position = sf::Vector2f(22,18);
+        triangles[3].position = sf::Vector2f(22,18);
+        triangles[4].position = sf::Vector2f(106,10);
+        triangles[5].position = sf::Vector2f(110,18);
+
+        triangles[6].position = sf::Vector2f(146,18);
+        triangles[7].position = sf::Vector2f(234,18);
+        triangles[8].position = sf::Vector2f(150,10);
+        triangles[9].position = sf::Vector2f(150,10);
+        triangles[10].position = sf::Vector2f(234,18);
+        triangles[11].position = sf::Vector2f(238,10);
+        sf::Vertex* tri = &m_vertices2[12];
+        sf::Vertex* tri2 = &m_vertices3[12];
+        float temp=hp/100*88;
+        tri[0].position = sf::Vector2f(106-temp,10);
+        tri[1].position = sf::Vector2f(106,10);
+        tri[2].position = sf::Vector2f(110-temp,18);
+        tri[3].position = sf::Vector2f(110-temp,18);
+        tri[4].position = sf::Vector2f(106,10);
+        tri[5].position = sf::Vector2f(110,18);
+        tri2[0].position = sf::Vector2f(109-temp,16);
+        tri2[1].position = sf::Vector2f(109,16);
+        tri2[2].position = sf::Vector2f(110-temp,18);
+        tri2[3].position = sf::Vector2f(110-temp,18);
+        tri2[4].position = sf::Vector2f(109,16);
+        tri2[5].position = sf::Vector2f(110,18);
+        temp=hp2*88/100;
+        tri[6].position = sf::Vector2f(146,18);
+        tri[7].position = sf::Vector2f(146+temp,18);
+        tri[8].position = sf::Vector2f(150,10);
+        tri[9].position = sf::Vector2f(150,10);
+        tri[10].position = sf::Vector2f(146+temp,18);
+        tri[11].position = sf::Vector2f(150+temp,10);
+        tri2[6].position = sf::Vector2f(146,18);
+        tri2[7].position = sf::Vector2f(146+temp,18);
+        tri2[8].position = sf::Vector2f(147,16);
+        tri2[9].position = sf::Vector2f(147,16);
+        tri2[10].position = sf::Vector2f(146+temp,18);
+        tri2[11].position = sf::Vector2f(147+temp,16);
+        for(unsigned int i=0;i<12;i++){triangles[i].color = sf::Color (85, 85, 85);tri[i].color = sf::Color (85, 255, 85);tri2[i].color = sf::Color (0, 170, 0);}
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        // apply the transform
+        states.transform *= getTransform();
+
+        // our particles don't use a texture
+        states.texture = NULL;
+
+        // draw the vertex array
+        target.draw(m_vertices,states);
+        target.draw(m_vertices2,states);
+        target.draw(m_vertices3,states);
+    }
+   sf::VertexArray m_vertices,m_vertices2,m_vertices3;
+
+};
+
+
 struct box : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -626,9 +701,10 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
 
 void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
     bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,bool *block,float enemyx,short *hitstun,short enemyhitstun,
-    float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch){
+    float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch
+    ,float *hp, float enemyhp, float*dmg){
     if(*hit==true){
-        combo++;*slide=true;*hit=false;animq.clear();*col=0;
+        *slide=true;*hit=false;animq.clear();*col=0;
         for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
         if(*x<enemyx)*jumpx=-enemykback;
         else if(*x>enemyx) *jumpx=enemykback;
@@ -637,7 +713,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
     else if(animq.empty()){
         memset(cancel,false,256);
         if(!*neutural){*jumpx=0;*jumpy=0;*neutural=true;}
-        *hitstun=0;*kback=0;*hit=false;*slide=false;*multihit=false;
+        *hitstun=0;*kback=0;*hit=false;*slide=false;*multihit=false;*dmg=0;
         if(*frame==9)combo=0;
     }
     if(!*hit&&(animq.empty()||((cancel[*act]==true)&&(!*whiff)))){
@@ -670,12 +746,12 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==6){*col=0;*air=true;*jumpy=-14.0;*jumpx=-3;}
         else if(*act==7){*col=0;*air=true;*jumpy=-14.0;*jumpx=3;}
         else if(*act==8){
-            *col=0;*multihit=false;*hitstop=7;*kback=4;*hitstun=4;
+            *col=0;*multihit=false;*hitstop=7;*kback=4;*hitstun=4;*dmg=2;
             animq.insert(animq.begin(), {1,1,1,2,2,1,1,1,1});
             cancel[9]=true;cancel[10]=true;
         }
         else if(*act==9){
-            *col=0;*multihit=false;*hitstop=10;*kback=5;*hitstun=5;*slide=true;
+            *col=0;*multihit=false;*hitstop=10;*kback=5;*hitstun=5;*slide=true;*dmg=3;
             animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,6,5,5,5,4,4,3,3});
             cancel[10]=true;
             if(*right)*jumpx=3;
@@ -690,13 +766,13 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             *frame=8;
         }
         else if(*act==12){
-            *col=1;*multihit=false;*hitstop=7;*kback=5;*hitstun=3;
+            *col=1;*multihit=false;*hitstop=7;*kback=5;*hitstun=3;*dmg=1.5;
             animq.insert(animq.begin(), {10,10,11,11,11,10,10,10});
             cancel[13]=true;cancel[14]=true;
         }
         else if(*act==13){}
         else if(*act==14){
-            *col=1;*multihit=false;*hitstop=10;*kback=4;*hitstun=1;*slide=true;
+            *col=1;*multihit=false;*hitstop=10;*kback=4;*hitstun=1;*slide=true;*dmg=5;
             animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12});
             if(*right)*jumpx=4;
             else *jumpx=-4;
@@ -728,6 +804,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
 int main()
 {
     hitflash hf;
+    healthbar hb;
     short hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0;
     sf::RenderTexture renderTexture;
     if (!renderTexture.create(256, 240)){}
@@ -932,9 +1009,11 @@ int main()
             if(animq2.empty()){if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
 
             characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
-                          &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,&p1launch,p2launch);
+                          &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
+                          &p1launch,p2launch,&p1hp,p2hp,&p1dmg);
             characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
-                          &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,&p2launch,p1launch);
+                          &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
+                          &p2launch,p1launch,&p2hp,p1hp,&p2dmg);
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
                 temp[0]=colbox[p1col][0][0][0]+p1x;
@@ -1022,7 +1101,7 @@ int main()
             if(p1hit==false){hitbefore=false;p2whiff=true;}
             else if(p1hit==true&&p2multihit==false&&hitbefore==false)hitbefore=true;
             else if(hitbefore==true)p1hit=false;
-            if(p1hit==true){hitstop=p2hitstop;memcpy(p1anim,animlib[9],sizeof(animlib[9]));}
+            if(p1hit==true){hitstop=p2hitstop;memcpy(p1anim,animlib[9],sizeof(animlib[9]));combo++;p1hp-=p2dmg;}
 
             for(int i=hurtboxcount[p2frame]-1;i>=0;i--){
                 if(p2right==true){
@@ -1070,7 +1149,7 @@ int main()
             if(p2hit==false){hitbefore2=false;p1whiff=true;}
             else if(p2hit==true&&p1multihit==false&&hitbefore2==false)hitbefore2=true;
             else if(hitbefore2==true)p2hit=false;
-            if(p2hit==true){hitstop=p1hitstop;memcpy(p2anim,animlib[9],sizeof(animlib[9]));}
+            if(p2hit==true){hitstop=p1hitstop;memcpy(p2anim,animlib[9],sizeof(animlib[9]));combo++;p2hp-=p1dmg;}
 
         }
         if(hitstop>0&&(!pause||nextframe))hitstop--;
@@ -1108,9 +1187,11 @@ int main()
         combotext.setString(temp);
         pausetext.setString("Paused");
 
+        hb.create(p1hp,p2hp);
+
         healthui.setPosition(0.f,0.f);
-        combotext.setPosition(0.f,0.f);
-        pausetext.setPosition(200.f, 0.f);
+        combotext.setPosition(0.f,16.f);
+        pausetext.setPosition(200.f, 16.f);
         p1.setPosition(p1x-64,p1y-64);
         p2.setPosition(p2x-64,p2y-64);
 
@@ -1128,6 +1209,7 @@ int main()
             renderTexture.draw(p2);
             renderTexture.draw(p1);
 		}
+		renderTexture.draw(hb);
 		renderTexture.draw(healthui);
 		if(combo>0)renderTexture.draw(combotext);
 		if(pause)renderTexture.draw(pausetext);
