@@ -195,9 +195,63 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //knockdown (19)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{5,2},{6,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{5,3},{6,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialA1 (20)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{7,2},{8,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{7,3},{8,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialA2 (21)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{9,2},{10,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{9,3},{10,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialA3 (22)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{11,2},{12,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{11,3},{12,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialA4 (23)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{9,4},{10,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{9,5},{10,5},{11,5},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialA5 (24)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{12,4},{13,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{12,5},{13,5},{14,5},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialA6 (25)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0},
-                   hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0};
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3},
+                   hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1};
 float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=100.0,p1dmg=0.0,
         p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=100.0,p2dmg=0.0,
 colbox[256][1][2][2]={{{{-7,-10},{9,32}}},//standing
@@ -244,6 +298,18 @@ hurtbox[256][8][2][2]={{{{-11,0},{11,32}},{{-7,-15},{9,0}}},
                     //walk right2 (18)
                     {-1},
                     //knockdown (19)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //specialA1 (20)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //specialA2 (21)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //specialA3 (22)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},
+                    //specialA4 (23)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-4,0},{24,12}}},
+                    //specialA5 (24)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-2,0},{26,12}}},
+                    //specialA6 (25)
                     },
 hitbox[256][8][2][2]={{0},
                     //idle (0)
@@ -285,6 +351,18 @@ hitbox[256][8][2][2]={{0},
                     //walk right2 (18)
                     {-1},
                     //knockdown (19)
+                    {-1},
+                    //specialA1 (20)
+                    {-1},
+                    //specialA2 (21)
+                    {-1},
+                    //specialA3 (22)
+                    {-1},
+                    //specialA4 (23)
+                    {-1},
+                    //specialA5 (24)
+                    {{{10,-6},{29,16}}},
+                    //specialA6 (25)
                     };
 bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,
 pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],
@@ -292,7 +370,7 @@ p1whiff=false,p2whiff=false,p1neutural,p2neutural,p1right=true,p2right=false,
 p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,
 hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,flash=true,
 p1knockdown=false,p2knockdown=false,p1damaged=false,p2damaged=false,p1comboed=false,p2comboed=false,
-p1kdowned=false,p2kdowned=false;
+p1kdowned=false,p2kdowned=false,playertop=false;
 
 
 struct character : public sf::Drawable, public sf::Transformable
@@ -602,15 +680,17 @@ private:
 bool cmdcheck(int playercode,int len,char s[][5]){
     //s[][0]==num,s[][1]==u,s[][2]==i,s[][3]==o,s[][4]==k
     short temp=0;
-    for(int i=0;i<15;i++){
-        if(playercode==1){
-            if((dirkeys[i]!=s[temp][0]&&dirkeys[i]!=s[temp-1][0])||ukey[i]!=s[temp][1]||ikey[i]!=s[temp][2]||okey[i]!=s[temp][3]||kkey[i]!=s[temp][4])break;
-            if(dirkeys[i]==s[temp][0]&&ukey[i]==s[temp][1]&&ikey[i]==s[temp][2]&&okey[i]==s[temp][3]&&kkey[i]==s[temp][4])temp++;
-        }
-        else if(playercode==2){
-            if((dirkeys2[i]!=s[temp][0]&&dirkeys2[i]!=s[temp-1][0])||ukey2[i]!=s[temp][1]||ikey2[i]!=s[temp][2]||okey2[i]!=s[temp][3]||kkey2[i]!=s[temp][4])break;
-            if(dirkeys2[i]==s[temp][0]&&ukey2[i]==s[temp][1]&&ikey2[i]==s[temp][2]&&okey2[i]==s[temp][3]&&kkey2[i]==s[temp][4])temp++;
-        }
+    for(int j=0;j<15;j++){
+        char dir,u,i,o,k;
+        if(playercode==1)dir=dirkeys[j],u=ukey[j],i=ikey[j],o=okey[j],k=kkey[j];
+        else if(playercode==2)dir=dirkeys2[j],u=ukey2[j],i=ikey2[j],o=okey2[j],k=kkey2[j];
+        if(u=='1')u='0';
+        if(i=='1')i='0';
+        if(o=='1')o='0';
+        if(k=='1')k='0';
+
+        if((dir!=s[temp][0]&&dir!=s[temp-1][0])||(u!=s[temp][1]||i!=s[temp][2]||o!=s[temp][3]||k!=s[temp][4])&&temp!=len-1)break;
+        if(dir==s[temp][0]&&u==s[temp][1]&&i==s[temp][2]&&o==s[temp][3]&&k==s[temp][4])temp++;
         if(temp==len)break;
     }
     if(temp==len)return true;
@@ -618,39 +698,40 @@ bool cmdcheck(int playercode,int len,char s[][5]){
 
 }
 
-int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o){
+int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o,char k){
             if(p1air==false){
                 if(keydir=='1'||keydir=='2'||keydir=='3'){
                     //crouching actions
-                    if(o=='2'){
-                        //strong normals
-                        return 14;
-                    }
-                    if(i=='2'){
-                        //middle normals
-                        return 13;
-                    }
-                    else if(u=='2'){
-                        //weak normals
-                        return 12;
-                    }
-                    else{
-                        return 11;
-                    }
+                    if(o=='2')return 14;//strong normal
+                    else if(i=='2')return 13;//middle normal
+                    else if(u=='2')return 12;//weak normal
+                    else return 11;//crouch
                 }
                 else{
                     //grounded actions
                     if(o=='2'){
-                        //strong normals
-                        return 10;
+                        char temp[4][5]={{'6','0','0','2','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
+                            temp2[4][5]={{'5','0','0','2','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 18;//special A strong
+                        else return 10;//strong normal
                     }
                     if(i=='2'){
-                        //middle normals
-                        return 9;
+                        char temp[4][5]={{'6','0','2','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
+                            temp2[4][5]={{'5','0','2','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 17;//special A middle
+                        else return 9;//middle normal
                     }
                     else if(u=='2'){
-                        //weak normals
-                        return 8;
+                        char temp[4][5]={{'6','2','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
+                            temp2[4][5]={{'5','2','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 16;//special A weak
+                        else return 8;//weak normal
+                    }
+                    else if(k=='2'){
+                        char temp[4][5]={{'6','0','0','0','2'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
+                            temp2[4][5]={{'5','0','0','0','2'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 19;//special A gimmick
+                        else return 15;//gimmick
                     }
                     else if(keydir=='4'){
                         char temp[3][5]={{'4','0','0','0','0'},{'5','0','0','0','0'},{'4','0','0','0','0'}};
@@ -665,26 +746,17 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
                     }
                     else if(keydir=='6'){
                         char temp[3][5]={{'6','0','0','0','0'},{'5','0','0','0','0'},{'6','0','0','0','0'}};
-                        if(cmdcheck(playercode,3,temp)){
-                            //rightdash
-                            return 4;
-                        }
-                        //rightwalk
-                        else{
-                            return 3;
-                        }
+                        if(cmdcheck(playercode,3,temp))return 4;//rightdash
+                        else return 3;//rightwalk
                     }
                     else if(keydir=='8'){
-                        //upjump
-                        return 5;
+                        return 5;//upjump
                     }
                     else if(keydir=='7'){
-                        //leftjump
-                        return 6;
+                        return 6;//leftjump
                     }
                     else if(keydir=='9'){
-                        //rightjump
-                        return 7;
+                        return 7;//rightjump
                     }
                     else{
                         return 0;
@@ -697,14 +769,18 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
                 }
 }
 
-
+void boolfill(bool *arr,bool value,short a[],int len){
+    for(int i=0;i<len;i++){
+        arr[a[i]]=value;
+    }
+}
 
 
 void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
     bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,bool *block,float enemyx,short *hitstun,short enemyhitstun,
     float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch
     ,float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned){
-    if(*kdowned&&animq.size()<10&&!*comboed){
+    if(*kdowned&&animq.size()<10&&!*comboed&&!*act==0){
         for(short i=0;i<3;i++){animq.push_back(8);}
         *kdowned=false;combo=0;
     }
@@ -752,29 +828,29 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             memcpy(anim,animlib[0],sizeof(animlib[0]));
         }
         else if(*act==1){
-            *col=0;*x-=3;
-            if(*right)memcpy(anim,animlib[15],sizeof(animlib[0]));
-            else memcpy(anim,animlib[17],sizeof(animlib[0]));
+            *col=0;
+            memcpy(anim,animlib[15],sizeof(animlib[0]));
+            if(*right)*x-=3;else *x+=3;
         }
-        else if(*act==2){*col=0;*air=true;*jumpy=-3.0;*jumpx=-7;}
+        else if(*act==2){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=-7;else *jumpx=7;}
         else if(*act==3){
-            *col=0;*x+=3;
-            if(*right)memcpy(anim,animlib[17],sizeof(animlib[0]));
-            else memcpy(anim,animlib[15],sizeof(animlib[0]));
+            *col=0;
+            memcpy(anim,animlib[17],sizeof(animlib[0]));
+            if(*right)*x+=3;else *x-=3;
         }
-        else if(*act==4){*col=0;*air=true;*jumpy=-3.0;*jumpx=7;}
+        else if(*act==4){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=7;else *jumpx=-7;}
         else if(*act==5){*col=0;*air=true;*jumpy=-14.0;}
-        else if(*act==6){*col=0;*air=true;*jumpy=-14.0;*jumpx=-3;}
-        else if(*act==7){*col=0;*air=true;*jumpy=-14.0;*jumpx=3;}
+        else if(*act==6){*col=0;*air=true;*jumpy=-14.0;if(*right)*jumpx=-3;else *jumpx=3;}
+        else if(*act==7){*col=0;*air=true;*jumpy=-14.0;if(*right)*jumpx=3;else *jumpx=-3;}
         else if(*act==8){
-            *col=0;*multihit=false;*hitstop=7;*kback=4;*hitstun=4;*dmg=2;
+            *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*dmg=2;
             animq.insert(animq.begin(), {1,1,1,2,2,1,1,1,1});
-            cancel[9]=true;cancel[10]=true;
+            short temp[6]={9,10,16,17,18,19};boolfill(cancel,true,temp,6);
         }
         else if(*act==9){
-            *col=0;*multihit=false;*hitstop=10;*kback=5;*hitstun=5;*slide=true;*dmg=3;
+            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=5;*slide=true;*dmg=3;
             animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,6,5,5,5,4,4,3,3});
-            cancel[10]=true;
+            short temp[5]={10,16,17,18,19};boolfill(cancel,true,temp,5);
             if(*right)*jumpx=3;
             else *jumpx=-3;
         }
@@ -782,21 +858,42 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==11){
             if(*x<enemyx)*right=true;
             else *right=false;
-            *col=1;
+            *col=1;*frame=8;
             memcpy(anim,animlib[8],sizeof(animlib[8]));
-            *frame=8;
         }
         else if(*act==12){
-            *col=1;*multihit=false;*hitstop=7;*kback=5;*hitstun=3;*dmg=1.5;
+            *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*dmg=1.5;
             animq.insert(animq.begin(), {10,10,11,11,11,10,10,10});
-            cancel[13]=true;cancel[14]=true;
+            short temp[6]={13,14,16,17,18,19};boolfill(cancel,true,temp,6);
         }
         else if(*act==13){}
         else if(*act==14){
-            *col=1;*multihit=false;*hitstop=10;*kback=3;*hitstun=1;*slide=true;*dmg=5;*launch=10;*kdown=true;
+            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*slide=true;*dmg=5;*launch=10;*kdown=true;
             animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12});
-            if(*right)*jumpx=4;
-            else *jumpx=-4;
+            if(*right)*jumpx=4;else *jumpx=-4;
+            short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
+        }
+        else if(*act==15){}
+        else if(*act==16){
+            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*slide=true;*dmg=4;
+            animq.insert(animq.begin(), {20,21,22,22,22,22,23,24,25,25,25,25,24,24,23,22,21,20,20});
+            if(*right)*jumpx=5;else *jumpx=-5;
+        }
+        else if(*act==17){
+            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=3;*slide=true;*dmg=6;*kdown=true;
+            animq.insert(animq.begin(), {20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            if(*right)*jumpx=6;else *jumpx=-6;
+        }
+        else if(*act==18){
+            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=6;*slide=true;*dmg=8;*kdown=true;*launch=11;
+            animq.insert(animq.begin(), {20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            if(*right)*jumpx=7;else *jumpx=-7;
+        }
+        else if(*act==19){
+            *col=0;*multihit=false;*slide=true;
+            animq.insert(animq.begin(), {20,21,22,22,22,22,22,21,20});
+            if(*right)*jumpx=4;else *jumpx=-4;
+            short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
         }
     }
     *x+=*jumpx;*y+=*jumpy;
@@ -977,7 +1074,14 @@ int main()
         else if(w==false&&a==false&&s==true&&d==true)keydir1='3';
         else if(w==true&&a==false&&s==false&&d==true)keydir1='9';
         else keydir1='5';
-
+        if(!p1right){
+            if(keydir1=='7')keydir1='9';
+            else if(keydir1=='9')keydir1='7';
+            else if(keydir1=='4')keydir1='6';
+            else if(keydir1=='6')keydir1='4';
+            else if(keydir1=='3')keydir1='1';
+            else if(keydir1=='1')keydir1='3';
+        }
 
         if(w2==true&&a2==false&&s2==false&&d2==false)keydir2='8';
         else if(w2==false&&a2==true&&s2==false&&d2==false)keydir2='4';
@@ -988,6 +1092,15 @@ int main()
         else if(w2==false&&a2==false&&s2==true&&d2==true)keydir2='3';
         else if(w2==true&&a2==false&&s2==false&&d2==true)keydir2='9';
         else keydir2='5';
+        if(!p2right){
+            if(keydir2=='7')keydir2='9';
+            else if(keydir2=='9')keydir2='7';
+            else if(keydir2=='4')keydir2='6';
+            else if(keydir2=='6')keydir2='4';
+            else if(keydir2=='3')keydir2='1';
+            else if(keydir2=='1')keydir2='3';
+        }
+
         dirkeys.push_front(keydir1);
         ukey.push_front(u);
         ikey.push_front(i);
@@ -1010,12 +1123,12 @@ int main()
         if(okey2.size()>20)okey2.pop_back();
         if(kkey2.size()>20)kkey2.pop_back();
         if(p1buffer==0&&!animq1.empty()){
-                p1buffer=chooseaction(1,p1air,keydir1,u,i,o);
+                p1buffer=chooseaction(1,p1air,keydir1,u,i,o,k);
                 if(p1cancel[p1buffer]==false&&animq1.size()>5)p1buffer=0;
                 else if(p1buffer==1||p1buffer==3||p1buffer==11)p1buffer=0;
         }
         if(p2buffer==0&&!animq2.empty()){
-                p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2);
+                p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2,k2);
                 if(p2cancel[p2buffer]==false&&animq2.size()>5)p2buffer=0;
                 else if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
         }
@@ -1026,11 +1139,11 @@ int main()
         if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
             nextframe=false;
 
-            if(p1buffer==0)p1act=chooseaction(1,p1air,keydir1,u,i,o);
+            if(p1buffer==0)p1act=chooseaction(1,p1air,keydir1,u,i,o,k);
             else if(!animq1.empty()&&!p1whiff)p1act=p1buffer;
             if(animq1.empty()){if(!p1whiff){p1act=p1buffer;}p1buffer=0;}
 
-            if(p2buffer==0)p2act=chooseaction(2,p2air,keydir2,u2,i2,o2);
+            if(p2buffer==0)p2act=chooseaction(2,p2air,keydir2,u2,i2,o2,k2);
             else if(!animq2.empty()&&!p2whiff)p2act=p2buffer;
             if(animq2.empty()){if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
 
@@ -1238,7 +1351,9 @@ int main()
 		window.clear();
 		renderTexture.clear();
 		renderTexture.draw(background);
-		if(p1hit){
+		if(p1hit)playertop=true;
+		else if(p2hit) playertop=false;
+		if(playertop){
             renderTexture.draw(p1);
             renderTexture.draw(p2);
 		}
