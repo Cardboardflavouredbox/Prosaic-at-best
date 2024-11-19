@@ -897,14 +897,15 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==6){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(), {8,8,8,0});}
         else if(*act==7){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(), {8,8,8,0});}
         else if(*act==8){
-            *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*dmg=5;
+            *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*dmg=7;
             animq.insert(animq.begin(), {1,1,1,1,1,2,2,1,1,1,1});
             short temp[6]={9,10,16,17,18,19};boolfill(cancel,true,temp,6);
         }
         else if(*act==9){
-            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=5;*slide=true;*dmg=7;
+            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=5;*slide=true;*dmg=10;
             animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,6,5,5,5,4,4,3,3});
             short temp[5]={10,16,17,18,19};boolfill(cancel,true,temp,5);
+            *movewait=7;
             if(*right)*jumpx=3;
             else *jumpx=-3;
         }
@@ -916,30 +917,30 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             memcpy(anim,animlib[8],sizeof(animlib[8]));
         }
         else if(*act==12){
-            *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*dmg=5;
+            *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*dmg=7;
             animq.insert(animq.begin(), {10,10,10,11,11,11,10,10,10});
             short temp[6]={13,14,16,17,18,19};boolfill(cancel,true,temp,6);
         }
         else if(*act==13){}//crouch middle
         else if(*act==14){
-            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*slide=true;*dmg=8;*launch=10;*kdown=true;
+            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*slide=true;*dmg=15;*launch=10;*kdown=true;
             animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12});
             if(*right)*jumpx=4;else *jumpx=-4;
             short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
         }
         else if(*act==15){}//maybe a taunt move?
         else if(*act==16){
-            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*slide=true;*movewait=6;*dmg=7;
+            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*slide=true;*movewait=6;*dmg=10;
             animq.insert(animq.begin(), {20,21,22,22,22,22,23,24,25,25,25,25,24,24,23,22,21,20,20});
             if(*right)*jumpx=5;else *jumpx=-5;
         }
         else if(*act==17){
-            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=3;*slide=true;*movewait=9;*dmg=9;*kdown=true;
+            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=3;*slide=true;*movewait=9;*dmg=14;*kdown=true;
             animq.insert(animq.begin(), {20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==18){
-            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=6;*slide=true;*movewait=10;*dmg=12;*kdown=true;*launch=11;
+            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=6;*slide=true;*movewait=10;*dmg=17;*kdown=true;*launch=11;
             animq.insert(animq.begin(), {20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
@@ -947,7 +948,6 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             *col=0;*multihit=false;*slide=true;*movewait=6;
             animq.insert(animq.begin(), {20,21,22,22,22,22,21,20});
             if(*right)*jumpx=4;else *jumpx=-4;
-            short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
         }
     }
     if(*movewait>0)*movewait-=1;
