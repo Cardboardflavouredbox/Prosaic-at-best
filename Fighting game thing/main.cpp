@@ -252,8 +252,8 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    },
                    hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3},
                    hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1};
-float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=100.0,p1dmg=0.0,p1paway=0.0,
-        p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=100.0,p2dmg=0.0,p2paway=0.0,
+float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1dmg=0.0,p1paway=0.0,
+        p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2dmg=0.0,p2paway=0.0,
         bgx=0,
 colbox[256][1][2][2]={{{{-7,-10},{9,32}}},//standing
                     {{{-7,-1},{9,32}}},//crouching
@@ -577,7 +577,7 @@ public:
         triangles[11].position = sf::Vector2f(238,10);
         sf::Vertex* tri = &m_vertices2[12];
         sf::Vertex* tri2 = &m_vertices3[12];
-        float temp=hp/100*88;
+        float temp=hp/1000*88;
         tri[0].position = sf::Vector2f(106-temp,10);
         tri[1].position = sf::Vector2f(106,10);
         tri[2].position = sf::Vector2f(110-temp,18);
@@ -590,7 +590,7 @@ public:
         tri2[3].position = sf::Vector2f(110-temp,18);
         tri2[4].position = sf::Vector2f(109,16);
         tri2[5].position = sf::Vector2f(110,18);
-        temp=hp2*88/100;
+        temp=hp2*88/1000;
         tri[6].position = sf::Vector2f(146,18);
         tri[7].position = sf::Vector2f(146+temp,18);
         tri[8].position = sf::Vector2f(150,10);
@@ -841,7 +841,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
     if(*hit==true){
         *hit=false;animq.clear();*col=0;*jumpy=0,*comboed=true;*movewait=-1;
         for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
-        if(*x<-110||*x>360)*pushaway+=enemykback;
+        if(*x<-110||*x>360){*pushaway+=enemykback;*pushaway+=int(enemylaunch/2);}
         else{if(*x<enemyx)*jumpx=-enemykback;else if(*x>enemyx) *jumpx=enemykback;}
         if(enemylaunch>0){*jumpy=-enemylaunch;*air=true;}
         if(*air)*slide=false;
@@ -897,12 +897,12 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==6){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(), {8,8,8,0});}
         else if(*act==7){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(), {8,8,8,0});}
         else if(*act==8){
-            *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*dmg=2;
+            *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*dmg=5;
             animq.insert(animq.begin(), {1,1,1,1,1,2,2,1,1,1,1});
             short temp[6]={9,10,16,17,18,19};boolfill(cancel,true,temp,6);
         }
         else if(*act==9){
-            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=5;*slide=true;*dmg=3;
+            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=5;*slide=true;*dmg=7;
             animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,6,5,5,5,4,4,3,3});
             short temp[5]={10,16,17,18,19};boolfill(cancel,true,temp,5);
             if(*right)*jumpx=3;
@@ -916,30 +916,30 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             memcpy(anim,animlib[8],sizeof(animlib[8]));
         }
         else if(*act==12){
-            *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*dmg=1.5;
+            *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*dmg=5;
             animq.insert(animq.begin(), {10,10,10,11,11,11,10,10,10});
             short temp[6]={13,14,16,17,18,19};boolfill(cancel,true,temp,6);
         }
         else if(*act==13){}//crouch middle
         else if(*act==14){
-            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*slide=true;*dmg=5;*launch=10;*kdown=true;
+            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*slide=true;*dmg=8;*launch=10;*kdown=true;
             animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12});
             if(*right)*jumpx=4;else *jumpx=-4;
             short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
         }
         else if(*act==15){}//maybe a taunt move?
         else if(*act==16){
-            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*slide=true;*movewait=6;*dmg=4;
+            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*slide=true;*movewait=6;*dmg=7;
             animq.insert(animq.begin(), {20,21,22,22,22,22,23,24,25,25,25,25,24,24,23,22,21,20,20});
             if(*right)*jumpx=5;else *jumpx=-5;
         }
         else if(*act==17){
-            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=3;*slide=true;*movewait=9;*dmg=6;*kdown=true;
+            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=3;*slide=true;*movewait=9;*dmg=9;*kdown=true;
             animq.insert(animq.begin(), {20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==18){
-            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=6;*slide=true;*movewait=10;*dmg=8;*kdown=true;*launch=11;
+            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=6;*slide=true;*movewait=10;*dmg=12;*kdown=true;*launch=11;
             animq.insert(animq.begin(), {20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
@@ -1191,8 +1191,16 @@ int main()
                 else if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
         }
 
-        if(p1damaged){p1hp-=p2dmg;p1damaged=false;}
-        else if(p2damaged){p2hp-=p1dmg;p2damaged=false;}
+        if(p1damaged){
+                if(combo>19)p2dmg/=10;
+                else if(combo>3)p2dmg=p2dmg*(21-combo)/20;
+                p1hp-=p2dmg;p1damaged=false;
+        }
+        else if(p2damaged){
+                if(combo>19)p1dmg/=10;
+                else if(combo>3)p1dmg=p1dmg*(21-combo)/20;
+                p2hp-=p1dmg;p2damaged=false;
+        }
         if(!pause||pause&&nextframe)roundframecount++;
         if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
             nextframe=false;
@@ -1205,7 +1213,7 @@ int main()
             else if(!animq2.empty()&&!p2whiff)p2act=p2buffer;
             if(animq2.empty()){if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
 
-            //test the damage problem and the knockback problem with attack clashes
+            //make an attack clashing system at some point
 
             if(p1hit){
                 characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
