@@ -13,8 +13,8 @@ std::deque<int> animq1,animq2;
 std::random_device rd;
 std::mt19937 gen(rd());
 
-short p1frame=0,p1act=0,p1col=0,p1anim[64][2],p1hitstun=0,p1hitstop=0,p1buffer=0,combo=0,
-        p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2hitstop=0,p2buffer,
+short p1frame=0,p1act=0,p1col=0,p1anim[64][2],p1hitstun=0,p1hitstop=0,p1buffer=0,combo=0,p1movewait=0,
+        p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2hitstop=0,p2buffer,roundframecount=0,p2movewait=0,
 animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -538,13 +538,10 @@ private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        // apply the transform
         states.transform *= getTransform();
 
-        // our particles don't use a texture
         states.texture = NULL;
 
-        // draw the vertex array
         target.draw(m_vertices);
         target.draw(m_lines);
         target.draw(m_circle, states);
@@ -612,18 +609,74 @@ private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        // apply the transform
         states.transform *= getTransform();
 
-        // our particles don't use a texture
         states.texture = NULL;
 
-        // draw the vertex array
         target.draw(m_vertices,states);
         target.draw(m_vertices2,states);
         target.draw(m_vertices3,states);
     }
    sf::VertexArray m_vertices,m_vertices2,m_vertices3;
+
+};
+
+struct timeui : public sf::Drawable, public sf::Transformable
+{
+public:
+    bool load(const std::string& tileset)
+    {
+        if (!m_tileset.loadFromFile(tileset))return false;
+    }
+    void create(){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(32);
+        sf::Vertex* triangles = &m_vertices[12];
+        triangles[0].position = sf::Vector2f(120,8);
+        triangles[1].position = sf::Vector2f(120,24);
+        triangles[2].position = sf::Vector2f(128,8);
+        triangles[3].position = sf::Vector2f(128,8);
+        triangles[4].position = sf::Vector2f(120,24);
+        triangles[5].position = sf::Vector2f(128,24);
+
+        triangles[6].position = sf::Vector2f(128,8);
+        triangles[7].position = sf::Vector2f(128,24);
+        triangles[8].position = sf::Vector2f(136,8);
+        triangles[9].position = sf::Vector2f(136,8);
+        triangles[10].position = sf::Vector2f(128,24);
+        triangles[11].position = sf::Vector2f(136,24);
+    }
+    void timeset(short time){
+        sf::Vertex* tri = &m_vertices[12];
+        short temp=(time/10+1)*8;
+        tri[0].texCoords = sf::Vector2f(temp,0);
+        tri[1].texCoords = sf::Vector2f(temp,16);
+        tri[2].texCoords = sf::Vector2f(temp+8,0);
+        tri[3].texCoords = sf::Vector2f(temp+8,0);
+        tri[4].texCoords = sf::Vector2f(temp,16);
+        tri[5].texCoords = sf::Vector2f(temp+8,16);
+        temp=(time%10+1)*8;
+        tri[6].texCoords = sf::Vector2f(temp,0);
+        tri[7].texCoords = sf::Vector2f(temp,16);
+        tri[8].texCoords = sf::Vector2f(temp+8,0);
+        tri[9].texCoords = sf::Vector2f(temp+8,0);
+        tri[10].texCoords = sf::Vector2f(temp,16);
+        tri[11].texCoords = sf::Vector2f(temp+8,16);
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = &m_tileset;
+
+        target.draw(m_vertices,states);
+
+    }
+   sf::VertexArray m_vertices;
+   sf::Texture m_tileset;
 
 };
 
@@ -778,14 +831,14 @@ void boolfill(bool *arr,bool value,short a[],int len){
 
 void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
     bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,bool *block,float enemyx,short *hitstun,short enemyhitstun,
-    float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch
-    ,float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned){
+    float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch,
+    float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned,short *movewait){
     if(*kdowned&&animq.size()<10&&!*comboed&&!*act==0){
         for(short i=0;i<3;i++){animq.push_back(8);}
         *kdowned=false;combo=0;
     }
     if(*hit==true){
-        *hit=false;animq.clear();*col=0;*jumpy=0,*comboed=true;
+        *hit=false;animq.clear();*col=0;*jumpy=0,*comboed=true;*movewait=-1;
         for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
         if(*x<enemyx)*jumpx=-enemykback;
         else if(*x>enemyx) *jumpx=enemykback;
@@ -796,7 +849,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else *kdowned=false;
         memset(cancel,false,256);
     }
-    else if(animq.empty()){
+    else if(animq.empty()&&*movewait==-1){
         if((*comboed&&(*jumpy<5||*kdowned)&&*air)||(*comboed&&!(*jumpy<5)&&*air&&*act==0))animq.push_back(9);
         else if(*comboed&&!*air&&*kdowned){
             *col=2;*comboed=false;
@@ -808,14 +861,14 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         }
         else{
             memset(cancel,false,256);
-            if(!*neutural){*jumpx=0;*jumpy=0;}
+            if(!*neutural&&!*air){*jumpx=0;*jumpy=0;}
             *hitstun=0;*kback=0;*hit=false;*slide=false;*multihit=false;*dmg=0;*launch=0;*neutural=true;*kdown=false;
             if(*comboed){combo=0;*comboed=0;}
         }
     }
-    if(!*hit&&(animq.empty()||((cancel[*act]==true)&&(!*whiff)))){
+    if(!*hit&&(animq.empty()&&*movewait==-1||((cancel[*act]==true)&&(!*whiff)))){
         if(cancel[*act]==true){
-            *buffer=0;*slide=false;*hitstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;
+            *buffer=0;*slide=false;*hitstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewait=-1;
             memset(cancel,false,256);
             animq.clear();
         }
@@ -832,19 +885,19 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             memcpy(anim,animlib[15],sizeof(animlib[0]));
             if(*right)*x-=3;else *x+=3;
         }
-        else if(*act==2){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=-7;else *jumpx=7;}
+        else if(*act==2){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=-7;else*jumpx=7;}
         else if(*act==3){
             *col=0;
             memcpy(anim,animlib[17],sizeof(animlib[0]));
             if(*right)*x+=3;else *x-=3;
         }
-        else if(*act==4){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=7;else *jumpx=-7;}
-        else if(*act==5){*col=0;*air=true;*jumpy=-14.0;}
-        else if(*act==6){*col=0;*air=true;*jumpy=-14.0;if(*right)*jumpx=-3;else *jumpx=3;}
-        else if(*act==7){*col=0;*air=true;*jumpy=-14.0;if(*right)*jumpx=3;else *jumpx=-3;}
+        else if(*act==4){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=7;else*jumpx=-7;}
+        else if(*act==5){*col=0;*jumpy=-14.0;*movewait=4;animq.insert(animq.begin(), {8,8,8,0});}
+        else if(*act==6){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(), {8,8,8,0});}
+        else if(*act==7){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(), {8,8,8,0});}
         else if(*act==8){
             *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*dmg=2;
-            animq.insert(animq.begin(), {1,1,1,2,2,1,1,1,1});
+            animq.insert(animq.begin(), {1,1,1,1,1,2,2,1,1,1,1});
             short temp[6]={9,10,16,17,18,19};boolfill(cancel,true,temp,6);
         }
         else if(*act==9){
@@ -854,7 +907,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             if(*right)*jumpx=3;
             else *jumpx=-3;
         }
-        else if(*act==10){}
+        else if(*act==10){}//strong normal
         else if(*act==11){
             if(*x<enemyx)*right=true;
             else *right=false;
@@ -863,41 +916,42 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         }
         else if(*act==12){
             *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*dmg=1.5;
-            animq.insert(animq.begin(), {10,10,11,11,11,10,10,10});
+            animq.insert(animq.begin(), {10,10,10,11,11,11,10,10,10});
             short temp[6]={13,14,16,17,18,19};boolfill(cancel,true,temp,6);
         }
-        else if(*act==13){}
+        else if(*act==13){}//crouch middle
         else if(*act==14){
             *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*slide=true;*dmg=5;*launch=10;*kdown=true;
             animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12});
             if(*right)*jumpx=4;else *jumpx=-4;
             short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
         }
-        else if(*act==15){}
+        else if(*act==15){}//maybe a taunt move?
         else if(*act==16){
-            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*slide=true;*dmg=4;
+            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*slide=true;*movewait=6;*dmg=4;
             animq.insert(animq.begin(), {20,21,22,22,22,22,23,24,25,25,25,25,24,24,23,22,21,20,20});
             if(*right)*jumpx=5;else *jumpx=-5;
         }
         else if(*act==17){
-            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=3;*slide=true;*dmg=6;*kdown=true;
+            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=3;*slide=true;*movewait=9;*dmg=6;*kdown=true;
             animq.insert(animq.begin(), {20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==18){
-            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=6;*slide=true;*dmg=8;*kdown=true;*launch=11;
+            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=6;*slide=true;*movewait=10;*dmg=8;*kdown=true;*launch=11;
             animq.insert(animq.begin(), {20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
         else if(*act==19){
-            *col=0;*multihit=false;*slide=true;
-            animq.insert(animq.begin(), {20,21,22,22,22,22,22,21,20});
+            *col=0;*multihit=false;*slide=true;*movewait=6;
+            animq.insert(animq.begin(), {20,21,22,22,22,22,21,20});
             if(*right)*jumpx=4;else *jumpx=-4;
             short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
         }
     }
-    *x+=*jumpx;*y+=*jumpy;
-    if(*slide){
+    if(*movewait>0)*movewait-=1;
+    else{*x+=*jumpx;if(*jumpy<0)*air=true;*y+=*jumpy;*movewait=-1;}
+    if(*slide&&*movewait==-1){
         if(*jumpx>0)*jumpx-=1;
         else if(*jumpx<0)*jumpx+=1;
     }
@@ -909,9 +963,8 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
     if(*air){
             *jumpy+=1;
             if(*y>175){
-                if(*x<enemyx)*right=true;
-                else *right=false;
-                if(*kdowned){}
+                if(*x<enemyx)*right=true;else *right=false;
+                if(*kdowned){}//add downed landing animation
                 else if(*jumpx!=7&&*jumpx!=-7){*col=1;animq.insert(animq.begin(), {8,8,8,8});}
                 else {*col=1;animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});}
                 cancel[8]=true;cancel[9]=true;
@@ -924,6 +977,8 @@ int main()
 {
     hitflash hf;
     healthbar hb;
+    timeui time;
+    if (!time.load("time_ui.png")){}
     short hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0;
     sf::RenderTexture renderTexture;
     if (!renderTexture.create(256, 240)){}
@@ -951,6 +1006,7 @@ int main()
 	combotext.setCharacterSize(16);
 	combotext.setFillColor(sf::Color::White);
     char u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0';
+    time.create();
 	window.setFramerateLimit(60);
 	while (window.isOpen()){
 		sf::Event event;
@@ -1135,7 +1191,7 @@ int main()
 
         if(p1damaged){p1hp-=p2dmg;p1damaged=false;}
         else if(p2damaged){p2hp-=p1dmg;p2damaged=false;}
-
+        if(!pause||pause&&nextframe)roundframecount++;
         if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
             nextframe=false;
 
@@ -1152,17 +1208,17 @@ int main()
             if(p1hit){
                 characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                               &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
-                              &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned);
+                              &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewait);
                 characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                               &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
-                              &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned);}
+                              &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewait);}
             else{
                 characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                               &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
-                              &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,p1knockdown,&p2kdowned);
+                              &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewait);
                 characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                               &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
-                              &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned);
+                              &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewait);
             }
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
@@ -1338,6 +1394,7 @@ int main()
         pausetext.setString("Paused");
 
         hb.create(p1hp,p2hp);
+        time.timeset(99-roundframecount/60);
 
         healthui.setPosition(0.f,0.f);
         combotext.setPosition(0.f,16.f);
@@ -1363,6 +1420,7 @@ int main()
 		}
 		renderTexture.draw(hb);
 		renderTexture.draw(healthui);
+		renderTexture.draw(time);
 		if(combo>0)renderTexture.draw(combotext);
 		if(pause)renderTexture.draw(pausetext);
 		if(hitstop>0)renderTexture.draw(hf);
