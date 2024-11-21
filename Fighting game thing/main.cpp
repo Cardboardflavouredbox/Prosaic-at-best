@@ -8,7 +8,7 @@
 
 
 using namespace std;
-std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
+std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2,p1keylist,p2keylist;
 std::deque<int> animq1,animq2;
 std::random_device rd;
 std::mt19937 gen(rd());
@@ -365,13 +365,13 @@ hitbox[256][8][2][2]={{0},
                     {{{10,-6},{29,16}}},
                     //specialA6 (25)
                     };
-bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,
+bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,F3key=false,
 pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],
 p1whiff=false,p2whiff=false,p1neutural,p2neutural,p1right=true,p2right=false,
 p1hit=false,p2hit=false,p1block=false,p2block=false,p1slide=false,p2slide=false,
 hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,flash=true,
 p1knockdown=false,p2knockdown=false,p1damaged=false,p2damaged=false,p1comboed=false,p2comboed=false,
-p1kdowned=false,p2kdowned=false,playertop=false;
+p1kdowned=false,p2kdowned=false,playertop=false,keylistshow=false;
 
 
 struct character : public sf::Drawable, public sf::Transformable
@@ -681,6 +681,170 @@ private:
 
 };
 
+struct inputlist : public sf::Drawable, public sf::Transformable
+{
+public:
+    bool load(const std::string& tileset)
+    {
+        if (!m_tileset.loadFromFile(tileset))return false;
+    }
+    void create(std::deque<char>keylist,bool right){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(1024);
+        m_tileset.setRepeated(true);
+        for(short i=0;i<12;i++)
+            for(short j=0;j<4;j++){
+                sf::Vertex* tri = &m_vertices[6*(j+i*4)];
+                if(right){
+                    tri[6*(j+i*4)].position = sf::Vector2f(j*16,48+16*i);
+                    tri[1+6*(j+i*4)].position = sf::Vector2f(j*16,64+16*i);
+                    tri[2+6*(j+i*4)].position = sf::Vector2f(j*16+16,48+16*i);
+                    tri[3+6*(j+i*4)].position = sf::Vector2f(j*16+16,48+16*i);
+                    tri[4+6*(j+i*4)].position = sf::Vector2f(j*16,64+16*i);
+                    tri[5+6*(j+i*4)].position = sf::Vector2f(j*16+16,64+16*i);
+                }
+                else{
+                    tri[6*(j+i*4)].position = sf::Vector2f(240-j*16,48+16*i);
+                    tri[1+6*(j+i*4)].position = sf::Vector2f(240+-j*16,64+16*i);
+                    tri[2+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,48+16*i);
+                    tri[3+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,48+16*i);
+                    tri[4+6*(j+i*4)].position = sf::Vector2f(240-j*16,64+16*i);
+                    tri[5+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,64+16*i);
+                }
+            }
+        for(short i=0;i<12;i++){
+            char temp[5]={'0','0','0','0','0'};
+            short tempcnt=0;
+            if(keylist[i*5+4]!='0'&&keylist[i*5]!='5')temp[tempcnt++]=keylist[i*5+4];
+            if(keylist[i*5+3]=='u')temp[tempcnt++]='u';
+            if(keylist[i*5+2]=='i')temp[tempcnt++]='i';
+            if(keylist[i*5+1]=='o')temp[tempcnt++]='o';
+            if(keylist[i*5]=='k')temp[tempcnt++]='k';
+            for(short j=0;j<4;j++){
+                sf::Vertex* tri = &m_vertices[6*(j+i*4)];
+                if(temp[j]=='0'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(0,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(0,0);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(0,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(0,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(0,0);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(0,0);
+                }
+                else if(temp[j]=='u'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(0,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(0,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(16,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(16,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(0,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(16,16);
+                }
+                else if(temp[j]=='i'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(16,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(16,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(32,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(32,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(16,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(32,16);
+                }
+                else if(temp[j]=='o'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(32,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(32,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(48,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(48,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(32,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(48,16);
+                }
+                else if(temp[j]=='k'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(48,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(48,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(48,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(64,16);
+                }
+                else if(temp[j]=='1'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(96,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(96,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(96,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                }
+                else if(temp[j]=='2'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(64,16);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                }
+                else if(temp[j]=='3'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(96,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(96,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(96,16);
+                }
+                else if(temp[j]=='4'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(64,16);
+                }
+                else if(temp[j]=='6'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(64,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(64,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                }
+                else if(temp[j]=='7'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(96,16);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(96,0);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(96,0);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                }
+                else if(temp[j]=='8'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(64,16);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(64,16);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(64,0);
+                }
+                else if(temp[j]=='9'){
+                    tri[6*(j+i*4)].texCoords = sf::Vector2f(80,16);
+                    tri[1+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[2+6*(j+i*4)].texCoords = sf::Vector2f(96,16);
+                    tri[3+6*(j+i*4)].texCoords = sf::Vector2f(96,16);
+                    tri[4+6*(j+i*4)].texCoords = sf::Vector2f(80,0);
+                    tri[5+6*(j+i*4)].texCoords = sf::Vector2f(96,0);
+                }
+            }
+        }
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = &m_tileset;
+
+        target.draw(m_vertices,states);
+
+    }
+   sf::VertexArray m_vertices;
+   sf::Texture m_tileset;
+
+};
 
 struct box : public sf::Drawable, public sf::Transformable
 {
@@ -980,6 +1144,9 @@ int main()
     hitflash hf;
     healthbar hb;
     timeui time;
+    inputlist p1ilist,p2ilist;
+    if (!p1ilist.load("inputicon.png")){}
+    if (!p2ilist.load("inputicon.png")){}
     if (!time.load("time_ui.png")){}
     short hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0;
     sf::RenderTexture renderTexture;
@@ -1040,11 +1207,20 @@ int main()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::F2)){
             if(!F2key){
                 F2key=true;
+                if(keylistshow)keylistshow=false;
+                else keylistshow=true;
+            }
+        }
+        else F2key=false;
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::F3)){
+            if(!F3key){
+                F3key=true;
                 if(flash)flash=false;
                 else flash=true;
             }
         }
-        else F2key=false;
+        else F3key=false;
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
             if(!Enterkey){
@@ -1180,6 +1356,8 @@ int main()
         if(ikey2.size()>20)ikey2.pop_back();
         if(okey2.size()>20)okey2.pop_back();
         if(kkey2.size()>20)kkey2.pop_back();
+
+
         if(p1buffer==0&&!animq1.empty()){
                 p1buffer=chooseaction(1,p1air,keydir1,u,i,o,k);
                 if(p1cancel[p1buffer]==false&&animq1.size()>5)p1buffer=0;
@@ -1230,6 +1408,7 @@ int main()
                               &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                               &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewait,&p1paway,&p2paway);
             }
+
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
                 temp[0]=colbox[p1col][0][0][0]+p1x;
@@ -1367,19 +1546,70 @@ int main()
             else if(hitbefore2==true)p2hit=false;
             if(p2hit==true){hitstop=p1hitstop;memcpy(p2anim,animlib[9],sizeof(animlib[9]));combo++;p2damaged=true;}
 
-            while((p1x+bgx<64&&p2x+bgx<256)||(p2x+bgx<64&&p1x+bgx<256)){
+            while((p1x+bgx<32&&p2x+bgx<224)||(p2x+bgx<32&&p1x+bgx<224)){
                     if(bgx<125)bgx+=1;
                     else break;
             }
-            while((p1x+bgx>192&&p2x+bgx>0)||(p2x+bgx>192&&p1x+bgx>0)){
+            while((p1x+bgx>224&&p2x+bgx>32)||(p2x+bgx>224&&p1x+bgx>32)){
                     if(bgx>-119)bgx-=1;
                     else break;
             }
-            while(p1x<-114)p1x++;
-            while(p1x>364)p1x--;
-            while(p2x<-114)p2x++;
-            while(p2x>364)p2x--;
+            while(p1x+bgx<11)p1x++;
+            while(p1x+bgx>245)p1x--;
+            while(p2x+bgx<11)p2x++;
+            while(p2x+bgx>245)p2x--;
         }
+
+        char keytemp=dirkeys[1],keytemp2=keydir1;
+        if(!p1right){
+            if(keytemp=='7')keytemp='9';
+            else if(keytemp=='9')keytemp='7';
+            else if(keytemp=='4')keytemp='6';
+            else if(keytemp=='6')keytemp='4';
+            else if(keytemp=='3')keytemp='1';
+            else if(keytemp=='1')keytemp='3';
+            if(keytemp2=='7')keytemp2='9';
+            else if(keytemp2=='9')keytemp2='7';
+            else if(keytemp2=='4')keytemp2='6';
+            else if(keytemp2=='6')keytemp2='4';
+            else if(keytemp2=='3')keytemp2='1';
+            else if(keytemp2=='1')keytemp2='3';
+        }
+
+        if(keytemp2!=keytemp)p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
+        if(u=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
+        if(i=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
+        if(o=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
+        if(k=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
+        if(p1keylist[0]=='0'&&p1keylist[1]=='0'&&p1keylist[2]=='0'&&p1keylist[3]=='0'&&p1keylist[4]=='0')for(short i=0;i<5;i++)p1keylist.pop_front();
+        if(p1keylist.size()==100)for(short i=0;i<5;i++)p1keylist.pop_back();
+
+
+        keytemp=dirkeys2[1],keytemp2=keydir2;
+        if(!p2right){
+            if(keytemp=='7')keytemp='9';
+            else if(keytemp=='9')keytemp='7';
+            else if(keytemp=='4')keytemp='6';
+            else if(keytemp=='6')keytemp='4';
+            else if(keytemp=='3')keytemp='1';
+            else if(keytemp=='1')keytemp='3';
+            if(keytemp2=='7')keytemp2='9';
+            else if(keytemp2=='9')keytemp2='7';
+            else if(keytemp2=='4')keytemp2='6';
+            else if(keytemp2=='6')keytemp2='4';
+            else if(keytemp2=='3')keytemp2='1';
+            else if(keytemp2=='1')keytemp2='3';
+        }
+
+        if(keytemp2!=keytemp)p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
+        if(u2=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
+        if(i2=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
+        if(o2=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
+        if(k2=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
+        if(p2keylist[0]=='0'&&p2keylist[1]=='0'&&p2keylist[2]=='0'&&p2keylist[3]=='0'&&p2keylist[4]=='0')for(short i=0;i<5;i++)p2keylist.pop_front();
+        if(p2keylist.size()==100)for(short i=0;i<5;i++)p2keylist.pop_back();
+
+
         if(hitstop>0&&(!pause||nextframe))hitstop--;
 
         box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2;
@@ -1413,8 +1643,11 @@ int main()
         combotext.setString(temp);
         pausetext.setString("Paused");
 
+        p1ilist.create(p1keylist,true);
+        p2ilist.create(p2keylist,false);
         hb.create(p1hp,p2hp);
-        time.timeset(99-roundframecount/60);
+        if(roundframecount/60<99)time.timeset(99-roundframecount/60);
+        else time.timeset(0);
 
         healthui.setPosition(0.f,0.f);
         combotext.setPosition(0.f,16.f);
@@ -1439,6 +1672,7 @@ int main()
             renderTexture.draw(p2);
             renderTexture.draw(p1);
 		}
+		if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
 		renderTexture.draw(hb);
 		renderTexture.draw(healthui);
 		renderTexture.draw(time);
