@@ -689,39 +689,33 @@ public:
     {
         if (!m_tileset.loadFromFile(tileset))return false;
     }
-    void create(bool right){
+    void create(bool right,float slide){
         m_vertices.setPrimitiveType(sf::Triangles);
         m_vertices.resize(32);
         m_tileset.setRepeated(true);
         sf::Vertex* tri = &m_vertices[6];
         if(right){
-            tri[0].position = sf::Vector2f(0,32);
-            tri[1].position = sf::Vector2f(0,80);
-            tri[2].position = sf::Vector2f(64,32);
-            tri[3].position = sf::Vector2f(64,32);
-            tri[4].position = sf::Vector2f(0,80);
-            tri[5].position = sf::Vector2f(64,80);
-            tri[0].texCoords = sf::Vector2f(0,0);
-            tri[1].texCoords = sf::Vector2f(0,48);
-            tri[2].texCoords = sf::Vector2f(64,0);
-            tri[3].texCoords = sf::Vector2f(64,0);
-            tri[4].texCoords = sf::Vector2f(0,48);
-            tri[5].texCoords = sf::Vector2f(64,48);
+            tri[0].position = sf::Vector2f(0-slide,32);
+            tri[1].position = sf::Vector2f(0-slide,80);
+            tri[2].position = sf::Vector2f(64-slide,32);
+            tri[3].position = sf::Vector2f(64-slide,32);
+            tri[4].position = sf::Vector2f(0-slide,80);
+            tri[5].position = sf::Vector2f(64-slide,80);
         }
         else{
-            tri[0].position = sf::Vector2f(192,32);
-            tri[1].position = sf::Vector2f(192,80);
-            tri[2].position = sf::Vector2f(256,32);
-            tri[3].position = sf::Vector2f(256,32);
-            tri[4].position = sf::Vector2f(192,80);
-            tri[5].position = sf::Vector2f(256,80);
-            tri[0].texCoords = sf::Vector2f(64,0);
-            tri[1].texCoords = sf::Vector2f(64,48);
-            tri[2].texCoords = sf::Vector2f(0,0);
-            tri[3].texCoords = sf::Vector2f(0,0);
-            tri[4].texCoords = sf::Vector2f(64,48);
-            tri[5].texCoords = sf::Vector2f(0,48);
+            tri[0].position = sf::Vector2f(181+slide,32);
+            tri[1].position = sf::Vector2f(181+slide,80);
+            tri[2].position = sf::Vector2f(245+slide,32);
+            tri[3].position = sf::Vector2f(245+slide,32);
+            tri[4].position = sf::Vector2f(181+slide,80);
+            tri[5].position = sf::Vector2f(245+slide,80);
         }
+        tri[0].texCoords = sf::Vector2f(0,0);
+        tri[1].texCoords = sf::Vector2f(0,48);
+        tri[2].texCoords = sf::Vector2f(64,0);
+        tri[3].texCoords = sf::Vector2f(64,0);
+        tri[4].texCoords = sf::Vector2f(0,48);
+        tri[5].texCoords = sf::Vector2f(64,48);
     }
 
 
@@ -1216,7 +1210,7 @@ int main()
     short hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0;
     sf::RenderTexture renderTexture;
     if (!renderTexture.create(256, 240)){}
-    float overlap[2],overlap2[2];
+    float overlap[2],overlap2[2],comboslide=0,comboslide2=0;
 	sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
 	sf::Text pausetext;
 	sf::Text combotext;
@@ -1237,8 +1231,8 @@ int main()
 	pausetext.setCharacterSize(16);
 	pausetext.setFillColor(sf::Color::White);
 	combotext.setFont(font);
-	combotext.setCharacterSize(16);
-	combotext.setFillColor(sf::Color::White);
+	combotext.setCharacterSize(32);
+	combotext.setFillColor(sf::Color::Black);
     char u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0';
     time.create();
 	window.setFramerateLimit(60);
@@ -1702,11 +1696,14 @@ int main()
             sfx++;
             hf.update(overlap2[0]+bgx,overlap2[1],sfx);
         }
-
-        std::string temp="combo: ";
-        temp += std::to_string(combo);
-        combotext.setString(temp);
-        if (combo>1)cui.create(p2comboed);
+        if(combo>1&&comboslide==0&&comboslide2==0){comboslide=64;comboslide2=12;}
+        if(comboslide>0)comboslide-=comboslide2--;
+        if(comboslide<0){comboslide=0;}
+        if(comboslide==0&&combo==0)comboslide2=0;
+        std::string tempstr;
+        tempstr = std::to_string(combo);
+        combotext.setString(tempstr);
+        if (combo>1)cui.create(p2comboed||p2kdowned,comboslide);
         pausetext.setString("Paused");
 
         p1ilist.create(p1keylist,true);
@@ -1716,7 +1713,8 @@ int main()
         else time.timeset(0);
 
         healthui.setPosition(0.f,0.f);
-        combotext.setPosition(0.f,16.f);
+        if(p2comboed||p2kdowned)combotext.setPosition(22.f-comboslide,25.f);
+        else combotext.setPosition(203.f+comboslide,25.f);
         pausetext.setPosition(200.f, 16.f);
         p1.setPosition(p1x-64+bgx,p1y-64);
         p2.setPosition(p2x-64+bgx,p2y-64);
@@ -1742,7 +1740,7 @@ int main()
 		renderTexture.draw(hb);
 		renderTexture.draw(healthui);
 		renderTexture.draw(time);
-		if(combo>1)renderTexture.draw(cui);
+		if(combo>1){renderTexture.draw(cui);renderTexture.draw(combotext);}
 		if(pause)renderTexture.draw(pausetext);
 		if(hitstop>0)renderTexture.draw(hf);
 
