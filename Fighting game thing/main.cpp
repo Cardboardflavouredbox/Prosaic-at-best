@@ -252,8 +252,8 @@ animlib[256][64][2]={{{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    },
                    hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3},
                    hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1};
-float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1dmg=0.0,p1paway=0.0,
-        p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2dmg=0.0,p2paway=0.0,
+float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=500.0,p1dmg=0.0,p1paway=0.0,
+        p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=500.0,p2dmg=0.0,p2paway=0.0,
         bgx=0,
 colbox[256][1][2][2]={{{{-7,-10},{9,32}}},//standing
                     {{{-7,-1},{9,32}}},//crouching
@@ -577,7 +577,7 @@ public:
         triangles[11].position = sf::Vector2f(238,10);
         sf::Vertex* tri = &m_vertices2[12];
         sf::Vertex* tri2 = &m_vertices3[12];
-        float temp=hp/1000*88;
+        float temp=hp/500*88;
         tri[0].position = sf::Vector2f(106-temp,10);
         tri[1].position = sf::Vector2f(106,10);
         tri[2].position = sf::Vector2f(110-temp,18);
@@ -590,7 +590,7 @@ public:
         tri2[3].position = sf::Vector2f(110-temp,18);
         tri2[4].position = sf::Vector2f(109,16);
         tri2[5].position = sf::Vector2f(110,18);
-        temp=hp2*88/1000;
+        temp=hp2*88/500;
         tri[6].position = sf::Vector2f(146,18);
         tri[7].position = sf::Vector2f(146+temp,18);
         tri[8].position = sf::Vector2f(150,10);
@@ -681,6 +681,69 @@ private:
 
 };
 
+
+struct comboui : public sf::Drawable, public sf::Transformable
+{
+public:
+    bool load(const std::string& tileset)
+    {
+        if (!m_tileset.loadFromFile(tileset))return false;
+    }
+    void create(bool right){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(32);
+        m_tileset.setRepeated(true);
+        sf::Vertex* tri = &m_vertices[6];
+        if(right){
+            tri[0].position = sf::Vector2f(0,32);
+            tri[1].position = sf::Vector2f(0,80);
+            tri[2].position = sf::Vector2f(64,32);
+            tri[3].position = sf::Vector2f(64,32);
+            tri[4].position = sf::Vector2f(0,80);
+            tri[5].position = sf::Vector2f(64,80);
+            tri[0].texCoords = sf::Vector2f(0,0);
+            tri[1].texCoords = sf::Vector2f(0,48);
+            tri[2].texCoords = sf::Vector2f(64,0);
+            tri[3].texCoords = sf::Vector2f(64,0);
+            tri[4].texCoords = sf::Vector2f(0,48);
+            tri[5].texCoords = sf::Vector2f(64,48);
+        }
+        else{
+            tri[0].position = sf::Vector2f(192,32);
+            tri[1].position = sf::Vector2f(192,80);
+            tri[2].position = sf::Vector2f(256,32);
+            tri[3].position = sf::Vector2f(256,32);
+            tri[4].position = sf::Vector2f(192,80);
+            tri[5].position = sf::Vector2f(256,80);
+            tri[0].texCoords = sf::Vector2f(64,0);
+            tri[1].texCoords = sf::Vector2f(64,48);
+            tri[2].texCoords = sf::Vector2f(0,0);
+            tri[3].texCoords = sf::Vector2f(0,0);
+            tri[4].texCoords = sf::Vector2f(64,48);
+            tri[5].texCoords = sf::Vector2f(0,48);
+        }
+    }
+
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = &m_tileset;
+
+        target.draw(m_vertices,states);
+
+    }
+   sf::VertexArray m_vertices;
+   sf::Texture m_tileset;
+
+};
+
+
+
+
 struct inputlist : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -690,29 +753,29 @@ public:
     }
     void create(std::deque<char>keylist,bool right){
         m_vertices.setPrimitiveType(sf::Triangles);
-        m_vertices.resize(1024);
+        m_vertices.resize(768);
         m_tileset.setRepeated(true);
-        for(short i=0;i<12;i++)
+        for(short i=0;i<keylist.size()/5;i++)
             for(short j=0;j<4;j++){
                 sf::Vertex* tri = &m_vertices[6*(j+i*4)];
                 if(right){
-                    tri[6*(j+i*4)].position = sf::Vector2f(j*16,48+16*i);
-                    tri[1+6*(j+i*4)].position = sf::Vector2f(j*16,64+16*i);
-                    tri[2+6*(j+i*4)].position = sf::Vector2f(j*16+16,48+16*i);
-                    tri[3+6*(j+i*4)].position = sf::Vector2f(j*16+16,48+16*i);
-                    tri[4+6*(j+i*4)].position = sf::Vector2f(j*16,64+16*i);
-                    tri[5+6*(j+i*4)].position = sf::Vector2f(j*16+16,64+16*i);
+                    tri[6*(j+i*4)].position = sf::Vector2f(j*16,80+16*i);
+                    tri[1+6*(j+i*4)].position = sf::Vector2f(j*16,96+16*i);
+                    tri[2+6*(j+i*4)].position = sf::Vector2f(j*16+16,80+16*i);
+                    tri[3+6*(j+i*4)].position = sf::Vector2f(j*16+16,80+16*i);
+                    tri[4+6*(j+i*4)].position = sf::Vector2f(j*16,96+16*i);
+                    tri[5+6*(j+i*4)].position = sf::Vector2f(j*16+16,96+16*i);
                 }
                 else{
-                    tri[6*(j+i*4)].position = sf::Vector2f(240-j*16,48+16*i);
-                    tri[1+6*(j+i*4)].position = sf::Vector2f(240+-j*16,64+16*i);
-                    tri[2+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,48+16*i);
-                    tri[3+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,48+16*i);
-                    tri[4+6*(j+i*4)].position = sf::Vector2f(240-j*16,64+16*i);
-                    tri[5+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,64+16*i);
+                    tri[6*(j+i*4)].position = sf::Vector2f(240-j*16,80+16*i);
+                    tri[1+6*(j+i*4)].position = sf::Vector2f(240+-j*16,96+16*i);
+                    tri[2+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,80+16*i);
+                    tri[3+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,80+16*i);
+                    tri[4+6*(j+i*4)].position = sf::Vector2f(240-j*16,96+16*i);
+                    tri[5+6*(j+i*4)].position = sf::Vector2f(240-j*16+16,96+16*i);
                 }
             }
-        for(short i=0;i<12;i++){
+        for(short i=0;i<keylist.size()/5;i++){
             char temp[5]={'0','0','0','0','0'};
             short tempcnt=0;
             if(keylist[i*5+4]!='0'&&keylist[i*5]!='5')temp[tempcnt++]=keylist[i*5+4];
@@ -1144,10 +1207,12 @@ int main()
     hitflash hf;
     healthbar hb;
     timeui time;
+    comboui cui;
     inputlist p1ilist,p2ilist;
     if (!p1ilist.load("inputicon.png")){}
     if (!p2ilist.load("inputicon.png")){}
     if (!time.load("time_ui.png")){}
+    if (!cui.load("combo_ui.png")){}
     short hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0;
     sf::RenderTexture renderTexture;
     if (!renderTexture.create(256, 240)){}
@@ -1582,7 +1647,7 @@ int main()
         if(o=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
         if(k=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
         if(p1keylist[0]=='0'&&p1keylist[1]=='0'&&p1keylist[2]=='0'&&p1keylist[3]=='0'&&p1keylist[4]=='0')for(short i=0;i<5;i++)p1keylist.pop_front();
-        if(p1keylist.size()==100)for(short i=0;i<5;i++)p1keylist.pop_back();
+        if(p1keylist.size()>50)for(short i=0;i<5;i++)p1keylist.pop_back();
 
 
         keytemp=dirkeys2[1],keytemp2=keydir2;
@@ -1607,7 +1672,7 @@ int main()
         if(o2=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
         if(k2=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
         if(p2keylist[0]=='0'&&p2keylist[1]=='0'&&p2keylist[2]=='0'&&p2keylist[3]=='0'&&p2keylist[4]=='0')for(short i=0;i<5;i++)p2keylist.pop_front();
-        if(p2keylist.size()==100)for(short i=0;i<5;i++)p2keylist.pop_back();
+        if(p2keylist.size()>50)for(short i=0;i<5;i++)p2keylist.pop_back();
 
 
         if(hitstop>0&&(!pause||nextframe))hitstop--;
@@ -1641,6 +1706,7 @@ int main()
         std::string temp="combo: ";
         temp += std::to_string(combo);
         combotext.setString(temp);
+        if (combo>1)cui.create(p2comboed);
         pausetext.setString("Paused");
 
         p1ilist.create(p1keylist,true);
@@ -1676,7 +1742,7 @@ int main()
 		renderTexture.draw(hb);
 		renderTexture.draw(healthui);
 		renderTexture.draw(time);
-		if(combo>0)renderTexture.draw(combotext);
+		if(combo>1)renderTexture.draw(cui);
 		if(pause)renderTexture.draw(pausetext);
 		if(hitstop>0)renderTexture.draw(hf);
 
