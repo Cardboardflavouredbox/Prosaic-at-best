@@ -564,6 +564,8 @@ public:
             sf::Vertex* line = &m_lines[i*2];
             line[i*2].position = sf::Vector2f(px+x,py+y);
             line[i*2+1].position = sf::Vector2f(x*16+px,y*16+py);
+            if(hit){line[i*2].color=sf::Color::White;line[i*2+1].color=sf::Color::White;}
+            else {line[i*2].color=sf::Color (85, 255, 255);line[i*2+1].color=sf::Color (85, 255, 255);}
         }
         m_circle.setPrimitiveType(sf::Lines);
         m_circle.resize(64);
@@ -572,6 +574,8 @@ public:
             float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;;
             circle[i*2].position = sf::Vector2f((std::cos(angle))*4+px,(std::sin(angle))*4+py);
             circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*4+px,(std::sin(angle2))*4+py);
+            if(hit){circle[i*2].color=sf::Color::White;circle[i*2+1].color=sf::Color::White;}
+            else {circle[i*2].color=sf::Color (85, 255, 255);circle[i*2+1].color=sf::Color (85, 255, 255);}
         }
     }
 
@@ -1144,12 +1148,13 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
     float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch,
     float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned,short *movewait,float *pushaway,float *enemypaway,
     short *movetype,short enemymovetype,short *blockstun,short enemyblockstun){
-    if(*kdowned&&animq.size()<10&&!*comboed&&!*act==0){
+    if(*kdowned&&animq.size()<10&&!*comboed&&!*act==0&&*hp>0){
         for(short i=0;i<3;i++){animq.push_back(8);}
         *kdowned=false;combo=0;
     }
     if(*hit){
         *hit=false;animq.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5;else *jumpy=0;*movewait=-1;*movetype=-1;
+        if(*hp<=0)*block=-1;
         if(((enemymovetype==1||enemymovetype==2)&&*block==1)||((enemymovetype==3||enemymovetype==2)&&*block==0)){
             if(*block==0)for(short i=0;i<hitwait+enemyblockstun;i++)animq.push_back(32);
             if(*block==1)for(short i=0;i<hitwait+enemyblockstun;i++)animq.push_back(33);
@@ -1161,7 +1166,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             *comboed=true;
             *col=0;
             for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
-            if(enemykdown)*kdowned=true;
+            if(enemykdown||*hp<=0)*kdowned=true;
             else *kdowned=false;
         }
         if(*x<-110||*x>360){*pushaway+=enemykback;*pushaway+=int(enemylaunch/2);}
@@ -1174,7 +1179,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             *col=2;*comboed=false;
             for(short i=0;i<48;i++){animq.push_back(19);}
         }
-        else if(*kdowned){
+        else if(*kdowned&&*hp>0){
             for(short i=0;i<3;i++){animq.push_back(8);}
             *kdowned=false;combo=0;
         }
@@ -1185,6 +1190,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             if(*comboed){combo=0;*comboed=0;}
         }
     }
+    if(enemyhp<=0||roundframecount/60>=99)*act=0;
     if(!*hit&&(animq.empty()&&*movewait==-1||((cancel[*act]==true)&&(!*whiff)))){
         if(cancel[*act]==true){
             *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewait=-1;*movetype=-1;
@@ -1254,7 +1260,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==13){}//crouch middle
         else if(*act==14){
             *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*dmg=15;*launch=10;*kdown=true;*movetype=2;
-            animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12});
+            animq.insert(animq.begin(), {12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
             if(*right)*jumpx=4;else *jumpx=-4;
             short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
         }
@@ -1290,7 +1296,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
     if(!animq.empty()){
         *neutural=false;*frame=animq[0];
         memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
-        animq.pop_front();
+        if(!(animq[0]==19&&*hp<=0))animq.pop_front();
     }
     if(*air){
             *block=-1;
