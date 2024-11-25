@@ -1149,21 +1149,20 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         *kdowned=false;combo=0;
     }
     if(*hit){
-        if(*air)*slide=false;
-        else *slide=true;
-        *hit=false;animq.clear();*jumpy=0,*movewait=-1;*movetype=-1;
+        *hit=false;animq.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5;else *jumpy=0;*movewait=-1;*movetype=-1;
         if(((enemymovetype==1||enemymovetype==2)&&*block==1)||((enemymovetype==3||enemymovetype==2)&&*block==0)){
             if(*block==0)for(short i=0;i<hitwait+enemyblockstun;i++)animq.push_back(32);
             if(*block==1)for(short i=0;i<hitwait+enemyblockstun;i++)animq.push_back(33);
         }
         else{
+            if(enemylaunch>0){*jumpy=-enemylaunch;*air=true;}
+            if(*air)*slide=false;
+            else *slide=true;
             *comboed=true;
             *col=0;
             for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
-            if(enemylaunch>0){*jumpy=-enemylaunch;*air=true;}
             if(enemykdown)*kdowned=true;
             else *kdowned=false;
-
         }
         if(*x<-110||*x>360){*pushaway+=enemykback;*pushaway+=int(enemylaunch/2);}
         else{if(*x<enemyx)*jumpx=-enemykback;else if(*x>enemyx) *jumpx=enemykback;}
@@ -1294,6 +1293,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         animq.pop_front();
     }
     if(*air){
+            *block=-1;
             *jumpy+=1;
             if(*y>175){
                 if(*x<enemyx)*right=true;else *right=false;
@@ -1559,7 +1559,8 @@ int main()
                 characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                               &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                               &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewait,&p2paway,&p1paway,
-                              &p2movetype,p1movetype,&p2blockstun,p1blockstun);}
+                              &p2movetype,p1movetype,&p2blockstun,p1blockstun);
+                                }
             else{
                 characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                               &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
@@ -1569,7 +1570,7 @@ int main()
                               &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                               &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewait,&p1paway,&p2paway,
                               &p1movetype,p2movetype,&p1blockstun,p2blockstun);
-            }
+                                }
 
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
