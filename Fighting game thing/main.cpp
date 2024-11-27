@@ -1241,7 +1241,16 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             else *kdowned=false;
         }
         if(*x<-110||*x>360){*pushaway+=enemykback;*pushaway+=int(enemylaunch/2);}
-        else{if(*x<enemyx)*jumpx=-enemykback;else if(*x>enemyx) *jumpx=enemykback;}
+        else{
+                if(*air&&enemylaunch==0){
+                    if(*x<enemyx)*jumpx=-int(enemykback/3);
+                    else if(*x>enemyx) *jumpx=int(enemykback/3);
+                }
+                else{
+                    if(*x<enemyx)*jumpx=-enemykback;
+                    else if(*x>enemyx) *jumpx=enemykback;
+                }
+        }
         memset(cancel,false,256);
     }
     else if(animq.empty()&&*movewait==-1){
@@ -1286,16 +1295,16 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             memcpy(anim,animlib[15],sizeof(animlib[0]));
             if(*right)*x-=3;else *x+=3;
         }
-        else if(*act==2){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=-7;else*jumpx=7;}
+        else if(*act==2){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=-7;else*jumpx=7;}
         else if(*act==3){
             *col=0;
             memcpy(anim,animlib[17],sizeof(animlib[0]));
             if(*right)*x+=3;else *x-=3;
         }
-        else if(*act==4){*col=0;*air=true;*jumpy=-3.0;if(*right)*jumpx=7;else*jumpx=-7;}
-        else if(*act==5){*col=0;*jumpy=-14.0;*movewait=4;animq.insert(animq.begin(), {8,8,8,0});}
-        else if(*act==6){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(), {8,8,8,0});}
-        else if(*act==7){*col=0;*jumpy=-14.0;*movewait=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(), {8,8,8,0});}
+        else if(*act==4){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=7;else*jumpx=-7;}
+        else if(*act==5){*col=0;*jumpy=-12.0;*movewait=4;animq.insert(animq.begin(), {8,8,8,0});}
+        else if(*act==6){*col=0;*jumpy=-12.0;*movewait=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(), {8,8,8,0});}
+        else if(*act==7){*col=0;*jumpy=-12.0;*movewait=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(), {8,8,8,0});}
         else if(*act==8){
             *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=2;
             animq.insert(animq.begin(), {1,1,1,2,2,2,1,1,1});
@@ -1653,27 +1662,27 @@ int main()
             float temp[2],temp2[2],temp3[2],temp4[2];
             if(p1right==true){
                 temp[0]=colbox[p1col][0][0][0]+p1x;
-                temp[1]=colbox[p1col][0][0][1]+p1y;
+                temp[1]=colbox[p1col][0][0][1]+int(p1y);
                 temp2[0]=colbox[p1col][0][1][0]+p1x;
-                temp2[1]=colbox[p1col][0][1][1]+p1y;
+                temp2[1]=colbox[p1col][0][1][1]+int(p1y);
             }
             else{
                 temp[0]=-colbox[p1col][0][1][0]+p1x;
-                temp[1]=colbox[p1col][0][0][1]+p1y;
+                temp[1]=colbox[p1col][0][0][1]+int(p1y);
                 temp2[0]=-colbox[p1col][0][0][0]+p1x;
-                temp2[1]=colbox[p1col][0][1][1]+p1y;
+                temp2[1]=colbox[p1col][0][1][1]+int(p1y);
             }
             if(p2right==true){
                 temp3[0]=colbox[p2col][0][0][0]+p2x;
-                temp3[1]=colbox[p2col][0][0][1]+p2y;
+                temp3[1]=colbox[p2col][0][0][1]+int(p2y);
                 temp4[0]=colbox[p2col][0][1][0]+p2x;
-                temp4[1]=colbox[p2col][0][1][1]+p2y;
+                temp4[1]=colbox[p2col][0][1][1]+int(p2y);
             }
             else{
                 temp3[0]=-colbox[p2col][0][1][0]+p2x;
-                temp3[1]=colbox[p2col][0][0][1]+p2y;
+                temp3[1]=colbox[p2col][0][0][1]+int(p2y);
                 temp4[0]=-colbox[p2col][0][0][0]+p2x;
-                temp4[1]=colbox[p2col][0][1][1]+p2y;
+                temp4[1]=colbox[p2col][0][1][1]+int(p2y);
             }
             while(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
                 if(p1x<p2x){
@@ -1696,28 +1705,28 @@ int main()
             for(int i=hurtboxcount[p1frame]-1;i>=0;i--){
                 if(p1right==true){
                     temp[0]=hurtbox[p1frame][i][0][0]+p1x;
-                    temp[1]=hurtbox[p1frame][i][0][1]+p1y;
+                    temp[1]=hurtbox[p1frame][i][0][1]+int(p1y);
                     temp2[0]=hurtbox[p1frame][i][1][0]+p1x;
-                    temp2[1]=hurtbox[p1frame][i][1][1]+p1y;
+                    temp2[1]=hurtbox[p1frame][i][1][1]+int(p1y);
                 }
                 else{
                     temp[0]=-hurtbox[p1frame][i][1][0]+p1x;
-                    temp[1]=hurtbox[p1frame][i][0][1]+p1y;
+                    temp[1]=hurtbox[p1frame][i][0][1]+int(p1y);
                     temp2[0]=-hurtbox[p1frame][i][0][0]+p1x;
-                    temp2[1]=hurtbox[p1frame][i][1][1]+p1y;
+                    temp2[1]=hurtbox[p1frame][i][1][1]+int(p1y);
                 }
                 for(int j=0;j<hitboxcount[p2frame];j++){
                     if(p2right==true){
                         temp3[0]=hitbox[p2frame][j][0][0]+p2x;
-                        temp3[1]=hitbox[p2frame][j][0][1]+p2y;
+                        temp3[1]=hitbox[p2frame][j][0][1]+int(p2y);
                         temp4[0]=hitbox[p2frame][j][1][0]+p2x;
-                        temp4[1]=hitbox[p2frame][j][1][1]+p2y;
+                        temp4[1]=hitbox[p2frame][j][1][1]+int(p2y);
                     }
                     else{
                         temp3[0]=-hitbox[p2frame][j][1][0]+p2x;
-                        temp3[1]=hitbox[p2frame][j][0][1]+p2y;
+                        temp3[1]=hitbox[p2frame][j][0][1]+int(p2y);
                         temp4[0]=-hitbox[p2frame][j][0][0]+p2x;
-                        temp4[1]=hitbox[p2frame][j][1][1]+p2y;
+                        temp4[1]=hitbox[p2frame][j][1][1]+int(p2y);
                     }
                 if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
                     p1hit=true;
@@ -1757,28 +1766,28 @@ int main()
             for(int i=hurtboxcount[p2frame]-1;i>=0;i--){
                 if(p2right==true){
                     temp[0]=hurtbox[p2frame][i][0][0]+p2x;
-                    temp[1]=hurtbox[p2frame][i][0][1]+p2y;
+                    temp[1]=hurtbox[p2frame][i][0][1]+int(p2y);
                     temp2[0]=hurtbox[p2frame][i][1][0]+p2x;
-                    temp2[1]=hurtbox[p2frame][i][1][1]+p2y;
+                    temp2[1]=hurtbox[p2frame][i][1][1]+int(p2y);
                 }
                 else{
                     temp[0]=-hurtbox[p2frame][i][1][0]+p2x;
-                    temp[1]=hurtbox[p2frame][i][0][1]+p2y;
+                    temp[1]=hurtbox[p2frame][i][0][1]+int(p2y);
                     temp2[0]=-hurtbox[p2frame][i][0][0]+p2x;
-                    temp2[1]=hurtbox[p2frame][i][1][1]+p2y;
+                    temp2[1]=hurtbox[p2frame][i][1][1]+int(p2y);
                 }
                 for(int j=0;j<hitboxcount[p1frame];j++){
                     if(p1right==true){
                         temp3[0]=hitbox[p1frame][j][0][0]+p1x;
-                        temp3[1]=hitbox[p1frame][j][0][1]+p1y;
+                        temp3[1]=hitbox[p1frame][j][0][1]+int(p1y);
                         temp4[0]=hitbox[p1frame][j][1][0]+p1x;
-                        temp4[1]=hitbox[p1frame][j][1][1]+p1y;
+                        temp4[1]=hitbox[p1frame][j][1][1]+int(p1y);
                     }
                     else{
                         temp3[0]=-hitbox[p1frame][j][1][0]+p1x;
-                        temp3[1]=hitbox[p1frame][j][0][1]+p1y;
+                        temp3[1]=hitbox[p1frame][j][0][1]+int(p1y);
                         temp4[0]=-hitbox[p1frame][j][0][0]+p1x;
-                        temp4[1]=hitbox[p1frame][j][1][1]+p1y;
+                        temp4[1]=hitbox[p1frame][j][1][1]+int(p1y);
                     }
                 if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
                     p2hit=true;
@@ -1882,12 +1891,12 @@ int main()
         if(hitstop>0&&(!pause||nextframe))hitstop--;
 
         box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2;
-        collisionbox1.create(p1x+bgx,p1y,colbox[p1col],p1right,1,sf::Color::White);
-        collisionbox2.create(p2x+bgx,p2y,colbox[p2col],p2right,1,sf::Color::White);
-        Hurtbox1.create(p1x+bgx,p1y,hurtbox[p1frame],p1right,hurtboxcount[p1frame],sf::Color::Blue);
-        Hitbox1.create(p1x+bgx,p1y,hitbox[p1frame],p1right,hitboxcount[p1frame],sf::Color::Red);
-        Hurtbox2.create(p2x+bgx,p2y,hurtbox[p2frame],p2right,hurtboxcount[p2frame],sf::Color::Blue);
-        Hitbox2.create(p2x+bgx,p2y,hitbox[p2frame],p2right,hitboxcount[p2frame],sf::Color::Red);
+        collisionbox1.create(p1x+bgx,int(p1y),colbox[p1col],p1right,1,sf::Color::White);
+        collisionbox2.create(p2x+bgx,int(p2y),colbox[p2col],p2right,1,sf::Color::White);
+        Hurtbox1.create(p1x+bgx,int(p1y),hurtbox[p1frame],p1right,hurtboxcount[p1frame],sf::Color::Blue);
+        Hitbox1.create(p1x+bgx,int(p1y),hitbox[p1frame],p1right,hitboxcount[p1frame],sf::Color::Red);
+        Hurtbox2.create(p2x+bgx,int(p2y),hurtbox[p2frame],p2right,hurtboxcount[p2frame],sf::Color::Blue);
+        Hitbox2.create(p2x+bgx,int(p2y),hitbox[p2frame],p2right,hitboxcount[p2frame],sf::Color::Red);
 
         if(hitstop==0)sfx=0;
         if(p1hit&&!p2hit&&!pause&&sfx==0){
