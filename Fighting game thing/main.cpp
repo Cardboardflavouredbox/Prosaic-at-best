@@ -352,7 +352,7 @@ animlib[256][64][2]={
                    //specialB3 (36)
                    {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
-                   {-1},{-1},{-1},{-1},{-1},{17,1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{17,1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{17,5},{17,2},{-1},{-1},{-1},
                    {-1},{-1},{-1},{17,6},{17,3},{-1},{-1},{-1},
                    {-1},{-1},{-1},{17,7},{17,4},{-1},{-1},{-1},
@@ -1172,6 +1172,7 @@ bool cmdcheck(int playercode,int len,char s[][5]){
         if(i=='1')i='0';
         if(o=='1')o='0';
         if(k=='1')k='0';
+        if(s[temp][0]=='0'&&(dir=='5'||dir==s[temp+1][0]))s[temp][0]=dir;
 
         if((dir!=s[temp][0]&&dir!=s[temp-1][0])||(u!=s[temp][1]||i!=s[temp][2]||o!=s[temp][3]||k!=s[temp][4])&&temp!=len-1)break;
         if(dir==s[temp][0]&&u==s[temp][1]&&i==s[temp][2]&&o==s[temp][3]&&k==s[temp][4])temp++;
@@ -1189,8 +1190,8 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
                     if(o=='2')return 14;//strong normal
                     else if(i=='2')return 13;//middle normal
                     else if(u=='2'){
-                        char temp[4][5]={{'3','2','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
-                            temp2[4][5]={{'5','2','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}};
+                        char temp[4][5]={{'0','2','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
+                        temp2[4][5]={{'0','2','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'3','0','0','0','0'}};
                         if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 21;//special B weak
                         else return 12;//weak normal
                     }
@@ -1200,34 +1201,30 @@ int chooseaction(int playercode, bool p1air, char keydir, char u, char i, char o
                 else{
                     //grounded actions
                     if(o=='2'){
-                        char temp[4][5]={{'6','0','0','2','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
-                            temp2[4][5]={{'5','0','0','2','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
-                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 18;//special A strong
+                        char temp[4][5]={{'0','0','0','2','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp))return 18;//special A strong
                         else return 10;//strong normal
                     }
                     if(i=='2'){
-                        char temp[4][5]={{'6','0','2','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
-                            temp2[4][5]={{'5','0','2','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
-                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 17;//special A middle
+                        char temp[4][5]={{'0','0','2','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp))return 17;//special A middle
                         else return 9;//middle normal
                     }
                     else if(u=='2'){
-                        char temp[4][5]={{'6','2','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
-                            temp2[4][5]={{'5','2','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
-                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 16;//special A weak
+                        char temp[4][5]={{'0','2','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
+                        temp2[4][5]={{'0','2','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'6','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp2))return 21;//special B weak
+                        else if(cmdcheck(playercode,4,temp))return 16;//special A weak
                         else return 8;//weak normal
                     }
                     else if(k=='2'){
-                        char temp[4][5]={{'6','0','0','0','2'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
-                            temp2[4][5]={{'5','0','0','0','2'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
-                        if(cmdcheck(playercode,4,temp)||cmdcheck(playercode,4,temp2))return 19;//special A gimmick
+                        char temp[4][5]={{'0','0','0','0','2'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}};
+                        if(cmdcheck(playercode,4,temp))return 19;//special A gimmick
                         else return 15;//gimmick
                     }
                     else if(keydir=='4'){
                         char temp[3][5]={{'4','0','0','0','0'},{'5','0','0','0','0'},{'4','0','0','0','0'}};
-                        if(cmdcheck(playercode,3,temp)){
-                            return 2;//leftdash
-                        }
+                        if(cmdcheck(playercode,3,temp))return 2;//leftdash
                         else return 1;//leftwalk
                     }
                     else if(keydir=='6'){
@@ -1335,7 +1332,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
                 else *right=false;
             }
             *col=0;*frame=0;*block=-1;
-            memcpy(anim,animlib[0],sizeof(animlib[0]));
+            if(!*air)memcpy(anim,animlib[0],sizeof(animlib[0]));
         }
         else if(*act==1){
             *col=0;
@@ -1355,12 +1352,12 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==8){
             *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=2;
             animq.insert(animq.begin(), {1,1,1,2,2,2,1,1,1});
-            short temp[6]={9,10,16,17,18,19};boolfill(cancel,true,temp,6);
+            short temp[7]={9,10,16,17,18,19,21};boolfill(cancel,true,temp,7);
         }
         else if(*act==9){
             *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-2;*slide=true;*dmg=19;*movetype=2;
             animq.insert(animq.begin(), {3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
-            short temp[5]={10,16,17,18,19};boolfill(cancel,true,temp,5);
+            short temp[6]={10,16,17,18,19,21};boolfill(cancel,true,temp,6);
             *movewait=7;
             if(*right)*jumpx=3;
             else *jumpx=-3;
@@ -1368,7 +1365,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==10){
             *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-4;*slide=true;*dmg=26;*movetype=2;
             animq.insert(animq.begin(), {26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
-            short temp[4]={16,17,18,19};boolfill(cancel,true,temp,4);
+            short temp[5]={16,17,18,19,21};boolfill(cancel,true,temp,5);
             *movewait=9;
             if(*right)*jumpx=5;
             else *jumpx=-5;
@@ -1382,7 +1379,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==12){
             *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*blockstun=0;*dmg=11;*movetype=1;
             animq.insert(animq.begin(), {10,10,10,11,11,11,10,10,10});
-            short temp[6]={13,14,16,17,18,19};boolfill(cancel,true,temp,6);
+            short temp[7]={13,14,16,17,18,19,21};boolfill(cancel,true,temp,7);
         }
         else if(*act==13){}//crouch middle
         else if(*act==14){
@@ -1413,9 +1410,9 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             if(*right)*jumpx=4;else *jumpx=-4;
         }
         else if(*act==21){
-            *col=0;*multihit=false;*hitstop=18;*kback=5;*hitstun=0;*blockstun=-5;*slide=true;*movewait=3;*dmg=14;*kdown=true;*launch=12;*movetype=2;*jumpy=-7;
+            *col=0;*multihit=false;*hitstop=18;*kback=5;*hitstun=0;*blockstun=-5;*slide=false;*movewait=3;*dmg=14;*kdown=true;*launch=6;*movetype=2;*jumpy=-8;
             animq.insert(animq.begin(), {34,34,35,36,37});
-            if(*right)*jumpx=7;else *jumpx=-7;
+            if(*right)*jumpx=3;else *jumpx=-3;
         }
     }
     if(*movewait>0)*movewait-=1;
@@ -1424,7 +1421,10 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         if(*jumpx>0)*jumpx-=1;
         else if(*jumpx<0)*jumpx+=1;
     }
-    if(*enemypaway>0){if(*x<enemyx)*x-=*enemypaway;else if(*x>enemyx)*x+=*enemypaway;*enemypaway-=1;}
+    if(*enemypaway>0){
+            if(*air)*enemypaway=0;
+            else{if(*x<enemyx)*x-=*enemypaway;else if(*x>enemyx)*x+=*enemypaway;*enemypaway-=1;}
+    }
     if(!animq.empty()){
         *neutural=false;*frame=animq[0];
         memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
