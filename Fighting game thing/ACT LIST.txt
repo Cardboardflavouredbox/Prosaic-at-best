@@ -20,3 +20,6 @@
 19=special A (k)
 20=crouch block
 21=special B(u)
+22=special B(i)
+23=special B(o)
+24=special B(k)
