@@ -360,14 +360,15 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //specialB4 (37)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,2,2,3,3},
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3},
                    hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1};
 float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
         p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
         bgx=0,comboscaling=100.0,
-colbox[256][1][2][2]={{{{-7,-10},{9,32}}},//standing
+colbox[16][1][2][2]={{{{-7,-10},{9,32}}},//standing
                     {{{-7,-1},{9,32}}},//crouching
                     {{{-31,20},{16,32}}},//knockdown
+                    {{{0,0},{0,0}}},//grabbed
                     },
 hurtbox[256][8][2][2]={
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//idle (0)
@@ -404,7 +405,7 @@ hurtbox[256][8][2][2]={
                     {{{-11,0},{15,32}},{{2,-13},{19,1}},{{6,1},{35,10}}},//stand o6 (31)
                     {{{-11,0},{14,32}},{{-7,-15},{9,0}}},//stand block (32)
                     {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch block (33)
-                    {{{-11,0},{12,32}},{{-5,-13},{10,0}}},//specialB1 (34)
+                    {-1},//specialB1 (34)
                     {{{-11,1},{14,32}},{{-5,-9},{11,6}}},//specialB2 (35)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-5,-26},{15,16}}},//specialB3 (36)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-5,-30},{15,-4}}},//specialB4 (37)
@@ -434,7 +435,7 @@ hitbox[256][8][2][2]={{0},//idle (0)
                     {0},//specialA3 (22)
                     {0},//specialA4 (23)
                     {0},//specialA5 (24)
-                    {{{10,-6},{29,16}}},//specialA6 (25)
+                    {{{-2,-2},{27,14}}},//specialA6 (25)
                     {0},//stand o1 (26)
                     {0},//stand o2 (27)
                     {0},//stand o3 (28)
@@ -1190,12 +1191,14 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
                         c236[0][3]='2';c636[0][3]='2';c626[0][3]='2';c63236[0][3]='2';c6236[0][3]='2';
                         if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 23;//special B strong
                         else if(cmdcheck(playercode,4,c236))return 18;//special A strong
+                        else if(u=='2'||i=='2')return 25;//grab
                         else return 10;//strong normal
                         c236[0][3]='0';c636[0][3]='0';c626[0][3]='0';c63236[0][3]='0';c6236[0][3]='0';
                     }
                     else if(i=='2'){
                         c236[0][2]='2';c636[0][2]='2';c626[0][2]='2';c63236[0][2]='2';c6236[0][2]='2';
                         if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 22;//special B middle
+                        else if(u=='2')return 25;//grab
                         else if(cmdcheck(playercode,4,c236))return 17;//special A middle
                         else return 9;//middle normal
                         c236[0][2]='0';c636[0][2]='0';c626[0][2]='0';c63236[0][2]='0';c6236[0][2]='0';
@@ -1227,6 +1230,7 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
                     else if(keydir=='8')return 5;//upjump
                     else if(keydir=='7')return 6;//leftjump
                     else if(keydir=='9')return 7;//rightjump
+                    else if((u=='1'&&i=='1')||(u=='1'&&o=='1')||(i=='1'&&o=='1'))return 28;//grab escape
                     else return 0;//neutural
 
                 }
@@ -1245,7 +1249,7 @@ void boolfill(bool *arr,bool value,short a[],int len){
 
 
 void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
-    bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,short *hitstun,short enemyhitstun,
+    bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,float enemyy,short *hitstun,short enemyhitstun,
     float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch,
     float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned,short *movewaitx,short *movewaity, float *pushaway,float *enemypaway,
     short *movetype,short enemymovetype,short *blockstun,short enemyblockstun,float grab[],float enemygrab[2]){
@@ -1254,7 +1258,8 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         *kdowned=false;combo=0;
     }
     if(*hit){
-        *hit=false;animq.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5*(comboscaling+100)/200;else *jumpy=0;*movewaitx=-1;*movewaity=-1;*movetype=-1;
+        *hit=false;animq.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5*(comboscaling+100)/200;else *jumpy=0;*movewaitx=-1;*movewaity=-1;
+        *movetype=-1;grab[0]=0;grab[1]=0;
         if(*hp<=0)*block=-1;
         if(((enemymovetype==1||enemymovetype==2)&&*block==1)||((enemymovetype==3||enemymovetype==2)&&*block==0)||*block==2){
             *slide=true;
@@ -1268,16 +1273,17 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         }
         else{
             if(enemylaunch>0){*jumpy=-enemylaunch*(comboscaling+100)/200;*air=true;}
-            if(*air)*slide=false;
+            if(*air||(enemygrab[0]!=0||enemygrab[1]!=0))*slide=false;
             else *slide=true;
             *comboed=true;
-            *col=0;
+            if(enemygrab[0]!=0||enemygrab[1]!=0)*col=3;
+            else *col=0;
             for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
             if(enemykdown||*hp<=0)*kdowned=true;
             else *kdowned=false;
         }
-        if(*x<-110||*x>360){*pushaway+=enemykback;*pushaway+=int(enemylaunch/2);}
-        else{
+        if((*x<-110||*x>360)&&(enemygrab[0]==0&&enemygrab[1]==0)){*pushaway+=enemykback;*pushaway+=int(enemylaunch/2);}
+        else if(enemygrab[0]==0&&enemygrab[1]==0){
                 if(*air&&enemylaunch==0){
                     if(*x<enemyx)*jumpx=-int(enemykback/3);
                     else if(*x>enemyx) *jumpx=int(enemykback/3);
@@ -1299,17 +1305,28 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             for(short i=0;i<3;i++){animq.push_back(8);}
             *kdowned=false;combo=0;
         }
+        else if((enemygrab[0]!=0||enemygrab[1]!=0)&&enemymovetype==4&&*act==28&&*comboed){
+                *slide=true;
+                if(*x<enemyx)*jumpx=-8;
+                else *jumpx=4;
+                *pushaway=8;
+                animq.clear();
+                for(short i=0;i<hitwait;i++)animq.push_back(32);
+        }
         else{
             memset(cancel,false,256);
             if(!*neutural&&!*air){*jumpx=0;*jumpy=0;}
-            *hitstun=0;*blockstun=0;*kback=0;*hit=false;*slide=false;*multihit=false;*dmg=0;*launch=0;*neutural=true;*kdown=false;*movetype=-1;*block=-1;
+            *hitstun=0;*blockstun=0;*kback=0;*hit=false;*slide=false;*multihit=false;*dmg=0;*launch=0;*neutural=true;*kdown=false;
+            *movetype=-1;*block=-1;grab[0]=0;grab[1]=0;
             if(*comboed){combo=0;*comboed=0;}
         }
     }
     if(enemyhp<=0||roundframecount/60>=99)*act=0;
+    if(cancel[26]==true&&cancel[27]==true&&!*whiff&&animq.size()<12)*act=26;
     if(!*hit&&(animq.empty()&&*movewaitx==-1&&*movewaity==-1||((cancel[*act]==true)&&(!*whiff)))){
         if(cancel[*act]==true){
-            *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewaitx=-1;*movewaity=-1;*movetype=-1;
+            *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewaitx=-1;*movewaity=-1;
+            *movetype=-1;grab[0]=0;grab[1]=0;
             memset(cancel,false,256);
             animq.clear();
         }
@@ -1318,7 +1335,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==20)*block=1;
         else *block=-1;
 
-        if(*act==0){
+        if(*act==0||*act==28){
             if(!*air){
                 if(*x<enemyx)*right=true;
                 else *right=false;
@@ -1347,7 +1364,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             short temp[10]={9,10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,10);
         }
         else if(*act==9){
-            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-2;*slide=true;*dmg=19;*movetype=2;
+            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-6;*slide=true;*dmg=19;*movetype=2;
             animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
             short temp[9]={10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,9);
             *movewaitx=7;
@@ -1355,7 +1372,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             else *jumpx=-3;
         }
         else if(*act==10){
-            *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-4;*slide=true;*dmg=26;*movetype=2;
+            *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-8;*slide=true;*dmg=26;*movetype=2;
             animq.insert(animq.begin(),{26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
             short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,8);
             *movewaitx=9;
@@ -1421,6 +1438,17 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             animq.insert(animq.begin(),{34,34,34,34});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
+        else if(*act==25){
+            *col=0;*multihit=true;*hitstop=0;*kback=0;*hitstun=-12;*blockstun=31;*slide=true;*movewaitx=6;*dmg=0;*movetype=4;grab[0]=21;grab[1]=0;
+            animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            if(*right)*jumpx=5;else *jumpx=-5;
+            short temp[2]={26,27};boolfill(cancel,true,temp,2);
+        }
+        else if(*act==26){
+            *col=1;*multihit=false;*hitstop=21;*kback=3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=54;*launch=10;*kdown=true;*movetype=4;
+            animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
+            if(*right)*jumpx=4;else *jumpx=-4;
+        }
     }
     if(*movewaitx>0)*movewaitx-=1;
     else{*x+=*jumpx;*movewaitx=-1;}
@@ -1451,6 +1479,11 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
                 *jumpx=0;*jumpy=0;*y=176;*air=false;
             }
         }
+    if(!*slide&&*comboed&&(enemygrab[0]!=0||enemygrab[1]!=0)){
+        if(*x<enemyx)*x=enemyx-enemygrab[0];
+        else *x=enemyx+enemygrab[0];
+        *y=enemyy-enemygrab[1];
+    }
 }
 
 
@@ -1698,24 +1731,25 @@ int main()
             if(animq2.empty()){if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
 
             //make an attack clashing system at some point
-
-            if(p1hit){
+            if(p1hit)playertop=true;
+            else if(p2hit) playertop=false;
+            if(playertop){
                 characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
-                              &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
+                              &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                               &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
                               &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab);
                 characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
-                              &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
+                              &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                               &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
                               &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab);
                                 }
             else{
                 characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
-                              &p2block,p1x,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
+                              &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                               &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
                               &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab);
                 characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
-                              &p1block,p2x,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
+                              &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                               &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
                               &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab);
                                 }
@@ -1805,23 +1839,24 @@ int main()
                     }
                 }
             }
+            if((p2grab[0]!=0||p2grab[1]!=0)&&p2movetype==4&&(p1air||p1comboed))p1hit=false;
             if(p1hit==true)p2whiff=false;
             if(p1hit==false){hitbefore=false;p2whiff=true;}
             else if(p1hit==true&&p2multihit==false&&hitbefore==false)hitbefore=true;
             else if(hitbefore==true)p1hit=false;
             if(p1hit==true){
-                    if(((p2movetype==1||p2movetype==2)&&p1block==1)||((p2movetype==3||p2movetype==2)&&p1block==0)||p1block==2){
-                        if(p1block==1)memcpy(p1anim,animlib[33],sizeof(animlib[33]));
-                        else memcpy(p1anim,animlib[32],sizeof(animlib[32]));
-                        p2dmg/=5;
-                        hitstop=p2hitstop*5/4;
-                    }
-                    else{memcpy(p1anim,animlib[9],sizeof(animlib[9]));combo++;
-                        if(combo>3)comboscaling=comboscaling/10*9;
-                        p2dmg=p2dmg/100*comboscaling;
-                        hitstop=p2hitstop;
-                    }
-                    p1hp-=p2dmg;
+                if(((p2movetype==1||p2movetype==2)&&p1block==1)||((p2movetype==3||p2movetype==2)&&p1block==0)||p1block==2){
+                    if(p1block==1)memcpy(p1anim,animlib[33],sizeof(animlib[33]));
+                    else memcpy(p1anim,animlib[32],sizeof(animlib[32]));
+                    p2dmg/=5;
+                    hitstop=p2hitstop*5/4;
+                }
+                else{memcpy(p1anim,animlib[9],sizeof(animlib[9]));if(p2hitstop!=0||p2dmg!=0)combo++;
+                    if(combo>3)comboscaling=comboscaling/10*9;
+                    p2dmg=p2dmg/100*comboscaling;
+                    hitstop=p2hitstop;
+                }
+                p1hp-=p2dmg;
             }
 
             for(int i=hurtboxcount[p2frame]-1;i>=0;i--){
@@ -1866,23 +1901,24 @@ int main()
                     }
                 }
             }
+            if((p1grab[0]!=0||p1grab[1]!=0)&&p1movetype==4&&(p2air||p2comboed))p2hit=false;
             if(p2hit==true)p1whiff=false;
             if(p2hit==false){hitbefore2=false;p1whiff=true;}
             else if(p2hit==true&&p1multihit==false&&hitbefore2==false)hitbefore2=true;
             else if(hitbefore2==true)p2hit=false;
             if(p2hit==true){
-                    if(((p1movetype==1||p1movetype==2)&&p2block==1)||((p1movetype==3||p1movetype==2)&&p2block==0)||p2block==2){
-                        if(p2block==1)memcpy(p2anim,animlib[33],sizeof(animlib[33]));
-                        else memcpy(p2anim,animlib[32],sizeof(animlib[32]));
-                        p1dmg/=5;
-                        hitstop=p1hitstop/4*5;
-                    }
-                    else{memcpy(p2anim,animlib[9],sizeof(animlib[9]));combo++;
-                        if(combo>3)comboscaling=comboscaling/10*9;
-                        p1dmg=p1dmg/100*comboscaling;
-                        hitstop=p1hitstop;
-                    }
-                    p2hp-=p1dmg;
+                if(((p1movetype==1||p1movetype==2)&&p2block==1)||((p1movetype==3||p1movetype==2)&&p2block==0)||p2block==2){
+                    if(p2block==1)memcpy(p2anim,animlib[33],sizeof(animlib[33]));
+                    else memcpy(p2anim,animlib[32],sizeof(animlib[32]));
+                    p1dmg/=5;
+                    hitstop=p1hitstop/4*5;
+                }
+                else{memcpy(p2anim,animlib[9],sizeof(animlib[9]));if(p1hitstop!=0||p1dmg!=0)combo++;
+                    if(combo>3)comboscaling=comboscaling/10*9;
+                    p1dmg=p1dmg/100*comboscaling;
+                    hitstop=p1hitstop;
+                }
+                p2hp-=p1dmg;
             }
 
             while((p1x+bgx<32&&p2x+bgx<224)||(p2x+bgx<32&&p1x+bgx<224)){
@@ -2011,8 +2047,6 @@ int main()
 		window.clear();
 		renderTexture.clear();
 		renderTexture.draw(background);
-		if(p1hit)playertop=true;
-		else if(p2hit) playertop=false;
 		renderTexture.draw(p1shadow);
 		renderTexture.draw(p2shadow);
 		if(playertop){

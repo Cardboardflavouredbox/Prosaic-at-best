@@ -23,3 +23,6 @@
 22=special B(i)
 23=special B(o)
 24=special B(k)
+25=grab
+26=grab attack forward
+27=grab attack backward
