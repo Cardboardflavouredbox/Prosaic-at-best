@@ -9,12 +9,13 @@
 
 using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2,p1keylist,p2keylist;
-std::deque<int> animq1,animq2;
+std::deque<int> animq1,animq2,hitboxanim1,hitboxanim2;
 std::random_device rd;
 std::mt19937 gen(rd());
 
 short p1frame=0,p1act=0,p1col=0,p1anim[64][2],p1hitstun=0,p1blockstun=0,p1hitstop=0,p1buffer=0,combo=0,p1movewaitx=0,p1movewaity=0,p1block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
         p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer,roundframecount=0,p2movewaitx=0,p2movewaity=0,p2block=-1,
+        p1hbframe=0,p2hbframe=0,
         p1movetype=-1,p2movetype=-1,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
 animlib[256][64][2]={
                    {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -361,7 +362,7 @@ animlib[256][64][2]={
                    //specialB4 (37)
                    },
                    hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3},
-                   hitboxcount[256]={0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1};
+                   hitboxcount[256]={0,1,1,1,1,1,1,1,1};
 float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
         p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
         bgx=0,comboscaling=100.0,
@@ -410,44 +411,15 @@ hurtbox[256][8][2][2]={
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-5,-26},{15,16}}},//specialB3 (36)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-5,-30},{15,-4}}},//specialB4 (37)
                     },
-hitbox[256][8][2][2]={{0},//idle (0)
-                    {0},//stand u1 (1)
-                    {{{4,-1},{22,7}}},//stand u2 (2)
-                    {0},//stand i1 (3)
-                    {0},//stand i2 (4)
-                    {0},//stand i3 (5)
-                    {0},//stand i4 (6)
-                    {{{5,11},{30,20}}},//stand i5 (7)
-                    {0},//crouch (8)
-                    {0},//hit (9)
-                    {0},//crouch u1 (10)
-                    {{{5,25},{26,32}}},//crouch u2 (11)
-                    {0},//crouch i1 (12)
-                    {0},//crouch i2 (13)
-                    {{{6,-13},{19,20}}},//crouch i3 (14)
-                    {0},//walk left1 (15)
-                    {0},//walk left2 (16)
-                    {0},//walk right1 (17)
-                    {0},//walk right2 (18)
-                    {0},//knockdown (19)
-                    {0},//specialA1 (20)
-                    {0},//specialA2 (21)
-                    {0},//specialA3 (22)
-                    {0},//specialA4 (23)
-                    {0},//specialA5 (24)
-                    {{{-2,-2},{27,14}}},//specialA6 (25)
-                    {0},//stand o1 (26)
-                    {0},//stand o2 (27)
-                    {0},//stand o3 (28)
-                    {0},//stand o4 (29)
-                    {0},//stand o5 (30)
-                    {{{8,2},{36,9}}},//stand o6 (31)
-                    {0},//stand block (32)
-                    {0},//crouch block (33)
-                    {0},//specialB1 (34)
-                    {{{7,3},{16,18}}},//specialB2 (35)
-                    {0},//specialB3 (36)
-                    {{{-6,-32},{16,-4}}},//specialB4 (37)
+hitbox[32][8][2][2]={{0},//idle (0)
+                    {{{4,-1},{22,7}}},//stand u2 (1)
+                    {{{5,11},{30,20}}},//stand i5 (2)
+                    {{{5,25},{26,32}}},//crouch u2 (3)
+                    {{{6,-13},{19,20}}},//crouch o3 (4)
+                    {{{-2,-2},{27,14}}},//specialA6 (5)
+                    {{{8,2},{36,9}}},//stand o6 (6)
+                    {{{7,3},{16,18}}},//specialB2 (7)
+                    {{{-6,-32},{16,-4}}},//specialB4 (8)
                     };
 bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,F3key=false,
 pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],
@@ -1248,7 +1220,7 @@ void boolfill(bool *arr,bool value,short a[],int len){
 }
 
 
-void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
+void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbframe,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
     bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,float enemyy,short *hitstun,short enemyhitstun,
     float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch,
     float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned,short *movewaitx,short *movewaity, float *pushaway,float *enemypaway,
@@ -1258,7 +1230,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         *kdowned=false;combo=0;
     }
     if(*hit){
-        *hit=false;animq.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5*(comboscaling+100)/200;else *jumpy=0;*movewaitx=-1;*movewaity=-1;
+        *hit=false;animq.clear();hitboxanim.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5*(comboscaling+100)/200;else *jumpy=0;*movewaitx=-1;*movewaity=-1;
         *movetype=-1;grab[0]=0;grab[1]=0;
         if(*hp<=0)*block=-1;
         if(((enemymovetype==1||enemymovetype==2)&&*block==1)||((enemymovetype==3||enemymovetype==2)&&*block==0)||*block==2){
@@ -1310,7 +1282,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
                 if(*x<enemyx)*jumpx=-8;
                 else *jumpx=4;
                 *pushaway=8;
-                animq.clear();
+                animq.clear();hitboxanim.clear();
                 for(short i=0;i<hitwait;i++)animq.push_back(32);
         }
         else{
@@ -1328,7 +1300,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewaitx=-1;*movewaity=-1;
             *movetype=-1;grab[0]=0;grab[1]=0;
             memset(cancel,false,256);
-            animq.clear();
+            animq.clear();hitboxanim.clear();
         }
 
         if(*act==1)*block=0;
@@ -1361,19 +1333,22 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==8){
             *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=2;
             animq.insert(animq.begin(),{1,1,1,2,2,2,1,1,1});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,1});
             short temp[10]={9,10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,10);
         }
         else if(*act==9){
             *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-6;*slide=true;*dmg=19;*movetype=2;
             animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2});
             short temp[9]={10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,9);
             *movewaitx=7;
             if(*right)*jumpx=3;
             else *jumpx=-3;
         }
         else if(*act==10){
-            *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-8;*slide=true;*dmg=26;*movetype=2;
+            *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-8;*slide=true;*dmg=23;*movetype=2;
             animq.insert(animq.begin(),{26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,6,6,6});
             short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,8);
             *movewaitx=9;
             if(*right)*jumpx=5;
@@ -1388,12 +1363,14 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==12){
             *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*blockstun=0;*dmg=11;*movetype=1;
             animq.insert(animq.begin(),{10,10,10,11,11,11,10,10,10});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,3});
             short temp[10]={13,14,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,10);
         }
         else if(*act==13){}//crouch middle
         else if(*act==14){
-            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=3;*dmg=24;*launch=10;*kdown=true;*movetype=2;
-            animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
+            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=7;*dmg=22;*launch=10;*kdown=true;*movetype=2;
+            animq.insert(animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
             if(*right)*jumpx=4;else *jumpx=-4;
             short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,8);
         }
@@ -1401,16 +1378,19 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==16){
             *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*blockstun=-3;*slide=true;*movewaitx=6;*dmg=12;*movetype=2;
             animq.insert(animq.begin(),{20,21,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,22,21,20,20});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=5;else *jumpx=-5;
         }
         else if(*act==17){
             *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=-1;*blockstun=-4;*slide=true;*movewaitx=9;*dmg=18;*kdown=true;*movetype=2;
             animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==18){
             *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=0;*blockstun=-5;*slide=true;*movewaitx=10;*dmg=28;*kdown=true;*launch=11;*movetype=2;
             animq.insert(animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
         else if(*act==19){
@@ -1421,17 +1401,20 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==21){
             *col=0;*multihit=false;*hitstop=21;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=16;*kdown=true;*launch=8;*movetype=2;*jumpy=-10;
             animq.insert(animq.begin(),{34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==22){
             *col=0;*multihit=false;*hitstop=21;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=21;*kdown=true;*launch=9;*movetype=2;*jumpy=-11;
             animq.insert(animq.begin(),{34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
         else if(*act==23){
-            *col=0;*multihit=false;*hitstop=21;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=29;*kdown=true;*launch=10;*movetype=2;*jumpy=-12;
+            *col=0;*multihit=false;*hitstop=21;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=29;*kdown=true;*launch=9;*movetype=2;*jumpy=-12;
             animq.insert(animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
-            if(*right)*jumpx=7;else *jumpx=-7;
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
+            if(*right)*jumpx=8;else *jumpx=-8;
         }
         else if(*act==24){
             *col=0;*multihit=false;*slide=true;*movewaity=4;*kdown=true;*jumpy=-1;
@@ -1441,6 +1424,7 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
         else if(*act==25){
             *col=0;*multihit=true;*hitstop=0;*kback=0;*hitstun=-12;*blockstun=31;*slide=true;*movewaitx=6;*dmg=0;*movetype=4;grab[0]=21;grab[1]=0;
             animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,5});
             if(*right)*jumpx=5;else *jumpx=-5;
             short temp[2]={26,27};boolfill(cancel,true,temp,2);
         }
@@ -1462,6 +1446,11 @@ void characterdata(std::deque<int> &animq,bool cancel[],bool *air,short anim[][2
             if(*air)*enemypaway=0;
             else{if(*x<enemyx)*x-=*enemypaway;else if(*x>enemyx)*x+=*enemypaway;*enemypaway-=1;}
     }
+    if(!hitboxanim.empty()){
+        *hbframe=hitboxanim[0];
+        hitboxanim.pop_front();
+    }
+    else *hbframe=0;
     if(!animq.empty()){
         *neutural=false;*frame=animq[0];
         memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
@@ -1734,21 +1723,21 @@ int main()
             if(p1hit)playertop=true;
             else if(p2hit) playertop=false;
             if(playertop){
-                characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
+                characterdata(animq1,hitboxanim1,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                               &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                               &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
                               &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab);
-                characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
+                characterdata(animq2,hitboxanim2,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                               &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                               &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
                               &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab);
                                 }
             else{
-                characterdata(animq2,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
+                characterdata(animq2,hitboxanim2,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                               &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                               &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
                               &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab);
-                characterdata(animq1,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
+                characterdata(animq1,hitboxanim1,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                               &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                               &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
                               &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab);
@@ -1810,18 +1799,18 @@ int main()
                     temp2[0]=-hurtbox[p1frame][i][0][0]+p1x;
                     temp2[1]=hurtbox[p1frame][i][1][1]+int(p1y);
                 }
-                for(int j=0;j<hitboxcount[p2frame];j++){
+                for(int j=0;j<hitboxcount[p2hbframe];j++){
                     if(p2right==true){
-                        temp3[0]=hitbox[p2frame][j][0][0]+p2x;
-                        temp3[1]=hitbox[p2frame][j][0][1]+int(p2y);
-                        temp4[0]=hitbox[p2frame][j][1][0]+p2x;
-                        temp4[1]=hitbox[p2frame][j][1][1]+int(p2y);
+                        temp3[0]=hitbox[p2hbframe][j][0][0]+p2x;
+                        temp3[1]=hitbox[p2hbframe][j][0][1]+int(p2y);
+                        temp4[0]=hitbox[p2hbframe][j][1][0]+p2x;
+                        temp4[1]=hitbox[p2hbframe][j][1][1]+int(p2y);
                     }
                     else{
-                        temp3[0]=-hitbox[p2frame][j][1][0]+p2x;
-                        temp3[1]=hitbox[p2frame][j][0][1]+int(p2y);
-                        temp4[0]=-hitbox[p2frame][j][0][0]+p2x;
-                        temp4[1]=hitbox[p2frame][j][1][1]+int(p2y);
+                        temp3[0]=-hitbox[p2hbframe][j][1][0]+p2x;
+                        temp3[1]=hitbox[p2hbframe][j][0][1]+int(p2y);
+                        temp4[0]=-hitbox[p2hbframe][j][0][0]+p2x;
+                        temp4[1]=hitbox[p2hbframe][j][1][1]+int(p2y);
                     }
                 if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
                     p1hit=true;
@@ -1872,18 +1861,18 @@ int main()
                     temp2[0]=-hurtbox[p2frame][i][0][0]+p2x;
                     temp2[1]=hurtbox[p2frame][i][1][1]+int(p2y);
                 }
-                for(int j=0;j<hitboxcount[p1frame];j++){
+                for(int j=0;j<hitboxcount[p1hbframe];j++){
                     if(p1right==true){
-                        temp3[0]=hitbox[p1frame][j][0][0]+p1x;
-                        temp3[1]=hitbox[p1frame][j][0][1]+int(p1y);
-                        temp4[0]=hitbox[p1frame][j][1][0]+p1x;
-                        temp4[1]=hitbox[p1frame][j][1][1]+int(p1y);
+                        temp3[0]=hitbox[p1hbframe][j][0][0]+p1x;
+                        temp3[1]=hitbox[p1hbframe][j][0][1]+int(p1y);
+                        temp4[0]=hitbox[p1hbframe][j][1][0]+p1x;
+                        temp4[1]=hitbox[p1hbframe][j][1][1]+int(p1y);
                     }
                     else{
-                        temp3[0]=-hitbox[p1frame][j][1][0]+p1x;
-                        temp3[1]=hitbox[p1frame][j][0][1]+int(p1y);
-                        temp4[0]=-hitbox[p1frame][j][0][0]+p1x;
-                        temp4[1]=hitbox[p1frame][j][1][1]+int(p1y);
+                        temp3[0]=-hitbox[p1hbframe][j][1][0]+p1x;
+                        temp3[1]=hitbox[p1hbframe][j][0][1]+int(p1y);
+                        temp4[0]=-hitbox[p1hbframe][j][0][0]+p1x;
+                        temp4[1]=hitbox[p1hbframe][j][1][1]+int(p1y);
                     }
                 if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
                     p2hit=true;
@@ -1991,9 +1980,9 @@ int main()
         collisionbox1.create(p1x+bgx,int(p1y),colbox[p1col],p1right,1,sf::Color::White);
         collisionbox2.create(p2x+bgx,int(p2y),colbox[p2col],p2right,1,sf::Color::White);
         Hurtbox1.create(p1x+bgx,int(p1y),hurtbox[p1frame],p1right,hurtboxcount[p1frame],sf::Color::Blue);
-        Hitbox1.create(p1x+bgx,int(p1y),hitbox[p1frame],p1right,hitboxcount[p1frame],sf::Color::Red);
+        Hitbox1.create(p1x+bgx,int(p1y),hitbox[p1hbframe],p1right,hitboxcount[p1hbframe],sf::Color::Red);
         Hurtbox2.create(p2x+bgx,int(p2y),hurtbox[p2frame],p2right,hurtboxcount[p2frame],sf::Color::Blue);
-        Hitbox2.create(p2x+bgx,int(p2y),hitbox[p2frame],p2right,hitboxcount[p2frame],sf::Color::Red);
+        Hitbox2.create(p2x+bgx,int(p2y),hitbox[p2hbframe],p2right,hitboxcount[p2hbframe],sf::Color::Red);
 
         if(hitstop==0)sfx=0;
         if(p1hit&&!p2hit&&!pause&&sfx==0){
