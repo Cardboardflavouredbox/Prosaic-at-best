@@ -274,7 +274,7 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{11,6},{-1},{-1},{-1},{-1},
-                   {-1},{-1},{10,7},{11,7},{12,7},{13,7},{-1},{-1},
+                   {-1},{-1},{10,7},{11,7},{12,7},{12,6},{-1},{-1},
                    {-1},{-1},{10,8},{11,8},{12,8},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
@@ -360,9 +360,72 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //specialB4 (37)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,3},{1,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,4},{13,6},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,5},{13,7},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i1(38)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{15,3},{16,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{15,4},{16,4},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{15,5},{16,5},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i2(39)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,3},{1,3},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{14,6},{15,6},{16,6},{-1},{-1},
+                   {-1},{-1},{-1},{14,7},{15,7},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i3(40)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{15,8},{16,8},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{15,9},{16,9},{16,7},{-1},{-1},
+                   {-1},{-1},{-1},{13,8},{14,8},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i4(41)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{17,10},{17,9},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{15,10},{16,10},{17,11},{-1},{-1},
+                   {-1},{-1},{-1},{15,11},{16,11},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch i5(42)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,10},{1,10},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,11},{1,11},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //jumprise(43)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,8},{1,8},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,9},{1,9},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //jumpfall(44)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3},
-                   hitboxcount[256]={0,1,1,1,1,1,1,1,1};
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2},
+                   hitboxcount[256]={0,1,1,1,1,1,1,1,1,1};
 float p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
         p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
         bgx=0,comboscaling=100.0,
@@ -410,19 +473,27 @@ hurtbox[256][8][2][2]={
                     {{{-11,1},{14,32}},{{-5,-9},{11,6}}},//specialB2 (35)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-5,-26},{15,16}}},//specialB3 (36)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-5,-30},{15,-4}}},//specialB4 (37)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch i1(38)
+                    {{{-12,9},{13,32}},{{-8,-6},{8,9}}},//crouch i2(39)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch i3(40)
+                    {{{-10,9},{13,32}},{{-6,-6},{10,9}},{{9,9},{24,14}}},//crouch i4(41)
+                    {{{-10,9},{13,32}},{{-5,-6},{11,9}},{{9,9},{24,14}}},//crouch i5(42)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//jumprise (43)
+                    {{{-10,0},{12,29}},{{-7,-15},{9,0}}},//jumpfall (44)
                     },
 hitbox[32][8][2][2]={{0},//idle (0)
-                    {{{4,-1},{22,7}}},//stand u2 (1)
-                    {{{5,11},{30,20}}},//stand i5 (2)
-                    {{{5,25},{26,32}}},//crouch u2 (3)
-                    {{{6,-13},{19,20}}},//crouch o3 (4)
-                    {{{-2,-2},{27,14}}},//specialA6 (5)
-                    {{{8,2},{36,9}}},//stand o6 (6)
-                    {{{7,3},{16,18}}},//specialB2 (7)
-                    {{{-6,-32},{16,-4}}},//specialB4 (8)
+                    {{{4,-1},{22,7}}},//stand u(1)
+                    {{{5,11},{30,20}}},//stand i(2)
+                    {{{5,25},{26,32}}},//crouch u(3)
+                    {{{6,-13},{19,20}}},//crouch o(4)
+                    {{{-2,-2},{27,14}}},//specialA(5)
+                    {{{8,2},{36,9}}},//stand o(6)
+                    {{{7,3},{16,18}}},//specialB(7)
+                    {{{-6,-32},{16,-4}}},//specialB(8)
+                    {{{9,8},{27,15}}},//crouch i(9)
                     };
 bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,F3key=false,
-pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[256],p2cancel[256],
+pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[32],p2cancel[32],
 p1whiff=false,p2whiff=false,p1neutural,p2neutural,p1right=true,p2right=false,
 p1hit=false,p2hit=false,p1slide=false,p2slide=false,
 hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,flash=true,
@@ -1212,9 +1283,12 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
                 }
 }
 
-void boolfill(bool *arr,bool value,short a[],int len){
-    for(int i=0;i<len;i++){
-        arr[a[i]]=value;
+void boolfill(bool *arr,bool value,short a[]){
+    short temp=0;
+    for(int i=0;i<32;i++){
+        if(a[temp]==i){arr[i]=value;temp++;}
+        else if(value)arr[i]=false;
+        else arr[i]=true;
     }
 }
 
@@ -1264,7 +1338,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
                     else if(*x>enemyx) *jumpx=enemykback;
                 }
         }
-        memset(cancel,false,256);
+        short temp[1]={-1};boolfill(cancel,true,temp);
     }
     else if(animq.empty()&&*movewaitx==-1&&*movewaity==-1){
         if((*comboed&&(*jumpy<5||*kdowned)&&*air)||(*comboed&&!(*jumpy<5)&&*air&&*act==0))animq.push_back(9);
@@ -1277,7 +1351,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             *kdowned=false;combo=0;
         }
         else{
-            memset(cancel,false,256);
+            short temp[1]={-1};boolfill(cancel,true,temp);
             if(!*neutural&&!*air){*jumpx=0;*jumpy=0;}
             *hitstun=0;*blockstun=0;*kback=0;*hit=false;*slide=false;*multihit=false;*dmg=0;*launch=0;*neutural=true;*kdown=false;
             *movetype=-1;*block=-1;grab[0]=0;grab[1]=0;*grabstate=-1;
@@ -1302,11 +1376,11 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(enemygstate==0)*grabstate=-1;
             else if(animq.size()<12)*act=26;
     }
-    if(!*hit&&(animq.empty()&&*movewaitx==-1&&*movewaity==-1||(*act==26&&*grabstate==3)||((cancel[*act]==true)&&(!*whiff)))){
+    if(!*hit&&((animq.empty()&&*movewaitx==-1&&*movewaity==-1)||(*act==26&&*grabstate==3)||((cancel[*act]==true)&&((!*whiff)||*movetype==0)))){
         if(cancel[*act]==true){
             *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewaitx=-1;*movewaity=-1;
             *movetype=-1;grab[0]=0;grab[1]=0;
-            memset(cancel,false,256);
+            short temp[0]={};boolfill(cancel,true,temp);
             animq.clear();hitboxanim.clear();
         }
 
@@ -1334,20 +1408,20 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(*right)*x+=3;else *x-=3;
         }
         else if(*act==4){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=7;else*jumpx=-7;}
-        else if(*act==5){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;animq.insert(animq.begin(), {8,8,8,0});}
-        else if(*act==6){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(),{8,8,8,0});}
-        else if(*act==7){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(),{8,8,8,0});}
+        else if(*act==5){*col=0;*jumpy=-12.0;*movewaity=4;animq.insert(animq.begin(),{8,8,8,43});}
+        else if(*act==6){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(),{8,8,8,43});}
+        else if(*act==7){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(),{8,8,8,43});}
         else if(*act==8){
             *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=2;
             animq.insert(animq.begin(),{1,1,1,2,2,2,1,1,1});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,1});
-            short temp[10]={9,10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,10);
+            short temp[10]={9,10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
         }
         else if(*act==9){
             *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-6;*slide=true;*dmg=19;*movetype=2;
             animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2});
-            short temp[9]={10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,9);
+            short temp[9]={10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
             *movewaitx=7;
             if(*right)*jumpx=3;
             else *jumpx=-3;
@@ -1356,7 +1430,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-8;*slide=true;*dmg=23;*movetype=2;
             animq.insert(animq.begin(),{26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,6,6,6});
-            short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,8);
+            short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
             *movewaitx=9;
             if(*right)*jumpx=5;
             else *jumpx=-5;
@@ -1371,15 +1445,23 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*blockstun=0;*dmg=11;*movetype=1;
             animq.insert(animq.begin(),{10,10,10,11,11,11,10,10,10});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,3});
-            short temp[10]={13,14,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,10);
+            short temp[10]={13,14,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
         }
-        else if(*act==13){}//crouch middle
+        else if(*act==13){
+            *col=1;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-4;*slide=true;*dmg=18;*movetype=1;
+            animq.insert(animq.begin(),{38,38,39,39,39,39,40,41,42,42,42,41,40,39,39,39,38,38,38,38});
+            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,9,9,9});
+            short temp[9]={14,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
+            *movewaitx=7;
+            if(*right)*jumpx=2;
+            else *jumpx=-2;
+        }
         else if(*act==14){
             *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=7;*dmg=22;*launch=10;*kdown=true;*movetype=2;
             animq.insert(animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
             if(*right)*jumpx=4;else *jumpx=-4;
-            short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp,8);
+            short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
         }
         else if(*act==15){}//maybe a taunt move?
         else if(*act==16){
@@ -1433,7 +1515,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,5});
             if(*right)*jumpx=5;else *jumpx=-5;
-            short temp[2]={26,27};boolfill(cancel,true,temp,2);
+            short temp[2]={26,27};boolfill(cancel,true,temp);
         }
         else if(*act==26){
             *col=1;*multihit=false;*hitstop=21;*kback=3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=54;*launch=10;*kdown=true;*movetype=4;*grabstate=-1;
@@ -1467,11 +1549,13 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
     if(*air){
             *block=-1;
             *jumpy+=0.8;
+            if(*jumpy>0){
+                if(*neutural){memcpy(anim,animlib[44],sizeof(animlib[44]));*frame=44;}
+            }
             if(*y>175){
                 if(*x<enemyx)*right=true;else *right=false;
                 if(*kdowned){}//add downed landing animation
-                else if(*jumpx!=7&&*jumpx!=-7){*col=1;animq.insert(animq.begin(), {8,8,8,8});}
-                else {*col=1;animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});}
+                *col=1;animq.insert(animq.begin(), {8,8,8,8,8,8,8,8});
                 cancel[8]=true;cancel[9]=true;
                 *jumpx=0;*jumpy=0;*y=176;*air=false;
             }
@@ -1728,8 +1812,6 @@ int main()
             if(animq2.empty()){if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
 
             //make an attack clashing system at some point
-            if(p1hit)playertop=true;
-            else if(p2hit) playertop=false;
             if(playertop){
                 characterdata(animq1,hitboxanim1,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                               &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
@@ -2046,6 +2128,8 @@ int main()
 		renderTexture.draw(background);
 		renderTexture.draw(p1shadow);
 		renderTexture.draw(p2shadow);
+		if(p1hit)playertop=true;
+        else if(p2hit) playertop=false;
 		if(playertop){
             renderTexture.draw(p1);
             renderTexture.draw(p2);

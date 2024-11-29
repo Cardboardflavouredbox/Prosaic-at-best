@@ -26,3 +26,5 @@
 25=grab
 26=grab attack forward
 27=grab attack backward
+
+the cancel array's length is 32 currently. Remember to also expand the boolfill.
