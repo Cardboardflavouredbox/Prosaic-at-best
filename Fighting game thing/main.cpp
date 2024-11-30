@@ -510,8 +510,57 @@ hitbox[32][8][2][2]={{0},//idle (0)
                     };
 bool flash=true;
 
+class menu : public sf::Drawable, public sf::Transformable
+{
+public:
 
-struct character : public sf::Drawable, public sf::Transformable
+    bool load(const std::string& tileset,short placeinput,float x,float y)
+    {
+        if (!m_tileset.loadFromFile(tileset))return false;
+        place=placeinput;
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(6);
+        sf::Vertex* tri = &m_vertices[6];
+        tri[0].position = sf::Vector2f(x,y);
+        tri[1].position = sf::Vector2f(x+64,y);
+        tri[2].position = sf::Vector2f(x,y+16);
+        tri[3].position = sf::Vector2f(x,y+16);
+        tri[4].position = sf::Vector2f(x+64,y);
+        tri[5].position = sf::Vector2f(x+64,y+16);
+        tri[0].texCoords = sf::Vector2f(0,place*16);
+        tri[1].texCoords = sf::Vector2f(64,place*16);
+        tri[2].texCoords = sf::Vector2f(0,place*16+16);
+        tri[3].texCoords = sf::Vector2f(0,place*16+16);
+        tri[4].texCoords = sf::Vector2f(64,place*16);
+        tri[5].texCoords = sf::Vector2f(64,place*16+16);
+        return true;
+    }
+
+    void setcolor(bool invisible,short placeinput){
+        sf::Vertex* tri = &m_vertices[6];
+        for(short i=0;i<6;i++){
+            if(invisible)tri[i].color=sf::Color::Transparent;
+            else if(placeinput==place)tri[i].color=sf::Color(85,85,85,255);
+            else tri[i].color=sf::Color(255,255,255,255);
+        }
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = &m_tileset;
+
+        target.draw(m_vertices, states);
+    }
+    short place;
+    sf::VertexArray m_vertices;
+    sf::Texture m_tileset;
+};
+
+class character : public sf::Drawable, public sf::Transformable
 {
 public:
 
@@ -579,7 +628,7 @@ private:
     sf::Texture m_tileset;
 };
 
-struct shadows : public sf::Drawable, public sf::Transformable
+class shadows : public sf::Drawable, public sf::Transformable
 {
 public:
 
@@ -648,7 +697,7 @@ private:
     sf::Texture m_tileset;
 };
 
-struct hitflash : public sf::Drawable, public sf::Transformable
+class hitflash : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float px,float py,bool hit){
@@ -776,7 +825,7 @@ private:
 
 };
 
-struct healthbar : public sf::Drawable, public sf::Transformable
+class healthbar : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float hp,float hp2){
@@ -847,7 +896,7 @@ private:
 
 };
 
-struct timeui : public sf::Drawable, public sf::Transformable
+class timeui : public sf::Drawable, public sf::Transformable
 {
 public:
     bool load(const std::string& tileset)
@@ -907,7 +956,7 @@ private:
 };
 
 
-struct comboui : public sf::Drawable, public sf::Transformable
+class comboui : public sf::Drawable, public sf::Transformable
 {
 public:
     bool load(const std::string& tileset)
@@ -963,7 +1012,7 @@ private:
 
 
 
-struct inputlist : public sf::Drawable, public sf::Transformable
+class inputlist : public sf::Drawable, public sf::Transformable
 {
 public:
     bool load(const std::string& tileset)
@@ -1128,7 +1177,7 @@ private:
 
 };
 
-struct box : public sf::Drawable, public sf::Transformable
+class box : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float px,float py,float xy[][2][2],bool right,short count,sf::Color col){
@@ -1614,6 +1663,9 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
     sf::Event event;
+    //sf::CircleShape cursor(2.f,3);
+	//cursor.setFillColor(sf::Color::White);
+	//cursor.rotate(90.f);
     window.setFramerateLimit(60);
     sf::RenderTexture renderTexture;
     if (!renderTexture.create(256, 240)){}
