@@ -511,7 +511,7 @@ hitbox[32][8][2][2]={{0},//idle (0)
                     {{{7,3},{16,18}}},//specialB(7)
                     {{{-6,-32},{16,-4}}},//specialB(8)
                     {{{9,8},{27,15}}},//crouch i(9)
-                    {{{4,16},{22,24}}},//jump u(10)
+                    {{{0,16},{18,32}}},//jump u(10)
                     };
 bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,F3key=false,
 pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[32],p2cancel[32],
@@ -1196,13 +1196,10 @@ bool cmdcheck(int playercode,int len,char s[][5]){
         bool skip=false;
         if(playercode==1)dir=dirkeys[j],u=ukey[j],i=ikey[j],o=okey[j],k=kkey[j];
         else if(playercode==2)dir=dirkeys2[j],u=ukey2[j],i=ikey2[j],o=okey2[j],k=kkey2[j];
-        if(u=='1')u='0';
-        if(i=='1')i='0';
-        if(o=='1')o='0';
-        if(k=='1')k='0';
+        //if(u=='1')u='0';if(i=='1')i='0';if(o=='1')o='0';if(k=='1')k='0';
         if(s[temp][0]=='0'&&(dir=='5'||dir==s[temp+1][0])){s[temp][0]=dir;skip=true;}
 
-        if((dir!=s[temp][0]&&dir!=s[temp-1][0])||(u!=s[temp][1]||i!=s[temp][2]||o!=s[temp][3]||k!=s[temp][4]))break;
+        if((dir!=s[temp][0]&&dir!=s[temp-1][0]))break;
         if(dir==s[temp][0]&&u==s[temp][1]&&i==s[temp][2]&&o==s[temp][3]&&k==s[temp][4]){temp++;if(skip)temp++;}
         if(temp>=len)break;
     }
@@ -1300,7 +1297,9 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
             }
             else{
                 //jump actions
-                if(u=='2')return 28;//weak air normal
+                if(u=='2')return 8;//weak normal
+                else if(i=='2')return 9;//middle normal
+                else if(o=='2')return 10;//strong normal
                 return 0;
                 }
 }
@@ -1418,48 +1417,71 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(!*air){
                 if(*x<enemyx)*right=true;
                 else *right=false;
+                memcpy(anim,animlib[0],sizeof(animlib[0]));
             }
             *col=0;*frame=0;*block=-1;
-            if(!*air)memcpy(anim,animlib[0],sizeof(animlib[0]));
         }
         else if(*act==1){
             *col=0;
             memcpy(anim,animlib[15],sizeof(animlib[0]));
             if(*right)*x-=3;else *x+=3;
+            if(*x<enemyx)*right=true;else *right=false;
         }
         else if(*act==2){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=-7;else*jumpx=7;}
         else if(*act==3){
             *col=0;
             memcpy(anim,animlib[17],sizeof(animlib[0]));
             if(*right)*x+=3;else *x-=3;
+            if(*x<enemyx)*right=true;else *right=false;
         }
         else if(*act==4){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=7;else*jumpx=-7;}
         else if(*act==5){*col=0;*jumpy=-12.0;*movewaity=4;animq.insert(animq.begin(),{8,8,8,43});}
         else if(*act==6){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(),{8,8,8,43});}
         else if(*act==7){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(),{8,8,8,43});}
         else if(*act==8){
-            *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=2;
-            animq.insert(animq.begin(),{1,1,1,2,2,2,1,1,1});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,1});
-            short temp[10]={9,10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
+            if(*air){
+                *col=0;*multihit=false;*hitstop=12;*kback=2;*hitstun=8;*blockstun=5;*dmg=12;*movetype=3;
+                animq.insert(animq.begin(),{43,43,45,45,46,46,46});
+                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,10,10,10,10,10,10,10,10});
+            }
+            else{
+                *col=0;*multihit=false;*hitstop=12;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=2;
+                animq.insert(animq.begin(),{1,1,1,2,2,2,1,1,1});
+                hitboxanim.insert(hitboxanim.begin(),{0,0,0,1});
+                short temp[10]={9,10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
+            }
         }
         else if(*act==9){
-            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-6;*slide=true;*dmg=19;*movetype=2;
-            animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2});
-            short temp[9]={10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
-            *movewaitx=7;
-            if(*right)*jumpx=3;
-            else *jumpx=-3;
+            if(*air){
+                *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=15;*blockstun=9;*dmg=19;*movetype=3;
+                animq.insert(animq.begin(),{3,4,5,5,5,6,7,7,7,7});
+                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,2,2,2,2});
+            }
+            else{
+                *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=1;*blockstun=-6;*slide=true;*dmg=19;*movetype=2;
+                animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
+                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2});
+                short temp[9]={10,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
+                *movewaitx=7;
+                if(*right)*jumpx=3;
+                else *jumpx=-3;
+            }
         }
         else if(*act==10){
-            *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-8;*slide=true;*dmg=23;*movetype=2;
-            animq.insert(animq.begin(),{26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,6,6,6});
-            short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
-            *movewaitx=9;
-            if(*right)*jumpx=5;
-            else *jumpx=-5;
+            if(*air){
+                *col=0;*multihit=false;*hitstop=16;*kback=3;*hitstun=15;*blockstun=9;*dmg=19;*movetype=3;
+                animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7});
+                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2,2,2,2,2});
+            }
+            else{
+                *col=0;*multihit=false;*hitstop=16;*kback=6;*hitstun=-1;*blockstun=-8;*slide=true;*dmg=23;*movetype=2;
+                animq.insert(animq.begin(),{26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
+                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,6,6,6});
+                short temp[8]={16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
+                *movewaitx=9;
+                if(*right)*jumpx=5;
+                else *jumpx=-5;
+            }
         }
         else if(*act==11||*act==20){
             if(*x<enemyx)*right=true;
@@ -1468,7 +1490,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             memcpy(anim,animlib[8],sizeof(animlib[8]));
         }
         else if(*act==12){
-            *col=1;*multihit=false;*hitstop=10;*kback=5;*hitstun=4;*blockstun=0;*dmg=11;*movetype=1;
+            *col=1;*multihit=false;*hitstop=12;*kback=5;*hitstun=4;*blockstun=0;*dmg=11;*movetype=1;
             animq.insert(animq.begin(),{10,10,10,11,11,11,10,10,10});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,3});
             short temp[10]={13,14,16,17,18,19,21,22,23,24};boolfill(cancel,true,temp);
@@ -1483,7 +1505,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             else *jumpx=-2;
         }
         else if(*act==14){
-            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=7;*dmg=22;*launch=10;*kdown=true;*movetype=2;
+            *col=1;*multihit=false;*hitstop=16;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=7;*dmg=22;*launch=10;*kdown=true;*movetype=2;
             animq.insert(animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
             if(*right)*jumpx=4;else *jumpx=-4;
@@ -1491,19 +1513,19 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
         }
         else if(*act==15){}//maybe a taunt move?
         else if(*act==16){
-            *col=0;*multihit=false;*hitstop=16;*kback=7;*hitstun=1;*blockstun=-3;*slide=true;*movewaitx=6;*dmg=12;*movetype=2;
+            *col=0;*multihit=false;*hitstop=12;*kback=7;*hitstun=1;*blockstun=-3;*slide=true;*movewaitx=6;*dmg=12;*movetype=2;
             animq.insert(animq.begin(),{20,21,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,22,21,20,20});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=5;else *jumpx=-5;
         }
         else if(*act==17){
-            *col=0;*multihit=false;*hitstop=18;*kback=7;*hitstun=-1;*blockstun=-4;*slide=true;*movewaitx=9;*dmg=18;*kdown=true;*movetype=2;
+            *col=0;*multihit=false;*hitstop=14;*kback=7;*hitstun=-1;*blockstun=-4;*slide=true;*movewaitx=9;*dmg=18;*kdown=true;*movetype=2;
             animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==18){
-            *col=0;*multihit=false;*hitstop=21;*kback=0;*hitstun=0;*blockstun=-5;*slide=true;*movewaitx=10;*dmg=28;*kdown=true;*launch=11;*movetype=2;
+            *col=0;*multihit=false;*hitstop=16;*kback=0;*hitstun=0;*blockstun=-5;*slide=true;*movewaitx=10;*dmg=28;*kdown=true;*launch=11;*movetype=2;
             animq.insert(animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=7;else *jumpx=-7;
@@ -1514,19 +1536,19 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(*right)*jumpx=4;else *jumpx=-4;
         }
         else if(*act==21){
-            *col=0;*multihit=false;*hitstop=21;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=16;*kdown=true;*launch=8;*movetype=2;*jumpy=-10;
+            *col=0;*multihit=false;*hitstop=13;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=16;*kdown=true;*launch=8;*movetype=2;*jumpy=-10;
             animq.insert(animq.begin(),{34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==22){
-            *col=0;*multihit=false;*hitstop=21;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=21;*kdown=true;*launch=9;*movetype=2;*jumpy=-11;
+            *col=0;*multihit=false;*hitstop=15;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=21;*kdown=true;*launch=9;*movetype=2;*jumpy=-11;
             animq.insert(animq.begin(),{34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
         else if(*act==23){
-            *col=0;*multihit=false;*hitstop=21;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=29;*kdown=true;*launch=9;*movetype=2;*jumpy=-12;
+            *col=0;*multihit=false;*hitstop=17;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=29;*kdown=true;*launch=9;*movetype=2;*jumpy=-12;
             animq.insert(animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=8;else *jumpx=-8;
@@ -1544,22 +1566,16 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             short temp[2]={26,27};boolfill(cancel,true,temp);
         }
         else if(*act==26){
-            *col=1;*multihit=false;*hitstop=21;*kback=3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=54;*launch=10;*kdown=true;*movetype=4;*grabstate=-1;
+            *col=1;*multihit=false;*hitstop=18;*kback=3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=54;*launch=10;*kdown=true;*movetype=4;*grabstate=-1;
             animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,4});
             if(*right)*jumpx=4;else *jumpx=-4;
         }
         else if(*act==27){
-            *col=1;*multihit=false;*hitstop=21;*kback=-3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=54;*launch=10;*kdown=true;*movetype=4;*grabstate=-1;
+            *col=1;*multihit=false;*hitstop=18;*kback=-3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=54;*launch=10;*kdown=true;*movetype=4;*grabstate=-1;
             animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,4});
             if(*right)*jumpx=4;else *jumpx=-4;
-        }
-        else if(*act==28){
-            *col=0;*multihit=false;*hitstop=10;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=3;
-            animq.insert(animq.begin(),{43,43,45,45,46,46,46,46,46,46,46,45,43});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,10,10,10});
-            short temp[1]={29};boolfill(cancel,true,temp);
         }
     }
     if(*movewaitx>0)*movewaitx-=1;
@@ -1582,7 +1598,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
     if(!animq.empty()){
         *neutural=false;*frame=animq[0];
         memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
-        if(!(animq[0]==19&&*hp<=0))animq.pop_front();
+        if(!(animq[0]==19&&*hp<=0)&&!(*air&&animq.size()==1))animq.pop_front();
     }
     if(*air){
             *block=-1;
@@ -1591,10 +1607,9 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
                 if(*neutural){memcpy(anim,animlib[44],sizeof(animlib[44]));*frame=44;}
             }
             if(*y>175){
-                if(*x<enemyx)*right=true;else *right=false;
                 if(*kdowned){}//add downed landing animation
-                if(!*comboed){*col=1;animq.clear();animq.insert(animq.begin(),{8,8,8,8,8,8,8,8});}
-                cancel[8]=true;cancel[9]=true;
+                if(!*comboed){*col=1;animq.clear();hitboxanim.clear();animq.insert(animq.begin(),{8,8,8,8,8,8,8,8});}
+                short temp[6]={8,9,10,12,13,14};boolfill(cancel,true,temp);
                 *jumpx=0;*jumpy=0;*y=176;*air=false;
             }
         }
@@ -1804,38 +1819,39 @@ int main()
             else if(keydir2=='1')keydir2='3';
         }
 
-        dirkeys.push_front(keydir1);
-        ukey.push_front(u);
-        ikey.push_front(i);
-        okey.push_front(o);
-        kkey.push_front(k);
-        if(dirkeys.size()>20)dirkeys.pop_back();
-        if(ukey.size()>20)ukey.pop_back();
-        if(ikey.size()>20)ikey.pop_back();
-        if(okey.size()>20)okey.pop_back();
-        if(kkey.size()>20)kkey.pop_back();
+        if(!pause){
+            dirkeys.push_front(keydir1);
+            ukey.push_front(u);
+            ikey.push_front(i);
+            okey.push_front(o);
+            kkey.push_front(k);
+            if(dirkeys.size()>20)dirkeys.pop_back();
+            if(ukey.size()>20)ukey.pop_back();
+            if(ikey.size()>20)ikey.pop_back();
+            if(okey.size()>20)okey.pop_back();
+            if(kkey.size()>20)kkey.pop_back();
 
-        dirkeys2.push_front(keydir2);
-        ukey2.push_front(u2);
-        ikey2.push_front(i2);
-        okey2.push_front(o2);
-        kkey2.push_front(k2);
-        if(dirkeys2.size()>20)dirkeys2.pop_back();
-        if(ukey2.size()>20)ukey2.pop_back();
-        if(ikey2.size()>20)ikey2.pop_back();
-        if(okey2.size()>20)okey2.pop_back();
-        if(kkey2.size()>20)kkey2.pop_back();
+            dirkeys2.push_front(keydir2);
+            ukey2.push_front(u2);
+            ikey2.push_front(i2);
+            okey2.push_front(o2);
+            kkey2.push_front(k2);
+            if(dirkeys2.size()>20)dirkeys2.pop_back();
+            if(ukey2.size()>20)ukey2.pop_back();
+            if(ikey2.size()>20)ikey2.pop_back();
+            if(okey2.size()>20)okey2.pop_back();
+            if(kkey2.size()>20)kkey2.pop_back();
 
-
-        if(p1buffer==0&&!animq1.empty()){
-                p1buffer=chooseaction(1,p1air,keydir1,u,i,o,k);
-                if(p1cancel[p1buffer]==false&&animq1.size()>10)p1buffer=0;
-                else if(p1buffer==1||p1buffer==3||p1buffer==11)p1buffer=0;
-        }
-        if(p2buffer==0&&!animq2.empty()){
-                p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2,k2);
-                if(p2cancel[p2buffer]==false&&animq2.size()>10)p2buffer=0;
-                else if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
+            if(p1buffer==0&&!animq1.empty()){
+                    p1buffer=chooseaction(1,p1air,keydir1,u,i,o,k);
+                    if(p1cancel[p1buffer]==false&&animq1.size()>10)p1buffer=0;
+                    else if(p1buffer==1||p1buffer==3||p1buffer==11)p1buffer=0;
+            }
+            if(p2buffer==0&&!animq2.empty()){
+                    p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2,k2);
+                    if(p2cancel[p2buffer]==false&&animq2.size()>10)p2buffer=0;
+                    else if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
+            }
         }
         if(!pause||pause&&nextframe)roundframecount++;
         if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
@@ -2052,55 +2068,56 @@ int main()
             while(p2x+bgx>245)p2x--;
         }
 
-        char keytemp=dirkeys[1],keytemp2=keydir1;
-        if(!p1right){
-            if(keytemp=='7')keytemp='9';
-            else if(keytemp=='9')keytemp='7';
-            else if(keytemp=='4')keytemp='6';
-            else if(keytemp=='6')keytemp='4';
-            else if(keytemp=='3')keytemp='1';
-            else if(keytemp=='1')keytemp='3';
-            if(keytemp2=='7')keytemp2='9';
-            else if(keytemp2=='9')keytemp2='7';
-            else if(keytemp2=='4')keytemp2='6';
-            else if(keytemp2=='6')keytemp2='4';
-            else if(keytemp2=='3')keytemp2='1';
-            else if(keytemp2=='1')keytemp2='3';
+        if(!pause){
+            char keytemp=dirkeys[1],keytemp2=keydir1;
+            if(!p1right){
+                if(keytemp=='7')keytemp='9';
+                else if(keytemp=='9')keytemp='7';
+                else if(keytemp=='4')keytemp='6';
+                else if(keytemp=='6')keytemp='4';
+                else if(keytemp=='3')keytemp='1';
+                else if(keytemp=='1')keytemp='3';
+                if(keytemp2=='7')keytemp2='9';
+                else if(keytemp2=='9')keytemp2='7';
+                else if(keytemp2=='4')keytemp2='6';
+                else if(keytemp2=='6')keytemp2='4';
+                else if(keytemp2=='3')keytemp2='1';
+                else if(keytemp2=='1')keytemp2='3';
+            }
+
+            if(keytemp2!=keytemp)p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
+            if(u=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
+            if(i=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
+            if(o=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
+            if(k=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
+            if(p1keylist[0]=='0'&&p1keylist[1]=='0'&&p1keylist[2]=='0'&&p1keylist[3]=='0'&&p1keylist[4]=='0')for(short i=0;i<5;i++)p1keylist.pop_front();
+            if(p1keylist.size()>50)for(short i=0;i<5;i++)p1keylist.pop_back();
+
+
+            keytemp=dirkeys2[1],keytemp2=keydir2;
+            if(!p2right){
+                if(keytemp=='7')keytemp='9';
+                else if(keytemp=='9')keytemp='7';
+                else if(keytemp=='4')keytemp='6';
+                else if(keytemp=='6')keytemp='4';
+                else if(keytemp=='3')keytemp='1';
+                else if(keytemp=='1')keytemp='3';
+                if(keytemp2=='7')keytemp2='9';
+                else if(keytemp2=='9')keytemp2='7';
+                else if(keytemp2=='4')keytemp2='6';
+                else if(keytemp2=='6')keytemp2='4';
+                else if(keytemp2=='3')keytemp2='1';
+                else if(keytemp2=='1')keytemp2='3';
+            }
+
+            if(keytemp2!=keytemp)p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
+            if(u2=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
+            if(i2=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
+            if(o2=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
+            if(k2=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
+            if(p2keylist[0]=='0'&&p2keylist[1]=='0'&&p2keylist[2]=='0'&&p2keylist[3]=='0'&&p2keylist[4]=='0')for(short i=0;i<5;i++)p2keylist.pop_front();
+            if(p2keylist.size()>50)for(short i=0;i<5;i++)p2keylist.pop_back();
         }
-
-        if(keytemp2!=keytemp)p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
-        if(u=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
-        if(i=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
-        if(o=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
-        if(k=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
-        if(p1keylist[0]=='0'&&p1keylist[1]=='0'&&p1keylist[2]=='0'&&p1keylist[3]=='0'&&p1keylist[4]=='0')for(short i=0;i<5;i++)p1keylist.pop_front();
-        if(p1keylist.size()>50)for(short i=0;i<5;i++)p1keylist.pop_back();
-
-
-        keytemp=dirkeys2[1],keytemp2=keydir2;
-        if(!p2right){
-            if(keytemp=='7')keytemp='9';
-            else if(keytemp=='9')keytemp='7';
-            else if(keytemp=='4')keytemp='6';
-            else if(keytemp=='6')keytemp='4';
-            else if(keytemp=='3')keytemp='1';
-            else if(keytemp=='1')keytemp='3';
-            if(keytemp2=='7')keytemp2='9';
-            else if(keytemp2=='9')keytemp2='7';
-            else if(keytemp2=='4')keytemp2='6';
-            else if(keytemp2=='6')keytemp2='4';
-            else if(keytemp2=='3')keytemp2='1';
-            else if(keytemp2=='1')keytemp2='3';
-        }
-
-        if(keytemp2!=keytemp)p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
-        if(u2=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
-        if(i2=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
-        if(o2=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
-        if(k2=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
-        if(p2keylist[0]=='0'&&p2keylist[1]=='0'&&p2keylist[2]=='0'&&p2keylist[3]=='0'&&p2keylist[4]=='0')for(short i=0;i<5;i++)p2keylist.pop_front();
-        if(p2keylist.size()>50)for(short i=0;i<5;i++)p2keylist.pop_back();
-
 
         if(hitstop>0&&(!pause||nextframe))hitstop--;
 
