@@ -1009,7 +1009,7 @@ private:
         target.draw(m_vertices,states);
 
     }
-   sf::VertexArray m_vertices;
+   sf::VertexArray m_vertices,m_vertices2,m_vertices3;
    sf::Texture m_tileset;
 
 };
@@ -1230,6 +1230,10 @@ private:
    sf::VertexArray m_vertices;
 
 };
+
+void keypresscheck(sf::Keyboard::Key keycode,char *key){
+    if(sf::Keyboard::isKeyPressed(keycode)){if(*key=='0')*key='2';else if(*key=='2')*key='1';}else *key='0';
+}
 
 bool cmdcheck(int playercode,int len,char s[][5]){
     //s[][0]==num,s[][1]==u,s[][2]==i,s[][3]==o,s[][4]==k
@@ -1695,9 +1699,9 @@ int main()
         else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
         window.setSize(size);
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){if(menuconfirm=='0')menuconfirm='2';else if(menuconfirm=='2')menuconfirm='1';}else menuconfirm='0';
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){if(menuup=='0')menuup='2';else if(menuup=='2')menuup='1';}else menuup='0';
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){if(menudown=='0')menudown='2';else if(menudown=='2')menudown='1';}else menudown='0';
+        keypresscheck(sf::Keyboard::U,&menuconfirm);
+        keypresscheck(sf::Keyboard::W,&menuup);
+        keypresscheck(sf::Keyboard::S,&menudown);
 
         if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
         else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
@@ -1740,8 +1744,8 @@ int main()
             sf::Text combotext;
             combotext.setFont(font);combotext.setCharacterSize(32);
             combotext.setFillColor(sf::Color::Black);
-            float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
-                p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
+            float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1maxhp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
+                p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2maxhp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
                 bgx=0;
             short p1frame=0,p1act=0,p1col=0,p1anim[64][2],p1hitstun=0,p1blockstun=0,p1hitstop=0,p1buffer=0,p1movewaitx=0,p1movewaity=0,p1block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
                 p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer,p2movewaitx=0,p2movewaity=0,p2block=-1,
@@ -1782,16 +1786,15 @@ int main()
                 if(w2==true&&s2==true){w2=true;s2=false;}
                 if(a2==true&&d2==true){a2=false;d2=false;}
 
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){if(u=='0')u='2';else if(u=='2')u='1';}else u='0';
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){if(i=='0')i='2';else if(i=='2')i='1';}else i='0';
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::O)){if(o=='0')o='2';else if(o=='2')o='1';}else o='0';
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){if(k=='0')k='2';else if(k=='2')k='1';}else k='0';
+                keypresscheck(sf::Keyboard::U,&u);
+                keypresscheck(sf::Keyboard::I,&i);
+                keypresscheck(sf::Keyboard::O,&o);
+                keypresscheck(sf::Keyboard::K,&k);
 
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){if(u2=='0')u2='2';else if(u2=='2')u2='1';}else u2='0';
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){if(i2=='0')i2='2';else if(i2=='2')i2='1';}else i2='0';
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::C)){if(o2=='0')o2='2';else if(o2=='2')o2='1';}else o2='0';
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)){if(k2=='0')k2='2';else if(k2=='2')k2='1';}else k2='0';
-
+                keypresscheck(sf::Keyboard::Z,&u2);
+                keypresscheck(sf::Keyboard::X,&i2);
+                keypresscheck(sf::Keyboard::C,&o2);
+                keypresscheck(sf::Keyboard::LAlt,&k2);
 
                 if(w&&!a&&!s&&!d)keydir1='8';
                 else if(!w&&a&&!s&&!d)keydir1='4';
@@ -1936,7 +1939,11 @@ int main()
                             temp3[0]-=1;
                         }
                     }
-                    if(combo==0){comboscaling=100;if(training){p1hp=1000;p2hp=1000;}}
+                    if(combo==0)comboscaling=100;
+                    if(training&&combo==0&&p1hp<p1maxhp)p1hp+=5;
+                    if(training&&combo==0&&p2hp<p2maxhp)p2hp+=5;
+                    if(p1hp>p1maxhp)p1hp=p1maxhp;
+                    if(p2hp>p2maxhp)p2hp=p2maxhp;
                     if(comboscaling<20)comboscaling=20;
                     p1hitwait=animq1.size();
                     p2hitwait=animq2.size();
@@ -2183,10 +2190,10 @@ int main()
 
                 menus.setcolor(6,!pause,menuselect);
                 if(pause){
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){if(menuconfirm=='0')menuconfirm='2';else if(menuconfirm=='2')menuconfirm='1';}else menuconfirm='0';
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){if(menucancel=='0')menucancel='2';else if(menucancel=='2')menucancel='1';}else menucancel='0';
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){if(menuup=='0')menuup='2';else if(menuup=='2')menuup='1';}else menuup='0';
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){if(menudown=='0')menudown='2';else if(menudown=='2')menudown='1';}else menudown='0';
+                    keypresscheck(sf::Keyboard::U,&menuconfirm);
+                    keypresscheck(sf::Keyboard::I,&menucancel);
+                    keypresscheck(sf::Keyboard::W,&menuup);
+                    keypresscheck(sf::Keyboard::S,&menudown);
                     if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
                     else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
                     if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
