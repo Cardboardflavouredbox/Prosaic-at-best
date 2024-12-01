@@ -514,11 +514,14 @@ class menu : public sf::Drawable, public sf::Transformable
 {
 public:
 
-    bool load(const std::string& tileset,short cnt,float x,float y,float spacingx, float spacingy)
+    bool load(const std::string& tileset)
     {
         if (!m_tileset.loadFromFile(tileset))return false;
         m_vertices.setPrimitiveType(sf::Triangles);
         m_vertices.resize(64);
+        return true;
+    }
+    void setmenu(short cnt,float x,float y,float spacingx, float spacingy,short tcode){
         for(short i=0;i<cnt;i++){
             sf::Vertex* tri = &m_vertices[6*i];
             tri[0].position = sf::Vector2f(x+spacingx*i,y+spacingy*i);
@@ -527,14 +530,14 @@ public:
             tri[3].position = sf::Vector2f(x+spacingx*i,y+16+spacingy*i);
             tri[4].position = sf::Vector2f(x+64+spacingx*i,y+spacingy*i);
             tri[5].position = sf::Vector2f(x+64+spacingx*i,y+16+spacingy*i);
-            tri[0].texCoords = sf::Vector2f(0,i*16);
-            tri[1].texCoords = sf::Vector2f(64,i*16);
-            tri[2].texCoords = sf::Vector2f(0,i*16+16);
-            tri[3].texCoords = sf::Vector2f(0,i*16+16);
-            tri[4].texCoords = sf::Vector2f(64,i*16);
-            tri[5].texCoords = sf::Vector2f(64,i*16+16);
+            tri[0].texCoords = sf::Vector2f(tcode*64,i*16);
+            tri[1].texCoords = sf::Vector2f(64+tcode*64,i*16);
+            tri[2].texCoords = sf::Vector2f(tcode*64,i*16+16);
+            tri[3].texCoords = sf::Vector2f(tcode*64,i*16+16);
+            tri[4].texCoords = sf::Vector2f(64+tcode*64,i*16);
+            tri[5].texCoords = sf::Vector2f(64+tcode*64,i*16+16);
         }
-        return true;
+
     }
 
     void setcolor(short cnt,bool invisible,short placeinput){
@@ -1664,21 +1667,22 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(256,240), "fighting game thingy");
+    sf::RenderWindow window(sf::VideoMode(256,240), "Prosaic at Best");
     sf::Event event;
     sf::Sprite title;
     sf::Texture titletexture;
     if (!titletexture.loadFromFile("title.png")){}
     title.setTexture(titletexture);
-	menu mainmenu;
-	if (!mainmenu.load("menu.png",4,144,120,0,16)){}
+	menu menus;
+	if (!menus.load("menu.png")){}
+	menus.setmenu(6,144,120,0,16,0);
     window.setFramerateLimit(60);
     sf::RenderTexture renderTexture;
     if (!renderTexture.create(256, 240)){}
     sf::Font font;
     if(!font.loadFromFile("PerfectDOSVGA437.ttf")){}
-    char keydir1='5',keydir2='5',u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0';
-    short menuselect=0;
+    char keydir1='5',keydir2='5',u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0',menuup='0',menudown='0',menuconfirm='0',menucancel='0';
+    short menuselect=0,rounds=0;
     bool w,a,s,d,w2,a2,s2,d2;
     float screenWidth = 256.f,screenHeight = 240.f;
 
@@ -1691,26 +1695,29 @@ int main()
         else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
         window.setSize(size);
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){if(u=='0')u='2';else if(u=='2')u='1';}else u='0';
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){if(i=='0')i='2';else if(i=='2')i='1';}else i='0';
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){if(o=='0')o='2';else if(o=='2')o='1';}else o='0';
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){if(menuconfirm=='0')menuconfirm='2';else if(menuconfirm=='2')menuconfirm='1';}else menuconfirm='0';
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){if(menuup=='0')menuup='2';else if(menuup=='2')menuup='1';}else menuup='0';
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){if(menudown=='0')menudown='2';else if(menudown=='2')menudown='1';}else menudown='0';
 
-        if(i=='2'){menuselect--;if(menuselect<0)menuselect=3;}
-        else if(o=='2'){menuselect++;if(menuselect>3)menuselect=0;}
-        mainmenu.setcolor(4,false,menuselect);
+        if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
+        else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
+        menus.setcolor(6,false,menuselect);
 
         window.clear();
         renderTexture.clear();
 
         renderTexture.draw(title);
-        renderTexture.draw(mainmenu);
+        renderTexture.draw(menus);
         renderTexture.display();
         const sf::Texture& texture = renderTexture.getTexture();
         sf::Sprite rt(texture);
         window.draw(rt);
         window.display();
-
-        if(u=='2'){
+        if(menuconfirm=='2'&&menuselect==5)window.close();
+        else if(menuconfirm=='2'&&menuselect!=4){
+            bool training=false;
+            if(menuselect==3)training=true;
+            menus.setmenu(6,92,72,0,16,1);
             hitflash hf;
             healthbar hb;
             timeui time;time.create();
@@ -1730,10 +1737,7 @@ int main()
             sf::Sprite background,healthui;
             background.setTexture(bgtexture);
             healthui.setTexture(hutexture);
-            sf::Text pausetext;
             sf::Text combotext;
-            pausetext.setFont(font);pausetext.setCharacterSize(16);
-            pausetext.setFillColor(sf::Color::White);
             combotext.setFont(font);combotext.setCharacterSize(32);
             combotext.setFillColor(sf::Color::Black);
             float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
@@ -1743,14 +1747,14 @@ int main()
                 p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer,p2movewaitx=0,p2movewaity=0,p2block=-1,
                 p1hbframe=0,p2hbframe=0,p1grabstate=-1,p2grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
                 hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0,p1movetype=-1,p2movetype=-1;//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
-            bool p1air=false,p2air=false,seeboxes=false,F1key=false,F2key=false,F3key=false,
+            bool p1air=false,p2air=false,seeboxes=false,F3key=false,
                 pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[32],p2cancel[32],
                 p1whiff=false,p2whiff=false,p1neutural,p2neutural,p1right=true,p2right=false,
                 p1hit=false,p2hit=false,p1slide=false,p2slide=false,
                 hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,
                 p1knockdown=false,p2knockdown=false,p1comboed=false,p2comboed=false,
-                p1kdowned=false,p2kdowned=false,playertop=false,keylistshow=false;
-            while (window.isOpen()){
+                p1kdowned=false,p2kdowned=false,playertop=false,keylistshow=false,roundquit=false;
+            while (window.isOpen()&&!roundquit){
                 while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
                 sf::Vector2u size = window.getSize();
                 heightRatio = screenHeight / screenWidth;widthRatio = screenWidth / screenHeight;
@@ -1758,10 +1762,8 @@ int main()
                 else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
                 window.setSize(size);
 
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::F1)){if(!F1key){F1key=true;if(seeboxes)seeboxes=false;else seeboxes=true;}}else F1key=false;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::F2)){if(!F2key){F2key=true;if(keylistshow)keylistshow=false;else keylistshow=true;}}else F2key=false;
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){if(!Enterkey){Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
                 w=false;a=false;s=false;d=false;
@@ -1861,7 +1863,7 @@ int main()
                             else if(p2buffer==1||p2buffer==3||p2buffer==11)p2buffer=0;
                     }
                 }
-                if(!pause||pause&&nextframe)roundframecount++;
+                if((!pause||(pause&&nextframe))&&!training)roundframecount++;
                 if((pause==false||(pause==true&&nextframe==true))&&hitstop==0){
                     nextframe=false;
 
@@ -1934,7 +1936,7 @@ int main()
                             temp3[0]-=1;
                         }
                     }
-                    if(combo==0)comboscaling=100;
+                    if(combo==0){comboscaling=100;if(training){p1hp=1000;p2hp=1000;}}
                     if(comboscaling<20)comboscaling=20;
                     p1hitwait=animq1.size();
                     p2hitwait=animq2.size();
@@ -2163,7 +2165,6 @@ int main()
                 combotext.setString(tempstr);
                 combotext.setOrigin(combotext.getLocalBounds().width,0);
                 if (combo>1)cui.create(p2comboed||p2kdowned,comboslide);
-                pausetext.setString("Paused");
 
                 p1ilist.create(p1keylist,true);
                 p2ilist.create(p2keylist,false);
@@ -2174,12 +2175,28 @@ int main()
                 healthui.setPosition(0.f,0.f);
                 if(p2comboed||p2kdowned)combotext.setPosition(36.f-comboslide,25.f);
                 else combotext.setPosition(248.f+comboslide,25.f);
-                pausetext.setPosition(200.f, 16.f);
                 p1.setPosition(int(p1x-64+bgx),int(p1y-64));
                 p1shadow.setPosition(p1x-64+bgx,184+(p1y-176)/8);
                 p2.setPosition(int(p2x-64+bgx),int(p2y-64));
                 p2shadow.setPosition(p2x-64+bgx,184+(p2y-176)/8);
                 background.setPosition(bgx-125,0.f);
+
+                menus.setcolor(6,!pause,menuselect);
+                if(pause){
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){if(menuconfirm=='0')menuconfirm='2';else if(menuconfirm=='2')menuconfirm='1';}else menuconfirm='0';
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){if(menucancel=='0')menucancel='2';else if(menucancel=='2')menucancel='1';}else menucancel='0';
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){if(menuup=='0')menuup='2';else if(menuup=='2')menuup='1';}else menuup='0';
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){if(menudown=='0')menudown='2';else if(menudown=='2')menudown='1';}else menudown='0';
+                    if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
+                    else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
+                    if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
+                    else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
+                    else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
+                    else if(menuconfirm=='2'&&menuselect==5)roundquit=true;
+                }
+
+                sf::RectangleShape blackscreen(sf::Vector2f(256.f, 240.f));
+                blackscreen.setFillColor(sf::Color(0,0,0,170));
 
                 p1.setanim(p1anim,p1right);
                 p2.setanim(p2anim,p2right);
@@ -2206,9 +2223,8 @@ int main()
                 renderTexture.draw(healthui);
                 renderTexture.draw(time);
                 if(combo>1){renderTexture.draw(cui);renderTexture.draw(combotext);}
-                if(pause)renderTexture.draw(pausetext);
                 if(hitstop>0)renderTexture.draw(hf);
-
+                if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
                 sf::Sprite rt(texture);
@@ -2225,6 +2241,12 @@ int main()
                 }
                 window.display();
             }
+            menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
+            dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
+            dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
+            p1keylist.clear();p2keylist.clear();
+            animq1.clear();animq2.clear();hitboxanim1.clear();hitboxanim2.clear();
+            menus.setmenu(6,144,120,0,16,0);
         }
     }
 	return 0;
