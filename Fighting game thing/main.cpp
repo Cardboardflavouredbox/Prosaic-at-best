@@ -1670,7 +1670,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
         }
         else if(*act==18){//special A (o)
             *col=0;*multihit=false;*hitstop=16;*kback=0;*hitstun=0;*blockstun=-5;*slide=true;*movewaitx=10;*dmg=36;*kdown=true;*launch=11;*movetype=2;
-            animq.insert(animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            animq.insert(animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,22,21,21,20,20,20});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
@@ -1820,7 +1820,7 @@ int main()
 
         characterselect charselect;
         if (!charselect.load("charactericon.png")){}
-        charselect.setcharselect(4,2,32,112);
+        charselect.setcharselect(4,2,32,144);
         short menux=0,menuy=0;
         while (window.isOpen()&&!gamequit){
             sf::Vector2u size = window.getSize();
@@ -1842,10 +1842,15 @@ int main()
             if(menuconfirm=='2')break;
             if(menucancel=='2'){gamequit=true;break;}
             charselect.setselect(4,2,menux,menuy);
+            sf::RectangleShape rect(sf::Vector2f(256.f, 32.f)),rect2(sf::Vector2f(256.f, 112.f));
+            rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
+            rect2.setPosition(0,128);
 
             window.clear();
             renderTexture.clear();
 
+            renderTexture.draw(rect);
+            renderTexture.draw(rect2);
             renderTexture.draw(charselect);
             renderTexture.display();
             const sf::Texture& texture = renderTexture.getTexture();
