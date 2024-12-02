@@ -6,10 +6,9 @@
 #include <string.h>
 #include <math.h>
 
-
 using namespace std;
-std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2,p1keylist,p2keylist;
-std::deque<int> animq1,animq2,hitboxanim1,hitboxanim2;
+std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
+
 std::random_device rd;
 std::mt19937 gen(rd());
 
@@ -365,7 +364,7 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{0,5},{13,7},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                   //crouch i1(38)
+                   //crouch i1 (38)
                    {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -374,7 +373,7 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{15,5},{16,5},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                   //crouch i2(39)
+                   //crouch i2 (39)
                    {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -383,7 +382,7 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{14,7},{15,7},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                   //crouch i3(40)
+                   //crouch i3 (40)
                    {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -392,7 +391,7 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{13,8},{14,8},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                   //crouch i4(41)
+                   //crouch i4 (41)
                    {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -401,7 +400,7 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{15,11},{16,11},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
-                   //crouch i5(42)
+                   //crouch i5 (42)
                    {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
@@ -438,8 +437,71 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //jump u2(46)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{2,10},{0,12},{1,12},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialC1 (47)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{2,11},{0,13},{1,13},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialC2 (48)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{3,10},{2,12},{3,12},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialC3 (49)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{3,11},{2,13},{3,13},{4,13},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialC4 (50)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{4,12},{5,12},{6,12},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialC5 (51)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{0,0},{1,0},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{5,13},{6,13},{7,13},{-1},{-1},
+                   {-1},{-1},{-1},{0,2},{1,2},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //specialC6 (52)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{13,9},{14,9},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{13,10},{14,10},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{13,11},{14,11},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //crouch hit(53)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2},
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2},
                    hitboxcount[256]={0,1,1,1,1,1,1,1,1,1,1};
 float comboscaling=100.0,
 colbox[16][1][2][2]={{{{-7,-10},{9,32}}},//standing
@@ -495,6 +557,13 @@ hurtbox[256][8][2][2]={
                     {{{-10,0},{12,29}},{{-7,-15},{9,0}}},//jumpfall(44)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//jump u1(45)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//jump u2(46)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//specialC1 (47)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//specialC2 (48)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//specialC3 (49)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-2,0},{26,12}}},//specialC4 (50)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-2,0},{26,12}}},//specialC5 (51)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-2,0},{26,12}}},//specialC6 (52)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch hit(53)
                     },
 hitbox[32][8][2][2]={{0},//idle (0)
                     {{{4,-1},{22,7}}},//stand u(1)
@@ -546,8 +615,8 @@ public:
             for(short j=0;j<xlen;j++){
             sf::Vertex* tri = &m_vertices[6*(i*xlen+j)];
             for(short k=0;k<6;k++){
-                if(x==j&&y==i)tri[k].color=sf::Color(85,85,85,255);
-                else tri[k].color=sf::Color(255,255,255,255);
+                if(x==j&&y==i)tri[k].color=sf::Color(255,255,255,255);
+                else tri[k].color=sf::Color(170,170,170,255);
             }
         }
     }
@@ -1354,12 +1423,13 @@ bool cmdcheck(int playercode,int len,char s[][5]){
 
 int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,char k){
     char c236[4][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
-          c623[4][5]={{'0','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
-          c323[4][5]={{'0','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'3','0','0','0','0'}},
-          c626[4][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
-          c636[4][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'6','0','0','0','0'}},
-          c63236[6][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'3','0','0','0','0'},{'6','0','0','0','0'}},
-          c6236[5][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}};
+        c214[4][5]={{'0','0','0','0','0'},{'4','0','0','0','0'},{'1','0','0','0','0'},{'2','0','0','0','0'}},
+        c623[4][5]={{'0','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
+        c323[4][5]={{'0','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'3','0','0','0','0'}},
+        c626[4][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
+        c636[4][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'6','0','0','0','0'}},
+        c63236[6][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'3','0','0','0','0'},{'6','0','0','0','0'}},
+        c6236[5][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}};
             if(!air){
                 if(keydir=='1'||keydir=='2'||keydir=='3'){
                     //crouching actions
@@ -1409,11 +1479,12 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
                         c236[0][2]='0';c636[0][2]='0';c626[0][2]='0';c63236[0][2]='0';c6236[0][2]='0';
                     }
                     else if(u=='2'){
-                        c236[0][1]='2';c636[0][1]='2';c626[0][1]='2';c63236[0][1]='2';c6236[0][1]='2';
-                        if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 21;//special B weak
+                        c214[0][1]='2';c236[0][1]='2';c636[0][1]='2';c626[0][1]='2';c63236[0][1]='2';c6236[0][1]='2';
+                        if(cmdcheck(playercode,4,c214))return 28;//special C weak
+                        else if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 21;//special B weak
                         else if(cmdcheck(playercode,4,c236))return 16;//special A weak
                         else return 8;//weak normal
-                        c236[0][1]='0';c636[0][1]='0';c626[0][1]='0';c63236[0][1]='0';c6236[0][1]='0';
+                        c214[0][1]='0';c236[0][1]='0';c636[0][1]='0';c626[0][1]='0';c63236[0][1]='0';c6236[0][1]='0';
                     }
                     else if(k=='2'){
                         c236[0][4]='2';c636[0][4]='2';c626[0][4]='2';c63236[0][4]='2';c6236[0][4]='2';
@@ -1458,18 +1529,18 @@ void boolfill(bool *arr,bool value,short a[]){
 }
 
 
-void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbframe,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
+void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque<int> &atkfx,short *hbframe,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
     bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,float enemyy,short *hitstun,short enemyhitstun,
     float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch,
     float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned,short *movewaitx,short *movewaity, float *pushaway,float *enemypaway,
-    short *movetype,short enemymovetype,short *blockstun,short enemyblockstun,float grab[],float enemygrab[2],short *grabstate,short enemygstate){
+    short *movetype,short enemymovetype,short *blockstun,short enemyblockstun,float grab[],float enemygrab[2],short *grabstate,short enemygstate,short *landdelay){
     if(*kdowned&&animq.size()<10&&!*comboed&&!*act==0&&*hp>0){
         for(short i=0;i<3;i++){animq.push_back(8);}
         *kdowned=false;combo=0;
     }
     if(*hit){
-        *hit=false;animq.clear();hitboxanim.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5*(comboscaling+100)/200;else *jumpy=0;*movewaitx=-1;*movewaity=-1;
-        *movetype=-1;grab[0]=0;grab[1]=0;*grabstate=-1;
+        *hit=false;animq.clear();hitboxanim.clear();atkfx.clear();if(*air&&enemylaunch!=0)*jumpy=-enemykback/5*(comboscaling+100)/200;else *jumpy=0;
+        *movetype=-1;grab[0]=0;grab[1]=0;*grabstate=-1;*landdelay=0;*movewaitx=-1;*movewaity=-1;
         if(*hp<=0)*block=-1;
         if(((enemymovetype==1||enemymovetype==2)&&*block==1)||((enemymovetype==3||enemymovetype==2)&&*block==0)||*block==2){
             *slide=true;
@@ -1487,8 +1558,8 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             else *slide=true;
             *comboed=true;
             if(enemygrab[0]!=0||enemygrab[1]!=0)*col=3;
-            else *col=0;
-            for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
+            if(*col==1)for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(53);
+            else for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
             if(enemykdown||*hp<=0)*kdowned=true;
             else *kdowned=false;
         }
@@ -1531,7 +1602,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(*x<enemyx)*jumpx=-8;
             else *jumpx=4;
             *pushaway=8;
-            animq.clear();hitboxanim.clear();
+            animq.clear();hitboxanim.clear();atkfx.clear();
             for(short i=0;i<hitwait;i++)animq.push_back(32);
         }
 
@@ -1548,9 +1619,9 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
     if(!*hit&&((animq.empty()&&*movewaitx==-1&&*movewaity==-1)||((cancel[*act]==true)&&((!*whiff)||*movetype==0||*grabstate==3)))){
         if(cancel[*act]==true){
             *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewaitx=-1;*movewaity=-1;
-            *movetype=-1;grab[0]=0;grab[1]=0;
+            *movetype=-1;grab[0]=0;grab[1]=0;*landdelay=0;
             short temp[0]={};boolfill(cancel,true,temp);
-            animq.clear();hitboxanim.clear();
+            animq.clear();hitboxanim.clear();atkfx.clear();
         }
 
         if(*act==1)*block=0;
@@ -1571,17 +1642,17 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(*right)*x-=3;else *x+=3;
             if(*x<enemyx)*right=true;else *right=false;
         }
-        else if(*act==2){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=-7;else*jumpx=7;}//left dash
+        else if(*act==2){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=-7;else*jumpx=7;*landdelay=3;}//left dash
         else if(*act==3){//right walk
             *col=0;
             memcpy(anim,animlib[17],sizeof(animlib[0]));
             if(*right)*x+=3;else *x-=3;
             if(*x<enemyx)*right=true;else *right=false;
         }
-        else if(*act==4){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=7;else*jumpx=-7;}//right dash
-        else if(*act==5){*col=0;*jumpy=-12.0;*movewaity=4;animq.insert(animq.begin(),{8,8,8,43});}//up jump
-        else if(*act==6){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(),{8,8,8,43});}//left jump
-        else if(*act==7){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(),{8,8,8,43});}//right jump
+        else if(*act==4){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=7;else*jumpx=-7;*landdelay=5;}//right dash
+        else if(*act==5){*col=0;*jumpy=-12.0;*movewaity=4;animq.insert(animq.begin(),{8,8,8,43});*landdelay=5;}//up jump
+        else if(*act==6){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(),{8,8,8,43});*landdelay=3;}//left jump
+        else if(*act==7){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(),{8,8,8,43});*landdelay=3;}//right jump
         else if(*act==8){//u (light normal)
             if(*air){
                 *col=0;*multihit=false;*hitstop=12;*kback=2;*hitstun=8;*blockstun=5;*dmg=12;*movetype=3;
@@ -1680,19 +1751,22 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(*right)*jumpx=4;else *jumpx=-4;
         }
         else if(*act==21){//special B(u)
-            *col=0;*multihit=false;*hitstop=13;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=23;*kdown=true;*launch=8;*movetype=2;*jumpy=-11;
+            *col=0;*multihit=false;*hitstop=13;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=23;
+            *kdown=true;*launch=8;*movetype=2;*jumpy=-11;*landdelay=5;
             animq.insert(animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==22){//special B(i)
-            *col=0;*multihit=false;*hitstop=15;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=34;*kdown=true;*launch=9;*movetype=2;*jumpy=-12;
+            *col=0;*multihit=false;*hitstop=15;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*dmg=34;
+            *kdown=true;*launch=9;*movetype=2;*jumpy=-12;*landdelay=5;
             animq.insert(animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
         else if(*act==23){//special B(o)
-            *col=0;*multihit=false;*hitstop=17;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=45;*kdown=true;*launch=10;*movetype=2;*jumpy=-13;
+            *col=0;*multihit=false;*hitstop=17;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=45;
+            *kdown=true;*launch=10;*movetype=2;*jumpy=-13;*landdelay=5;
             animq.insert(animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=8;else *jumpx=-8;
@@ -1721,6 +1795,11 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,4});
             if(*right)*jumpx=4;else *jumpx=-4;
         }
+        else if(*act==28){//special C (u)
+            *col=0;*multihit=false;*hitstop=12;*kback=7;*hitstun=1;*blockstun=-3;*slide=true;*dmg=16;*movetype=2;
+            animq.insert(animq.begin(),{47,47,48,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,52,52});
+            atkfx.insert(atkfx.begin(),{0,0,0,0,0,0,0,0,0,1});
+        }
     }
     if(*movewaitx>0)*movewaitx-=1;
     else{*x+=*jumpx;*movewaitx=-1;}
@@ -1734,6 +1813,20 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
             if(*air)*enemypaway=0;
             else{if(*x<enemyx)*x-=*enemypaway;else if(*x>enemyx)*x+=*enemypaway;*enemypaway-=1;}
     }
+    if(*air){
+            *block=-1;
+            *jumpy+=0.8;
+            if(*jumpy>0){
+                if(*neutural){memcpy(anim,animlib[44],sizeof(animlib[44]));*frame=44;}
+            }
+            if(*y>175){
+                if(*kdowned){}//add downed landing animation
+                if(!*comboed){*col=1;animq.clear();hitboxanim.clear();atkfx.clear();for(short i=0;i<*landdelay;i++)animq.push_back(8);}
+                *landdelay=0;
+                *movetype=0;
+                *jumpx=0;*jumpy=0;*y=176;*air=false;
+            }
+        }
     if(!hitboxanim.empty()){
         *hbframe=hitboxanim[0];
         hitboxanim.pop_front();
@@ -1744,24 +1837,14 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,short *hbf
         memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
         if(!(animq[0]==19&&*hp<=0)&&!(*air&&animq.size()==1))animq.pop_front();
     }
-    if(*air){
-            *block=-1;
-            *jumpy+=0.8;
-            if(*jumpy>0){
-                if(*neutural){memcpy(anim,animlib[44],sizeof(animlib[44]));*frame=44;}
-            }
-            if(*y>175){
-                if(*kdowned){}//add downed landing animation
-                if(!*comboed){*col=1;animq.clear();hitboxanim.clear();animq.insert(animq.begin(),{8,8,8,8,8,8,8,8});}
-                *movetype=0;
-                short temp[6]={8,9,10,12,13,14};boolfill(cancel,true,temp);
-                *jumpx=0;*jumpy=0;*y=176;*air=false;
-            }
-        }
     if(enemygstate==3||enemygstate==4){
         if(*x<enemyx)*x=enemyx-enemygrab[0];
         else *x=enemyx+enemygrab[0];
         *y=enemyy-enemygrab[1];
+    }
+    if(!atkfx.empty()){
+        if(atkfx[0]==1){}//slow projectile
+        atkfx.pop_front();
     }
 }
 
@@ -1845,10 +1928,14 @@ int main()
             sf::RectangleShape rect(sf::Vector2f(256.f, 32.f)),rect2(sf::Vector2f(256.f, 112.f));
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
             rect2.setPosition(0,128);
+            sf::Texture bgtexture;
+            if (!bgtexture.loadFromFile("stage1.png")){}
+            sf::Sprite bg(bgtexture);
+            bg.setPosition(-125.f,0.f);
 
             window.clear();
             renderTexture.clear();
-
+            renderTexture.draw(bg);
             renderTexture.draw(rect);
             renderTexture.draw(rect2);
             renderTexture.draw(charselect);
@@ -1879,13 +1966,16 @@ int main()
             background.setTexture(bgtexture);healthui.setTexture(hutexture);
             sf::Text combotext;
             combotext.setFont(font);combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
+            std::deque<char>p1keylist,p2keylist;
+            std::deque<int> animq1,animq2,hitboxanim1,hitboxanim2,p1atkfx,p2atkfx;
             float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1maxhp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
                 p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2maxhp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
                 bgx=0;
-            short p1frame=0,p1act=0,p1col=0,p1anim[64][2],p1hitstun=0,p1blockstun=0,p1hitstop=0,p1buffer=0,p1movewaitx=0,p1movewaity=0,p1block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
-                p2frame=0,p2act=0,p2col=0,p2anim[64][2],p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer,p2movewaitx=0,p2movewaity=0,p2block=-1,
+            short p1frame=0,p1act=0,p1col=0,p1anim[64][2]={},p1hitstun=0,p1blockstun=0,p1hitstop=0,p1buffer=0,p1movewaitx=0,p1movewaity=0,p1block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
+                p2frame=0,p2act=0,p2col=0,p2anim[64][2]={},p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer=0,p2movewaitx=0,p2movewaity=0,p2block=-1,
                 p1hbframe=0,p2hbframe=0,p1grabstate=-1,p2grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
-                hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0,p1movetype=-1,p2movetype=-1;//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
+                hitstop=0,p1hitwait=0,p2hitwait=0,sfx=0,p1movetype=-1,p2movetype=-1,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
+                p1landdelay=0,p2landdelay=0;
             bool p1air=false,p2air=false,seeboxes=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[32],p2cancel[32],
                 p1whiff=false,p2whiff=false,p1neutural,p2neutural,p1right=true,p2right=false,
                 p1hit=false,p2hit=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,
@@ -2013,24 +2103,24 @@ int main()
 
                     //make an attack clashing system at some point
                     if(playertop){
-                        characterdata(animq1,hitboxanim1,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
+                        characterdata(animq1,hitboxanim1,p1atkfx,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                                       &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                                       &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
-                                      &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate);
-                        characterdata(animq2,hitboxanim2,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
+                                      &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate,&p1landdelay);
+                        characterdata(animq2,hitboxanim2,p2atkfx,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                                       &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                                       &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
-                                      &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate);
+                                      &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate,&p2landdelay);
                                         }
                     else{
-                        characterdata(animq2,hitboxanim2,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
+                        characterdata(animq2,hitboxanim2,p2atkfx,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                                       &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                                       &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
-                                      &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate);
-                        characterdata(animq1,hitboxanim1,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
+                                      &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate,&p2landdelay);
+                        characterdata(animq1,hitboxanim1,p1atkfx,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                                       &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                                       &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
-                                      &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate);
+                                      &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate,&p1landdelay);
                                         }
 
                     float temp[2],temp2[2],temp3[2],temp4[2];
@@ -2134,7 +2224,9 @@ int main()
                             p2dmg/=5;
                             hitstop=p2hitstop*5/4;
                         }
-                        else{memcpy(p1anim,animlib[9],sizeof(animlib[9]));if(p2hitstop!=0||p2dmg!=0)combo++;
+                        else{
+                            if(p1col==1)memcpy(p1anim,animlib[53],sizeof(animlib[53]));else memcpy(p1anim,animlib[9],sizeof(animlib[9]));
+                            if(p2hitstop!=0||p2dmg!=0)combo++;
                             if(combo>3)comboscaling=comboscaling/10*9;
                             p2dmg=p2dmg/100*comboscaling;
                             hitstop=p2hitstop;
@@ -2196,7 +2288,9 @@ int main()
                             p1dmg/=5;
                             hitstop=p1hitstop/4*5;
                         }
-                        else{memcpy(p2anim,animlib[9],sizeof(animlib[9]));if(p1hitstop!=0||p1dmg!=0)combo++;
+                        else{
+                            if(p2col==1)memcpy(p2anim,animlib[53],sizeof(animlib[53]));else memcpy(p2anim,animlib[9],sizeof(animlib[9]));
+                            if(p1hitstop!=0||p1dmg!=0)combo++;
                             if(combo>3)comboscaling=comboscaling/10*9;
                             p1dmg=p1dmg/100*comboscaling;
                             hitstop=p1hitstop;
@@ -2385,8 +2479,6 @@ int main()
         menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;gamequit=false;
         dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
         dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
-        p1keylist.clear();p2keylist.clear();
-        animq1.clear();animq2.clear();hitboxanim1.clear();hitboxanim2.clear();
         menus.setmenu(6,144,120,0,16,0);
         }
 
