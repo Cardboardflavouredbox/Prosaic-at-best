@@ -527,11 +527,11 @@ public:
             for(short j=0;j<xlen;j++){
             sf::Vertex* tri = &m_vertices[6*(i*xlen+j)];
             tri[0].position = sf::Vector2f(x+spacingx*j,y+spacingy*i);
-            tri[1].position = sf::Vector2f(x+64+spacingx*j,y+spacingy*i);
-            tri[2].position = sf::Vector2f(x+spacingx*j,y+16+spacingy*i);
-            tri[3].position = sf::Vector2f(x+spacingx*j,y+16+spacingy*i);
-            tri[4].position = sf::Vector2f(x+64+spacingx*j,y+spacingy*i);
-            tri[5].position = sf::Vector2f(x+64+spacingx*j,y+16+spacingy*i);
+            tri[1].position = sf::Vector2f(x+32+spacingx*j,y+spacingy*i);
+            tri[2].position = sf::Vector2f(x+spacingx*j,y+32+spacingy*i);
+            tri[3].position = sf::Vector2f(x+spacingx*j,y+32+spacingy*i);
+            tri[4].position = sf::Vector2f(x+32+spacingx*j,y+spacingy*i);
+            tri[5].position = sf::Vector2f(x+32+spacingx*j,y+32+spacingy*i);
             tri[0].texCoords = sf::Vector2f((i*xlen+j)*32,0);
             tri[1].texCoords = sf::Vector2f((i*xlen+j+1)*32,0);
             tri[2].texCoords = sf::Vector2f((i*xlen+j)*32,32);
@@ -541,7 +541,7 @@ public:
         }
     }
 
-    void setcolor(short xlen,short ylen,short x, short y){
+    void setselect(short xlen,short ylen,short x, short y){
         for(short i=0;i<ylen;i++)
             for(short j=0;j<xlen;j++){
             sf::Vertex* tri = &m_vertices[6*(i*xlen+j)];
@@ -1782,7 +1782,7 @@ int main()
     if (!renderTexture.create(256, 240)){}
     sf::Font font;
     if(!font.loadFromFile("PerfectDOSVGA437.ttf")){}
-    char keydir1='5',keydir2='5',u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0',menuup='0',menudown='0',menuconfirm='0',menucancel='0';
+    char keydir1='5',keydir2='5',u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0',menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
     short menuselect=0,rounds=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
@@ -1814,12 +1814,45 @@ int main()
         sf::Sprite rt(texture);
         window.draw(rt);
         window.display();
+
         if(menuconfirm=='2'&&menuselect==5)window.close();
         else if(menuconfirm=='2'&&menuselect!=4){
-        //characterselect charselect;
-        //if (!charselect.load("charactericon.png")){}
-        //charselect.setcharselect();
 
+        characterselect charselect;
+        if (!charselect.load("charactericon.png")){}
+        charselect.setcharselect(4,2,32,112);
+        short menux=0,menuy=0;
+        while (window.isOpen()&&!gamequit){
+            sf::Vector2u size = window.getSize();
+            float  heightRatio = screenHeight / screenWidth,widthRatio = screenWidth / screenHeight;
+            if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
+            else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
+            window.setSize(size);
+            while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
+            keypresscheck(sf::Keyboard::U,&menuconfirm);
+            keypresscheck(sf::Keyboard::I,&menucancel);
+            keypresscheck(sf::Keyboard::W,&menuup);
+            keypresscheck(sf::Keyboard::S,&menudown);
+            keypresscheck(sf::Keyboard::A,&menuleft);
+            keypresscheck(sf::Keyboard::D,&menuright);
+            if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}
+            if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
+            if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}
+            if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
+            if(menuconfirm=='2')break;
+            if(menucancel=='2'){gamequit=true;break;}
+            charselect.setselect(4,2,menux,menuy);
+
+            window.clear();
+            renderTexture.clear();
+
+            renderTexture.draw(charselect);
+            renderTexture.display();
+            const sf::Texture& texture = renderTexture.getTexture();
+            sf::Sprite rt(texture);
+            window.draw(rt);
+            window.display();
+        }
 
         if(!gamequit){
             bool training=false;
