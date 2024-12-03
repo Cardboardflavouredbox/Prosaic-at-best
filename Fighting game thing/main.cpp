@@ -500,8 +500,26 @@ animlib[256][64][2]={
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
                    {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
                    //crouch hit(53)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{7,12},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //projectile1(54)
+                   {{-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{8,12},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1},
+                   {-1},{-1},{-1},{-1},{-1},{-1},{-1},{-1}},
+                   //projectile2(55)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2},
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1},
                    hitboxcount[256]={0,1,1,1,1,1,1,1,1,1,1};
 float comboscaling=100.0,
 colbox[16][1][2][2]={{{{-7,-10},{9,32}}},//standing
@@ -564,6 +582,8 @@ hurtbox[256][8][2][2]={
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-2,0},{26,12}}},//specialC5 (51)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{-2,0},{26,12}}},//specialC6 (52)
                     {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch hit(53)
+                    {{{-4,-4},{4,4}}},//projectile1(54)
+                    {{{-4,-4},{4,4}}},//projectile2(55)
                     },
 hitbox[32][8][2][2]={{0},//idle (0)
                     {{{4,-1},{22,7}}},//stand u(1)
@@ -582,11 +602,10 @@ bool flash=true;
 class projectile
 {
 public:
-    float x,y,movex,movey,
-    tx1,ty1,tx2,ty2,
-    hbx1,hby1,hbx2,hby2;
-    short movetype;
-    bool right;
+    float x,y,movex,movey;
+    short movetype,animloop=0,looplen=0,loopanim[256]={};
+    bool right,stop=false;
+    std::deque<int>endanim;
 };
 
 class characterselect : public sf::Drawable, public sf::Transformable
@@ -700,54 +719,60 @@ private:
     sf::Texture m_tileset;
 };
 
-class projectile_draw : public sf::Drawable, public sf::Transformable
+class projectile_graphics : public sf::Drawable, public sf::Transformable
 {
 public:
 
-    bool load()
+    bool load(const std::string& tileset)
     {
-        m_vertices.setPrimitiveType(sf::Triangles);
-        m_vertices.resize(512);
+        if (!m_tileset.loadFromFile(tileset))
+            return false;
 
-        for (unsigned int i = 0; i < 8; ++i)
-            for (unsigned int j = 0; j < 8; ++j)
-            {
-                sf::Vertex* tri = &m_vertices[(j + i * 8) * 6];
-
-                tri[0].position = sf::Vector2f(0+j*16,0+i*16);
-                tri[1].position = sf::Vector2f(16+j*16,0+i*16);
-                tri[2].position = sf::Vector2f(0+j*16,16+i*16);
-                tri[3].position = sf::Vector2f(0+j*16,16+i*16);
-                tri[4].position = sf::Vector2f(16+j*16,0+i*16);
-                tri[5].position = sf::Vector2f(16+j*16,16+i*16);
-            }
         return true;
     }
 
-    void setanim(short anim[][2],bool right){
-            for (unsigned int i = 0; i < 8; ++i)
-                for (unsigned int j = 0; j < 8; ++j){
-                if(right==true){
-                    sf::Vertex* tri = &m_vertices[(j + i * 8) * 6];
-                    tri[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
-                    tri[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
-                    tri[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
-                    tri[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
-                    tri[4].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
-                    tri[5].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
 
-                }
-                else{
-                    sf::Vertex* tri = &m_vertices[(7-j + i * 8) * 6];
-                    tri[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
-                    tri[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
-                    tri[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
-                    tri[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
-                    tri[4].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
-                    tri[5].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+    void setanim(short anim[][64][2],short cnt,bool right,float bgx,float x,float y){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(512*cnt);
+        for(short k=0;k<cnt;++k){
+            for (unsigned int i=0;i<8;++i)
+                for (unsigned int j=0;j<8;++j)
+                {
+                    short px=x-64+bgx,py=y-64;
+                    sf::Vertex* tri = &m_vertices[(j + i * 8) * 6+k*384];
 
+                    tri[0].position = sf::Vector2f(0+j*16+px,0+i*16+py);
+                    tri[1].position = sf::Vector2f(16+j*16+px,0+i*16+py);
+                    tri[2].position = sf::Vector2f(0+j*16+px,16+i*16+py);
+                    tri[3].position = sf::Vector2f(0+j*16+px,16+i*16+py);
+                    tri[4].position = sf::Vector2f(16+j*16+px,0+i*16+py);
+                    tri[5].position = sf::Vector2f(16+j*16+px,16+i*16+py);
                 }
-                }
+                for (unsigned int i=0;i<8;++i)
+                    for (unsigned int j=0;j<8;++j){
+                    if(right==true){
+                        sf::Vertex* tri = &m_vertices[(j + i * 8) * 6+k*384];
+                        tri[0].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16, anim[k][j+i*8][1]*16);
+                        tri[1].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16+16, anim[k][j+i*8][1]*16);
+                        tri[2].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16, anim[k][j+i*8][1]*16+16);
+                        tri[3].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16, anim[k][j+i*8][1]*16+16);
+                        tri[4].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16+16, anim[k][j+i*8][1]*16);
+                        tri[5].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16+16, anim[k][j+i*8][1]*16+16);
+
+                        }
+                    else{
+                        sf::Vertex* tri = &m_vertices[(7-j + i * 8) * 6+k*384];
+                        tri[0].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16+16, anim[k][j+i*8][1]*16);
+                        tri[1].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16, anim[k][j+i*8][1]*16);
+                        tri[2].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16+16, anim[k][j+i*8][1]*16+16);
+                        tri[3].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16+16, anim[k][j+i*8][1]*16+16);
+                        tri[4].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16, anim[k][j+i*8][1]*16);
+                        tri[5].texCoords = sf::Vector2f(anim[k][j+i*8][0]*16, anim[k][j+i*8][1]*16+16);
+
+                        }
+                    }
+            }
     }
 
 private:
@@ -1923,11 +1948,10 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
             temp.movetype=*movetype;
             temp.x=*x;temp.y=*y;
             temp.movex=4;temp.movey=0;
-            temp.hbx1=-8;temp.hby1=-8;
-            temp.hbx2=8;temp.hby2=8;
-            temp.tx1=-8;temp.ty1=-8;
-            temp.tx2=8;temp.ty2=8;
             temp.right=*right;
+            temp.looplen=2;
+            temp.loopanim[0]=54;
+            temp.loopanim[1]=55;
             c_projectile.push_back(temp);
                 }
         atkfx.pop_front();
@@ -2045,8 +2069,9 @@ int main()
             if (!p1ilist.load("inputicon.png")){}if (!p2ilist.load("inputicon.png")){}
             if (!time.load("time_ui.png")){}if (!cui.load("combo_ui.png")){}
             if (!bgtexture.loadFromFile("stage1.png")){}if (!hutexture.loadFromFile("health_ui.png")){}
-            character p1,p2;shadows p1shadow,p2shadow;
+            character p1,p2;shadows p1shadow,p2shadow;projectile_graphics p_graphics;
             if (!p1.load("char_sprites.png")){}if (!p2.load("char_sprites.png")){}
+            if (!p_graphics.load("char_sprites.png")){}
             if (!p1shadow.load("char_sprites.png")){}if (!p2shadow.load("char_sprites.png")){}
             sf::Sprite background,healthui;
             background.setTexture(bgtexture);healthui.setTexture(hutexture);
@@ -2211,9 +2236,26 @@ int main()
                                         }
                     if(!p1projectile.empty()){
                         for(short i=0;i<p1projectile.size();i++){
-                            if(p1projectile[i].right)p1projectile[i].x+=p1projectile[i].movex;
-                            else p1projectile[i].x+-p1projectile[i].movex;
-                            p1projectile[i].y+=p1projectile[i].movey;
+                            if(p1projectile[i].x+bgx<0||p1projectile[i].x+bgx>256||p1projectile[i].y<0||p1projectile[i].y>240){p1projectile.pop_back();i--;}
+                            else{
+                                if(p1projectile[i].right)p1projectile[i].x+=p1projectile[i].movex;
+                                else p1projectile[i].x-=p1projectile[i].movex;
+                                p1projectile[i].y+=p1projectile[i].movey;
+                                p1projectile[i].animloop+=1;
+                                if(p1projectile[i].looplen<=p1projectile[i].animloop)p1projectile[i].animloop=0;
+                            }
+                        }
+                    }
+                    if(!p2projectile.empty()){
+                        for(short i=0;i<p2projectile.size();i++){
+                            if(p2projectile[i].x+bgx<0||p2projectile[i].x+bgx>256||p2projectile[i].y<0||p2projectile[i].y>240){p2projectile.pop_back();i--;}
+                            else{
+                                if(p2projectile[i].right)p2projectile[i].x+=p2projectile[i].movex;
+                                else p2projectile[i].x-=p2projectile[i].movex;
+                                p2projectile[i].y+=p2projectile[i].movey;
+                                p2projectile[i].animloop++;
+                                if(p2projectile[i].looplen<=p2projectile[i].animloop)p2projectile[i].animloop=0;
+                            }
                         }
                     }
 
@@ -2459,13 +2501,21 @@ int main()
 
                 if(hitstop>0&&(!pause||nextframe))hitstop--;
 
-                box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2;
+                box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2,P_Hitbox1[8],P_Hitbox2[8];
                 collisionbox1.create(p1x+bgx,int(p1y),colbox[p1col],p1right,1,sf::Color::White);
                 collisionbox2.create(p2x+bgx,int(p2y),colbox[p2col],p2right,1,sf::Color::White);
                 Hurtbox1.create(p1x+bgx,int(p1y),hurtbox[p1frame],p1right,hurtboxcount[p1frame],sf::Color::Blue);
                 Hitbox1.create(p1x+bgx,int(p1y),hitbox[p1hbframe],p1right,hitboxcount[p1hbframe],sf::Color::Red);
                 Hurtbox2.create(p2x+bgx,int(p2y),hurtbox[p2frame],p2right,hurtboxcount[p2frame],sf::Color::Blue);
                 Hitbox2.create(p2x+bgx,int(p2y),hitbox[p2hbframe],p2right,hitboxcount[p2hbframe],sf::Color::Red);
+                for(short i=0;i<p1projectile.size();i++){
+                    short temp=p1projectile[i].animloop[p1projectile[i].loopanim];
+                    P_Hitbox1[i].create(p1projectile[i].x+bgx,int(p1projectile[i].y),hurtbox[temp],p1projectile[i].right,hurtboxcount[temp],sf::Color::Red);
+                }
+                for(short i=0;i<p2projectile.size();i++){
+                    short temp=p2projectile[i].animloop[p2projectile[i].loopanim];
+                    P_Hitbox2[i].create(p2projectile[i].x+bgx,int(p2projectile[i].y),hurtbox[temp],p2projectile[i].right,hurtboxcount[temp],sf::Color::Red);
+                }
 
                 if(hitstop==0)sfx=0;
                 if(p1hit&&!p2hit&&!pause&&sfx==0){
@@ -2567,6 +2617,8 @@ int main()
                     window.draw(Hurtbox2);
                     window.draw(Hitbox1);
                     window.draw(Hitbox2);
+                    for(short i=0;i<p1projectile.size();i++)window.draw(P_Hitbox1[i]);
+                    for(short i=0;i<p2projectile.size();i++)window.draw(P_Hitbox2[i]);
                 }
                 window.display();
             }
