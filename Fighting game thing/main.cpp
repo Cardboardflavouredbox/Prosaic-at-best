@@ -579,6 +579,16 @@ hitbox[32][8][2][2]={{0},//idle (0)
                     };
 bool flash=true;
 
+class projectile
+{
+public:
+    float x,y,movex,movey,
+    tx1,ty1,tx2,ty2,
+    hbx1,hby1,hbx2,hby2;
+    short movetype;
+    bool right;
+};
+
 class characterselect : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -686,6 +696,71 @@ private:
 
         target.draw(m_vertices, states);
     }
+    sf::VertexArray m_vertices;
+    sf::Texture m_tileset;
+};
+
+class projectile_draw : public sf::Drawable, public sf::Transformable
+{
+public:
+
+    bool load()
+    {
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(512);
+
+        for (unsigned int i = 0; i < 8; ++i)
+            for (unsigned int j = 0; j < 8; ++j)
+            {
+                sf::Vertex* tri = &m_vertices[(j + i * 8) * 6];
+
+                tri[0].position = sf::Vector2f(0+j*16,0+i*16);
+                tri[1].position = sf::Vector2f(16+j*16,0+i*16);
+                tri[2].position = sf::Vector2f(0+j*16,16+i*16);
+                tri[3].position = sf::Vector2f(0+j*16,16+i*16);
+                tri[4].position = sf::Vector2f(16+j*16,0+i*16);
+                tri[5].position = sf::Vector2f(16+j*16,16+i*16);
+            }
+        return true;
+    }
+
+    void setanim(short anim[][2],bool right){
+            for (unsigned int i = 0; i < 8; ++i)
+                for (unsigned int j = 0; j < 8; ++j){
+                if(right==true){
+                    sf::Vertex* tri = &m_vertices[(j + i * 8) * 6];
+                    tri[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
+                    tri[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
+                    tri[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+                    tri[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+                    tri[4].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
+                    tri[5].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
+
+                }
+                else{
+                    sf::Vertex* tri = &m_vertices[(7-j + i * 8) * 6];
+                    tri[0].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16);
+                    tri[1].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
+                    tri[2].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
+                    tri[3].texCoords = sf::Vector2f(anim[j+i*8][0]*16+16, anim[j+i*8][1]*16+16);
+                    tri[4].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16);
+                    tri[5].texCoords = sf::Vector2f(anim[j+i*8][0]*16, anim[j+i*8][1]*16+16);
+
+                }
+                }
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = &m_tileset;
+
+        target.draw(m_vertices, states);
+    }
+
     sf::VertexArray m_vertices;
     sf::Texture m_tileset;
 };
@@ -1529,7 +1604,7 @@ void boolfill(bool *arr,bool value,short a[]){
 }
 
 
-void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque<int> &atkfx,short *hbframe,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
+void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque<int> &atkfx,std::deque<projectile> &c_projectile,short *hbframe,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
     bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,float enemyy,short *hitstun,short enemyhitstun,
     float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch,
     float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned,short *movewaitx,short *movewaity, float *pushaway,float *enemypaway,
@@ -1843,7 +1918,18 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
         *y=enemyy-enemygrab[1];
     }
     if(!atkfx.empty()){
-        if(atkfx[0]==1){}//slow projectile
+        if(atkfx[0]==1){//slow projectile
+            projectile temp;
+            temp.movetype=*movetype;
+            temp.x=*x;temp.y=*y;
+            temp.movex=4;temp.movey=0;
+            temp.hbx1=-8;temp.hby1=-8;
+            temp.hbx2=8;temp.hby2=8;
+            temp.tx1=-8;temp.ty1=-8;
+            temp.tx2=8;temp.ty2=8;
+            temp.right=*right;
+            c_projectile.push_back(temp);
+                }
         atkfx.pop_front();
     }
 }
@@ -1968,6 +2054,7 @@ int main()
             combotext.setFont(font);combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             std::deque<char>p1keylist,p2keylist;
             std::deque<int> animq1,animq2,hitboxanim1,hitboxanim2,p1atkfx,p2atkfx;
+            std::deque<projectile> p1projectile,p2projectile;
             float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1maxhp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
                 p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2maxhp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
                 bgx=0;
@@ -2103,25 +2190,32 @@ int main()
 
                     //make an attack clashing system at some point
                     if(playertop){
-                        characterdata(animq1,hitboxanim1,p1atkfx,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
+                        characterdata(animq1,hitboxanim1,p1atkfx,p1projectile,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                                       &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                                       &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
                                       &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate,&p1landdelay);
-                        characterdata(animq2,hitboxanim2,p2atkfx,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
+                        characterdata(animq2,hitboxanim2,p2atkfx,p2projectile,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                                       &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                                       &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
                                       &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate,&p2landdelay);
                                         }
                     else{
-                        characterdata(animq2,hitboxanim2,p2atkfx,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
+                        characterdata(animq2,hitboxanim2,p2atkfx,p2projectile,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
                                       &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
                                       &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
                                       &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate,&p2landdelay);
-                        characterdata(animq1,hitboxanim1,p1atkfx,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
+                        characterdata(animq1,hitboxanim1,p1atkfx,p1projectile,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
                                       &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
                                       &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
                                       &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate,&p1landdelay);
                                         }
+                    if(!p1projectile.empty()){
+                        for(short i=0;i<p1projectile.size();i++){
+                            if(p1projectile[i].right)p1projectile[i].x+=p1projectile[i].movex;
+                            else p1projectile[i].x+-p1projectile[i].movex;
+                            p1projectile[i].y+=p1projectile[i].movey;
+                        }
+                    }
 
                     float temp[2],temp2[2],temp3[2],temp4[2];
                     if(p1right==true){
@@ -2442,6 +2536,7 @@ int main()
                 renderTexture.draw(background);
                 renderTexture.draw(p1shadow);
                 renderTexture.draw(p2shadow);
+
                 if(p1hit)playertop=true;
                 else if(p2hit) playertop=false;
                 if(playertop){
