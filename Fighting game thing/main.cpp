@@ -403,9 +403,23 @@ animlib[256][64][2]={
 
                     {8,12},
                     {-1}
-                    }//projectile2(55)
+                    },//projectile2(55)
+                    {
+                    {2,3},{1,3},
+
+                    {8,13},{9,13},
+                    {10,12},{11,12},
+                    {10,13},{11,13}
+                    },//hit2 (56)
+                    {
+                    {2,3},{1,3},
+
+                    {12,12},{12,13},
+                    {13,12},{14,12},
+                    {13,13},{14,13}
+                    }//crouch hit2(57)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1},
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2},
                    hitboxcount[256]={0,1,1,1,1,1,1,1,1,1,1};
 float comboscaling=100.0,
 colbox[16][1][2][2]={{{{-7,-10},{9,32}}},//standing
@@ -470,6 +484,8 @@ hurtbox[256][8][2][2]={
                     {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch hit(53)
                     {{{0,-4},{16,12}}},//projectile1(54)
                     {{{0,-4},{16,12}}},//projectile2(55)
+                    {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//hit2 (56)
+                    {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch hit2(57)
                     },
 hitbox[32][8][2][2]={{0},//idle (0)
                     {{{4,-1},{22,7}}},//stand u(1)
@@ -814,6 +830,77 @@ private:
         target.draw(m_circle, states);
     }
    sf::VertexArray m_vertices,m_lines,m_circle;
+
+};
+
+class meterbar : public sf::Drawable, public sf::Transformable
+{
+public:
+    void create(float meter,float meter2){
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices2.setPrimitiveType(sf::Triangles);
+        m_vertices3.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(32);
+        m_vertices2.resize(32);
+        m_vertices3.resize(32);
+        sf::Vertex* triangles = &m_vertices[12];
+        triangles[0].position = sf::Vector2f(18,10);
+        triangles[1].position = sf::Vector2f(106,10);
+        triangles[2].position = sf::Vector2f(22,18);
+        triangles[3].position = sf::Vector2f(22,18);
+        triangles[4].position = sf::Vector2f(106,10);
+        triangles[5].position = sf::Vector2f(110,18);
+
+        triangles[6].position = sf::Vector2f(146,18);
+        triangles[7].position = sf::Vector2f(234,18);
+        triangles[8].position = sf::Vector2f(150,10);
+        triangles[9].position = sf::Vector2f(150,10);
+        triangles[10].position = sf::Vector2f(234,18);
+        triangles[11].position = sf::Vector2f(238,10);
+        sf::Vertex* tri = &m_vertices2[12];
+        sf::Vertex* tri2 = &m_vertices3[12];
+        float temp=(meter-(int(meter)/100-1)*100);
+        tri[0].position = sf::Vector2f(106-temp,10);
+        tri[1].position = sf::Vector2f(106,10);
+        tri[2].position = sf::Vector2f(110-temp,18);
+        tri[3].position = sf::Vector2f(110-temp,18);
+        tri[4].position = sf::Vector2f(106,10);
+        tri[5].position = sf::Vector2f(110,18);
+        tri2[0].position = sf::Vector2f(109-temp,16);
+        tri2[1].position = sf::Vector2f(109,16);
+        tri2[2].position = sf::Vector2f(110-temp,18);
+        tri2[3].position = sf::Vector2f(110-temp,18);
+        tri2[4].position = sf::Vector2f(109,16);
+        tri2[5].position = sf::Vector2f(110,18);
+        temp=(meter2-(int(meter2)/100-1)*100);
+        tri[6].position = sf::Vector2f(146,18);
+        tri[7].position = sf::Vector2f(146+temp,18);
+        tri[8].position = sf::Vector2f(150,10);
+        tri[9].position = sf::Vector2f(150,10);
+        tri[10].position = sf::Vector2f(146+temp,18);
+        tri[11].position = sf::Vector2f(150+temp,10);
+        tri2[6].position = sf::Vector2f(146,18);
+        tri2[7].position = sf::Vector2f(146+temp,18);
+        tri2[8].position = sf::Vector2f(147,16);
+        tri2[9].position = sf::Vector2f(147,16);
+        tri2[10].position = sf::Vector2f(146+temp,18);
+        tri2[11].position = sf::Vector2f(147+temp,16);
+        for(unsigned int i=0;i<12;i++){triangles[i].color = sf::Color (85, 85, 85);tri[i].color = sf::Color (85, 255, 255);tri2[i].color = sf::Color (0, 170, 170);}
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = NULL;
+
+        target.draw(m_vertices,states);
+        target.draw(m_vertices2,states);
+        target.draw(m_vertices3,states);
+    }
+   sf::VertexArray m_vertices,m_vertices2,m_vertices3;
 
 };
 
@@ -1523,7 +1610,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
         else if(*act==7){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(),{8,8,8,43});*landdelay=3;}//right jump
         else if(*act==8){//u (light normal)
             if(*air){
-                *col=0;*multihit=false;*hitstop=12;*kback=2;*hitstun=8;*blockstun=5;*dmg=12;*movetype=3;
+                *col=0;*multihit=false;*hitstop=12;*kback=2;*hitstun=4;*blockstun=1;*dmg=12;*movetype=3;*landdelay=3;
                 animq.insert(animq.begin(),{43,43,45,45,46,46,46});
                 hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,10,10,10,10,10,10,10,10});
             }
@@ -1536,7 +1623,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
         }
         else if(*act==9){//i (middle normal)
             if(*air){
-                *col=0;*multihit=false;*hitstop=13;*kback=3;*hitstun=12;*blockstun=9;*dmg=22;*movetype=3;
+                *col=0;*multihit=false;*hitstop=13;*kback=3;*hitstun=6;*blockstun=4;*dmg=22;*movetype=3;*landdelay=3;
                 animq.insert(animq.begin(),{3,4,5,5,5,6,7,7,7,7});
                 hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,2,2,2,2});
             }
@@ -1552,7 +1639,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
         }
         else if(*act==10){//o (heavy normal)
             if(*air){
-                *col=0;*multihit=false;*hitstop=14;*kback=3;*hitstun=15;*blockstun=9;*dmg=30;*movetype=3;
+                *col=0;*multihit=false;*hitstop=14;*kback=3;*hitstun=9;*blockstun=-3;*dmg=30;*movetype=3;*landdelay=3;
                 animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7});
                 hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2,2,2,2,2});
             }
@@ -1761,7 +1848,7 @@ int main()
     sf::Font font;
     if(!font.loadFromFile("PerfectDOSVGA437.ttf"))window.close();
     char keydir1='5',keydir2='5',u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0',menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
-    short menuselect=0,rounds=0;
+    short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
 
@@ -1844,23 +1931,24 @@ int main()
         if(!gamequit){
             bool training=false;
             if(menuselect==3)training=true;
+
             menus.setmenu(6,92,72,0,16,1);
             hitflash hf;
             healthbar hb;
             timeui time;time.create();
             comboui cui;
             inputlist p1ilist,p2ilist;
-            sf::Texture bgtexture,hutexture,p1texture,p2texture;
+            sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture;
             if(!p1ilist.load("inputicon.png")||!p2ilist.load("inputicon.png"))window.close();
-            if(!time.load("time_ui.png")||!cui.load("combo_ui.png"))window.close();
+            if(!time.load("time_ui.png")||!cui.load("combo_ui.png")||!metertexture.loadFromFile("meter_ui.png"))window.close();
             if(!bgtexture.loadFromFile("stage1.png")||!hutexture.loadFromFile("health_ui.png"))window.close();
             if(!p1texture.loadFromFile("char_sprites.png")||!p2texture.loadFromFile("char_sprites.png"))window.close();
             character p1,p2,p1shadow,p2shadow;
 
             p1.load(p1texture,false);p2.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
-            sf::Sprite background,healthui;
-            background.setTexture(bgtexture);healthui.setTexture(hutexture);
+            sf::Sprite background,healthui,meterui;
+            background.setTexture(bgtexture);healthui.setTexture(hutexture);meterui.setTexture(metertexture);
             sf::Text combotext;
             combotext.setFont(font);combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             std::deque<char>p1keylist,p2keylist;
@@ -1868,7 +1956,7 @@ int main()
             std::deque<projectile> p1projectile,p2projectile;
             float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1maxhp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
                 p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2maxhp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
-                bgx=0;
+                bgx=0,p1meter=100.0,p2meter=100.0;
             short p1frame=0,p1act=0,p1col=0,p1anim[64][2]={},p1hitstun=0,p1blockstun=0,p1hitstop=0,p1buffer=0,p1movewaitx=0,p1movewaity=0,p1block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
                 p2frame=0,p2act=0,p2col=0,p2anim[64][2]={},p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer=0,p2movewaitx=0,p2movewaity=0,p2block=-1,
                 p1hbframe=0,p2hbframe=0,p1grabstate=-1,p2grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
@@ -1979,12 +2067,12 @@ int main()
                     if(p1buffer==0&&!animq1.empty()){
                             p1buffer=chooseaction(1,p1air,keydir1,u,i,o,k);
                             if(p1cancel[p1buffer]==false&&animq1.size()>10)p1buffer=0;
-                            else if(p1buffer==1||p1buffer==3||p1buffer==11||p1buffer==20)p1buffer=0;
+                            else if(p1buffer==1||p1buffer==3||p1buffer==11||p1buffer==20||(p1air&&p1jumpy<5))p1buffer=0;
                     }
                     if(p2buffer==0&&!animq2.empty()){
                             p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2,k2);
                             if(p2cancel[p2buffer]==false&&animq2.size()>10)p2buffer=0;
-                            else if(p2buffer==1||p2buffer==3||p2buffer==11||p2buffer==20)p2buffer=0;
+                            else if(p2buffer==1||p2buffer==3||p2buffer==11||p2buffer==20||(p2air&&p2jumpy<5))p2buffer=0;
                     }
                 }
                 if((!pause||(pause&&nextframe))&&!training)roundframecount++;
@@ -2088,8 +2176,10 @@ int main()
                     if(p1hp>p1maxhp)p1hp=p1maxhp;
                     if(p2hp>p2maxhp)p2hp=p2maxhp;
                     if(comboscaling<20)comboscaling=20;
-                    p1hitwait=animq1.size();
-                    p2hitwait=animq2.size();
+                    if(p1air)p1hitwait=0;
+                    else p1hitwait=animq1.size();
+                    if(p2air)p2hitwait=0;
+                    else p2hitwait=animq2.size();
                     for(int i=hurtboxcount[p1frame]-1;i>=0;i--){
                         if(p1right==true){
                             temp[0]=hurtbox[p1frame][i][0][0]+p1x;
@@ -2145,7 +2235,7 @@ int main()
                             hitstop=p2hitstop*5/4;
                         }
                         else{
-                            if(p1col==1)memcpy(p1anim,animlib[53],sizeof(animlib[53]));else memcpy(p1anim,animlib[9],sizeof(animlib[9]));
+                            if(p1col==1)memcpy(p1anim,animlib[57],sizeof(animlib[57]));else memcpy(p1anim,animlib[56],sizeof(animlib[56]));
                             if(p2hitstop!=0||p2dmg!=0)combo++;
                             if(combo>3)comboscaling=comboscaling/10*9;
                             p2dmg=p2dmg/100*comboscaling;
@@ -2209,7 +2299,7 @@ int main()
                             hitstop=p1hitstop/4*5;
                         }
                         else{
-                            if(p2col==1)memcpy(p2anim,animlib[53],sizeof(animlib[53]));else memcpy(p2anim,animlib[9],sizeof(animlib[9]));
+                            if(p2col==1)memcpy(p2anim,animlib[57],sizeof(animlib[57]));else memcpy(p2anim,animlib[56],sizeof(animlib[56]));
                             if(p1hitstop!=0||p1dmg!=0)combo++;
                             if(combo>3)comboscaling=comboscaling/10*9;
                             p1dmg=p1dmg/100*comboscaling;
@@ -2395,12 +2485,21 @@ int main()
                     }
                 }
 
+                if(hitstop>0)renderTexture.draw(hf);
+
                 if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
                 renderTexture.draw(hb);
                 renderTexture.draw(healthui);
                 renderTexture.draw(time);
+
+                meterui.setPosition(0,208);
+                meterui.setScale(1.0f,1.0f);
+                renderTexture.draw(meterui);
+                meterui.setPosition(256,208);
+                meterui.setScale(-1.0f,1.0f);
+                renderTexture.draw(meterui);
+
                 if(combo>1){renderTexture.draw(cui);renderTexture.draw(combotext);}
-                if(hitstop>0)renderTexture.draw(hf);
                 if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
