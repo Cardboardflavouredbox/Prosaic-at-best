@@ -2433,8 +2433,6 @@ int main()
                 p2ilist.create(p2keylist,false);
                 hb.create(p1hp,p2hp);
                 mb.create(p1meter,p2meter);
-                if(roundframecount/60<99)time.timeset(99-roundframecount/60);
-                else time.timeset(0);
 
                 healthui.setPosition(0.f,0.f);
                 if(p2comboed||p2kdowned)combotext.setPosition(36.f-comboslide,25.f);
@@ -2508,7 +2506,6 @@ int main()
                 if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
                 renderTexture.draw(hb);
                 renderTexture.draw(healthui);
-                renderTexture.draw(time);
 
                 meterui.setPosition(0,208);
                 meterui.setScale(1.0f,1.0f);
@@ -2517,6 +2514,19 @@ int main()
                 meterui.setScale(-1.0f,1.0f);
                 renderTexture.draw(meterui);
                 renderTexture.draw(mb);
+
+                if(roundframecount/60<99)time.timeset(99-roundframecount/60);
+                else time.timeset(0);
+                time.setPosition(0,0);
+                renderTexture.draw(time);
+
+                time.timeset(p1meter/100);
+                time.setPosition(-107,208);
+                renderTexture.draw(time);
+
+                time.timeset(p2meter/100);
+                time.setPosition(109,208);
+                renderTexture.draw(time);
 
                 if(combo>1){renderTexture.draw(cui);renderTexture.draw(combotext);}
                 if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}
