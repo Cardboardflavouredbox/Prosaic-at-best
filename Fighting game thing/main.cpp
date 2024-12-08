@@ -417,9 +417,30 @@ animlib[256][64][2]={
                     {12,12},{12,13},
                     {13,12},{14,12},
                     {13,13},{14,13}
-                    }//crouch hit2(57)
+                    },//crouch hit2(57)
+                    {
+                    {1,3},{0,3},
+
+                    {15,12},
+                    {15,13},
+                    {-1}
+                    },//projectile end1(58)
+                    {
+                    {1,3},{0,3},
+
+                    {16,12},
+                    {16,13},
+                    {-1}
+                    },//projectile end2(59)
+                    {
+                    {1,3},{0,3},
+
+                    {17,12},
+                    {17,13},
+                    {-1}
+                    }//projectile end3(60)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2},
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,0,0,0},
                    hitboxcount[256]={0,1,1,1,1,1,1,1,1,1,1};
 float comboscaling=100.0,
 colbox[16][1][2][2]={{{{-7,-10},{9,32}}},//standing
@@ -486,6 +507,9 @@ hurtbox[256][8][2][2]={
                     {{{0,-4},{16,12}}},//projectile2(55)
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},//hit2 (56)
                     {{{-11,9},{13,32}},{{-7,-6},{9,9}}},//crouch hit2(57)
+                    {-1},//projectile end1(58)
+                    {-1},//projectile end2(59)
+                    {-1},//projectile end3(60)
                     },
 hitbox[32][8][2][2]={{0},//idle (0)
                     {{{4,-1},{22,7}}},//stand u(1)
@@ -501,13 +525,20 @@ hitbox[32][8][2][2]={{0},//idle (0)
                     };
 bool flash=true;
 
+class attackdata{
+public:
+    short movetype,hitstun,blockstun,kdown;
+    float kback,launch,grab[2];
+
+};
+
 class projectile
 {
 public:
-    float x,y,movex,movey,dmg,kback,mgain,launch=0;
+    float x,y,movex,movey,dmg,kback,mgain,launch;
     short movetype,animloop=0,looplen=0,loopanim[256]={},
-    frame=0,hitstop,hitstun,blockstun,hitcount=0,hitstopped=0;
-    bool right,hit=false,knockdown=false,multihit=false;
+    frame=0,hitstop,hitstun,blockstun,hitcount=0,hitstopped=0,knockdown=0;
+    bool right,hit=false,multihit=false;
     std::deque<int>endanim;
 };
 
@@ -1494,69 +1525,69 @@ void boolfill(bool *arr,bool value,short a[]){
 
 
 void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque<int> &atkfx,std::deque<projectile> &c_projectile,short *hbframe,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
-    bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,float enemyy,short *hitstun,short enemyhitstun,
-    float *kback,float enemykback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,float enemylaunch,
-    float *hp, float enemyhp, float *dmg,bool *comboed,bool *kdown,bool enemykdown,bool *kdowned,short *movewaitx,short *movewaity, float *pushaway,float *enemypaway,
-    short *movetype,short enemymovetype,short *blockstun,short enemyblockstun,float grab[],float enemygrab[2],short *grabstate,short enemygstate,short *landdelay,float *meter,float *mgain){
-    if(*kdowned&&animq.size()<10&&!*comboed&&!*act==0&&*hp>0){
+    bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,float enemyy,short *hitstun,
+    float *kback,bool *slide,bool *multihit,short *hitstop,unsigned int hitwait,short *buffer,bool *neutural,float *launch,
+    float *hp, float enemyhp, float *dmg,bool *comboed,short *kdown,short *kdowned,short *movewaitx,short *movewaity, float *pushaway,float *enemypaway,
+    short *movetype,short *blockstun,float grab[],short *grabstate,short enemygstate,short *landdelay,float *meter,float *mgain,attackdata enemy){
+    if(*kdowned>0&&animq.size()<10&&!*comboed&&!*act==0&&*hp>0){
         for(short i=0;i<3;i++){animq.push_back(8);}
-        *kdowned=false;combo=0;
+        *kdowned=0;combo=0;
     }
     if(*hit){
-        *hit=false;animq.clear();hitboxanim.clear();atkfx.clear();if(*air&&enemylaunch==0)*jumpy=-enemykback/6*5*(comboscaling+100)/200;else *jumpy=0;
+        *hit=false;animq.clear();hitboxanim.clear();atkfx.clear();if(*air&&enemy.launch==0)*jumpy=-enemy.kback/6*5*(comboscaling+100)/200;else *jumpy=0;
         *movetype=-1;grab[0]=0;grab[1]=0;*grabstate=-1;*landdelay=0;*movewaitx=-1;*movewaity=-1;*mgain=0;
         if(*hp<=0)*block=-1;
-        if(((enemymovetype==1||enemymovetype==2)&&*block==1)||((enemymovetype==3||enemymovetype==2)&&*block==0)||*block==2){
+        if(((enemy.movetype==1||enemy.movetype==2)&&*block==1)||((enemy.movetype==3||enemy.movetype==2)&&*block==0)||*block==2){
             *slide=true;
             if(*block==2){
-                if(enemymovetype==1)*block=1;
+                if(enemy.movetype==1)*block=1;
                 else *block=0;
             }
-            if(*block==0)for(short i=0;i<hitwait+enemyblockstun;i++)animq.push_back(32);
-            if(*block==1)for(short i=0;i<hitwait+enemyblockstun;i++)animq.push_back(33);
+            if(*block==0)for(short i=0;i<hitwait+enemy.blockstun;i++)animq.push_back(32);
+            if(*block==1)for(short i=0;i<hitwait+enemy.blockstun;i++)animq.push_back(33);
             *block=2;
         }
         else{
-            if(enemylaunch>0){*jumpy=-enemylaunch*(comboscaling+100)/200;*air=true;}
-            if(*air||(enemygrab[0]!=0||enemygrab[1]!=0))*slide=false;
+            if(enemy.launch>0){*jumpy=-enemy.launch*(comboscaling+100)/200;*air=true;}
+            if(*air||(enemy.grab[0]!=0||enemy.grab[1]!=0))*slide=false;
             else *slide=true;
             *comboed=true;
-            if(enemygrab[0]!=0||enemygrab[1]!=0)*col=3;
-            if(*col==1)for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(53);
-            else for(short i=0;i<hitwait+enemyhitstun;i++)animq.push_back(9);
-            if(enemykdown||*hp<=0)*kdowned=true;
-            else *kdowned=false;
+            if(enemy.grab[0]!=0||enemy.grab[1]!=0)*col=3;
+            if(*col==1)for(short i=0;i<hitwait+enemy.hitstun;i++)animq.push_back(53);
+            else for(short i=0;i<hitwait+enemy.hitstun;i++)animq.push_back(9);
+            if(enemy.kdown==2||*hp<=0)*kdowned=2;
+            else if(enemy.kdown==1||enemy.launch>0||*air)*kdowned=1;
+            else *kdowned=0;
         }
-        if((*x<-110||*x>360)&&enemykback>0&&(enemygrab[0]==0&&enemygrab[1]==0)){*pushaway+=enemykback;*pushaway+=int(enemylaunch/2);}
-        else if(enemygrab[0]==0&&enemygrab[1]==0){
-                if(*air&&enemylaunch==0){
-                    if(*x<enemyx)*jumpx=-int(enemykback/3);
-                    else if(*x>enemyx) *jumpx=int(enemykback/3);
+        if((*x<-110||*x>360)&&enemy.kback>0&&(enemy.grab[0]==0&&enemy.grab[1]==0)){*pushaway+=enemy.kback;*pushaway+=int(enemy.launch/2);}
+        else if(enemy.grab[0]==0&&enemy.grab[1]==0){
+                if(*air&&enemy.launch==0){
+                    if(*x<enemyx)*jumpx=-int(enemy.kback/3);
+                    else if(*x>enemyx) *jumpx=int(enemy.kback/3);
                 }
                 else{
-                    if(*x<enemyx)*jumpx=-enemykback;
-                    else if(*x>enemyx) *jumpx=enemykback;
+                    if(*x<enemyx)*jumpx=-enemy.kback;
+                    else if(*x>enemyx) *jumpx=enemy.kback;
                 }
         }
         short temp[1]={-1};boolfill(cancel,true,temp);
     }
-    else if(animq.empty()&&*movewaitx==-1&&*movewaity==-1){
-        if((*comboed&&(*jumpy<5||*kdowned)&&*air)||(*comboed&&!(*jumpy<5)&&*air&&*act==0))animq.push_back(9);
-        else if(*comboed&&!*air&&*kdowned){
+    else if(animq.empty()&&*movewaitx==-1&&*movewaity==-1&&!*air){
+        if(*comboed&&*kdowned>0){
             *col=2;*comboed=false;
             for(short i=0;i<32;i++){animq.push_back(19);}
         }
-        else if(*kdowned&&*hp>0){
+        else if(*kdowned>0&&*hp>0){
             for(short i=0;i<3;i++){animq.push_back(8);}
-            *kdowned=false;combo=0;
+            *kdowned=0;combo=0;
         }
-        else{
+        else {
             short temp[1]={-1};boolfill(cancel,true,temp);
-            if(!*neutural&&!*air){*jumpx=0;*jumpy=0;}
+            if(!*neutural){*jumpx=0;*jumpy=0;}
             *neutural=true;*hitstun=0;*blockstun=0;*kback=0;*hit=false;
-            *slide=false;*multihit=false;*dmg=0;*launch=0;*kdown=false;*mgain=0;
+            *slide=false;*multihit=false;*dmg=0;*launch=0;*kdown=0;*mgain=0;
             *movetype=-1;*block=-1;grab[0]=0;grab[1]=0;*grabstate=-1;
-            if(*comboed){combo=0;*comboed=0;}
+            if(*comboed){combo=0;*comboed=false;}
         }
     }
 
@@ -1582,7 +1613,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
     }
     if(!*hit&&((animq.empty()&&*movewaitx==-1&&*movewaity==-1)||((cancel[*act]==true)&&((!*whiff)||*movetype==0||*grabstate==3)))){
         if(cancel[*act]==true){
-            *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=false;*movewaitx=-1;*movewaity=-1;
+            *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=0;*movewaitx=-1;*movewaity=-1;
             *movetype=-1;grab[0]=0;grab[1]=0;*landdelay=0;if(!*air){*jumpx=0;*jumpy=0;}*mgain=0;
             short temp[0]={};boolfill(cancel,true,temp);
             animq.clear();hitboxanim.clear();atkfx.clear();
@@ -1684,7 +1715,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
             else *jumpx=-2;
         }
         else if(*act==14){//crouch o
-            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=7;*dmg=35;*launch=10;*kdown=true;*movetype=2;*mgain=8;
+            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=7;*dmg=35;*launch=10;*kdown=1;*movetype=2;*mgain=8;
             animq.insert(animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
             if(*right)*jumpx=4;else *jumpx=-4;
@@ -1698,13 +1729,13 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
             if(*right)*jumpx=5;else *jumpx=-5;
         }
         else if(*act==17){//special A (i)
-            *col=0;*multihit=false;*hitstop=13;*kback=7;*hitstun=-1;*blockstun=-4;*slide=true;*movewaitx=9;*dmg=25;*kdown=true;*movetype=2;*mgain=8;
+            *col=0;*multihit=false;*hitstop=13;*kback=7;*hitstun=-1;*blockstun=-4;*slide=true;*movewaitx=9;*dmg=25;*kdown=2;*movetype=2;*mgain=8;
             animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==18){//special A (o)
-            *col=0;*multihit=false;*hitstop=14;*kback=0;*hitstun=0;*blockstun=-5;*slide=true;*movewaitx=10;*dmg=36;*kdown=true;*launch=11;*movetype=2;*mgain=9;
+            *col=0;*multihit=false;*hitstop=14;*kback=0;*hitstun=0;*blockstun=-5;*slide=true;*movewaitx=10;*dmg=36;*kdown=1;*launch=11;*movetype=2;*mgain=9;
             animq.insert(animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,22,21,21,20,20,20});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
             if(*right)*jumpx=7;else *jumpx=-7;
@@ -1716,27 +1747,27 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
         }
         else if(*act==21){//special B(u)
             *col=0;*multihit=false;*hitstop=13;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*movewaitx=4;*dmg=23;*mgain=7;
-            *kdown=true;*launch=8;*movetype=2;*jumpy=-11;*landdelay=5;
+            *kdown=2;*launch=8;*movetype=2;*jumpy=-11;*landdelay=5;
             animq.insert(animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
         else if(*act==22){//special B(i)
             *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*movewaitx=2;*dmg=34;*mgain=8;
-            *kdown=true;*launch=9;*movetype=2;*jumpy=-12;*landdelay=5;
+            *kdown=2;*launch=9;*movetype=2;*jumpy=-12;*landdelay=5;
             animq.insert(animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=7;else *jumpx=-7;
         }
         else if(*act==23){//special B(o)
             *col=0;*multihit=false;*hitstop=15;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=45;*mgain=9;
-            *kdown=true;*launch=10;*movetype=2;*jumpy=-13;*landdelay=5;
+            *kdown=2;*launch=10;*movetype=2;*jumpy=-13;*landdelay=5;
             animq.insert(animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
             if(*right)*jumpx=8;else *jumpx=-8;
         }
         else if(*act==24){//special B(k)
-            *col=0;*multihit=false;*slide=true;*movewaity=4;*kdown=true;*jumpy=-1;
+            *col=0;*multihit=false;*slide=true;*movewaity=4;*jumpy=-1;
             animq.insert(animq.begin(),{34,34,34,34});
             if(*right)*jumpx=6;else *jumpx=-6;
         }
@@ -1748,13 +1779,13 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
             short temp[2]={26,27};boolfill(cancel,true,temp);
         }
         else if(*act==26){//grab attack forward
-            *col=1;*multihit=false;*hitstop=15;*kback=3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=100;*launch=10;*kdown=true;*movetype=4;*grabstate=-1;*mgain=12;
+            *col=1;*multihit=false;*hitstop=15;*kback=3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=100;*launch=10;*kdown=2;*movetype=4;*grabstate=-1;*mgain=12;
             animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,4});
             if(*right)*jumpx=4;else *jumpx=-4;
         }
         else if(*act==27){//grab attack backward
-            *col=1;*multihit=false;*hitstop=15;*kback=-3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=100;*launch=10;*kdown=true;*movetype=4;*grabstate=-1;*mgain=12;
+            *col=1;*multihit=false;*hitstop=15;*kback=-3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=100;*launch=10;*kdown=2;*movetype=4;*grabstate=-1;*mgain=12;
             animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
             hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,4});
             if(*right)*jumpx=4;else *jumpx=-4;
@@ -1804,7 +1835,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
                 if(*neutural){memcpy(anim,animlib[44],sizeof(animlib[44]));*frame=44;}
             }
             if(*y>175){
-                if(*kdowned){}//add downed landing animation
+                if(*kdowned>0){}//add downed landing animation
                 if(!*comboed){*col=1;animq.clear();hitboxanim.clear();atkfx.clear();for(short i=0;i<*landdelay;i++)animq.push_back(8);}
                 *landdelay=0;
                 *movetype=0;
@@ -1822,9 +1853,9 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
         if(!(animq[0]==19&&*hp<=0)&&!(*air&&animq.size()==1))animq.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
-        if(*x<enemyx)*x=enemyx-enemygrab[0];
-        else *x=enemyx+enemygrab[0];
-        *y=enemyy-enemygrab[1];
+        if(*x<enemyx)*x=enemyx-enemy.grab[0];
+        else *x=enemyx+enemy.grab[0];
+        *y=enemyy-enemy.grab[1];
     }
     if(!atkfx.empty()){
         if(atkfx[0]==1||atkfx[0]==2||atkfx[0]==3||atkfx[0]==4){//projectile
@@ -1850,6 +1881,8 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
             temp.knockdown=*kdown;
             temp.loopanim[0]=54;
             temp.loopanim[1]=55;
+            temp.launch=*launch;
+            temp.endanim.insert(temp.endanim.begin(),{58,59,60});
             if(c_projectile.size()<8)c_projectile.push_back(temp);
                 }
         atkfx.pop_front();
@@ -1981,6 +2014,7 @@ int main()
             std::deque<char>p1keylist,p2keylist;
             std::deque<int> animq1,animq2,hitboxanim1,hitboxanim2,p1atkfx,p2atkfx;
             std::deque<projectile> p1p,p2p;
+            attackdata attack1,attack2;
             float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1maxhp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
                 p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2maxhp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
                 bgx=0,p1meter=100.0,p2meter=100.0,p1mgain=0,p2mgain=0;
@@ -1988,11 +2022,11 @@ int main()
                 p2frame=0,p2act=0,p2col=0,p2anim[64][2]={},p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer=0,p2movewaitx=0,p2movewaity=0,p2block=-1,
                 p1hbframe=0,p2hbframe=0,p1grabstate=-1,p2grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
                 p1hitstopped=0,p2hitstopped=0,p1hitwait=0,p2hitwait=0,p1movetype=-1,p2movetype=-1,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
-                p1landdelay=0,p2landdelay=0;
+                p1landdelay=0,p2landdelay=0,p1knockdown=0,p2knockdown=0,p1kdowned=0,p2kdowned=0;
             bool p1air=false,p2air=false,seeboxes=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[64],p2cancel[64],
                 p1whiff=false,p2whiff=false,p1neutural,p2neutural,p1right=true,p2right=false,
                 p1hit=false,p2hit=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,
-                p1knockdown=false,p2knockdown=false,p1comboed=false,p2comboed=false,p1kdowned=false,p2kdowned=false,playertop=false,keylistshow=false;
+                p1comboed=false,p2comboed=false,playertop=false,keylistshow=false;
 
             while (window.isOpen()&&!gamequit){
                 while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
@@ -2103,7 +2137,7 @@ int main()
                     }
                 }
                 if((!pause||(pause&&nextframe))&&!training)roundframecount++;
-                if((pause==false||(pause==true&&nextframe==true))){
+                if((pause==false||(pause&&nextframe))){
                     nextframe=false;
 
                     if(p1buffer==0)p1act=chooseaction(1,p1air,keydir1,u,i,o,k,p1meter);
@@ -2118,26 +2152,26 @@ int main()
                     if(p1hit){
                         if(p1hitstopped==0)
                         characterdata(animq1,hitboxanim1,p1atkfx,p1p,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
-                                      &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
-                                      &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
-                                      &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate,&p1landdelay,&p1meter,&p1mgain);
+                                      &p1block,p2x,p2y,&p1hitstun,&p1kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
+                                      &p1launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
+                                      &p1movetype,&p1blockstun,p1grab,&p1grabstate,p2grabstate,&p1landdelay,&p1meter,&p1mgain,attack1);
                         if(p2hitstopped==0)
                         characterdata(animq2,hitboxanim2,p2atkfx,p2p,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
-                                      &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
-                                      &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p1comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
-                                      &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate,&p2landdelay,&p2meter,&p2mgain);
+                                      &p2block,p1x,p1y,&p2hitstun,&p2kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
+                                      &p2launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
+                                      &p2movetype,&p2blockstun,p2grab,&p2grabstate,p1grabstate,&p2landdelay,&p2meter,&p2mgain,attack2);
                                         }
                     else{
                         if(p2hitstopped==0)
                         characterdata(animq2,hitboxanim2,p2atkfx,p2p,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
-                                      &p2block,p1x,p1y,&p2hitstun,p1hitstun,&p2kback,p1kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
-                                      &p2launch,p1launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,p1knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
-                                      &p2movetype,p1movetype,&p2blockstun,p1blockstun,p2grab,p1grab,&p2grabstate,p1grabstate,&p2landdelay,&p2meter,&p2mgain);
+                                      &p2block,p1x,p1y,&p2hitstun,&p2kback,&p2slide,&p2multihit,&p2hitstop,p1hitwait,&p2buffer,&p2neutural,
+                                      &p2launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
+                                      &p2movetype,&p2blockstun,p2grab,&p2grabstate,p1grabstate,&p2landdelay,&p2meter,&p2mgain,attack2);
                         if(p1hitstopped==0)
                         characterdata(animq1,hitboxanim1,p1atkfx,p1p,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
-                                      &p1block,p2x,p2y,&p1hitstun,p2hitstun,&p1kback,p2kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
-                                      &p1launch,p2launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,p2knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
-                                      &p1movetype,p2movetype,&p1blockstun,p2blockstun,p1grab,p2grab,&p1grabstate,p2grabstate,&p1landdelay,&p1meter,&p1mgain);
+                                      &p1block,p2x,p2y,&p1hitstun,&p1kback,&p1slide,&p1multihit,&p1hitstop,p2hitwait,&p1buffer,&p1neutural,
+                                      &p1launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
+                                      &p1movetype,&p1blockstun,p1grab,&p1grabstate,p2grabstate,&p1landdelay,&p1meter,&p1mgain,attack1);
                                         }
                     if(!p1p.empty()){
                         if(p1p[0].x<-128||p1p[0].x>384||p1p[0].y<0||p1p[0].y>240)p1p.pop_front();
@@ -2145,13 +2179,21 @@ int main()
                             if(p1p[i].hitstopped>0)p1p[i].hitstopped-=1;
                             else{
                                 if(p1p[i].hit){p1p[i].hit=false;p1p[i].hitcount--;}
-                                if(p1p[i].hitcount<=0)p1p[i].y=333;
-                                if(p1p[i].right)p1p[i].x+=p1p[i].movex;
-                                else p1p[i].x-=p1p[i].movex;
-                                p1p[i].y+=p1p[i].movey;
-                                p1p[i].animloop+=1;
-                                if(p1p[i].looplen<=p1p[i].animloop)p1p[i].animloop=0;
-                                p1p[i].frame=p1p[i].loopanim[p1p[i].animloop];
+                                if(p1p[i].hitcount<=0){
+                                    if(p1p[i].endanim.empty())p1p[i].y=333;
+                                    else{
+                                        p1p[i].frame=p1p[i].endanim[0];
+                                        p1p[i].endanim.pop_front();
+                                    }
+                                }
+                                else{
+                                    if(p1p[i].right)p1p[i].x+=p1p[i].movex;
+                                    else p1p[i].x-=p1p[i].movex;
+                                    p1p[i].y+=p1p[i].movey;
+                                    p1p[i].animloop+=1;
+                                    if(p1p[i].looplen<=p1p[i].animloop)p1p[i].animloop=0;
+                                    p1p[i].frame=p1p[i].loopanim[p1p[i].animloop];
+                                }
                             }
                         }
                     }
@@ -2161,13 +2203,21 @@ int main()
                             if(p2p[i].hitstopped>0)p2p[i].hitstopped-=1;
                             else{
                                 if(p2p[i].hit){p2p[i].hit=false;p2p[i].hitcount--;}
-                                if(p2p[i].hitcount<=0)p2p[i].y=333;
-                                if(p2p[i].right)p2p[i].x+=p2p[i].movex;
-                                else p2p[i].x-=p2p[i].movex;
-                                p2p[i].y+=p2p[i].movey;
-                                p2p[i].animloop++;
-                                if(p2p[i].looplen<=p2p[i].animloop)p2p[i].animloop=0;
-                                p2p[i].frame=p2p[i].loopanim[p2p[i].animloop];
+                                if(p2p[i].hitcount<=0){
+                                    if(p2p[i].endanim.empty())p2p[i].y=333;
+                                    else{
+                                        p2p[i].frame=p2p[i].endanim[0];
+                                        p2p[i].endanim.pop_front();
+                                    }
+                                }
+                                else{
+                                    if(p2p[i].right)p2p[i].x+=p2p[i].movex;
+                                    else p2p[i].x-=p2p[i].movex;
+                                    p2p[i].y+=p2p[i].movey;
+                                    p2p[i].animloop++;
+                                    if(p2p[i].looplen<=p2p[i].animloop)p2p[i].animloop=0;
+                                    p2p[i].frame=p2p[i].loopanim[p2p[i].animloop];
+                                }
                             }
                         }
                     }
@@ -2337,10 +2387,18 @@ int main()
                                 p1hitstopped=p2hitstop;
                                 p2hitstopped=p1hitstopped;
                             }
-
+                            attack1.movetype=p2movetype;
+                            attack1.hitstun=p2hitstun;
+                            attack1.blockstun=p2blockstun;
+                            attack1.kback=p2kback;
+                            attack1.launch=p2launch;
+                            attack1.grab[0]=p2grab[0];
+                            attack1.grab[1]=p2grab[1];
+                            attack1.kdown=p2knockdown;
                             for(short i=0;i<p2p.size();i++){
                                 if(p2p[i].hit){
                                     p2hitstopped=0;
+                                    p2whiff=true;
                                     p2p[i].hitstopped=p1hitstopped;
                                     break;
                                 }
@@ -2465,10 +2523,18 @@ int main()
                                 p1hitstopped=p1hitstop;
                                 p2hitstopped=p1hitstopped;
                             }
-
+                            attack2.movetype=p1movetype;
+                            attack2.hitstun=p1hitstun;
+                            attack2.blockstun=p1blockstun;
+                            attack2.kback=p1kback;
+                            attack2.launch=p1launch;
+                            attack2.grab[0]=p1grab[0];
+                            attack2.grab[1]=p1grab[1];
+                            attack2.kdown=p1knockdown;
                             for(short i=0;i<p1p.size();i++){
                                 if(p1p[i].hit){
                                     p1hitstopped=0;
+                                    p1whiff=true;
                                     p1p[i].hitstopped=p2hitstopped;
                                     break;
                                 }
@@ -2558,19 +2624,19 @@ int main()
                 for(short i=0;i<p2p.size();i++)P_Hitbox2[i].create(p2p[i].x+bgx,int(p2p[i].y),hurtbox[p2p[i].frame],p2p[i].right,hurtboxcount[p2p[i].frame],sf::Color::Red);
 
                 if(p1hitstopped==0&&p2hitstopped==0)hf.frame=0;
-                if(p1hit&&!p2hit&&!pause&&hf.frame==0){
+                if(p1hit&&!p2hit&&(!pause||nextframe)&&hf.frame==0){
                     hf.create(overlap[0]+bgx,overlap[1],combo>0);
                     hf.frame=1;
                 }
-                else if(p2hit&&!p1hit&&!pause&&hf.frame==0){
+                else if(p2hit&&!p1hit&&(!pause||nextframe)&&hf.frame==0){
                     hf.create(overlap2[0]+bgx,overlap2[1],combo>0);
                     hf.frame=1;
                 }
-                else if(hf.frame>0&&p1hit&&!p2hit&&!pause){
+                else if(hf.frame>0&&p1hit&&!p2hit&&(!pause||nextframe)){
                     hf.update(overlap[0]+bgx,overlap[1],combo>0);
                     hf.frame++;
                 }
-                else if(hf.frame>0&&!p1hit&&p2hit&&!pause){
+                else if(hf.frame>0&&!p1hit&&p2hit&&(!pause||nextframe)){
                     hf.update(overlap2[0]+bgx,overlap2[1],combo>0);
                     hf.frame++;
                 }
