@@ -1565,7 +1565,7 @@ void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque
             else if(enemy.kdown==1||enemy.launch>0||*air)*kdowned=1;
             else *kdowned=0;
         }
-        if((*x<-110||*x>360)&&enemy.kback!=0&&(enemy.grab[0]==0&&enemy.grab[1]==0)&&enemy.pushaway){
+        if(((*x<-110&&enemy.kback>0)||(*x>360&&enemy.kback<0))&&(enemy.grab[0]==0&&enemy.grab[1]==0)&&enemy.pushaway){
                 if(enemy.kback>0)*pushaway+=enemy.kback;
                 else*pushaway-=enemy.kback;
                 *pushaway+=int(enemy.launch/2);
