@@ -543,6 +543,20 @@ public:
     std::deque<int>endanim;
 };
 
+class player
+{
+public:
+    std::deque<int> animq,hitboxanim,atkfx;
+    std::deque<projectile> proj;
+    attackdata attack;
+    short hbframe=0,anim[64][2]={},act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
+    hitstun=0,blockstun=0,hitstop=0,hitwait=0,
+    buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
+    landdelay=0,hitstopped=0,grabstate=-1;//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
+    bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,multihit=false,neutural=true,comboed=false,hitbefore=false;
+    float x=0,y=176.0,jumpx=0,jumpy=0,kback=0,launch=0,hp=1000.0,maxhp=1000.0,dmg=0,pushaway=0,grab[2]={},meter=100,mgain=0;
+};
+
 class characterselect : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -1525,388 +1539,384 @@ void boolfill(bool *arr,bool value,short a[]){
 }
 
 
-void characterdata(std::deque<int> &animq,std::deque<int> &hitboxanim,std::deque<int> &atkfx,std::deque<projectile> &c_projectile,short *hbframe,bool cancel[],bool *air,short anim[][2],short *act,short *col,short *frame,
-    bool *whiff,float *x,float *y,float *jumpx,float *jumpy,bool *right,bool *hit,short *block,float enemyx,float enemyy,short *hitstun,
-    float *kback,bool *slide,bool *multihit,short *hitstop,short *buffer,bool *neutural,float *launch,
-    float *hp, float enemyhp, float *dmg,bool *comboed,short *kdown,short *kdowned,short *movewaitx,short *movewaity, float *pushaway,float *enemypaway,
-    short *movetype,short *blockstun,float grab[],short *grabstate,short enemygstate,short *landdelay,float *meter,float *mgain,attackdata enemy,short *superstop){
-    if(*kdowned>0&&animq.size()<10&&!*comboed&&!*act==0&&*hp>0){
-        for(short i=0;i<3;i++){animq.push_back(8);}
-        *kdowned=0;combo=0;
+void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enemypaway,short enemygstate,short *superstop){
+    if((*P).kdowned>0&&(*P).animq.size()<10&&!(*P).comboed&&!(*P).act==0&&(*P).hp>0){
+        for(short i=0;i<3;i++){(*P).animq.push_back(8);}
+        (*P).kdowned=0;combo=0;
     }
-    if(*hit){
-        *hit=false;animq.clear();hitboxanim.clear();atkfx.clear();
-        *movetype=-1;grab[0]=0;grab[1]=0;*grabstate=-1;*landdelay=0;*movewaitx=-1;*movewaity=-1;*mgain=0;
-        if(*air&&enemy.launch==0){
-                *jumpy=enemy.kback/6*5*(comboscaling+100)/200;
-                if(*jumpy>0)*jumpy*=-1;
+    if((*P).hit){
+        (*P).hit=false;(*P).animq.clear();(*P).hitboxanim.clear();(*P).atkfx.clear();
+        (*P).movetype=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).grabstate=-1;(*P).landdelay=0;(*P).movewaitx=-1;(*P).movewaity=-1;(*P).mgain=0;
+        if((*P).air&&(*P).attack.launch==0){
+                (*P).jumpy=(*P).attack.kback/6*5*(comboscaling+100)/200;
+                if((*P).jumpy>0)(*P).jumpy*=-1;
         }
-        else *jumpy=0;
-        if(*hp<=0)*block=-1;
-        if(((enemy.movetype==1||enemy.movetype==2)&&*block==1)||((enemy.movetype==3||enemy.movetype==2)&&*block==0)||*block==2){
-            *slide=true;
-            if(*block==2){
-                if(enemy.movetype==1)*block=1;
-                else *block=0;
+        else (*P).jumpy=0;
+        if((*P).hp<=0)(*P).block=-1;
+        if((((*P).attack.movetype==1||(*P).attack.movetype==2)&&(*P).block==1)||(((*P).attack.movetype==3||(*P).attack.movetype==2)&&(*P).block==0)||(*P).block==2){
+            (*P).slide=true;
+            if((*P).block==2){
+                if((*P).attack.movetype==1)(*P).block=1;
+                else (*P).block=0;
             }
-            if(*block==0)for(short i=0;i<enemy.hitwait+enemy.blockstun;i++)animq.push_back(32);
-            if(*block==1)for(short i=0;i<enemy.hitwait+enemy.blockstun;i++)animq.push_back(33);
-            *block=2;
+            if((*P).block==0)for(short i=0;i<(*P).attack.hitwait+(*P).attack.blockstun;i++)(*P).animq.push_back(32);
+            if((*P).block==1)for(short i=0;i<(*P).attack.hitwait+(*P).attack.blockstun;i++)(*P).animq.push_back(33);
+            (*P).block=2;
         }
         else{
-            if(enemy.launch>0){*jumpy=-enemy.launch*(comboscaling+100)/200;*air=true;}
-            if(*air||(enemy.grab[0]!=0||enemy.grab[1]!=0))*slide=false;
-            else *slide=true;
-            *comboed=true;
-            if(enemy.grab[0]!=0||enemy.grab[1]!=0)*col=3;
-            if(*col==1)for(short i=0;i<enemy.hitwait+enemy.hitstun;i++)animq.push_back(53);
-            else for(short i=0;i<enemy.hitwait+enemy.hitstun;i++)animq.push_back(9);
-            if(enemy.kdown==2||*hp<=0)*kdowned=2;
-            else if(enemy.kdown==1||enemy.launch>0||*air)*kdowned=1;
-            else *kdowned=0;
+            if((*P).attack.launch>0){(*P).jumpy=-(*P).attack.launch*(comboscaling+100)/200;(*P).air=true;}
+            if((*P).air||((*P).attack.grab[0]!=0||(*P).attack.grab[1]!=0))(*P).slide=false;
+            else (*P).slide=true;
+            (*P).comboed=true;
+            if((*P).attack.grab[0]!=0||(*P).attack.grab[1]!=0)(*P).col=3;
+            if((*P).col==1)for(short i=0;i<(*P).attack.hitwait+(*P).attack.hitstun;i++)(*P).animq.push_back(53);
+            else for(short i=0;i<(*P).attack.hitwait+(*P).attack.hitstun;i++)(*P).animq.push_back(9);
+            if((*P).attack.kdown==2||(*P).hp<=0)(*P).kdowned=2;
+            else if((*P).attack.kdown==1||(*P).attack.launch>0||(*P).air)(*P).kdowned=1;
+            else (*P).kdowned=0;
         }
-        if(((*x<-110&&enemy.kback>0)||(*x>360&&enemy.kback<0))&&(enemy.grab[0]==0&&enemy.grab[1]==0)&&enemy.pushaway){
-                if(enemy.kback>0)*pushaway+=enemy.kback;
-                else*pushaway-=enemy.kback;
-                *pushaway+=int(enemy.launch/2);
+        if((((*P).x<-110&&(*P).attack.kback>0)||((*P).x>360&&(*P).attack.kback<0))&&((*P).attack.grab[0]==0&&(*P).attack.grab[1]==0)&&(*P).attack.pushaway){
+                if((*P).attack.kback>0)(*P).pushaway+=(*P).attack.kback;
+                else (*P).pushaway-=(*P).attack.kback;
+                (*P).pushaway+=int((*P).attack.launch/2);
         }
-        else if(enemy.grab[0]==0&&enemy.grab[1]==0){
-                if(*air&&enemy.launch==0){
-                    *jumpx=-int(enemy.kback/3);
+        else if((*P).attack.grab[0]==0&&(*P).attack.grab[1]==0){
+                if((*P).air&&(*P).attack.launch==0){
+                    (*P).jumpx=-int((*P).attack.kback/3);
                 }
                 else{
-                    *jumpx=-enemy.kback;
+                    (*P).jumpx=-(*P).attack.kback;
                 }
         }
-        short temp[1]={-1};boolfill(cancel,true,temp);
+        short temp[1]={-1};boolfill((*P).cancel,true,temp);
     }
-    else if(animq.empty()&&*movewaitx==-1&&*movewaity==-1&&!*air){
-        if(*comboed&&*kdowned>0){
-            *col=2;*comboed=false;
-            for(short i=0;i<32;i++){animq.push_back(19);}
+    else if((*P).animq.empty()&&(*P).movewaitx==-1&&(*P).movewaity==-1&&!(*P).air){
+        if((*P).comboed&&(*P).kdowned>0){
+            (*P).col=2;(*P).comboed=false;
+            for(short i=0;i<32;i++){(*P).animq.push_back(19);}
         }
-        else if(*kdowned>0&&*hp>0){
-            for(short i=0;i<3;i++){animq.push_back(8);}
-            *kdowned=0;combo=0;
+        else if((*P).kdowned>0&&(*P).hp>0){
+            for(short i=0;i<3;i++){(*P).animq.push_back(8);}
+            (*P).kdowned=0;combo=0;
         }
         else {
-            short temp[1]={-1};boolfill(cancel,true,temp);
-            if(!*neutural){*jumpx=0;*jumpy=0;}
-            *neutural=true;*hitstun=0;*blockstun=0;*kback=0;*hit=false;
-            *slide=false;*multihit=false;*dmg=0;*launch=0;*kdown=0;*mgain=0;
-            *movetype=-1;*block=-1;grab[0]=0;grab[1]=0;*grabstate=-1;
-            if(*comboed){combo=0;*comboed=false;}
+            short temp[1]={-1};boolfill((*P).cancel,true,temp);
+            if(!(*P).neutural){(*P).jumpx=0;(*P).jumpy=0;}
+            (*P).neutural=true;(*P).hitstun=0;(*P).blockstun=0;(*P).kback=0;(*P).hit=false;
+            (*P).slide=false;(*P).multihit=false;(*P).dmg=0;(*P).launch=0;(*P).kdown=0;(*P).mgain=0;
+            (*P).movetype=-1;(*P).block=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).grabstate=-1;
+            if((*P).comboed){combo=0;(*P).comboed=false;}
         }
     }
 
-    if(enemygstate==3&&*act==25){
-            *grabstate=0;
-            *slide=true;
-            if(*x<enemyx)*jumpx=-8;
-            else *jumpx=4;
-            *pushaway=8;
-            animq.clear();hitboxanim.clear();atkfx.clear();
-            for(short i=0;i<enemy.hitwait;i++)animq.push_back(32);
+    if(enemygstate==3&&(*P).act==25){
+            (*P).grabstate=0;
+            (*P).slide=true;
+            if((*P).x<enemyx)(*P).jumpx=-8;
+            else (*P).jumpx=4;
+            (*P).pushaway=8;
+            (*P).animq.clear();(*P).hitboxanim.clear();(*P).atkfx.clear();
+            for(short i=0;i<(*P).attack.hitwait;i++)(*P).animq.push_back(32);
         }
 
-    if(enemyhp<=0||roundframecount/60>=99)*act=0;
-    if(*grabstate==1&&!*whiff)*grabstate=3;
-    if(*grabstate==2&&!*whiff)*grabstate=3;
-    if(*grabstate==3){
-            if(enemygstate==0)*grabstate=-1;
-            else if(animq.size()<12){
-                if(*act==1)*act=27;
-                else *act=26;
+    if(enemyhp<=0||roundframecount/60>=99)(*P).act=0;
+    if((*P).grabstate==1&&!(*P).whiff)(*P).grabstate=3;
+    if((*P).grabstate==2&&!(*P).whiff)(*P).grabstate=3;
+    if((*P).grabstate==3){
+            if(enemygstate==0)(*P).grabstate=-1;
+            else if((*P).animq.size()<12){
+                if((*P).act==1)(*P).act=27;
+                else (*P).act=26;
             }
     }
-    if(!*hit&&((animq.empty()&&*movewaitx==-1&&*movewaity==-1)||((cancel[*act]==true)&&((!*whiff)||*movetype==0||*grabstate==3)))){
-        if(cancel[*act]==true){
-            *buffer=0;*slide=false;*hitstun=0;*blockstun=0;*kback=0;*dmg=0;*launch=0;*kdown=0;*movewaitx=-1;*movewaity=-1;
-            *movetype=-1;grab[0]=0;grab[1]=0;*landdelay=0;if(!*air){*jumpx=0;*jumpy=0;}*mgain=0;
-            short temp[0]={};boolfill(cancel,true,temp);
-            animq.clear();hitboxanim.clear();atkfx.clear();
+    if(!(*P).hit&&(((*P).animq.empty()&&(*P).movewaitx==-1&&(*P).movewaity==-1)||(((*P).cancel[(*P).act]==true)&&((!(*P).whiff)||(*P).movetype==0||(*P).grabstate==3)))){
+        if((*P).cancel[(*P).act]==true){
+            (*P).buffer=0;(*P).slide=false;(*P).hitstun=0;(*P).blockstun=0;(*P).kback=0;(*P).dmg=0;(*P).launch=0;(*P).kdown=0;(*P).movewaitx=-1;(*P).movewaity=-1;
+            (*P).movetype=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).landdelay=0;if(!(*P).air){(*P).jumpx=0;(*P).jumpy=0;}(*P).mgain=0;
+            short temp[0]={};boolfill((*P).cancel,true,temp);
+            (*P).animq.clear();(*P).hitboxanim.clear();(*P).atkfx.clear();
         }
 
-        if(*act==1)*block=0;
-        else if(*act==20)*block=1;
-        else *block=-1;
+        if((*P).act==1)(*P).block=0;
+        else if((*P).act==20)(*P).block=1;
+        else (*P).block=-1;
 
-        if(*act==0){//neutural
-            if(!*air){
-                if(*x<enemyx)*right=true;
-                else *right=false;
-                memcpy(anim,animlib[0],sizeof(animlib[0]));
+        if((*P).act==0){//neutural
+            if(!(*P).air){
+                if((*P).x<enemyx)(*P).right=true;
+                else (*P).right=false;
+                memcpy((*P).anim,animlib[0],sizeof(animlib[0]));
             }
-            *col=0;*frame=0;*block=-1;
+            (*P).col=0;(*P).frame=0;(*P).block=-1;
         }
-        else if(*act==1){//left walk
-            *col=0;
-            memcpy(anim,animlib[15],sizeof(animlib[0]));
-            if(*right)*x-=3;else *x+=3;
-            if(*x<enemyx)*right=true;else *right=false;
+        else if((*P).act==1){//left walk
+            (*P).col=0;
+            memcpy((*P).anim,animlib[15],sizeof(animlib[0]));
+            if((*P).right)(*P).x-=3;else (*P).x+=3;
+            if((*P).x<enemyx)(*P).right=true;else (*P).right=false;
         }
-        else if(*act==2){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=-7;else*jumpx=7;*landdelay=7;}//left dash
-        else if(*act==3){//right walk
-            *col=0;
-            memcpy(anim,animlib[17],sizeof(animlib[0]));
-            if(*right)*x+=3;else *x-=3;
-            if(*x<enemyx)*right=true;else *right=false;
+        else if((*P).act==2){(*P).col=0;(*P).air=true;(*P).jumpy=-2.0;if((*P).right)(*P).jumpx=-7;else (*P).jumpx=7;(*P).landdelay=7;}//left dash
+        else if((*P).act==3){//right walk
+            (*P).col=0;
+            memcpy((*P).anim,animlib[17],sizeof(animlib[0]));
+            if((*P).right)(*P).x+=3;else (*P).x-=3;
+            if((*P).x<enemyx)(*P).right=true;else (*P).right=false;
         }
-        else if(*act==4){*col=0;*air=true;*jumpy=-2.0;if(*right)*jumpx=7;else*jumpx=-7;*landdelay=7;}//right dash
-        else if(*act==5){*col=0;*jumpy=-12.0;*movewaity=4;animq.insert(animq.begin(),{8,8,8,43});*landdelay=5;}//up jump
-        else if(*act==6){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=-3;else*jumpx=3;animq.insert(animq.begin(),{8,8,8,43});*landdelay=3;}//left jump
-        else if(*act==7){*col=0;*jumpy=-12.0;*movewaitx=4;*movewaity=4;if(*right)*jumpx=3;else*jumpx=-3;animq.insert(animq.begin(),{8,8,8,43});*landdelay=3;}//right jump
-        else if(*act==8){//u (light normal)
-            if(*air){
-                *col=0;*multihit=false;*hitstop=12;*kback=2;*hitstun=8;*blockstun=1;*dmg=12;*movetype=3;*landdelay=3;*mgain=4;
-                animq.insert(animq.begin(),{43,43,45,45,46,46,46});
-                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,10,10,10,10,10,10,10,10});
-            }
-            else{
-                *col=0;*multihit=false;*hitstop=12;*kback=4;*hitstun=4;*blockstun=1;*dmg=12;*movetype=2;*mgain=4;
-                animq.insert(animq.begin(),{1,1,1,2,2,2,1,1,1});
-                hitboxanim.insert(hitboxanim.begin(),{0,0,0,1});
-                short temp[15]={9,10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(cancel,true,temp);
-            }
-        }
-        else if(*act==9){//i (middle normal)
-            if(*air){
-                *col=0;*multihit=false;*hitstop=13;*kback=3;*hitstun=10;*blockstun=3;*dmg=25;*movetype=3;*landdelay=3;*mgain=6;
-                animq.insert(animq.begin(),{3,4,5,5,5,6,7,7,7,7});
-                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,2,2,2,2});
+        else if((*P).act==4){(*P).col=0;(*P).air=true;(*P).jumpy=-2.0;if((*P).right)(*P).jumpx=7;else (*P).jumpx=-7;(*P).landdelay=7;}//right dash
+        else if((*P).act==5){(*P).col=0;(*P).jumpy=-12.0;(*P).movewaity=4;(*P).animq.insert((*P).animq.begin(),{8,8,8,43});(*P).landdelay=5;}//up jump
+        else if((*P).act==6){(*P).col=0;(*P).jumpy=-12.0;(*P).movewaitx=4;(*P).movewaity=4;if((*P).right)(*P).jumpx=-3;else (*P).jumpx=3;(*P).animq.insert((*P).animq.begin(),{8,8,8,43});(*P).landdelay=3;}//left jump
+        else if((*P).act==7){(*P).col=0;(*P).jumpy=-12.0;(*P).movewaitx=4;(*P).movewaity=4;if((*P).right)(*P).jumpx=3;else (*P).jumpx=-3;(*P).animq.insert((*P).animq.begin(),{8,8,8,43});(*P).landdelay=3;}//(*P).right jump
+        else if((*P).act==8){//u (light normal)
+            if((*P).air){
+                (*P).col=0;(*P).multihit=false;(*P).hitstop=12;(*P).kback=2;(*P).hitstun=8;(*P).blockstun=1;(*P).dmg=12;(*P).movetype=3;(*P).landdelay=3;(*P).mgain=4;
+                (*P).animq.insert((*P).animq.begin(),{43,43,45,45,46,46,46});
+                (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,10,10,10,10,10,10,10,10});
             }
             else{
-                *col=0;*multihit=false;*hitstop=13;*kback=5;*hitstun=1;*blockstun=-6;*slide=true;*dmg=27;*movetype=2;*mgain=6;
-                animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
-                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2});
-                short temp[14]={10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(cancel,true,temp);
-                *movewaitx=7;
-                if(*right)*jumpx=3;
-                else *jumpx=-3;
+                (*P).col=0;(*P).multihit=false;(*P).hitstop=12;(*P).kback=4;(*P).hitstun=4;(*P).blockstun=1;(*P).dmg=12;(*P).movetype=2;(*P).mgain=4;
+                (*P).animq.insert((*P).animq.begin(),{1,1,1,2,2,2,1,1,1});
+                (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,1});
+                short temp[15]={9,10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill((*P).cancel,true,temp);
             }
         }
-        else if(*act==10){//o (heavy normal)
-            if(*air){
-                *col=0;*multihit=false;*hitstop=14;*kback=3;*hitstun=12;*blockstun=6;*dmg=33;*movetype=3;*landdelay=3;*mgain=8;
-                animq.insert(animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7});
-                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2,2,2,2,2});
+        else if((*P).act==9){//i (middle normal)
+            if((*P).air){
+                (*P).col=0;(*P).multihit=false;(*P).hitstop=13;(*P).kback=3;(*P).hitstun=10;(*P).blockstun=3;(*P).dmg=25;(*P).movetype=3;(*P).landdelay=3;(*P).mgain=6;
+                (*P).animq.insert((*P).animq.begin(),{3,4,5,5,5,6,7,7,7,7});
+                (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,2,2,2,2});
             }
             else{
-                *col=0;*multihit=false;*hitstop=14;*kback=6;*hitstun=-1;*blockstun=-8;*slide=true;*dmg=35;*movetype=2;*mgain=8;
-                animq.insert(animq.begin(),{26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
-                hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,6,6,6});
-                short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(cancel,true,temp);
-                *movewaitx=9;
-                if(*right)*jumpx=5;
-                else *jumpx=-5;
+                (*P).col=0;(*P).multihit=false;(*P).hitstop=13;(*P).kback=5;(*P).hitstun=1;(*P).blockstun=-6;(*P).slide=true;(*P).dmg=27;(*P).movetype=2;(*P).mgain=6;
+                (*P).animq.insert((*P).animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7,6,5,5,4,4,3,3});
+                (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2});
+                short temp[14]={10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill((*P).cancel,true,temp);
+                (*P).movewaitx=7;
+                if((*P).right)(*P).jumpx=3;
+                else (*P).jumpx=-3;
             }
         }
-        else if(*act==11||*act==20){//crouch & crouch block
-            if(*x<enemyx)*right=true;
-            else *right=false;
-            *col=1;*frame=8;
-            memcpy(anim,animlib[8],sizeof(animlib[8]));
+        else if((*P).act==10){//o (heavy normal)
+            if((*P).air){
+                (*P).col=0;(*P).multihit=false;(*P).hitstop=14;(*P).kback=3;(*P).hitstun=12;(*P).blockstun=6;(*P).dmg=33;(*P).movetype=3;(*P).landdelay=3;(*P).mgain=8;
+                (*P).animq.insert((*P).animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7});
+                (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2,2,2,2,2});
+            }
+            else{
+                (*P).col=0;(*P).multihit=false;(*P).hitstop=14;(*P).kback=6;(*P).hitstun=-1;(*P).blockstun=-8;(*P).slide=true;(*P).dmg=35;(*P).movetype=2;(*P).mgain=8;
+                (*P).animq.insert((*P).animq.begin(),{26,26,27,27,28,28,28,28,28,29,30,31,31,31,31,31,31,31,30,29,28,28,28,27,27,27,26,26,26});
+                (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,6,6,6});
+                short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill((*P).cancel,true,temp);
+                (*P).movewaitx=9;
+                if((*P).right)(*P).jumpx=5;
+                else (*P).jumpx=-5;
+            }
         }
-        else if(*act==12){//crouch u
-            *col=1;*multihit=false;*hitstop=12;*kback=5;*hitstun=4;*blockstun=0;*dmg=11;*movetype=1;*mgain=4;
-            animq.insert(animq.begin(),{10,10,10,11,11,11,10,10,10});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,3});
-            short temp[15]={13,14,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(cancel,true,temp);
+        else if((*P).act==11||(*P).act==20){//crouch & crouch block
+            if((*P).x<enemyx)(*P).right=true;
+            else (*P).right=false;
+            (*P).col=1;(*P).frame=8;
+            memcpy((*P).anim,animlib[8],sizeof(animlib[8]));
         }
-        else if(*act==13){//crouch i
-            *col=1;*multihit=false;*hitstop=13;*kback=5;*hitstun=1;*blockstun=-4;*slide=true;*dmg=24;*movetype=1;*mgain=6;
-            animq.insert(animq.begin(),{38,38,39,39,39,39,40,41,42,42,42,41,41,40,40,39,39,39,38,38,38,38});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,9,9,9});
-            short temp[14]={14,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(cancel,true,temp);
-            *movewaitx=7;
-            if(*right)*jumpx=2;
-            else *jumpx=-2;
+        else if((*P).act==12){//crouch u
+            (*P).col=1;(*P).multihit=false;(*P).hitstop=12;(*P).kback=5;(*P).hitstun=4;(*P).blockstun=0;(*P).dmg=11;(*P).movetype=1;(*P).mgain=4;
+            (*P).animq.insert((*P).animq.begin(),{10,10,10,11,11,11,10,10,10});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,3});
+            short temp[15]={13,14,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill((*P).cancel,true,temp);
         }
-        else if(*act==14){//crouch o
-            *col=1;*multihit=false;*hitstop=14;*kback=3;*hitstun=1;*blockstun=-5;*slide=true;*movewaitx=7;*dmg=35;*launch=10;*kdown=1;*movetype=2;*mgain=8;
-            animq.insert(animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
-            if(*right)*jumpx=4;else *jumpx=-4;
-            short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(cancel,true,temp);
+        else if((*P).act==13){//crouch i
+            (*P).col=1;(*P).multihit=false;(*P).hitstop=13;(*P).kback=5;(*P).hitstun=1;(*P).blockstun=-4;(*P).slide=true;(*P).dmg=24;(*P).movetype=1;(*P).mgain=6;
+            (*P).animq.insert((*P).animq.begin(),{38,38,39,39,39,39,40,41,42,42,42,41,41,40,40,39,39,39,38,38,38,38});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,9,9,9});
+            short temp[14]={14,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill((*P).cancel,true,temp);
+            (*P).movewaitx=7;
+            if((*P).right)(*P).jumpx=2;
+            else (*P).jumpx=-2;
         }
-        else if(*act==15){}//k (gimmick)
-        else if(*act==16){//special A (u)
-            *col=0;*multihit=false;*hitstop=12;*kback=7;*hitstun=1;*blockstun=-3;*slide=true;*movewaitx=6;*dmg=22;*movetype=2;*mgain=7;
-            animq.insert(animq.begin(),{20,21,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,22,21,20,20});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,5,5});
-            cancel[32]=true;
-            if(*right)*jumpx=5;else *jumpx=-5;
+        else if((*P).act==14){//crouch o
+            (*P).col=1;(*P).multihit=false;(*P).hitstop=14;(*P).kback=3;(*P).hitstun=1;(*P).blockstun=-5;(*P).slide=true;(*P).movewaitx=7;(*P).dmg=35;(*P).launch=10;(*P).kdown=1;(*P).movetype=2;(*P).mgain=8;
+            (*P).animq.insert((*P).animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
+            if((*P).right)(*P).jumpx=4;else (*P).jumpx=-4;
+            short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill((*P).cancel,true,temp);
         }
-        else if(*act==17){//special A (i)
-            *col=0;*multihit=false;*hitstop=13;*kback=7;*hitstun=-1;*blockstun=-4;*slide=true;*movewaitx=9;*dmg=29;*kdown=2;*movetype=2;*mgain=8;
-            animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,5,5});
-            cancel[32]=true;
-            if(*right)*jumpx=6;else *jumpx=-6;
+        else if((*P).act==15){}//k (gimmick)
+        else if((*P).act==16){//special A (u)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=12;(*P).kback=7;(*P).hitstun=1;(*P).blockstun=-3;(*P).slide=true;(*P).movewaitx=6;(*P).dmg=22;(*P).movetype=2;(*P).mgain=7;
+            (*P).animq.insert((*P).animq.begin(),{20,21,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,22,21,20,20});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,5,5});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=5;else (*P).jumpx=-5;
         }
-        else if(*act==18){//special A (o)
-            *col=0;*multihit=false;*hitstop=14;*kback=0;*hitstun=0;*blockstun=-5;*slide=true;*movewaitx=10;*dmg=36;*kdown=1;*launch=11;*movetype=2;*mgain=9;
-            animq.insert(animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,22,21,21,20,20,20});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
-            cancel[32]=true;
-            if(*right)*jumpx=7;else *jumpx=-7;
+        else if((*P).act==17){//special A (i)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=13;(*P).kback=7;(*P).hitstun=-1;(*P).blockstun=-4;(*P).slide=true;(*P).movewaitx=9;(*P).dmg=29;(*P).kdown=2;(*P).movetype=2;(*P).mgain=8;
+            (*P).animq.insert((*P).animq.begin(),{20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,5,5});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=6;else (*P).jumpx=-6;
         }
-        else if(*act==19){//special A (k)
-            *col=0;*multihit=false;*slide=true;*movewaitx=6;*movetype=0;
-            animq.insert(animq.begin(),{20,21,22,22,22,22,21,20});
-            cancel[32]=true;
-            if(*right)*jumpx=4;else *jumpx=-4;
+        else if((*P).act==18){//special A (o)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=14;(*P).kback=0;(*P).hitstun=0;(*P).blockstun=-5;(*P).slide=true;(*P).movewaitx=10;(*P).dmg=36;(*P).kdown=1;(*P).launch=11;(*P).movetype=2;(*P).mgain=9;
+            (*P).animq.insert((*P).animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,22,21,21,20,20,20});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=7;else (*P).jumpx=-7;
         }
-        else if(*act==21){//special B(u)
-            *col=0;*multihit=false;*hitstop=13;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*movewaitx=4;*dmg=28;*mgain=7;
-            *kdown=2;*launch=8;*movetype=2;*jumpy=-11;*landdelay=5;
-            animq.insert(animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
-            cancel[32]=true;
-            if(*right)*jumpx=6;else *jumpx=-6;
+        else if((*P).act==19){//special A (k)
+            (*P).col=0;(*P).multihit=false;(*P).slide=true;(*P).movewaitx=6;(*P).movetype=0;
+            (*P).animq.insert((*P).animq.begin(),{20,21,22,22,22,22,21,20});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=4;else (*P).jumpx=-4;
         }
-        else if(*act==22){//special B(i)
-            *col=0;*multihit=false;*hitstop=14;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=4;*movewaitx=2;*dmg=39;*mgain=8;
-            *kdown=2;*launch=9;*movetype=2;*jumpy=-12;*landdelay=5;
-            animq.insert(animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
-            cancel[32]=true;
-            if(*right)*jumpx=7;else *jumpx=-7;
+        else if((*P).act==21){//special B(u)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=13;(*P).kback=5;(*P).hitstun=5;(*P).blockstun=-5;(*P).slide=true;(*P).movewaity=4;(*P).movewaitx=4;(*P).dmg=28;(*P).mgain=7;
+            (*P).kdown=2;(*P).launch=8;(*P).movetype=2;(*P).jumpy=-11;(*P).landdelay=5;
+            (*P).animq.insert((*P).animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=6;else (*P).jumpx=-6;
         }
-        else if(*act==23){//special B(o)
-            *col=0;*multihit=false;*hitstop=15;*kback=5;*hitstun=5;*blockstun=-5;*slide=true;*movewaity=5;*dmg=51;*mgain=9;
-            *kdown=2;*launch=10;*movetype=2;*jumpy=-13;*landdelay=5;
-            animq.insert(animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
-            cancel[32]=true;
-            if(*right)*jumpx=8;else *jumpx=-8;
+        else if((*P).act==22){//special B(i)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=14;(*P).kback=5;(*P).hitstun=5;(*P).blockstun=-5;(*P).slide=true;(*P).movewaity=4;(*P).movewaitx=2;(*P).dmg=39;(*P).mgain=8;
+            (*P).kdown=2;(*P).launch=9;(*P).movetype=2;(*P).jumpy=-12;(*P).landdelay=5;
+            (*P).animq.insert((*P).animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=7;else (*P).jumpx=-7;
         }
-        else if(*act==24){//special B(k)
-            *col=0;*multihit=false;*slide=true;*movewaity=4;*jumpy=-1;
-            animq.insert(animq.begin(),{34,34,34,34});
-            cancel[32]=true;
-            if(*right)*jumpx=6;else *jumpx=-6;
+        else if((*P).act==23){//special B(o)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=15;(*P).kback=5;(*P).hitstun=5;(*P).blockstun=-5;(*P).slide=true;(*P).movewaity=5;(*P).dmg=51;(*P).mgain=9;
+            (*P).kdown=2;(*P).launch=10;(*P).movetype=2;(*P).jumpy=-13;(*P).landdelay=5;
+            (*P).animq.insert((*P).animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=8;else (*P).jumpx=-8;
         }
-        else if(*act==25){//grab
-            *col=0;*multihit=false;*hitstop=0;*kback=0;*hitstun=0;*blockstun=31;*slide=true;*movewaitx=6;*dmg=0;*movetype=4;grab[0]=21;grab[1]=0;*grabstate=1;
-            animq.insert(animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,5});
-            if(*right)*jumpx=5;else *jumpx=-5;
-            short temp[2]={26,27};boolfill(cancel,true,temp);
+        else if((*P).act==24){//special B(k)
+            (*P).col=0;(*P).multihit=false;(*P).slide=true;(*P).movewaity=4;(*P).jumpy=-1;
+            (*P).animq.insert((*P).animq.begin(),{34,34,34,34});
+            (*P).cancel[32]=true;
+            if((*P).right)(*P).jumpx=6;else (*P).jumpx=-6;
         }
-        else if(*act==26){//grab attack forward
-            *col=1;*multihit=false;*hitstop=15;*kback=3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=100;*launch=10;*kdown=2;*movetype=4;*grabstate=-1;*mgain=12;
-            animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,4});
-            if(*right)*jumpx=4;else *jumpx=-4;
+        else if((*P).act==25){//grab
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=0;(*P).kback=0;(*P).hitstun=0;(*P).blockstun=31;(*P).slide=true;(*P).movewaitx=6;(*P).dmg=0;(*P).movetype=4;(*P).grab[0]=21;(*P).grab[1]=0;(*P).grabstate=1;
+            (*P).animq.insert((*P).animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,5});
+            if((*P).right)(*P).jumpx=5;else (*P).jumpx=-5;
+            short temp[2]={26,27};boolfill((*P).cancel,true,temp);
         }
-        else if(*act==27){//grab attack backward
-            *col=1;*multihit=false;*hitstop=15;*kback=-3;*hitstun=1;*blockstun=0;*slide=true;*movewaitx=3;*dmg=100;*launch=10;*kdown=2;*movetype=4;*grabstate=-1;*mgain=12;
-            animq.insert(animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
-            hitboxanim.insert(hitboxanim.begin(),{0,0,0,0,4});
-            if(*right)*jumpx=4;else *jumpx=-4;
+        else if((*P).act==26){//grab attack forward
+            (*P).col=1;(*P).multihit=false;(*P).hitstop=15;(*P).kback=3;(*P).hitstun=1;(*P).blockstun=0;(*P).slide=true;(*P).movewaitx=3;(*P).dmg=100;(*P).launch=10;(*P).kdown=2;(*P).movetype=4;(*P).grabstate=-1;(*P).mgain=12;
+            (*P).animq.insert((*P).animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,4});
+            if((*P).right)(*P).jumpx=4;else (*P).jumpx=-4;
         }
-        else if(*act==28){//special C (u)
-            *col=0;*multihit=false;*hitstop=12;*kback=3;*hitstun=3;*blockstun=1;*dmg=22;*movetype=2;*mgain=7;
-            animq.insert(animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-            atkfx.insert(atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,1});
-            cancel[32]=true;
+        else if((*P).act==27){//grab attack backward
+            (*P).col=1;(*P).multihit=false;(*P).hitstop=15;(*P).kback=-3;(*P).hitstun=1;(*P).blockstun=0;(*P).slide=true;(*P).movewaitx=3;(*P).dmg=100;(*P).launch=10;(*P).kdown=2;(*P).movetype=4;(*P).grabstate=-1;(*P).mgain=12;
+            (*P).animq.insert((*P).animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
+            (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,4});
+            if((*P).right)(*P).jumpx=4;else (*P).jumpx=-4;
         }
-        else if(*act==29){//special C (i)
-            *col=0;*multihit=false;*hitstop=12;*kback=3;*hitstun=4;*blockstun=2;*dmg=22;*movetype=2;*mgain=8;
-            animq.insert(animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-            atkfx.insert(atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,2});
-            cancel[32]=true;
+        else if((*P).act==28){//special C (u)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=12;(*P).kback=3;(*P).hitstun=3;(*P).blockstun=1;(*P).dmg=22;(*P).movetype=2;(*P).mgain=7;
+            (*P).animq.insert((*P).animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+            (*P).atkfx.insert((*P).atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,1});
+            (*P).cancel[32]=true;
         }
-        else if(*act==30){//special C (o)
-            *col=0;*multihit=false;*hitstop=12;*kback=3;*hitstun=5;*blockstun=3;*dmg=22;*movetype=2;*mgain=9;
-            animq.insert(animq.begin(),{47,47,47,48,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-            atkfx.insert(atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,3});
-            cancel[32]=true;
+        else if((*P).act==29){//special C (i)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=12;(*P).kback=3;(*P).hitstun=4;(*P).blockstun=2;(*P).dmg=22;(*P).movetype=2;(*P).mgain=8;
+            (*P).animq.insert((*P).animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+            (*P).atkfx.insert((*P).atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,2});
+            (*P).cancel[32]=true;
         }
-        else if(*act==31){//special C (k)
-            *col=0;*multihit=false;
-            animq.insert(animq.begin(),{47,47,47,48,49,49,49,50,50,51,51,51,51,51,52,52});
-            cancel[32]=true;
+        else if((*P).act==30){//special C (o)
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=12;(*P).kback=3;(*P).hitstun=5;(*P).blockstun=3;(*P).dmg=22;(*P).movetype=2;(*P).mgain=9;
+            (*P).animq.insert((*P).animq.begin(),{47,47,47,48,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+            (*P).atkfx.insert((*P).atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,3});
+            (*P).cancel[32]=true;
         }
-        else if(*act==32){//super
-            *col=0;*multihit=false;*hitstop=14;*kback=8;*launch=5;*hitstun=6;*blockstun=5;*slide=true;*movewaitx=15;*dmg=150;*movetype=2;*mgain=0;*meter-=100;
-            animq.insert(animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-            atkfx.insert(atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,4});
-            if(*right)*jumpx=-9;else *jumpx=9;
+        else if((*P).act==31){//special C (k)
+            (*P).col=0;(*P).multihit=false;
+            (*P).animq.insert((*P).animq.begin(),{47,47,47,48,49,49,49,50,50,51,51,51,51,51,52,52});
+            (*P).cancel[32]=true;
+        }
+        else if((*P).act==32){//super
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=14;(*P).kback=8;(*P).launch=5;(*P).hitstun=6;(*P).blockstun=5;(*P).slide=true;(*P).movewaitx=15;(*P).dmg=150;(*P).movetype=2;(*P).mgain=0;(*P).meter-=100;
+            (*P).animq.insert((*P).animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+            (*P).atkfx.insert((*P).atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,4});
+            if((*P).right)(*P).jumpx=-9;else (*P).jumpx=9;
         }
     }
-    if(*movewaitx>0)*movewaitx-=1;
-    else{*x+=*jumpx;*movewaitx=-1;}
-    if(*movewaity>0)*movewaity-=1;
-    else{if(*jumpy<0)*air=true;*y+=*jumpy;*movewaity=-1;}
-    if(*slide&&*movewaitx==-1){
-        if(*jumpx>0)*jumpx-=1;
-        else if(*jumpx<0)*jumpx+=1;
+    if((*P).movewaitx>0)(*P).movewaitx-=1;
+    else{(*P).x+=(*P).jumpx;(*P).movewaitx=-1;}
+    if((*P).movewaity>0)(*P).movewaity-=1;
+    else{if((*P).jumpy<0)(*P).air=true;(*P).y+=(*P).jumpy;(*P).movewaity=-1;}
+    if((*P).slide&&(*P).movewaitx==-1){
+        if((*P).jumpx>0)(*P).jumpx-=1;
+        else if((*P).jumpx<0)(*P).jumpx+=1;
     }
     if(*enemypaway>0){
-            if(*air)*enemypaway=0;
-            else{if(*x<enemyx)*x-=*enemypaway;else if(*x>enemyx)*x+=*enemypaway;*enemypaway-=1;}
+            if((*P).air)*enemypaway=0;
+            else{if((*P).x<enemyx)(*P).x-=*enemypaway;else if((*P).x>enemyx)(*P).x+=*enemypaway;*enemypaway-=1;}
     }
-    if(*air){
-            *block=-1;
-            if(*comboed)*jumpy+=0.75;
-            else *jumpy+=0.8;
-            if(*jumpy>0){
-                if(*neutural){memcpy(anim,animlib[44],sizeof(animlib[44]));*frame=44;}
+    if((*P).air){
+            (*P).block=-1;
+            if((*P).comboed)(*P).jumpy+=0.75;
+            else (*P).jumpy+=0.8;
+            if((*P).jumpy>0){
+                if((*P).neutural){memcpy((*P).anim,animlib[44],sizeof(animlib[44]));(*P).frame=44;}
             }
-            if(*y>175){
-                if(*kdowned>0){}//add downed landing animation
-                if(!*comboed){*col=1;animq.clear();hitboxanim.clear();atkfx.clear();for(short i=0;i<*landdelay;i++)animq.push_back(8);}
-                *landdelay=0;
-                *movetype=0;
-                *jumpx=0;*jumpy=0;*y=176;*air=false;
+            if((*P).y>175){
+                if((*P).kdowned>0){}//add downed landing animation
+                if(!(*P).comboed){(*P).col=1;(*P).animq.clear();(*P).hitboxanim.clear();(*P).atkfx.clear();for(short i=0;i<(*P).landdelay;i++)(*P).animq.push_back(8);}
+                (*P).landdelay=0;
+                (*P).movetype=0;
+                (*P).jumpx=0;(*P).jumpy=0;(*P).y=176;(*P).air=false;
             }
         }
-    if(!hitboxanim.empty()){
-        *hbframe=hitboxanim[0];
-        hitboxanim.pop_front();
+    if(!(*P).hitboxanim.empty()){
+        (*P).hbframe=(*P).hitboxanim[0];
+        (*P).hitboxanim.pop_front();
     }
-    else *hbframe=0;
-    if(!animq.empty()){
-        *neutural=false;*frame=animq[0];
-        memcpy(anim,animlib[animq[0]],sizeof(animlib[animq[0]]));
-        if(!(animq[0]==19&&*hp<=0)&&!(*air&&animq.size()==1))animq.pop_front();
+    else (*P).hbframe=0;
+    if(!(*P).animq.empty()){
+        (*P).neutural=false;(*P).frame=(*P).animq[0];
+        memcpy((*P).anim,animlib[(*P).animq[0]],sizeof(animlib[(*P).animq[0]]));
+        if(!((*P).animq[0]==19&&(*P).hp<=0)&&!((*P).air&&(*P).animq.size()==1))(*P).animq.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
-        if(*x<enemyx)*x=enemyx-enemy.grab[0];
-        else *x=enemyx+enemy.grab[0];
-        *y=enemyy-enemy.grab[1];
+        if((*P).x<enemyx)(*P).x=enemyx-(*P).attack.grab[0];
+        else (*P).x=enemyx+(*P).attack.grab[0];
+        (*P).y=enemyy-(*P).attack.grab[1];
     }
-    if(!atkfx.empty()){
-        if(atkfx[0]==5)*superstop=20;
-        if(atkfx[0]==1||atkfx[0]==2||atkfx[0]==3||atkfx[0]==4){//projectile
-            *meter+=*mgain;
+    if(!(*P).atkfx.empty()){
+        if((*P).atkfx[0]==5)*superstop=20;
+        if((*P).atkfx[0]==1||(*P).atkfx[0]==2||(*P).atkfx[0]==3||(*P).atkfx[0]==4){//projectile
+            (*P).meter+=(*P).mgain;
             projectile temp;
-            temp.movetype=*movetype;
-            temp.x=*x;temp.y=*y;
-            if(atkfx[0]==1)temp.movex=4;
-            else if(atkfx[0]==2)temp.movex=5;
-            else if(atkfx[0]==3)temp.movex=6;
-            else if(atkfx[0]==4)temp.movex=12;
+            temp.movetype=(*P).movetype;
+            temp.x=(*P).x;temp.y=(*P).y;
+            if((*P).atkfx[0]==1)temp.movex=4;
+            else if((*P).atkfx[0]==2)temp.movex=5;
+            else if((*P).atkfx[0]==3)temp.movex=6;
+            else if((*P).atkfx[0]==4)temp.movex=12;
             temp.movey=0;
             temp.hitcount=1;
-            temp.hitstop=*hitstop;
-            temp.hitstun=*hitstun;temp.blockstun=*blockstun;
-            temp.dmg=*dmg;
-            temp.mgain=*mgain;
-            temp.kback=*kback;
-            temp.right=*right;
-            temp.multihit=*multihit;
+            temp.hitstop=(*P).hitstop;
+            temp.hitstun=(*P).hitstun;temp.blockstun=(*P).blockstun;
+            temp.dmg=(*P).dmg;
+            temp.mgain=(*P).mgain;
+            temp.kback=(*P).kback;
+            temp.right=(*P).right;
+            temp.multihit=(*P).multihit;
             temp.looplen=2;
-            temp.knockdown=*kdown;
+            temp.knockdown=(*P).kdown;
             temp.loopanim[0]=54;
             temp.loopanim[1]=55;
-            temp.launch=*launch;
+            temp.launch=(*P).launch;
             temp.endanim.insert(temp.endanim.begin(),{58,59,60});
-            if(c_projectile.size()<8)c_projectile.push_back(temp);
+            if((*P).proj.size()<8)(*P).proj.push_back(temp);
                 }
-        atkfx.pop_front();
+        (*P).atkfx.pop_front();
     }
 }
 
@@ -2024,30 +2034,27 @@ int main()
             if(!time.load("time_ui.png")||!cui.load("combo_ui.png")||!metertexture.loadFromFile("meter_ui.png"))window.close();
             if(!bgtexture.loadFromFile("stage1.png")||!hutexture.loadFromFile("health_ui.png"))window.close();
             if(!p1texture.loadFromFile("char_sprites.png")||!p2texture.loadFromFile("char_sprites.png"))window.close();
-            character p1,p2,p1shadow,p2shadow;
+            character p1graphics,p2graphics,p1shadow,p2shadow;
 
-            p1.load(p1texture,false);p2.load(p2texture,false);
+            p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
             sf::Sprite background,healthui,meterui;
             background.setTexture(bgtexture);healthui.setTexture(hutexture);meterui.setTexture(metertexture);
             sf::Text combotext;
             combotext.setFont(font);combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             std::deque<char>p1keylist,p2keylist;
-            std::deque<int> animq1,animq2,hitboxanim1,hitboxanim2,p1atkfx,p2atkfx;
-            std::deque<projectile> p1p,p2p;
-            attackdata attack1,attack2;
-            float overlap[2],overlap2[2],comboslide=0,comboslide2=0,p1x=100.0,p1y=176.0,p1jumpx=0.0,p1jumpy=0.0,p1kback=0.0,p1launch=0.0,p1hp=1000.0,p1maxhp=1000.0,p1dmg=0.0,p1paway=0.0,p1grab[2]={0,0},
-                p2x=156.0,p2y=176.0,p2jumpx=0.0,p2jumpy=0.0,p2kback=0.0,p2launch=0.0,p2hp=1000.0,p2maxhp=1000.0,p2dmg=0.0,p2paway=0.0,p2grab[2]={0,0},
-                bgx=0,p1meter=100.0,p2meter=100.0,p1mgain=0,p2mgain=0;
-            short p1frame=0,p1act=0,p1col=0,p1anim[64][2]={},p1hitstun=0,p1blockstun=0,p1hitstop=0,p1buffer=0,p1movewaitx=0,p1movewaity=0,p1block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
-                p2frame=0,p2act=0,p2col=0,p2anim[64][2]={},p2hitstun=0,p2blockstun=0,p2hitstop=0,p2buffer=0,p2movewaitx=0,p2movewaity=0,p2block=-1,
-                p1hbframe=0,p2hbframe=0,p1grabstate=-1,p2grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
-                p1hitstopped=0,p2hitstopped=0,p1hitwait=0,p2hitwait=0,p1movetype=-1,p2movetype=-1,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
-                p1landdelay=0,p2landdelay=0,p1knockdown=0,p2knockdown=0,p1kdowned=0,p2kdowned=0,superstop=0;
-            bool p1air=false,p2air=false,seeboxes=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,p1cancel[64],p2cancel[64],
-                p1whiff=true,p2whiff=true,p1neutural,p2neutural,p1right=true,p2right=false,
-                p1hit=false,p2hit=false,p1slide=false,p2slide=false,hitbefore=false,hitbefore2=false,p1multihit=false,p2multihit=false,
-                p1comboed=false,p2comboed=false,playertop=false,keylistshow=false;
+
+            player p1,p2;
+
+            float overlap[2],overlap2[2],comboslide=0,comboslide2=0,bgx=0;
+                p1.x=100.0;p1.y=176.0;p1.hp=1000.0;p1.maxhp=1000.0;
+                p2.x=156.0;p2.y=176.0;p2.hp=1000.0;p2.maxhp=1000.0;
+                p1.meter=100.0;
+                p2.meter=100.0;
+            short superstop=0;
+            bool seeboxes=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false;
+                p1.right=true;
+                p2.right=false;
 
             while (window.isOpen()&&!gamequit){
                 while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
@@ -2096,7 +2103,7 @@ int main()
                 else if(!w&&!a&&s&&d)keydir1='3';
                 else if(w&&!a&&!s&&d)keydir1='9';
                 else keydir1='5';
-                if(!p1right){
+                if(!p1.right){
                     if(keydir1=='7')keydir1='9';
                     else if(keydir1=='9')keydir1='7';
                     else if(keydir1=='4')keydir1='6';
@@ -2114,7 +2121,7 @@ int main()
                 else if(!w2&&!a2&&s2&&d2)keydir2='3';
                 else if(w2&&!a2&&!s2&&d2)keydir2='9';
                 else keydir2='5';
-                if(!p2right){
+                if(!p2.right){
                     if(keydir2=='7')keydir2='9';
                     else if(keydir2=='9')keydir2='7';
                     else if(keydir2=='4')keydir2='6';
@@ -2146,181 +2153,165 @@ int main()
                     if(okey2.size()>20)okey2.pop_back();
                     if(kkey2.size()>20)kkey2.pop_back();
 
-                    if(p1buffer==0&&!animq1.empty()){
-                            p1buffer=chooseaction(1,p1air,keydir1,u,i,o,k,p1meter);
-                            if(p1cancel[p1buffer]==false&&animq1.size()>10)p1buffer=0;
-                            else if(p1buffer==1||p1buffer==3||p1buffer==11||p1buffer==20||(p1air&&p1jumpy<5))p1buffer=0;
+                    if(p1.buffer==0&&!p1.animq.empty()){
+                            p1.buffer=chooseaction(1,p1.air,keydir1,u,i,o,k,p1.meter);
+                            if(p1.cancel[p1.buffer]==false&&p1.animq.size()>10)p1.buffer=0;
+                            else if(p1.buffer==1||p1.buffer==3||p1.buffer==11||p1.buffer==20||(p1.air&&p1.jumpy<5))p1.buffer=0;
                     }
-                    if(p2buffer==0&&!animq2.empty()){
-                            p2buffer=chooseaction(2,p2air,keydir2,u2,i2,o2,k2,p2meter);
-                            if(p2cancel[p2buffer]==false&&animq2.size()>10)p2buffer=0;
-                            else if(p2buffer==1||p2buffer==3||p2buffer==11||p2buffer==20||(p2air&&p2jumpy<5))p2buffer=0;
+                    if(p2.buffer==0&&!p2.animq.empty()){
+                            p2.buffer=chooseaction(2,p2.air,keydir2,u2,i2,o2,k2,p2.meter);
+                            if(p2.cancel[p2.buffer]==false&&p2.animq.size()>10)p2.buffer=0;
+                            else if(p2.buffer==1||p2.buffer==3||p2.buffer==11||p2.buffer==20||(p2.air&&p2.jumpy<5))p2.buffer=0;
                     }
                 }
                 if((!pause||(pause&&nextframe))&&!training)roundframecount++;
                 if((pause==false||(pause&&nextframe))){
                     nextframe=false;
 
-                    if(p1buffer==0)p1act=chooseaction(1,p1air,keydir1,u,i,o,k,p1meter);
-                    else if(!animq1.empty()&&!p1whiff)p1act=p1buffer;
-                    if(animq1.empty()){if(!p1whiff){p1act=p1buffer;}p1buffer=0;}
+                    if(p1.buffer==0)p1.act=chooseaction(1,p1.air,keydir1,u,i,o,k,p1.meter);
+                    else if(!p1.animq.empty()&&!p1.whiff)p1.act=p1.buffer;
+                    if(p1.animq.empty()){if(!p1.whiff){p1.act=p1.buffer;}p1.buffer=0;}
 
-                    if(p2buffer==0)p2act=chooseaction(2,p2air,keydir2,u2,i2,o2,k2,p2meter);
-                    else if(!animq2.empty()&&!p2whiff)p2act=p2buffer;
-                    if(animq2.empty()){if(!p2whiff){p2act=p2buffer;}p2buffer=0;}
+                    if(p2.buffer==0)p2.act=chooseaction(2,p2.air,keydir2,u2,i2,o2,k2,p2.meter);
+                    else if(!p2.animq.empty()&&!p2.whiff)p2.act=p2.buffer;
+                    if(p2.animq.empty()){if(!p2.whiff){p2.act=p2.buffer;}p2.buffer=0;}
 
                     //make an attack clashing system at some point
-                    if(p1hit){
-                        if(p1hitstopped==0&&superstop==0)
-                        characterdata(animq1,hitboxanim1,p1atkfx,p1p,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
-                                      &p1block,p2x,p2y,&p1hitstun,&p1kback,&p1slide,&p1multihit,&p1hitstop,&p1buffer,&p1neutural,
-                                      &p1launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
-                                      &p1movetype,&p1blockstun,p1grab,&p1grabstate,p2grabstate,&p1landdelay,&p1meter,&p1mgain,attack1,&superstop);
-                        if(p2hitstopped==0&&superstop==0)
-                        characterdata(animq2,hitboxanim2,p2atkfx,p2p,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
-                                      &p2block,p1x,p1y,&p2hitstun,&p2kback,&p2slide,&p2multihit,&p2hitstop,&p2buffer,&p2neutural,
-                                      &p2launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
-                                      &p2movetype,&p2blockstun,p2grab,&p2grabstate,p1grabstate,&p2landdelay,&p2meter,&p2mgain,attack2,&superstop);
+                    if(p1.hit){
+                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,p2.hp,&p2.pushaway,p2.grabstate,&superstop);
+                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,p1.hp,&p1.pushaway,p1.grabstate,&superstop);
                                         }
                     else{
-                        if(p2hitstopped==0&&superstop==0)
-                        characterdata(animq2,hitboxanim2,p2atkfx,p2p,&p2hbframe,p2cancel,&p2air,p2anim,&p2act,&p2col,&p2frame,&p2whiff,&p2x,&p2y,&p2jumpx,&p2jumpy,&p2right,&p2hit,
-                                      &p2block,p1x,p1y,&p2hitstun,&p2kback,&p2slide,&p2multihit,&p2hitstop,&p2buffer,&p2neutural,
-                                      &p2launch,&p2hp,p1hp,&p2dmg,&p2comboed,&p2knockdown,&p2kdowned,&p2movewaitx,&p2movewaity,&p2paway,&p1paway,
-                                      &p2movetype,&p2blockstun,p2grab,&p2grabstate,p1grabstate,&p2landdelay,&p2meter,&p2mgain,attack2,&superstop);
-                        if(p1hitstopped==0&&superstop==0)
-                        characterdata(animq1,hitboxanim1,p1atkfx,p1p,&p1hbframe,p1cancel,&p1air,p1anim,&p1act,&p1col,&p1frame,&p1whiff,&p1x,&p1y,&p1jumpx,&p1jumpy,&p1right,&p1hit,
-                                      &p1block,p2x,p2y,&p1hitstun,&p1kback,&p1slide,&p1multihit,&p1hitstop,&p1buffer,&p1neutural,
-                                      &p1launch,&p1hp,p2hp,&p1dmg,&p1comboed,&p1knockdown,&p1kdowned,&p1movewaitx,&p1movewaity,&p1paway,&p2paway,
-                                      &p1movetype,&p1blockstun,p1grab,&p1grabstate,p2grabstate,&p1landdelay,&p1meter,&p1mgain,attack1,&superstop);
+                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,p1.hp,&p1.pushaway,p1.grabstate,&superstop);
+                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,p2.hp,&p2.pushaway,p2.grabstate,&superstop);
                                         }
-                    if(!p1p.empty()){
-                        if(p1p[0].x<-128||p1p[0].x>384||p1p[0].y<0||p1p[0].y>240)p1p.pop_front();
-                        for(short i=0;i<p1p.size();i++){
-                            if(p1p[i].hitstopped>0&&superstop==0)p1p[i].hitstopped-=1;
+                    if(!p1.proj.empty()){
+                        if(p1.proj[0].x<-128||p1.proj[0].x>384||p1.proj[0].y<0||p1.proj[0].y>240)p1.proj.pop_front();
+                        for(short i=0;i<p1.proj.size();i++){
+                            if(p1.proj[i].hitstopped>0&&superstop==0)p1.proj[i].hitstopped-=1;
                             else if(superstop==0){
-                                if(p1p[i].hit){p1p[i].hit=false;p1p[i].hitcount--;}
-                                if(p1p[i].hitcount<=0){
-                                    if(p1p[i].endanim.empty())p1p[i].y=333;
+                                if(p1.proj[i].hit){p1.proj[i].hit=false;p1.proj[i].hitcount--;}
+                                if(p1.proj[i].hitcount<=0){
+                                    if(p1.proj[i].endanim.empty())p1.proj[i].y=333;
                                     else{
-                                        p1p[i].frame=p1p[i].endanim[0];
-                                        p1p[i].endanim.pop_front();
+                                        p1.proj[i].frame=p1.proj[i].endanim[0];
+                                        p1.proj[i].endanim.pop_front();
                                     }
                                 }
                                 else{
-                                    if(p1p[i].right)p1p[i].x+=p1p[i].movex;
-                                    else p1p[i].x-=p1p[i].movex;
-                                    p1p[i].y+=p1p[i].movey;
-                                    p1p[i].animloop+=1;
-                                    if(p1p[i].looplen<=p1p[i].animloop)p1p[i].animloop=0;
-                                    p1p[i].frame=p1p[i].loopanim[p1p[i].animloop];
+                                    if(p1.proj[i].right)p1.proj[i].x+=p1.proj[i].movex;
+                                    else p1.proj[i].x-=p1.proj[i].movex;
+                                    p1.proj[i].y+=p1.proj[i].movey;
+                                    p1.proj[i].animloop+=1;
+                                    if(p1.proj[i].looplen<=p1.proj[i].animloop)p1.proj[i].animloop=0;
+                                    p1.proj[i].frame=p1.proj[i].loopanim[p1.proj[i].animloop];
                                 }
                             }
                         }
                     }
-                    if(!p2p.empty()){
-                        if(p2p[0].x<-128||p2p[0].x>384||p2p[0].y<0||p2p[0].y>240)p2p.pop_front();
-                        for(short i=0;i<p2p.size();i++){
-                            if(p2p[i].hitstopped>0&&superstop==0)p2p[i].hitstopped-=1;
+                    if(!p2.proj.empty()){
+                        if(p2.proj[0].x<-128||p2.proj[0].x>384||p2.proj[0].y<0||p2.proj[0].y>240)p2.proj.pop_front();
+                        for(short i=0;i<p2.proj.size();i++){
+                            if(p2.proj[i].hitstopped>0&&superstop==0)p2.proj[i].hitstopped-=1;
                             else if(superstop==0){
-                                if(p2p[i].hit){p2p[i].hit=false;p2p[i].hitcount--;}
-                                if(p2p[i].hitcount<=0){
-                                    if(p2p[i].endanim.empty())p2p[i].y=333;
+                                if(p2.proj[i].hit){p2.proj[i].hit=false;p2.proj[i].hitcount--;}
+                                if(p2.proj[i].hitcount<=0){
+                                    if(p2.proj[i].endanim.empty())p2.proj[i].y=333;
                                     else{
-                                        p2p[i].frame=p2p[i].endanim[0];
-                                        p2p[i].endanim.pop_front();
+                                        p2.proj[i].frame=p2.proj[i].endanim[0];
+                                        p2.proj[i].endanim.pop_front();
                                     }
                                 }
                                 else{
-                                    if(p2p[i].right)p2p[i].x+=p2p[i].movex;
-                                    else p2p[i].x-=p2p[i].movex;
-                                    p2p[i].y+=p2p[i].movey;
-                                    p2p[i].animloop++;
-                                    if(p2p[i].looplen<=p2p[i].animloop)p2p[i].animloop=0;
-                                    p2p[i].frame=p2p[i].loopanim[p2p[i].animloop];
+                                    if(p2.proj[i].right)p2.proj[i].x+=p2.proj[i].movex;
+                                    else p2.proj[i].x-=p2.proj[i].movex;
+                                    p2.proj[i].y+=p2.proj[i].movey;
+                                    p2.proj[i].animloop++;
+                                    if(p2.proj[i].looplen<=p2.proj[i].animloop)p2.proj[i].animloop=0;
+                                    p2.proj[i].frame=p2.proj[i].loopanim[p2.proj[i].animloop];
                                 }
                             }
                         }
                     }
                     if(combo==0)comboscaling=100;
-                    if(training&&combo==0&&p1hp<p1maxhp)p1hp+=10;
-                    if(training&&combo==0&&p2hp<p2maxhp)p2hp+=10;
-                    if(p1hp>p1maxhp)p1hp=p1maxhp;
-                    if(p2hp>p2maxhp)p2hp=p2maxhp;
+                    if(training&&combo==0&&p1.hp<p1.maxhp)p1.hp+=10;
+                    if(training&&combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
+                    if(p1.hp>p1.maxhp)p1.hp=p1.maxhp;
+                    if(p2.hp>p2.maxhp)p2.hp=p2.maxhp;
                     if(comboscaling<20)comboscaling=20;
                     float temp[2],temp2[2],temp3[2],temp4[2];
-                    if(p1right==true){
-                        temp[0]=colbox[p1col][0][0][0]+int(p1x);
-                        temp[1]=colbox[p1col][0][0][1]+int(p1y);
-                        temp2[0]=colbox[p1col][0][1][0]+int(p1x);
-                        temp2[1]=colbox[p1col][0][1][1]+int(p1y);
+                    if(p1.right==true){
+                        temp[0]=colbox[p1.col][0][0][0]+int(p1.x);
+                        temp[1]=colbox[p1.col][0][0][1]+int(p1.y);
+                        temp2[0]=colbox[p1.col][0][1][0]+int(p1.x);
+                        temp2[1]=colbox[p1.col][0][1][1]+int(p1.y);
                     }
                     else{
-                        temp[0]=-colbox[p1col][0][1][0]+int(p1x);
-                        temp[1]=colbox[p1col][0][0][1]+int(p1y);
-                        temp2[0]=-colbox[p1col][0][0][0]+int(p1x);
-                        temp2[1]=colbox[p1col][0][1][1]+int(p1y);
+                        temp[0]=-colbox[p1.col][0][1][0]+int(p1.x);
+                        temp[1]=colbox[p1.col][0][0][1]+int(p1.y);
+                        temp2[0]=-colbox[p1.col][0][0][0]+int(p1.x);
+                        temp2[1]=colbox[p1.col][0][1][1]+int(p1.y);
                     }
-                    if(p2right==true){
-                        temp3[0]=colbox[p2col][0][0][0]+int(p2x);
-                        temp3[1]=colbox[p2col][0][0][1]+int(p2y);
-                        temp4[0]=colbox[p2col][0][1][0]+int(p2x);
-                        temp4[1]=colbox[p2col][0][1][1]+int(p2y);
+                    if(p2.right==true){
+                        temp3[0]=colbox[p2.col][0][0][0]+int(p2.x);
+                        temp3[1]=colbox[p2.col][0][0][1]+int(p2.y);
+                        temp4[0]=colbox[p2.col][0][1][0]+int(p2.x);
+                        temp4[1]=colbox[p2.col][0][1][1]+int(p2.y);
                     }
                     else{
-                        temp3[0]=-colbox[p2col][0][1][0]+int(p2x);
-                        temp3[1]=colbox[p2col][0][0][1]+int(p2y);
-                        temp4[0]=-colbox[p2col][0][0][0]+int(p2x);
-                        temp4[1]=colbox[p2col][0][1][1]+int(p2y);
+                        temp3[0]=-colbox[p2.col][0][1][0]+int(p2.x);
+                        temp3[1]=colbox[p2.col][0][0][1]+int(p2.y);
+                        temp4[0]=-colbox[p2.col][0][0][0]+int(p2.x);
+                        temp4[1]=colbox[p2.col][0][1][1]+int(p2.y);
                     }
                     while(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-                        if(p1x<p2x){
-                            p1x-=1;
+                        if(p1.x<p2.x){
+                            p1.x-=1;
                             temp[0]-=1;
-                            p2x+=1;
+                            p2.x+=1;
                             temp3[0]+=1;
                         }
                         else{
-                            p1x+=1;
+                            p1.x+=1;
                             temp[0]+=1;
-                            p2x-=1;
+                            p2.x-=1;
                             temp3[0]-=1;
                         }
                     }
-                    if(p1air)p1hitwait=0;
-                    else p1hitwait=animq1.size();
-                    if(p2air)p2hitwait=0;
-                    else p2hitwait=animq2.size();
+                    if(p1.air)p1.hitwait=0;
+                    else p1.hitwait=p1.animq.size();
+                    if(p2.air)p2.hitwait=0;
+                    else p2.hitwait=p2.animq.size();
 
-                    if(p1hitstopped==0&&superstop==0){
-                        for(int i=hurtboxcount[p1frame]-1;i>=0;i--){
-                        if(p1right==true){
-                            temp[0]=hurtbox[p1frame][i][0][0]+int(p1x);
-                            temp[1]=hurtbox[p1frame][i][0][1]+int(p1y);
-                            temp2[0]=hurtbox[p1frame][i][1][0]+int(p1x);
-                            temp2[1]=hurtbox[p1frame][i][1][1]+int(p1y);
+                    if(p1.hitstopped==0&&superstop==0){
+                        for(int i=hurtboxcount[p1.frame]-1;i>=0;i--){
+                        if(p1.right==true){
+                            temp[0]=hurtbox[p1.frame][i][0][0]+int(p1.x);
+                            temp[1]=hurtbox[p1.frame][i][0][1]+int(p1.y);
+                            temp2[0]=hurtbox[p1.frame][i][1][0]+int(p1.x);
+                            temp2[1]=hurtbox[p1.frame][i][1][1]+int(p1.y);
                         }
                         else{
-                            temp[0]=-hurtbox[p1frame][i][1][0]+int(p1x);
-                            temp[1]=hurtbox[p1frame][i][0][1]+int(p1y);
-                            temp2[0]=-hurtbox[p1frame][i][0][0]+int(p1x);
-                            temp2[1]=hurtbox[p1frame][i][1][1]+int(p1y);
+                            temp[0]=-hurtbox[p1.frame][i][1][0]+int(p1.x);
+                            temp[1]=hurtbox[p1.frame][i][0][1]+int(p1.y);
+                            temp2[0]=-hurtbox[p1.frame][i][0][0]+int(p1.x);
+                            temp2[1]=hurtbox[p1.frame][i][1][1]+int(p1.y);
                         }
-                        for(int j=0;j<hitboxcount[p2hbframe];j++){
-                            if(p2right==true){
-                                temp3[0]=hitbox[p2hbframe][j][0][0]+int(p2x);
-                                temp3[1]=hitbox[p2hbframe][j][0][1]+int(p2y);
-                                temp4[0]=hitbox[p2hbframe][j][1][0]+int(p2x);
-                                temp4[1]=hitbox[p2hbframe][j][1][1]+int(p2y);
+                        for(int j=0;j<hitboxcount[p2.hbframe];j++){
+                            if(p2.right==true){
+                                temp3[0]=hitbox[p2.hbframe][j][0][0]+int(p2.x);
+                                temp3[1]=hitbox[p2.hbframe][j][0][1]+int(p2.y);
+                                temp4[0]=hitbox[p2.hbframe][j][1][0]+int(p2.x);
+                                temp4[1]=hitbox[p2.hbframe][j][1][1]+int(p2.y);
                             }
                             else{
-                                temp3[0]=-hitbox[p2hbframe][j][1][0]+int(p2x);
-                                temp3[1]=hitbox[p2hbframe][j][0][1]+int(p2y);
-                                temp4[0]=-hitbox[p2hbframe][j][0][0]+int(p2x);
-                                temp4[1]=hitbox[p2hbframe][j][1][1]+int(p2y);
+                                temp3[0]=-hitbox[p2.hbframe][j][1][0]+int(p2.x);
+                                temp3[1]=hitbox[p2.hbframe][j][0][1]+int(p2.y);
+                                temp4[0]=-hitbox[p2.hbframe][j][0][0]+int(p2.x);
+                                temp4[1]=hitbox[p2.hbframe][j][1][1]+int(p2.y);
                             }
                             if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-                                p1hit=true;
+                                p1.hit=true;
                                 if(temp2[0]<temp4[0])overlap[0]=temp2[0];
                                 else overlap[0]=temp4[0];
                                 if(temp[0]<temp3[0])overlap[0]+=temp3[0];
@@ -2334,24 +2325,24 @@ int main()
                                 break;
                                 }
                             }
-                        for(short j=0;j<p2p.size();j++){
-                            if(p2p[j].hitstopped==0){
-                            for(short k=0;k<hurtboxcount[p2p[j].frame];k++){
-                                if(p2p[j].right==true){
-                                    temp3[0]=hurtbox[p2p[j].frame][j][0][0]+int(p2p[j].x);
-                                    temp3[1]=hurtbox[p2p[j].frame][j][0][1]+int(p2p[j].y);
-                                    temp4[0]=hurtbox[p2p[j].frame][j][1][0]+int(p2p[j].x);
-                                    temp4[1]=hurtbox[p2p[j].frame][j][1][1]+int(p2p[j].y);
+                        for(short j=0;j<p2.proj.size();j++){
+                            if(p2.proj[j].hitstopped==0){
+                            for(short k=0;k<hurtboxcount[p2.proj[j].frame];k++){
+                                if(p2.proj[j].right==true){
+                                    temp3[0]=hurtbox[p2.proj[j].frame][j][0][0]+int(p2.proj[j].x);
+                                    temp3[1]=hurtbox[p2.proj[j].frame][j][0][1]+int(p2.proj[j].y);
+                                    temp4[0]=hurtbox[p2.proj[j].frame][j][1][0]+int(p2.proj[j].x);
+                                    temp4[1]=hurtbox[p2.proj[j].frame][j][1][1]+int(p2.proj[j].y);
                                 }
                                 else{
-                                    temp3[0]=-hurtbox[p2p[j].frame][j][1][0]+int(p2p[j].x);
-                                    temp3[1]=hurtbox[p2p[j].frame][j][0][1]+int(p2p[j].y);
-                                    temp4[0]=-hurtbox[p2p[j].frame][j][0][0]+int(p2p[j].x);
-                                    temp4[1]=hurtbox[p2p[j].frame][j][1][1]+int(p2p[j].y);
+                                    temp3[0]=-hurtbox[p2.proj[j].frame][j][1][0]+int(p2.proj[j].x);
+                                    temp3[1]=hurtbox[p2.proj[j].frame][j][0][1]+int(p2.proj[j].y);
+                                    temp4[0]=-hurtbox[p2.proj[j].frame][j][0][0]+int(p2.proj[j].x);
+                                    temp4[1]=hurtbox[p2.proj[j].frame][j][1][1]+int(p2.proj[j].y);
                                 }
                             }
                             if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-                                p2p[j].hit=true;
+                                p2.proj[j].hit=true;
                                 if(temp2[0]<temp4[0])overlap[0]=temp2[0];
                                 else overlap[0]=temp4[0];
                                 if(temp[0]<temp3[0])overlap[0]+=temp3[0];
@@ -2367,102 +2358,102 @@ int main()
                             }
                             }
                         }
-                        for(short i=0;i<p2p.size();i++){
-                            if(p1hit)p2p[i].hit=false;
-                            else if(p2p[i].hit){
-                                    p1hit=true;
-                                    p2movetype=p2p[i].movetype;
-                                    p2hitwait=0;
-                                    p2knockdown=p2p[i].knockdown;
-                                    p2kback=p2p[i].kback;
-                                    p2dmg=p2p[i].dmg;
-                                    p2hitstun=p2p[i].hitstun;
-                                    p2blockstun=p2p[i].blockstun;
-                                    p2launch=p2p[i].launch;
-                                    p2multihit=p2p[i].multihit;
+                        for(short i=0;i<p2.proj.size();i++){
+                            if(p1.hit)p2.proj[i].hit=false;
+                            else if(p2.proj[i].hit){
+                                    p1.hit=true;
+                                    p2.movetype=p2.proj[i].movetype;
+                                    p2.hitwait=0;
+                                    p2.kdown=p2.proj[i].knockdown;
+                                    p2.kback=p2.proj[i].kback;
+                                    p2.dmg=p2.proj[i].dmg;
+                                    p2.hitstun=p2.proj[i].hitstun;
+                                    p2.blockstun=p2.proj[i].blockstun;
+                                    p2.launch=p2.proj[i].launch;
+                                    p2.multihit=p2.proj[i].multihit;
                                     break;
                                 }
                         }
-                        if((p2grabstate==1|p2grabstate==2)&&p2movetype==4&&(p1air||p1comboed))p1hit=false;
-                        if(p1hit==true)p2whiff=false;
-                        if(p1hit==false){hitbefore=false;p2whiff=true;}
-                        else if(p1hit==true&&p2multihit==false&&hitbefore==false)hitbefore=true;
-                        else if(hitbefore==true)p1hit=false;
-                        if(p1hit==true){
-                            if(((p2movetype==1||p2movetype==2)&&p1block==1)||((p2movetype==3||p2movetype==2)&&p1block==0)||p1block==2){
-                                if(p1block==1)memcpy(p1anim,animlib[33],sizeof(animlib[33]));
-                                else memcpy(p1anim,animlib[32],sizeof(animlib[32]));
-                                p1meter+=p2mgain/10*11;
-                                p2meter+=p2mgain;
-                                p2dmg/=5;
-                                p1hitstopped=p2hitstop*5/4;
-                                p2hitstopped=p1hitstopped;
+                        if((p2.grabstate==1|p2.grabstate==2)&&p2.movetype==4&&(p1.air||p1.comboed))p1.hit=false;
+                        if(p1.hit==true)p2.whiff=false;
+                        if(p1.hit==false){p1.hitbefore=false;p2.whiff=true;}
+                        else if(p1.hit==true&&p2.multihit==false&&p1.hitbefore==false)p1.hitbefore=true;
+                        else if(p1.hitbefore==true)p1.hit=false;
+                        if(p1.hit==true){
+                            if(((p2.movetype==1||p2.movetype==2)&&p1.block==1)||((p2.movetype==3||p2.movetype==2)&&p1.block==0)||p1.block==2){
+                                if(p1.block==1)memcpy(p1.anim,animlib[33],sizeof(animlib[33]));
+                                else memcpy(p1.anim,animlib[32],sizeof(animlib[32]));
+                                p1.meter+=p2.mgain/10*11;
+                                p2.meter+=p2.mgain;
+                                p2.dmg/=5;
+                                p1.hitstopped=p2.hitstop*5/4;
+                                p2.hitstopped=p1.hitstopped;
                             }
                             else{
-                                if(p1col==1)memcpy(p1anim,animlib[57],sizeof(animlib[57]));else memcpy(p1anim,animlib[56],sizeof(animlib[56]));
-                                if(p2hitstop!=0||p2dmg!=0)combo++;
+                                if(p1.col==1)memcpy(p1.anim,animlib[57],sizeof(animlib[57]));else memcpy(p1.anim,animlib[56],sizeof(animlib[56]));
+                                if(p2.hitstop!=0||p2.dmg!=0)combo++;
                                 if(combo>3)comboscaling=comboscaling/10*9;
-                                p1meter+=p2mgain/7*8;
-                                p2meter+=p2mgain;
-                                p2dmg=p2dmg/100*comboscaling;
-                                p1hitstopped=p2hitstop;
-                                p2hitstopped=p1hitstopped;
+                                p1.meter+=p2.mgain/7*8;
+                                p2.meter+=p2.mgain;
+                                p2.dmg=p2.dmg/100*comboscaling;
+                                p1.hitstopped=p2.hitstop;
+                                p2.hitstopped=p1.hitstopped;
                             }
-                            attack1.hitwait=p2hitwait;
-                            attack1.movetype=p2movetype;
-                            attack1.hitstun=p2hitstun;
-                            attack1.blockstun=p2blockstun;
-                            attack1.kback=p2kback;
-                            if(p2right)attack1.kback*=-1;
-                            attack1.launch=p2launch;
-                            attack1.grab[0]=p2grab[0];
-                            attack1.grab[1]=p2grab[1];
-                            attack1.kdown=p2knockdown;
-                            attack1.pushaway=true;
-                            p1hp-=p2dmg;
+                            p1.attack.hitwait=p2.hitwait;
+                            p1.attack.movetype=p2.movetype;
+                            p1.attack.hitstun=p2.hitstun;
+                            p1.attack.blockstun=p2.blockstun;
+                            p1.attack.kback=p2.kback;
+                            if(p2.right)p1.attack.kback*=-1;
+                            p1.attack.launch=p2.launch;
+                            p1.attack.grab[0]=p2.grab[0];
+                            p1.attack.grab[1]=p2.grab[1];
+                            p1.attack.kdown=p2.kdown;
+                            p1.attack.pushaway=true;
+                            p1.hp-=p2.dmg;
                             }
-                        for(short i=0;i<p2p.size();i++){
-                            if(p2p[i].hit){
-                                p2hitstopped=0;
-                                p2whiff=true;
-                                attack1.pushaway=false;
-                                attack1.kback=p2kback;
-                                if(p2p[i].right)attack1.kback*=-1;
-                                //p2p[i].hitstopped=p1hitstopped;
+                        for(short i=0;i<p2.proj.size();i++){
+                            if(p2.proj[i].hit){
+                                p2.hitstopped=0;
+                                p2.whiff=true;
+                                p1.attack.pushaway=false;
+                                p1.attack.kback=p2.kback;
+                                if(p2.proj[i].right)p1.attack.kback*=-1;
+                                //p2.proj[i].hitstopped=p1.hitstopped;
                                 break;
                             }
                         }
-                    }//p1hitstopped
+                    }//p1.hitstopped
 
-                    if(p2hitstopped==0&&superstop==0){
-                        for(int i=hurtboxcount[p2frame]-1;i>=0;i--){
-                        if(p2right==true){
-                            temp[0]=hurtbox[p2frame][i][0][0]+int(p2x);
-                            temp[1]=hurtbox[p2frame][i][0][1]+int(p2y);
-                            temp2[0]=hurtbox[p2frame][i][1][0]+int(p2x);
-                            temp2[1]=hurtbox[p2frame][i][1][1]+int(p2y);
+                    if(p2.hitstopped==0&&superstop==0){
+                        for(int i=hurtboxcount[p2.frame]-1;i>=0;i--){
+                        if(p2.right==true){
+                            temp[0]=hurtbox[p2.frame][i][0][0]+int(p2.x);
+                            temp[1]=hurtbox[p2.frame][i][0][1]+int(p2.y);
+                            temp2[0]=hurtbox[p2.frame][i][1][0]+int(p2.x);
+                            temp2[1]=hurtbox[p2.frame][i][1][1]+int(p2.y);
                         }
                         else{
-                            temp[0]=-hurtbox[p2frame][i][1][0]+int(p2x);
-                            temp[1]=hurtbox[p2frame][i][0][1]+int(p2y);
-                            temp2[0]=-hurtbox[p2frame][i][0][0]+int(p2x);
-                            temp2[1]=hurtbox[p2frame][i][1][1]+int(p2y);
+                            temp[0]=-hurtbox[p2.frame][i][1][0]+int(p2.x);
+                            temp[1]=hurtbox[p2.frame][i][0][1]+int(p2.y);
+                            temp2[0]=-hurtbox[p2.frame][i][0][0]+int(p2.x);
+                            temp2[1]=hurtbox[p2.frame][i][1][1]+int(p2.y);
                         }
-                        for(int j=0;j<hitboxcount[p1hbframe];j++){
-                            if(p1right==true){
-                                temp3[0]=hitbox[p1hbframe][j][0][0]+int(p1x);
-                                temp3[1]=hitbox[p1hbframe][j][0][1]+int(p1y);
-                                temp4[0]=hitbox[p1hbframe][j][1][0]+int(p1x);
-                                temp4[1]=hitbox[p1hbframe][j][1][1]+int(p1y);
+                        for(int j=0;j<hitboxcount[p1.hbframe];j++){
+                            if(p1.right==true){
+                                temp3[0]=hitbox[p1.hbframe][j][0][0]+int(p1.x);
+                                temp3[1]=hitbox[p1.hbframe][j][0][1]+int(p1.y);
+                                temp4[0]=hitbox[p1.hbframe][j][1][0]+int(p1.x);
+                                temp4[1]=hitbox[p1.hbframe][j][1][1]+int(p1.y);
                             }
                             else{
-                                temp3[0]=-hitbox[p1hbframe][j][1][0]+int(p1x);
-                                temp3[1]=hitbox[p1hbframe][j][0][1]+int(p1y);
-                                temp4[0]=-hitbox[p1hbframe][j][0][0]+int(p1x);
-                                temp4[1]=hitbox[p1hbframe][j][1][1]+int(p1y);
+                                temp3[0]=-hitbox[p1.hbframe][j][1][0]+int(p1.x);
+                                temp3[1]=hitbox[p1.hbframe][j][0][1]+int(p1.y);
+                                temp4[0]=-hitbox[p1.hbframe][j][0][0]+int(p1.x);
+                                temp4[1]=hitbox[p1.hbframe][j][1][1]+int(p1.y);
                             }
                             if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-                                p2hit=true;
+                                p2.hit=true;
                                 if(temp2[0]<temp4[0])overlap2[0]=temp2[0];
                                 else overlap2[0]=temp4[0];
                                 if(temp[0]<temp3[0])overlap2[0]+=temp3[0];
@@ -2476,24 +2467,24 @@ int main()
                                 break;
                                 }
                             }
-                        for(short j=0;j<p1p.size();j++){
-                            if(p1p[j].hitstopped==0){
-                            for(short k=0;k<hurtboxcount[p1p[j].frame];k++){
-                                if(p1p[j].right==true){
-                                    temp3[0]=hurtbox[p1p[j].frame][j][0][0]+int(p1p[j].x);
-                                    temp3[1]=hurtbox[p1p[j].frame][j][0][1]+int(p1p[j].y);
-                                    temp4[0]=hurtbox[p1p[j].frame][j][1][0]+int(p1p[j].x);
-                                    temp4[1]=hurtbox[p1p[j].frame][j][1][1]+int(p1p[j].y);
+                        for(short j=0;j<p1.proj.size();j++){
+                            if(p1.proj[j].hitstopped==0){
+                            for(short k=0;k<hurtboxcount[p1.proj[j].frame];k++){
+                                if(p1.proj[j].right==true){
+                                    temp3[0]=hurtbox[p1.proj[j].frame][j][0][0]+int(p1.proj[j].x);
+                                    temp3[1]=hurtbox[p1.proj[j].frame][j][0][1]+int(p1.proj[j].y);
+                                    temp4[0]=hurtbox[p1.proj[j].frame][j][1][0]+int(p1.proj[j].x);
+                                    temp4[1]=hurtbox[p1.proj[j].frame][j][1][1]+int(p1.proj[j].y);
                                 }
                                 else{
-                                    temp3[0]=-hurtbox[p1p[j].frame][j][1][0]+int(p1p[j].x);
-                                    temp3[1]=hurtbox[p1p[j].frame][j][0][1]+int(p1p[j].y);
-                                    temp4[0]=-hurtbox[p1p[j].frame][j][0][0]+int(p1p[j].x);
-                                    temp4[1]=hurtbox[p1p[j].frame][j][1][1]+int(p1p[j].y);
+                                    temp3[0]=-hurtbox[p1.proj[j].frame][j][1][0]+int(p1.proj[j].x);
+                                    temp3[1]=hurtbox[p1.proj[j].frame][j][0][1]+int(p1.proj[j].y);
+                                    temp4[0]=-hurtbox[p1.proj[j].frame][j][0][0]+int(p1.proj[j].x);
+                                    temp4[1]=hurtbox[p1.proj[j].frame][j][1][1]+int(p1.proj[j].y);
                                 }
                             }
                             if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-                                p1p[j].hit=true;
+                                p1.proj[j].hit=true;
                                 if(temp2[0]<temp4[0])overlap2[0]=temp2[0];
                                 else overlap2[0]=temp4[0];
                                 if(temp[0]<temp3[0])overlap2[0]+=temp3[0];
@@ -2509,92 +2500,92 @@ int main()
                             }
                             }
                         }
-                        for(short i=0;i<p1p.size();i++){
-                            if(p2hit)p1p[i].hit=false;
-                            else if(p1p[i].hit){
-                                    p2hit=true;
-                                    p1movetype=p1p[i].movetype;
-                                    p1hitwait=0;
-                                    p1knockdown=p1p[i].knockdown;
-                                    p1kback=p1p[i].kback;
-                                    p1dmg=p1p[i].dmg;
-                                    p1hitstun=p1p[i].hitstun;
-                                    p1blockstun=p1p[i].blockstun;
-                                    p1launch=p1p[i].launch;
-                                    p1multihit=p1p[i].multihit;
+                        for(short i=0;i<p1.proj.size();i++){
+                            if(p2.hit)p1.proj[i].hit=false;
+                            else if(p1.proj[i].hit){
+                                    p2.hit=true;
+                                    p1.movetype=p1.proj[i].movetype;
+                                    p1.hitwait=0;
+                                    p1.kdown=p1.proj[i].knockdown;
+                                    p1.kback=p1.proj[i].kback;
+                                    p1.dmg=p1.proj[i].dmg;
+                                    p1.hitstun=p1.proj[i].hitstun;
+                                    p1.blockstun=p1.proj[i].blockstun;
+                                    p1.launch=p1.proj[i].launch;
+                                    p1.multihit=p1.proj[i].multihit;
                                     break;
                                 }
                         }
-                        if((p1grabstate==1||p1grabstate==2)&&p1movetype==4&&(p2air||p2comboed))p2hit=false;
-                        if(p2hit==true)p1whiff=false;
-                        if(p2hit==false){hitbefore2=false;p1whiff=true;}
-                        else if(p2hit==true&&p1multihit==false&&hitbefore2==false)hitbefore2=true;
-                        else if(hitbefore2==true)p2hit=false;
-                        if(p2hit==true){
-                            if(((p1movetype==1||p1movetype==2)&&p2block==1)||((p1movetype==3||p1movetype==2)&&p2block==0)||p2block==2){
-                                if(p2block==1)memcpy(p2anim,animlib[33],sizeof(animlib[33]));
-                                else memcpy(p2anim,animlib[32],sizeof(animlib[32]));
-                                p2meter+=p1mgain/10*11;
-                                p1meter+=p1mgain;
-                                p1dmg/=5;
-                                p1hitstopped=p1hitstop/4*5;
-                                p2hitstopped=p1hitstopped;
+                        if((p1.grabstate==1||p1.grabstate==2)&&p1.movetype==4&&(p2.air||p2.comboed))p2.hit=false;
+                        if(p2.hit==true)p1.whiff=false;
+                        if(p2.hit==false){p2.hitbefore=false;p1.whiff=true;}
+                        else if(p2.hit==true&&p1.multihit==false&&p2.hitbefore==false)p2.hitbefore=true;
+                        else if(p2.hitbefore==true)p2.hit=false;
+                        if(p2.hit==true){
+                            if(((p1.movetype==1||p1.movetype==2)&&p2.block==1)||((p1.movetype==3||p1.movetype==2)&&p2.block==0)||p2.block==2){
+                                if(p2.block==1)memcpy(p2.anim,animlib[33],sizeof(animlib[33]));
+                                else memcpy(p2.anim,animlib[32],sizeof(animlib[32]));
+                                p2.meter+=p1.mgain/10*11;
+                                p1.meter+=p1.mgain;
+                                p1.dmg/=5;
+                                p1.hitstopped=p1.hitstop/4*5;
+                                p2.hitstopped=p1.hitstopped;
                             }
                             else{
-                                if(p2col==1)memcpy(p2anim,animlib[57],sizeof(animlib[57]));else memcpy(p2anim,animlib[56],sizeof(animlib[56]));
-                                if(p1hitstop!=0||p1dmg!=0)combo++;
+                                if(p2.col==1)memcpy(p2.anim,animlib[57],sizeof(animlib[57]));else memcpy(p2.anim,animlib[56],sizeof(animlib[56]));
+                                if(p1.hitstop!=0||p1.dmg!=0)combo++;
                                 if(combo>3)comboscaling=comboscaling/10*9;
-                                p2meter+=p1mgain/7*8;
-                                p1meter+=p1mgain;
-                                p1dmg=p1dmg/100*comboscaling;
-                                p1hitstopped=p1hitstop;
-                                p2hitstopped=p1hitstopped;
+                                p2.meter+=p1.mgain/7*8;
+                                p1.meter+=p1.mgain;
+                                p1.dmg=p1.dmg/100*comboscaling;
+                                p1.hitstopped=p1.hitstop;
+                                p2.hitstopped=p1.hitstopped;
                             }
-                            attack2.hitwait=p1hitwait;
-                            attack2.movetype=p1movetype;
-                            attack2.hitstun=p1hitstun;
-                            attack2.blockstun=p1blockstun;
-                            attack2.kback=p1kback;
-                            if(p1right)attack2.kback*=-1;
-                            attack2.launch=p1launch;
-                            attack2.grab[0]=p1grab[0];
-                            attack2.grab[1]=p1grab[1];
-                            attack2.kdown=p1knockdown;
-                            attack2.pushaway=true;
-                            p2hp-=p1dmg;
+                            p2.attack.hitwait=p1.hitwait;
+                            p2.attack.movetype=p1.movetype;
+                            p2.attack.hitstun=p1.hitstun;
+                            p2.attack.blockstun=p1.blockstun;
+                            p2.attack.kback=p1.kback;
+                            if(p1.right)p2.attack.kback*=-1;
+                            p2.attack.launch=p1.launch;
+                            p2.attack.grab[0]=p1.grab[0];
+                            p2.attack.grab[1]=p1.grab[1];
+                            p2.attack.kdown=p1.kdown;
+                            p2.attack.pushaway=true;
+                            p2.hp-=p1.dmg;
                         }
-                    for(short i=0;i<p1p.size();i++){
-                            if(p1p[i].hit){
-                                p1hitstopped=0;
-                                p1whiff=true;
-                                attack2.pushaway=false;
-                                attack2.kback=p1kback;
-                                if(p1p[i].right)attack2.kback*=-1;
-                                //p1p[i].hitstopped=p2hitstopped;
+                    for(short i=0;i<p1.proj.size();i++){
+                            if(p1.proj[i].hit){
+                                p1.hitstopped=0;
+                                p1.whiff=true;
+                                p2.attack.pushaway=false;
+                                p2.attack.kback=p1.kback;
+                                if(p1.proj[i].right)p2.attack.kback*=-1;
+                                //p1.proj[i].hitstopped=p2.hitstopped;
                                 break;
                             }
                         }
-                    }//p2hitstopped
-                    if(p1meter>1000)p1meter=1000;
-                    if(p2meter>1000)p2meter=1000;
+                    }//p2.hitstopped
+                    if(p1.meter>1000)p1.meter=1000;
+                    if(p2.meter>1000)p2.meter=1000;
 
-                    while((p1x+bgx<32&&p2x+bgx<224)||(p2x+bgx<32&&p1x+bgx<224)){
+                    while((p1.x+bgx<32&&p2.x+bgx<224)||(p2.x+bgx<32&&p1.x+bgx<224)){
                             if(bgx<125)bgx+=1;
                             else break;
                     }
-                    while((p1x+bgx>224&&p2x+bgx>32)||(p2x+bgx>224&&p1x+bgx>32)){
+                    while((p1.x+bgx>224&&p2.x+bgx>32)||(p2.x+bgx>224&&p1.x+bgx>32)){
                             if(bgx>-119)bgx-=1;
                             else break;
                     }
-                    while(p1x+bgx<11)p1x++;
-                    while(p1x+bgx>245)p1x--;
-                    while(p2x+bgx<11)p2x++;
-                    while(p2x+bgx>245)p2x--;
+                    while(p1.x+bgx<11)p1.x++;
+                    while(p1.x+bgx>245)p1.x--;
+                    while(p2.x+bgx<11)p2.x++;
+                    while(p2.x+bgx>245)p2.x--;
                 }
 
                 if(!pause){
                     char keytemp=dirkeys[1],keytemp2=keydir1;
-                    if(!p1right){
+                    if(!p1.right){
                         if(keytemp=='7')keytemp='9';
                         else if(keytemp=='9')keytemp='7';
                         else if(keytemp=='4')keytemp='6';
@@ -2619,7 +2610,7 @@ int main()
 
 
                     keytemp=dirkeys2[1],keytemp2=keydir2;
-                    if(!p2right){
+                    if(!p2.right){
                         if(keytemp=='7')keytemp='9';
                         else if(keytemp=='9')keytemp='7';
                         else if(keytemp=='4')keytemp='6';
@@ -2643,34 +2634,34 @@ int main()
                     if(p2keylist.size()>40)for(short i=0;i<5;i++)p2keylist.pop_back();
                 }
 
-                if(p1hitstopped>0&&(!pause||nextframe))p1hitstopped--;
-                if(p2hitstopped>0&&(!pause||nextframe))p2hitstopped--;
+                if(p1.hitstopped>0&&(!pause||nextframe))p1.hitstopped--;
+                if(p2.hitstopped>0&&(!pause||nextframe))p2.hitstopped--;
                 if(superstop>0&&(!pause||nextframe))superstop--;
 
                 box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2,P_Hitbox1[8],P_Hitbox2[8];
-                collisionbox1.create(p1x+bgx,int(p1y),colbox[p1col],p1right,1,sf::Color::White);
-                collisionbox2.create(p2x+bgx,int(p2y),colbox[p2col],p2right,1,sf::Color::White);
-                Hurtbox1.create(p1x+bgx,int(p1y),hurtbox[p1frame],p1right,hurtboxcount[p1frame],sf::Color::Blue);
-                Hitbox1.create(p1x+bgx,int(p1y),hitbox[p1hbframe],p1right,hitboxcount[p1hbframe],sf::Color::Red);
-                Hurtbox2.create(p2x+bgx,int(p2y),hurtbox[p2frame],p2right,hurtboxcount[p2frame],sf::Color::Blue);
-                Hitbox2.create(p2x+bgx,int(p2y),hitbox[p2hbframe],p2right,hitboxcount[p2hbframe],sf::Color::Red);
-                for(short i=0;i<p1p.size();i++)P_Hitbox1[i].create(p1p[i].x+bgx,int(p1p[i].y),hurtbox[p1p[i].frame],p1p[i].right,hurtboxcount[p1p[i].frame],sf::Color::Red);
-                for(short i=0;i<p2p.size();i++)P_Hitbox2[i].create(p2p[i].x+bgx,int(p2p[i].y),hurtbox[p2p[i].frame],p2p[i].right,hurtboxcount[p2p[i].frame],sf::Color::Red);
+                collisionbox1.create(p1.x+bgx,int(p1.y),colbox[p1.col],p1.right,1,sf::Color::White);
+                collisionbox2.create(p2.x+bgx,int(p2.y),colbox[p2.col],p2.right,1,sf::Color::White);
+                Hurtbox1.create(p1.x+bgx,int(p1.y),hurtbox[p1.frame],p1.right,hurtboxcount[p1.frame],sf::Color::Blue);
+                Hitbox1.create(p1.x+bgx,int(p1.y),hitbox[p1.hbframe],p1.right,hitboxcount[p1.hbframe],sf::Color::Red);
+                Hurtbox2.create(p2.x+bgx,int(p2.y),hurtbox[p2.frame],p2.right,hurtboxcount[p2.frame],sf::Color::Blue);
+                Hitbox2.create(p2.x+bgx,int(p2.y),hitbox[p2.hbframe],p2.right,hitboxcount[p2.hbframe],sf::Color::Red);
+                for(short i=0;i<p1.proj.size();i++)P_Hitbox1[i].create(p1.proj[i].x+bgx,int(p1.proj[i].y),hurtbox[p1.proj[i].frame],p1.proj[i].right,hurtboxcount[p1.proj[i].frame],sf::Color::Red);
+                for(short i=0;i<p2.proj.size();i++)P_Hitbox2[i].create(p2.proj[i].x+bgx,int(p2.proj[i].y),hurtbox[p2.proj[i].frame],p2.proj[i].right,hurtboxcount[p2.proj[i].frame],sf::Color::Red);
 
-                if(p1hitstopped==0&&p2hitstopped==0)hf.frame=0;
-                if(p1hit&&!p2hit&&(!pause||nextframe)&&hf.frame==0){
+                if(p1.hitstopped==0&&p2.hitstopped==0)hf.frame=0;
+                if(p1.hit&&!p2.hit&&(!pause||nextframe)&&hf.frame==0){
                     hf.create(overlap[0]+bgx,overlap[1],combo>0);
                     hf.frame=1;
                 }
-                else if(p2hit&&!p1hit&&(!pause||nextframe)&&hf.frame==0){
+                else if(p2.hit&&!p1.hit&&(!pause||nextframe)&&hf.frame==0){
                     hf.create(overlap2[0]+bgx,overlap2[1],combo>0);
                     hf.frame=1;
                 }
-                else if(hf.frame>0&&p1hit&&!p2hit&&(!pause||nextframe)){
+                else if(hf.frame>0&&p1.hit&&!p2.hit&&(!pause||nextframe)){
                     hf.update(overlap[0]+bgx,overlap[1],combo>0);
                     hf.frame++;
                 }
-                else if(hf.frame>0&&!p1hit&&p2hit&&(!pause||nextframe)){
+                else if(hf.frame>0&&!p1.hit&&p2.hit&&(!pause||nextframe)){
                     hf.update(overlap2[0]+bgx,overlap2[1],combo>0);
                     hf.frame++;
                 }
@@ -2682,20 +2673,20 @@ int main()
                 tempstr = std::to_string(combo);
                 combotext.setString(tempstr);
                 combotext.setOrigin(combotext.getLocalBounds().width,0);
-                if (combo>1)cui.create(p2comboed||p2kdowned,comboslide);
+                if (combo>1)cui.create(p2.comboed||p2.kdowned,comboslide);
 
                 p1ilist.create(p1keylist,true);
                 p2ilist.create(p2keylist,false);
-                hb.create(p1hp,p2hp);
-                mb.create(p1meter,p2meter);
+                hb.create(p1.hp,p2.hp);
+                mb.create(p1.meter,p2.meter);
 
                 healthui.setPosition(0.f,0.f);
-                if(p2comboed||p2kdowned)combotext.setPosition(36.f-comboslide,25.f);
+                if(p2.comboed||p2.kdowned)combotext.setPosition(36.f-comboslide,25.f);
                 else combotext.setPosition(248.f+comboslide,25.f);
-                p1.setPosition(int(p1x-64+bgx),int(p1y-64));
-                p1shadow.setPosition(p1x-64+bgx,184+(p1y-176)/8);
-                p2.setPosition(int(p2x-64+bgx),int(p2y-64));
-                p2shadow.setPosition(p2x-64+bgx,184+(p2y-176)/8);
+                p1graphics.setPosition(int(p1.x-64+bgx),int(p1.y-64));
+                p1shadow.setPosition(p1.x-64+bgx,184+(p1.y-176)/8);
+                p2graphics.setPosition(int(p2.x-64+bgx),int(p2.y-64));
+                p2shadow.setPosition(p2.x-64+bgx,184+(p2.y-176)/8);
                 background.setPosition(bgx-125,0.f);
 
                 menus.setcolor(6,!pause,menuselect);
@@ -2715,10 +2706,10 @@ int main()
                 sf::RectangleShape blackscreen(sf::Vector2f(256.f, 240.f));
                 blackscreen.setFillColor(sf::Color(0,0,0,170));
 
-                p1.setanim(p1anim,p1right);
-                p2.setanim(p2anim,p2right);
-                p1shadow.setanim(p1anim,p1right);
-                p2shadow.setanim(p2anim,p2right);
+                p1graphics.setanim(p1.anim,p1.right);
+                p2graphics.setanim(p2.anim,p2.right);
+                p1shadow.setanim(p1.anim,p1.right);
+                p2shadow.setanim(p2.anim,p2.right);
 
                 window.clear();
                 renderTexture.clear();
@@ -2728,37 +2719,37 @@ int main()
 
                 if(superstop>0)renderTexture.draw(blackscreen);
 
-                if(p1hit)playertop=true;
-                else if(p2hit) playertop=false;
+                if(p1.hit)playertop=true;
+                else if(p2.hit) playertop=false;
                 if(playertop){
-                    renderTexture.draw(p1);
-                    renderTexture.draw(p2);
+                    renderTexture.draw(p1graphics);
+                    renderTexture.draw(p2graphics);
                 }
                 else{
-                    renderTexture.draw(p2);
-                    renderTexture.draw(p1);
+                    renderTexture.draw(p2graphics);
+                    renderTexture.draw(p1graphics);
                 }
 
-                if(!p1p.empty()){
-                character p_graphics[p1p.size()];
-                    for(short i=0;i<p1p.size();i++){
+                if(!p1.proj.empty()){
+                character p_graphics[p1.proj.size()];
+                    for(short i=0;i<p1.proj.size();i++){
                         p_graphics[i].load(p1texture,false);
-                        p_graphics[i].setanim(animlib[p1p[i].frame],p1p[i].right);
-                        p_graphics[i].setPosition(int(p1p[i].x-64+bgx),int(p1p[i].y-64));
+                        p_graphics[i].setanim(animlib[p1.proj[i].frame],p1.proj[i].right);
+                        p_graphics[i].setPosition(int(p1.proj[i].x-64+bgx),int(p1.proj[i].y-64));
                         renderTexture.draw(p_graphics[i]);
                     }
                 }
-                if(!p2p.empty()){
-                character p_graphics[p2p.size()];
-                    for(short i=0;i<p2p.size();i++){
+                if(!p2.proj.empty()){
+                character p_graphics[p2.proj.size()];
+                    for(short i=0;i<p2.proj.size();i++){
                         p_graphics[i].load(p2texture,false);
-                        p_graphics[i].setanim(animlib[p2p[i].frame],p2p[i].right);
-                        p_graphics[i].setPosition(int(p2p[i].x-64+bgx),int(p2p[i].y-64));
+                        p_graphics[i].setanim(animlib[p2.proj[i].frame],p2.proj[i].right);
+                        p_graphics[i].setPosition(int(p2.proj[i].x-64+bgx),int(p2.proj[i].y-64));
                         renderTexture.draw(p_graphics[i]);
                     }
                 }
 
-                if(p1hitstopped>0||p2hitstopped)renderTexture.draw(hf);
+                if(p1.hitstopped>0||p2.hitstopped)renderTexture.draw(hf);
 
 
                 renderTexture.draw(hb);
@@ -2777,11 +2768,11 @@ int main()
                 time.setPosition(0,0);
                 renderTexture.draw(time);
 
-                time.timeset(p1meter/100);
+                time.timeset(p1.meter/100);
                 time.setPosition(-107,208);
                 renderTexture.draw(time);
 
-                time.timeset(p2meter/100);
+                time.timeset(p2.meter/100);
                 time.setPosition(109,208);
                 renderTexture.draw(time);
 
@@ -2802,8 +2793,8 @@ int main()
                     window.draw(Hurtbox2);
                     window.draw(Hitbox1);
                     window.draw(Hitbox2);
-                    for(short i=0;i<p1p.size();i++)window.draw(P_Hitbox1[i]);
-                    for(short i=0;i<p2p.size();i++)window.draw(P_Hitbox2[i]);
+                    for(short i=0;i<p1.proj.size();i++)window.draw(P_Hitbox1[i]);
+                    for(short i=0;i<p2.proj.size();i++)window.draw(P_Hitbox2[i]);
                 }
                 window.display();
             }
@@ -2813,6 +2804,7 @@ int main()
         dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
         menus.setmenu(6,144,120,0,16,0);
         }
+
 
     }
 	return 0;
