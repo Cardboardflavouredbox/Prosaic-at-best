@@ -2413,7 +2413,7 @@ int main()
                             attack1.hitstun=p2hitstun;
                             attack1.blockstun=p2blockstun;
                             attack1.kback=p2kback;
-                            if(p1x>p2x)attack1.kback*=-1;
+                            if(p2right)attack1.kback*=-1;
                             attack1.launch=p2launch;
                             attack1.grab[0]=p2grab[0];
                             attack1.grab[1]=p2grab[1];
@@ -2427,7 +2427,7 @@ int main()
                                 p2whiff=true;
                                 attack1.pushaway=false;
                                 attack1.kback=p2kback;
-                                if(p1x>p2p[i].x)attack1.kback*=-1;
+                                if(p2p[i].right)attack1.kback*=-1;
                                 //p2p[i].hitstopped=p1hitstopped;
                                 break;
                             }
@@ -2555,7 +2555,7 @@ int main()
                             attack2.hitstun=p1hitstun;
                             attack2.blockstun=p1blockstun;
                             attack2.kback=p1kback;
-                            if(p2x>p1x)attack2.kback*=-1;
+                            if(p1right)attack2.kback*=-1;
                             attack2.launch=p1launch;
                             attack2.grab[0]=p1grab[0];
                             attack2.grab[1]=p1grab[1];
@@ -2569,7 +2569,7 @@ int main()
                                 p1whiff=true;
                                 attack2.pushaway=false;
                                 attack2.kback=p1kback;
-                                if(p2x>p1p[i].x)attack2.kback*=-1;
+                                if(p1p[i].right)attack2.kback*=-1;
                                 //p1p[i].hitstopped=p2hitstopped;
                                 break;
                             }
