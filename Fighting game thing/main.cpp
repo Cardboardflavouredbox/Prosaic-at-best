@@ -5,6 +5,7 @@
 #include <deque>
 #include <string.h>
 #include <math.h>
+#include "ggponet.h"
 
 using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
@@ -1432,6 +1433,9 @@ private:
    sf::VertexArray m_vertices;
 
 };
+void keyread(char keydir,bool right){
+
+}
 
 void collisionchecks(player *p1,player *p2,float overlap[]){
     float temp[2],temp2[2],temp3[2],temp4[2];
@@ -1605,7 +1609,7 @@ bool cmdcheck(int playercode,int len,char s[][5]){
 
 }
 
-int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,char k,float meter){
+int chooseaction(int playercode, bool air, char keyinput[], float meter){
     char c236[4][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
         c214[4][5]={{'0','0','0','0','0'},{'4','0','0','0','0'},{'1','0','0','0','0'},{'2','0','0','0','0'}},
         c623[4][5]={{'0','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
@@ -1615,53 +1619,53 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
         c63236[6][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'3','0','0','0','0'},{'6','0','0','0','0'}},
         c6236[5][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}};
             if(!air){
-                if(keydir=='1'||keydir=='2'||keydir=='3'){
+                if(keyinput[0]=='1'||keyinput[0]=='2'||keyinput[0]=='3'){
                     //crouching actions
-                    if(o=='2'){
+                    if(keyinput[3]=='2'){
                         c623[0][3]='2';c323[0][3]='2';
                         if(cmdcheck(playercode,4,c623)||cmdcheck(playercode,4,c323))return 23;//special B strong
                         else return 14;//strong normal
                         c623[0][3]='0';c323[0][3]='0';
                     }
-                    else if(i=='2'){
+                    else if(keyinput[2]=='2'){
                         c623[0][2]='2';c323[0][2]='2';
                         if(cmdcheck(playercode,4,c623)||cmdcheck(playercode,4,c323))return 22;//special B middle
                         else return 13;//middle normal
                         c623[0][2]='0';c323[0][2]='0';
                     }
-                    else if(u=='2'){
+                    else if(keyinput[1]=='2'){
                         c623[0][1]='2';c323[0][1]='2';
                         if(cmdcheck(playercode,4,c623)||cmdcheck(playercode,4,c323))return 21;//special B weak
                         else return 12;//weak normal
                         c623[0][1]='0';c323[0][1]='0';
                     }
-                    else if(k=='2'){
+                    else if(keyinput[4]=='2'){
                         c623[0][4]='2';c323[0][4]='2';
                         if(cmdcheck(playercode,4,c623)||cmdcheck(playercode,4,c323))return 24;//special B gimmick
                         else return 15;//gimmick
                         c623[0][4]='0';c323[0][4]='0';
                     }
-                    else if(keydir=='1')return 20;//crouching block
+                    else if(keyinput[0]=='1')return 20;//crouching block
                     else return 11;//crouch
                 }
                 else{
                     //grounded actions
-                    if(u=='2'&&i=='2'){
+                    if(keyinput[1]=='2'&&keyinput[2]=='2'){
                         c214[0][1]='2';c214[0][2]='2';
                         if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
                         else return 25;//grab
                         c214[0][1]='0';c214[0][2]='0';
                     }
-                    if(o=='2'){
+                    if(keyinput[3]=='2'){
                         c214[0][3]='2';c236[0][3]='2';c636[0][3]='2';c626[0][3]='2';c63236[0][3]='2';c6236[0][3]='2';
                         if(cmdcheck(playercode,4,c214))return 30;//special C strong
                         else if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 23;//special B strong
                         else if(cmdcheck(playercode,4,c236))return 18;//special A strong
-                        else if(u=='2'||i=='2')return 25;//grab
+                        else if(keyinput[1]=='2'||keyinput[2]=='2')return 25;//grab
                         else return 10;//strong normal
                         c214[0][3]='0';c236[0][3]='0';c636[0][3]='0';c626[0][3]='0';c63236[0][3]='0';c6236[0][3]='0';
                     }
-                    else if(i=='2'){
+                    else if(keyinput[2]=='2'){
                         c214[0][2]='2';c236[0][2]='2';c636[0][2]='2';c626[0][2]='2';c63236[0][2]='2';c6236[0][2]='2';
                         if(cmdcheck(playercode,4,c214))return 29;//special C middle
                         else if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 22;//special B middle
@@ -1669,7 +1673,7 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
                         else return 9;//middle normal
                         c214[0][2]='0';c236[0][2]='0';c636[0][2]='0';c626[0][2]='0';c63236[0][2]='0';c6236[0][2]='0';
                     }
-                    else if(u=='2'){
+                    else if(keyinput[1]=='2'){
                         c214[0][1]='2';c236[0][1]='2';c636[0][1]='2';c626[0][1]='2';c63236[0][1]='2';c6236[0][1]='2';
                         if(cmdcheck(playercode,4,c214))return 28;//special C weak
                         else if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 21;//special B weak
@@ -1677,7 +1681,7 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
                         else return 8;//weak normal
                         c214[0][1]='0';c236[0][1]='0';c636[0][1]='0';c626[0][1]='0';c63236[0][1]='0';c6236[0][1]='0';
                     }
-                    else if(k=='2'){
+                    else if(keyinput[4]=='2'){
                         c214[0][4]='2';c236[0][4]='2';c636[0][4]='2';c626[0][4]='2';c63236[0][4]='2';c6236[0][4]='2';
                         if(cmdcheck(playercode,4,c214))return 31;//special C gimmick
                         else if(cmdcheck(playercode,4,c636)||cmdcheck(playercode,6,c63236)||cmdcheck(playercode,4,c626)||cmdcheck(playercode,5,c6236))return 24;//special B gimmick
@@ -1685,28 +1689,28 @@ int chooseaction(int playercode, bool air, char keydir, char u, char i, char o,c
                         else return 15;//gimmick
                         c214[0][4]='0';c236[0][4]='0';c636[0][4]='0';c626[0][4]='0';c63236[0][4]='0';c6236[0][4]='0';
                     }
-                    else if(keydir=='4'){
+                    else if(keyinput[0]=='4'){
                         char temp[3][5]={{'4','0','0','0','0'},{'5','0','0','0','0'},{'4','0','0','0','0'}};
                         if(cmdcheck(playercode,3,temp))return 2;//leftdash
                         else return 1;//leftwalk
                     }
-                    else if(keydir=='6'){
+                    else if(keyinput[0]=='6'){
                         char temp[3][5]={{'6','0','0','0','0'},{'5','0','0','0','0'},{'6','0','0','0','0'}};
                         if(cmdcheck(playercode,3,temp))return 4;//rightdash
                         else return 3;//rightwalk
                     }
-                    else if(keydir=='8')return 5;//upjump
-                    else if(keydir=='7')return 6;//leftjump
-                    else if(keydir=='9')return 7;//rightjump
+                    else if(keyinput[0]=='8')return 5;//upjump
+                    else if(keyinput[0]=='7')return 6;//leftjump
+                    else if(keyinput[0]=='9')return 7;//rightjump
                     else return 0;//neutural
 
                 }
             }
             else{
                 //jump actions
-                if(u=='2')return 8;//weak normal
-                else if(i=='2')return 9;//middle normal
-                else if(o=='2')return 10;//strong normal
+                if(keyinput[1]=='2')return 8;//weak normal
+                else if(keyinput[2]=='2')return 9;//middle normal
+                else if(keyinput[3]=='2')return 10;//strong normal
                 return 0;
                 }
 }
@@ -2149,7 +2153,7 @@ int main()
     if (!renderTexture.create(256, 240)){}
     sf::Font font;
     if(!font.loadFromFile("PerfectDOSVGA437.ttf"))window.close();
-    char keydir1='5',keydir2='5',u='0',i='0',o='0',k='0',u2='0',i2='0',o2='0',k2='0',menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
+    char p1input[5]={'5','0'},p2input[5]={'5','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
     short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
@@ -2232,7 +2236,6 @@ int main()
 
         if(!gamequit){
             bool training=false;
-            if(menuselect==3)training=true;
 
             menus.setmenu(6,92,72,0,16,1);
             hitflash hf;superflash sf;
@@ -2256,13 +2259,11 @@ int main()
             combotext.setFont(font);combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             std::deque<char>p1keylist,p2keylist;
 
-            player p1,p2,p3;
+            player p1,p2;
 
             float overlap[2],overlap2[2],bgx=0;
                 p1.x=100.0;p1.y=176.0;p1.hp=1000.0;p1.maxhp=1000.0;
                 p2.x=156.0;p2.y=176.0;p2.hp=1000.0;p2.maxhp=1000.0;
-
-                //p3.x=0.0;p3.y=176.0;p3.hp=1000.0;p3.maxhp=1000.0;p3.act=0;
 
                 p1.meter=100.0;
                 p2.meter=100.0;
@@ -2270,6 +2271,19 @@ int main()
             bool seeboxes=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false;
                 p1.right=true;
                 p2.right=false;
+
+            if(menuselect==3)training=true;
+            /*if(menuselect==2){
+                GGPOSession* ggpo;
+                GGPOErrorCode result;
+                GGPOSessionCallbacks cb;
+                cb.begin_game = ;
+                cb.advance_frame = ;
+                cb.load_game_state = ;
+                cb.save_game_state = ;
+                cb.free_buffer = ;
+                cb.on_event = ;
+            }*/
 
             while (window.isOpen()&&!gamequit){
                 while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
@@ -2299,69 +2313,69 @@ int main()
                 if(w2==true&&s2==true){w2=true;s2=false;}
                 if(a2==true&&d2==true){a2=false;d2=false;}
 
-                keypresscheck(lightkey1,&u);
-                keypresscheck(mediumkey1,&i);
-                keypresscheck(sf::Keyboard::O,&o);
-                keypresscheck(sf::Keyboard::K,&k);
+                keypresscheck(lightkey1,&p1input[1]);
+                keypresscheck(mediumkey1,&p1input[2]);
+                keypresscheck(heavykey1,&p1input[3]);
+                keypresscheck(specialkey1,&p1input[4]);
 
-                keypresscheck(sf::Keyboard::Z,&u2);
-                keypresscheck(sf::Keyboard::X,&i2);
-                keypresscheck(sf::Keyboard::C,&o2);
-                keypresscheck(sf::Keyboard::LAlt,&k2);
+                keypresscheck(sf::Keyboard::Z,&p2input[1]);
+                keypresscheck(sf::Keyboard::X,&p2input[2]);
+                keypresscheck(sf::Keyboard::C,&p2input[3]);
+                keypresscheck(sf::Keyboard::LAlt,&p2input[4]);
 
-                if(w&&!a&&!s&&!d)keydir1='8';
-                else if(!w&&a&&!s&&!d)keydir1='4';
-                else if(!w&&!a&&s&&!d)keydir1='2';
-                else if(!w&&!a&&!s&&d)keydir1='6';
-                else if(w&&a&&!s&&!d)keydir1='7';
-                else if(!w&&a&&s&&!d)keydir1='1';
-                else if(!w&&!a&&s&&d)keydir1='3';
-                else if(w&&!a&&!s&&d)keydir1='9';
-                else keydir1='5';
+                if(w&&!a&&!s&&!d)p1input[0]='8';
+                else if(!w&&a&&!s&&!d)p1input[0]='4';
+                else if(!w&&!a&&s&&!d)p1input[0]='2';
+                else if(!w&&!a&&!s&&d)p1input[0]='6';
+                else if(w&&a&&!s&&!d)p1input[0]='7';
+                else if(!w&&a&&s&&!d)p1input[0]='1';
+                else if(!w&&!a&&s&&d)p1input[0]='3';
+                else if(w&&!a&&!s&&d)p1input[0]='9';
+                else p1input[0]='5';
                 if(!p1.right){
-                    if(keydir1=='7')keydir1='9';
-                    else if(keydir1=='9')keydir1='7';
-                    else if(keydir1=='4')keydir1='6';
-                    else if(keydir1=='6')keydir1='4';
-                    else if(keydir1=='3')keydir1='1';
-                    else if(keydir1=='1')keydir1='3';
+                    if(p1input[0]=='7')p1input[0]='9';
+                    else if(p1input[0]=='9')p1input[0]='7';
+                    else if(p1input[0]=='4')p1input[0]='6';
+                    else if(p1input[0]=='6')p1input[0]='4';
+                    else if(p1input[0]=='3')p1input[0]='1';
+                    else if(p1input[0]=='1')p1input[0]='3';
                 }
 
-                if(w2&&!a2&&!s2&&!d2)keydir2='8';
-                else if(!w2&&a2&&!s2&&!d2)keydir2='4';
-                else if(!w2&&!a2&&s2&&!d2)keydir2='2';
-                else if(!w2&&!a2&&!s2&&d2)keydir2='6';
-                else if(w2&&a2&&!s2&&!d2)keydir2='7';
-                else if(!w2&&a2&&s2&&!d2)keydir2='1';
-                else if(!w2&&!a2&&s2&&d2)keydir2='3';
-                else if(w2&&!a2&&!s2&&d2)keydir2='9';
-                else keydir2='5';
+                if(w2&&!a2&&!s2&&!d2)p2input[0]='8';
+                else if(!w2&&a2&&!s2&&!d2)p2input[0]='4';
+                else if(!w2&&!a2&&s2&&!d2)p2input[0]='2';
+                else if(!w2&&!a2&&!s2&&d2)p2input[0]='6';
+                else if(w2&&a2&&!s2&&!d2)p2input[0]='7';
+                else if(!w2&&a2&&s2&&!d2)p2input[0]='1';
+                else if(!w2&&!a2&&s2&&d2)p2input[0]='3';
+                else if(w2&&!a2&&!s2&&d2)p2input[0]='9';
+                else p2input[0]='5';
                 if(!p2.right){
-                    if(keydir2=='7')keydir2='9';
-                    else if(keydir2=='9')keydir2='7';
-                    else if(keydir2=='4')keydir2='6';
-                    else if(keydir2=='6')keydir2='4';
-                    else if(keydir2=='3')keydir2='1';
-                    else if(keydir2=='1')keydir2='3';
+                    if(p2input[0]=='7')p2input[0]='9';
+                    else if(p2input[0]=='9')p2input[0]='7';
+                    else if(p2input[0]=='4')p2input[0]='6';
+                    else if(p2input[0]=='6')p2input[0]='4';
+                    else if(p2input[0]=='3')p2input[0]='1';
+                    else if(p2input[0]=='1')p2input[0]='3';
                 }
 
                 if(!pause){
-                    dirkeys.push_front(keydir1);
-                    ukey.push_front(u);
-                    ikey.push_front(i);
-                    okey.push_front(o);
-                    kkey.push_front(k);
+                    dirkeys.push_front(p1input[0]);
+                    ukey.push_front(p1input[1]);
+                    ikey.push_front(p1input[2]);
+                    okey.push_front(p1input[3]);
+                    kkey.push_front(p1input[4]);
                     if(dirkeys.size()>20)dirkeys.pop_back();
                     if(ukey.size()>20)ukey.pop_back();
                     if(ikey.size()>20)ikey.pop_back();
                     if(okey.size()>20)okey.pop_back();
                     if(kkey.size()>20)kkey.pop_back();
 
-                    dirkeys2.push_front(keydir2);
-                    ukey2.push_front(u2);
-                    ikey2.push_front(i2);
-                    okey2.push_front(o2);
-                    kkey2.push_front(k2);
+                    dirkeys2.push_front(p2input[0]);
+                    ukey2.push_front(p2input[1]);
+                    ikey2.push_front(p2input[2]);
+                    okey2.push_front(p2input[3]);
+                    kkey2.push_front(p2input[4]);
                     if(dirkeys2.size()>20)dirkeys2.pop_back();
                     if(ukey2.size()>20)ukey2.pop_back();
                     if(ikey2.size()>20)ikey2.pop_back();
@@ -2369,12 +2383,12 @@ int main()
                     if(kkey2.size()>20)kkey2.pop_back();
 
                     if(p1.buffer==0&&!p1.animq.empty()){
-                            p1.buffer=chooseaction(1,p1.air,keydir1,u,i,o,k,p1.meter);
+                            p1.buffer=chooseaction(1,p1.air,p1input,p1.meter);
                             if(p1.cancel[p1.buffer]==false&&p1.animq.size()>10)p1.buffer=0;
                             else if(p1.buffer==1||p1.buffer==3||p1.buffer==11||p1.buffer==20||(p1.air&&p1.jumpy<5))p1.buffer=0;
                     }
                     if(p2.buffer==0&&!p2.animq.empty()){
-                            p2.buffer=chooseaction(2,p2.air,keydir2,u2,i2,o2,k2,p2.meter);
+                            p2.buffer=chooseaction(2,p2.air,p2input,p2.meter);
                             if(p2.cancel[p2.buffer]==false&&p2.animq.size()>10)p2.buffer=0;
                             else if(p2.buffer==1||p2.buffer==3||p2.buffer==11||p2.buffer==20||(p2.air&&p2.jumpy<5))p2.buffer=0;
                     }
@@ -2383,11 +2397,11 @@ int main()
                 if((pause==false||(pause&&nextframe))){
                     nextframe=false;
 
-                    if(p1.buffer==0)p1.act=chooseaction(1,p1.air,keydir1,u,i,o,k,p1.meter);
+                    if(p1.buffer==0)p1.act=chooseaction(1,p1.air,p1input,p1.meter);
                     else if(!p1.animq.empty()&&!p1.whiff)p1.act=p1.buffer;
                     if(p1.animq.empty()){if(!p1.whiff){p1.act=p1.buffer;}p1.buffer=0;}
 
-                    if(p2.buffer==0)p2.act=chooseaction(2,p2.air,keydir2,u2,i2,o2,k2,p2.meter);
+                    if(p2.buffer==0)p2.act=chooseaction(2,p2.air,p2input,p2.meter);
                     else if(!p2.animq.empty()&&!p2.whiff)p2.act=p2.buffer;
                     if(p2.animq.empty()){if(!p2.whiff){p2.act=p2.buffer;}p2.buffer=0;}
 
@@ -2515,7 +2529,7 @@ int main()
                 }
 
                 if(!pause){
-                    char keytemp=dirkeys[1],keytemp2=keydir1;
+                    char keytemp=dirkeys[1],keytemp2=p1input[0];
                     if(!p1.right){
                         if(keytemp=='7')keytemp='9';
                         else if(keytemp=='9')keytemp='7';
@@ -2532,15 +2546,15 @@ int main()
                     }
 
                     if(keytemp2!=keytemp)p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
-                    if(u=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
-                    if(i=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
-                    if(o=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
-                    if(k=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
+                    if(p1input[1]=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
+                    if(p1input[2]=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
+                    if(p1input[3]=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
+                    if(p1input[4]=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
                     if(p1keylist[0]=='0'&&p1keylist[1]=='0'&&p1keylist[2]=='0'&&p1keylist[3]=='0'&&p1keylist[4]=='0')for(short i=0;i<5;i++)p1keylist.pop_front();
                     if(p1keylist.size()>40)for(short i=0;i<5;i++)p1keylist.pop_back();
 
 
-                    keytemp=dirkeys2[1],keytemp2=keydir2;
+                    keytemp=dirkeys2[1],keytemp2=p2input[0];
                     if(!p2.right){
                         if(keytemp=='7')keytemp='9';
                         else if(keytemp=='9')keytemp='7';
@@ -2557,10 +2571,10 @@ int main()
                     }
 
                     if(keytemp2!=keytemp)p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
-                    if(u2=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
-                    if(i2=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
-                    if(o2=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
-                    if(k2=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
+                    if(p2input[1]=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
+                    if(p2input[2]=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
+                    if(p2input[3]=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
+                    if(p2input[4]=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
                     if(p2keylist[0]=='0'&&p2keylist[1]=='0'&&p2keylist[2]=='0'&&p2keylist[3]=='0'&&p2keylist[4]=='0')for(short i=0;i<5;i++)p2keylist.pop_front();
                     if(p2keylist.size()>40)for(short i=0;i<5;i++)p2keylist.pop_back();
                 }
