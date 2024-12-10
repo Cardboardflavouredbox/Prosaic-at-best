@@ -5,7 +5,6 @@
 #include <deque>
 #include <string.h>
 #include <math.h>
-#include "ggponet.h"
 
 using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
@@ -1433,9 +1432,7 @@ private:
    sf::VertexArray m_vertices;
 
 };
-void keyread(char keydir,bool right){
 
-}
 
 void collisionchecks(player *p1,player *p2,float overlap[]){
     float temp[2],temp2[2],temp3[2],temp4[2];
@@ -2273,17 +2270,6 @@ int main()
                 p2.right=false;
 
             if(menuselect==3)training=true;
-            /*if(menuselect==2){
-                GGPOSession* ggpo;
-                GGPOErrorCode result;
-                GGPOSessionCallbacks cb;
-                cb.begin_game = ;
-                cb.advance_frame = ;
-                cb.load_game_state = ;
-                cb.save_game_state = ;
-                cb.free_buffer = ;
-                cb.on_event = ;
-            }*/
 
             while (window.isOpen()&&!gamequit){
                 while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
