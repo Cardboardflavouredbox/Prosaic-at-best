@@ -440,7 +440,7 @@ animlib[256][64][2]={
                     {-1}
                     }//projectile end3(60)
                    },
-                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,0,0,0},
+                   hurtboxcount[256]={2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                    hitboxcount[256]={0,1,1,1,1,1,1,1,1,1,1};
 float comboscaling=100.0,
 colbox[16][1][2][2]={{{{-7,-10},{9,32}}},//standing
@@ -543,6 +543,8 @@ public:
     std::deque<int>endanim;
 };
 
+
+
 class player
 {
 public:
@@ -553,7 +555,7 @@ public:
     hitstun=0,blockstun=0,hitstop=0,hitwait=0,
     buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
     landdelay=0,hitstopped=0,grabstate=-1;//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
-    bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,multihit=false,neutural=true,comboed=false,hitbefore=false;
+    bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,multihit=false,neutural=true,comboed=false,hitbefore=false,super=false;
     float x=0,y=176.0,jumpx=0,jumpy=0,kback=0,launch=0,hp=1000.0,maxhp=1000.0,dmg=0,pushaway=0,grab[2]={},meter=100,mgain=0;
 };
 
@@ -752,6 +754,38 @@ private:
     sf::VertexArray m_vertices;
     sf::Texture m_tileset;
 };
+
+class superflash : public sf::Drawable, public sf::Transformable
+{
+public:
+    void create(short frame,float py){
+        frame=frame/2-4;
+        if(frame<1)frame=1;
+        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.resize(16);
+        sf::Vertex* triangles = &m_vertices[6];
+        triangles[0].position = sf::Vector2f(0,py-frame+1);
+        triangles[1].position = sf::Vector2f(256,py-frame+1);
+        triangles[2].position = sf::Vector2f(0,py+frame);
+        triangles[3].position = sf::Vector2f(0,py+frame);
+        triangles[4].position = sf::Vector2f(256,py+frame);
+        triangles[5].position = sf::Vector2f(256,py-frame+1);
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = NULL;
+
+        target.draw(m_vertices, states);
+    }
+   sf::VertexArray m_vertices;
+
+};
+
 class hitflash : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -1446,16 +1480,16 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
         if((*p2).proj[j].hitstopped==0){
         for(short k=0;k<hurtboxcount[(*p2).proj[j].frame];k++){
             if((*p2).proj[j].right==true){
-                temp3[0]=hurtbox[(*p2).proj[j].frame][j][0][0]+int((*p2).proj[j].x);
-                temp3[1]=hurtbox[(*p2).proj[j].frame][j][0][1]+int((*p2).proj[j].y);
-                temp4[0]=hurtbox[(*p2).proj[j].frame][j][1][0]+int((*p2).proj[j].x);
-                temp4[1]=hurtbox[(*p2).proj[j].frame][j][1][1]+int((*p2).proj[j].y);
+                temp3[0]=hurtbox[(*p2).proj[j].frame][k][0][0]+int((*p2).proj[j].x);
+                temp3[1]=hurtbox[(*p2).proj[j].frame][k][0][1]+int((*p2).proj[j].y);
+                temp4[0]=hurtbox[(*p2).proj[j].frame][k][1][0]+int((*p2).proj[j].x);
+                temp4[1]=hurtbox[(*p2).proj[j].frame][k][1][1]+int((*p2).proj[j].y);
             }
             else{
-                temp3[0]=-hurtbox[(*p2).proj[j].frame][j][1][0]+int((*p2).proj[j].x);
-                temp3[1]=hurtbox[(*p2).proj[j].frame][j][0][1]+int((*p2).proj[j].y);
-                temp4[0]=-hurtbox[(*p2).proj[j].frame][j][0][0]+int((*p2).proj[j].x);
-                temp4[1]=hurtbox[(*p2).proj[j].frame][j][1][1]+int((*p2).proj[j].y);
+                temp3[0]=-hurtbox[(*p2).proj[j].frame][k][1][0]+int((*p2).proj[j].x);
+                temp3[1]=hurtbox[(*p2).proj[j].frame][k][0][1]+int((*p2).proj[j].y);
+                temp4[0]=-hurtbox[(*p2).proj[j].frame][k][0][0]+int((*p2).proj[j].x);
+                temp4[1]=hurtbox[(*p2).proj[j].frame][k][1][1]+int((*p2).proj[j].y);
             }
         }
         if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
@@ -1479,6 +1513,9 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
         if((*p1).hit)(*p2).proj[i].hit=false;
         else if((*p2).proj[i].hit){
                 (*p1).hit=true;
+                (*p2).grabstate=-1;
+                (*p2).grab[0]=0;
+                (*p2).grab[1]=0;
                 (*p2).movetype=(*p2).proj[i].movetype;
                 (*p2).hitwait=0;
                 (*p2).kdown=(*p2).proj[i].knockdown;
@@ -1537,6 +1574,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             (*p1).attack.pushaway=false;
             (*p1).attack.kback=(*p2).kback;
             if((*p2).proj[i].right)(*p1).attack.kback*=-1;
+            (*p2).proj[i].hitstopped=(*p1).hitstopped;
             break;
         }
     }
@@ -1682,15 +1720,43 @@ void boolfill(bool *arr,bool value,short a[]){
     }
 }
 
+void projectiledata(player *p1,short superstop){
+if((*p1).proj[0].x<-128||(*p1).proj[0].x>384||(*p1).proj[0].y<0||(*p1).proj[0].y>240)(*p1).proj.pop_front();
+    for(short i=0;i<(*p1).proj.size();i++){
+        if(superstop==0){
+            if((*p1).proj[i].hit){(*p1).proj[i].hit=false;(*p1).proj[i].hitcount--;}
+            if((*p1).proj[i].hitcount<=0){
+                if((*p1).proj[i].endanim.empty())(*p1).proj[i].y=333;
+                else{
+                    (*p1).proj[i].frame=(*p1).proj[i].endanim[0];
+                    (*p1).proj[i].endanim.pop_front();
+                }
+            }
+            else if((*p1).proj[i].hitstopped>0&&superstop==0)(*p1).proj[i].hitstopped-=1;
+            else{
+                if((*p1).proj[i].right)(*p1).proj[i].x+=(*p1).proj[i].movex;
+                else (*p1).proj[i].x-=(*p1).proj[i].movex;
+                (*p1).proj[i].y+=(*p1).proj[i].movey;
+                (*p1).proj[i].animloop+=1;
+                if((*p1).proj[i].looplen<=(*p1).proj[i].animloop)(*p1).proj[i].animloop=0;
+                (*p1).proj[i].frame=(*p1).proj[i].loopanim[(*p1).proj[i].animloop];
+            }
+        }
+    }
+}
 
 void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enemypaway,short enemygstate,short *superstop){
-    if((*P).kdowned>0&&(*P).animq.size()<10&&!(*P).comboed&&!(*P).act==0&&(*P).hp>0){
-        for(short i=0;i<3;i++){(*P).animq.push_back(8);}
+    if((*P).kdowned==1&&(*P).animq.size()<28&&!(*P).comboed&&(*P).act==1&&(*P).hp>0){
+        (*P).slide=true;
+        if((*P).right)(*P).jumpx=-5;else (*P).jumpx=5;
+        (*P).animq.clear();
+        for(short i=0;i<7;i++){(*P).animq.push_back(8);}
         (*P).kdowned=0;combo=0;
     }
     if((*P).hit){
         (*P).hit=false;(*P).animq.clear();(*P).hitboxanim.clear();(*P).atkfx.clear();
-        (*P).movetype=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).grabstate=-1;(*P).landdelay=0;(*P).movewaitx=-1;(*P).movewaity=-1;(*P).mgain=0;
+        (*P).movetype=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).grabstate=-1;(*P).landdelay=0;(*P).movewaitx=-1;(*P).movewaity=-1;
+        (*P).mgain=0;(*P).super=false;
         if((*P).air&&(*P).attack.launch==0){
                 (*P).jumpy=(*P).attack.kback/6*5*(comboscaling+100)/200;
                 if((*P).jumpy>0)(*P).jumpy*=-1;
@@ -1747,7 +1813,7 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
             short temp[1]={-1};boolfill((*P).cancel,true,temp);
             if(!(*P).neutural){(*P).jumpx=0;(*P).jumpy=0;}
             (*P).neutural=true;(*P).hitstun=0;(*P).blockstun=0;(*P).kback=0;(*P).hit=false;
-            (*P).slide=false;(*P).multihit=false;(*P).dmg=0;(*P).launch=0;(*P).kdown=0;(*P).mgain=0;
+            (*P).slide=false;(*P).multihit=false;(*P).dmg=0;(*P).launch=0;(*P).kdown=0;(*P).mgain=0;(*P).super=false;
             (*P).movetype=-1;(*P).block=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).grabstate=-1;
             if((*P).comboed){combo=0;(*P).comboed=false;}
         }
@@ -1776,7 +1842,7 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
     if(!(*P).hit&&(((*P).animq.empty()&&(*P).movewaitx==-1&&(*P).movewaity==-1)||(((*P).cancel[(*P).act]==true)&&((!(*P).whiff)||(*P).movetype==0||(*P).grabstate==3)))){
         if((*P).cancel[(*P).act]==true){
             (*P).buffer=0;(*P).slide=false;(*P).hitstun=0;(*P).blockstun=0;(*P).kback=0;(*P).dmg=0;(*P).launch=0;(*P).kdown=0;(*P).movewaitx=-1;(*P).movewaity=-1;
-            (*P).movetype=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).landdelay=0;if(!(*P).air){(*P).jumpx=0;(*P).jumpy=0;}(*P).mgain=0;
+            (*P).movetype=-1;(*P).grab[0]=0;(*P).grab[1]=0;(*P).landdelay=0;if(!(*P).air){(*P).jumpx=0;(*P).jumpy=0;}(*P).mgain=0;(*P).super=false;
             short temp[0]={};boolfill((*P).cancel,true,temp);
             (*P).animq.clear();(*P).hitboxanim.clear();(*P).atkfx.clear();
         }
@@ -1913,7 +1979,7 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
         }
         else if((*P).act==21){//special B(u)
             (*P).col=0;(*P).multihit=false;(*P).hitstop=13;(*P).kback=5;(*P).hitstun=5;(*P).blockstun=-5;(*P).slide=true;(*P).movewaity=4;(*P).movewaitx=4;(*P).dmg=28;(*P).mgain=7;
-            (*P).kdown=2;(*P).launch=8;(*P).movetype=2;(*P).jumpy=-11;(*P).landdelay=5;
+            (*P).kdown=1;(*P).launch=8;(*P).movetype=2;(*P).jumpy=-11;(*P).landdelay=5;
             (*P).animq.insert((*P).animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
             (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
             (*P).cancel[32]=true;
@@ -1921,7 +1987,7 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
         }
         else if((*P).act==22){//special B(i)
             (*P).col=0;(*P).multihit=false;(*P).hitstop=14;(*P).kback=5;(*P).hitstun=5;(*P).blockstun=-5;(*P).slide=true;(*P).movewaity=4;(*P).movewaitx=2;(*P).dmg=39;(*P).mgain=8;
-            (*P).kdown=2;(*P).launch=9;(*P).movetype=2;(*P).jumpy=-12;(*P).landdelay=5;
+            (*P).kdown=1;(*P).launch=9;(*P).movetype=2;(*P).jumpy=-12;(*P).landdelay=5;
             (*P).animq.insert((*P).animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
             (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
             (*P).cancel[32]=true;
@@ -1929,7 +1995,7 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
         }
         else if((*P).act==23){//special B(o)
             (*P).col=0;(*P).multihit=false;(*P).hitstop=15;(*P).kback=5;(*P).hitstun=5;(*P).blockstun=-5;(*P).slide=true;(*P).movewaity=5;(*P).dmg=51;(*P).mgain=9;
-            (*P).kdown=2;(*P).launch=10;(*P).movetype=2;(*P).jumpy=-13;(*P).landdelay=5;
+            (*P).kdown=1;(*P).launch=10;(*P).movetype=2;(*P).jumpy=-13;(*P).landdelay=5;
             (*P).animq.insert((*P).animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
             (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
             (*P).cancel[32]=true;
@@ -1942,7 +2008,7 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
             if((*P).right)(*P).jumpx=6;else (*P).jumpx=-6;
         }
         else if((*P).act==25){//grab
-            (*P).col=0;(*P).multihit=false;(*P).hitstop=0;(*P).kback=0;(*P).hitstun=0;(*P).blockstun=31;(*P).slide=true;(*P).movewaitx=6;(*P).dmg=0;(*P).movetype=4;(*P).grab[0]=21;(*P).grab[1]=0;(*P).grabstate=1;
+            (*P).col=0;(*P).multihit=false;(*P).hitstop=0;(*P).kback=0;(*P).hitstun=0;(*P).blockstun=0;(*P).slide=true;(*P).movewaitx=6;(*P).dmg=0;(*P).movetype=4;(*P).grab[0]=21;(*P).grab[1]=0;(*P).grabstate=1;
             (*P).animq.insert((*P).animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
             (*P).hitboxanim.insert((*P).hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,5});
             if((*P).right)(*P).jumpx=5;else (*P).jumpx=-5;
@@ -2033,7 +2099,7 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
         (*P).y=enemyy-(*P).attack.grab[1];
     }
     if(!(*P).atkfx.empty()){
-        if((*P).atkfx[0]==5)*superstop=20;
+        if((*P).atkfx[0]==5){*superstop=20;(*P).super=true;}
         if((*P).atkfx[0]==1||(*P).atkfx[0]==2||(*P).atkfx[0]==3||(*P).atkfx[0]==4){//projectile
             (*P).meter+=(*P).mgain;
             projectile temp;
@@ -2064,11 +2130,13 @@ void characterdata(player *P,float enemyx,float enemyy,float enemyhp,float *enem
     }
 }
 
-
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(256,240), "Prosaic at Best");
     sf::Event event;
+    sf::Keyboard::Key upkey1=sf::Keyboard::W,downkey1=sf::Keyboard::S,leftkey1=sf::Keyboard::A,rightkey1=sf::Keyboard::D,
+                lightkey1=sf::Keyboard::U,mediumkey1=sf::Keyboard::I,heavykey1=sf::Keyboard::O,
+                grabkey1=sf::Keyboard::H,specialkey1=sf::Keyboard::K,assistkey1=sf::Keyboard::L;
     sf::Sprite title;
     sf::Texture titletexture;
     if (!titletexture.loadFromFile("title.png"))window.close();
@@ -2095,9 +2163,9 @@ int main()
         else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
         window.setSize(size);
 
-        keypresscheck(sf::Keyboard::U,&menuconfirm);
-        keypresscheck(sf::Keyboard::W,&menuup);
-        keypresscheck(sf::Keyboard::S,&menudown);
+        keypresscheck(lightkey1,&menuconfirm);
+        keypresscheck(upkey1,&menuup);
+        keypresscheck(downkey1,&menudown);
 
         if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
         else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
@@ -2128,12 +2196,12 @@ int main()
             else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
             window.setSize(size);
             while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
-            keypresscheck(sf::Keyboard::U,&menuconfirm);
-            keypresscheck(sf::Keyboard::I,&menucancel);
-            keypresscheck(sf::Keyboard::W,&menuup);
-            keypresscheck(sf::Keyboard::S,&menudown);
-            keypresscheck(sf::Keyboard::A,&menuleft);
-            keypresscheck(sf::Keyboard::D,&menuright);
+            keypresscheck(lightkey1,&menuconfirm);
+            keypresscheck(mediumkey1,&menucancel);
+            keypresscheck(upkey1,&menuup);
+            keypresscheck(downkey1,&menudown);
+            keypresscheck(leftkey1,&menuleft);
+            keypresscheck(downkey1,&menuright);
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}
             if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
             if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}
@@ -2167,7 +2235,7 @@ int main()
             if(menuselect==3)training=true;
 
             menus.setmenu(6,92,72,0,16,1);
-            hitflash hf;
+            hitflash hf;superflash sf;
             healthbar hb;
             meterbar mb;
             timeui time;time.create();
@@ -2188,11 +2256,14 @@ int main()
             combotext.setFont(font);combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             std::deque<char>p1keylist,p2keylist;
 
-            player p1,p2;
+            player p1,p2,p3;
 
             float overlap[2],overlap2[2],bgx=0;
                 p1.x=100.0;p1.y=176.0;p1.hp=1000.0;p1.maxhp=1000.0;
                 p2.x=156.0;p2.y=176.0;p2.hp=1000.0;p2.maxhp=1000.0;
+
+                //p3.x=0.0;p3.y=176.0;p3.hp=1000.0;p3.maxhp=1000.0;p3.act=0;
+
                 p1.meter=100.0;
                 p2.meter=100.0;
             short superstop=0;
@@ -2213,10 +2284,10 @@ int main()
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
                 w=false;a=false;s=false;d=false;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))w=true;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))a=true;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))s=true;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))d=true;
+                if(sf::Keyboard::isKeyPressed(upkey1))w=true;
+                if(sf::Keyboard::isKeyPressed(leftkey1))a=true;
+                if(sf::Keyboard::isKeyPressed(downkey1))s=true;
+                if(sf::Keyboard::isKeyPressed(rightkey1))d=true;
                 if(w&&s){w=true;s=false;}
                 if(a&&d){a=false;d=false;}
 
@@ -2228,8 +2299,8 @@ int main()
                 if(w2==true&&s2==true){w2=true;s2=false;}
                 if(a2==true&&d2==true){a2=false;d2=false;}
 
-                keypresscheck(sf::Keyboard::U,&u);
-                keypresscheck(sf::Keyboard::I,&i);
+                keypresscheck(lightkey1,&u);
+                keypresscheck(mediumkey1,&i);
                 keypresscheck(sf::Keyboard::O,&o);
                 keypresscheck(sf::Keyboard::K,&k);
 
@@ -2329,61 +2400,15 @@ int main()
                         if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,p1.hp,&p1.pushaway,p1.grabstate,&superstop);
                         if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,p2.hp,&p2.pushaway,p2.grabstate,&superstop);
                                         }
-                    if(!p1.proj.empty()){
-                        if(p1.proj[0].x<-128||p1.proj[0].x>384||p1.proj[0].y<0||p1.proj[0].y>240)p1.proj.pop_front();
-                        for(short i=0;i<p1.proj.size();i++){
-                            if(p1.proj[i].hitstopped>0&&superstop==0)p1.proj[i].hitstopped-=1;
-                            else if(superstop==0){
-                                if(p1.proj[i].hit){p1.proj[i].hit=false;p1.proj[i].hitcount--;}
-                                if(p1.proj[i].hitcount<=0){
-                                    if(p1.proj[i].endanim.empty())p1.proj[i].y=333;
-                                    else{
-                                        p1.proj[i].frame=p1.proj[i].endanim[0];
-                                        p1.proj[i].endanim.pop_front();
-                                    }
-                                }
-                                else{
-                                    if(p1.proj[i].right)p1.proj[i].x+=p1.proj[i].movex;
-                                    else p1.proj[i].x-=p1.proj[i].movex;
-                                    p1.proj[i].y+=p1.proj[i].movey;
-                                    p1.proj[i].animloop+=1;
-                                    if(p1.proj[i].looplen<=p1.proj[i].animloop)p1.proj[i].animloop=0;
-                                    p1.proj[i].frame=p1.proj[i].loopanim[p1.proj[i].animloop];
-                                }
-                            }
-                        }
-                    }
-                    if(!p2.proj.empty()){
-                        if(p2.proj[0].x<-128||p2.proj[0].x>384||p2.proj[0].y<0||p2.proj[0].y>240)p2.proj.pop_front();
-                        for(short i=0;i<p2.proj.size();i++){
-                            if(p2.proj[i].hitstopped>0&&superstop==0)p2.proj[i].hitstopped-=1;
-                            else if(superstop==0){
-                                if(p2.proj[i].hit){p2.proj[i].hit=false;p2.proj[i].hitcount--;}
-                                if(p2.proj[i].hitcount<=0){
-                                    if(p2.proj[i].endanim.empty())p2.proj[i].y=333;
-                                    else{
-                                        p2.proj[i].frame=p2.proj[i].endanim[0];
-                                        p2.proj[i].endanim.pop_front();
-                                    }
-                                }
-                                else{
-                                    if(p2.proj[i].right)p2.proj[i].x+=p2.proj[i].movex;
-                                    else p2.proj[i].x-=p2.proj[i].movex;
-                                    p2.proj[i].y+=p2.proj[i].movey;
-                                    p2.proj[i].animloop++;
-                                    if(p2.proj[i].looplen<=p2.proj[i].animloop)p2.proj[i].animloop=0;
-                                    p2.proj[i].frame=p2.proj[i].loopanim[p2.proj[i].animloop];
-                                }
-                            }
-                        }
-                    }
+                    if(!p1.proj.empty())projectiledata(&p1,superstop);
+                    if(!p2.proj.empty())projectiledata(&p2,superstop);
                     if(combo==0)comboscaling=100;
                     if(training&&combo==0&&p1.hp<p1.maxhp)p1.hp+=10;
                     if(training&&combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
                     if(p1.hp>p1.maxhp)p1.hp=p1.maxhp;
                     if(p2.hp>p2.maxhp)p2.hp=p2.maxhp;
                     if(comboscaling<20)comboscaling=20;
-                    float temp[2],temp2[2],temp3[2],temp4[2];
+                    float temp[2]={},temp2[2]={},temp3[2]={},temp4[2]={};
                     if(p1.right==true){
                         temp[0]=colbox[p1.col][0][0][0]+int(p1.x);
                         temp[1]=colbox[p1.col][0][0][1]+int(p1.y);
@@ -2429,6 +2454,49 @@ int main()
 
                     if(p1.hitstopped==0&&superstop==0)collisionchecks(&p1,&p2,overlap);
                     if(p2.hitstopped==0&&superstop==0)collisionchecks(&p2,&p1,overlap2);
+
+
+                    for(short j=0;j<p1.proj.size();j++){
+                            if(p1.proj[j].hitstopped==0){
+                            for(short i=0;i<hurtboxcount[p1.proj[j].frame];i++){
+                            if(p1.proj[j].right==true){
+                                temp[0]=hurtbox[p1.proj[j].frame][i][0][0]+int(p1.proj[j].x);
+                                temp[1]=hurtbox[p1.proj[j].frame][i][0][1]+int(p1.proj[j].y);
+                                temp2[0]=hurtbox[p1.proj[j].frame][i][1][0]+int(p1.proj[j].x);
+                                temp2[1]=hurtbox[p1.proj[j].frame][i][1][1]+int(p1.proj[j].y);
+                            }
+                            else{
+                                temp[0]=-hurtbox[p1.proj[j].frame][i][1][0]+int(p1.proj[j].x);
+                                temp[1]=hurtbox[p1.proj[j].frame][i][0][1]+int(p1.proj[j].y);
+                                temp2[0]=-hurtbox[p1.proj[j].frame][i][0][0]+int(p1.proj[j].x);
+                                temp2[1]=hurtbox[p1.proj[j].frame][i][1][1]+int(p1.proj[j].y);
+                            }
+
+                            for(short l=0;l<p2.proj.size();l++){
+                                if(p2.proj[l].hitstopped==0){
+                                for(short k=0;k<hurtboxcount[p2.proj[l].frame];k++){
+                                    if(p2.proj[l].right==true){
+                                        temp3[0]=hurtbox[p2.proj[l].frame][k][0][0]+int(p2.proj[l].x);
+                                        temp3[1]=hurtbox[p2.proj[l].frame][k][0][1]+int(p2.proj[l].y);
+                                        temp4[0]=hurtbox[p2.proj[l].frame][k][1][0]+int(p2.proj[l].x);
+                                        temp4[1]=hurtbox[p2.proj[l].frame][k][1][1]+int(p2.proj[l].y);
+                                    }
+                                    else{
+                                        temp3[0]=-hurtbox[p2.proj[l].frame][k][1][0]+int(p2.proj[l].x);
+                                        temp3[1]=hurtbox[p2.proj[l].frame][k][0][1]+int(p2.proj[l].y);
+                                        temp4[0]=-hurtbox[p2.proj[l].frame][k][0][0]+int(p2.proj[l].x);
+                                        temp4[1]=hurtbox[p2.proj[l].frame][k][1][1]+int(p2.proj[l].y);
+                                    }
+                                }
+                                if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){p1.proj[j].hitcount--;p2.proj[j].hitcount--;break;}
+                                    }
+                                }
+                            }
+                            }
+                    }
+
+
+
                     if(p1.meter>1000)p1.meter=1000;
                     if(p2.meter>1000)p2.meter=1000;
 
@@ -2528,6 +2596,9 @@ int main()
                     hf.update(overlap2[0]+bgx,overlap2[1],combo>0);
                     hf.frame++;
                 }
+
+                if(superstop>0){if(p1.super)sf.create(superstop,p1.y-8);else if(p2.super)sf.create(superstop,p2.y-8);}
+
                 if(combo>1&&cui.slide==0&&cui.slide2==0){cui.slide=64;cui.slide2=12;}
                 if(cui.slide>0)cui.slide-=cui.slide2--;
                 if(cui.slide<0){cui.slide=0;}
@@ -2544,6 +2615,7 @@ int main()
                 mb.create(p1.meter,p2.meter);
 
                 healthui.setPosition(0.f,0.f);
+                sf.setPosition(0,0);
                 if(p2.comboed||p2.kdowned)combotext.setPosition(36.f-cui.slide,25.f);
                 else combotext.setPosition(248.f+cui.slide,25.f);
                 p1graphics.setPosition(int(p1.x-64+bgx),int(p1.y-64));
@@ -2554,10 +2626,10 @@ int main()
 
                 menus.setcolor(6,!pause,menuselect);
                 if(pause){
-                    keypresscheck(sf::Keyboard::U,&menuconfirm);
-                    keypresscheck(sf::Keyboard::I,&menucancel);
-                    keypresscheck(sf::Keyboard::W,&menuup);
-                    keypresscheck(sf::Keyboard::S,&menudown);
+                    keypresscheck(lightkey1,&menuconfirm);
+                    keypresscheck(mediumkey1,&menucancel);
+                    keypresscheck(upkey1,&menuup);
+                    keypresscheck(downkey1,&menudown);
                     if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
                     else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
                     if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
@@ -2580,7 +2652,7 @@ int main()
                 renderTexture.draw(p1shadow);
                 renderTexture.draw(p2shadow);
 
-                if(superstop>0)renderTexture.draw(blackscreen);
+                if(superstop>0){renderTexture.draw(blackscreen);renderTexture.draw(sf);}
 
                 if(p1.hit)playertop=true;
                 else if(p2.hit) playertop=false;
