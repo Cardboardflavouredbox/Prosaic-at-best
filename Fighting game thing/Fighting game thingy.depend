@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1733819533 source:d:\문서\codeblocks\fighting game thing\main.cpp
+1733837753 source:d:\문서\codeblocks\fighting game thing\main.cpp
 	<SFML/Graphics.hpp>
 	<iostream>
 	<stdio.h>
@@ -7,7 +7,6 @@
 	<deque>
 	<string.h>
 	<math.h>
-	"ggponet.h"
 
 1719558231 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
