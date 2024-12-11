@@ -475,15 +475,101 @@ animlib[16][64][32][2]=
                     {0,2},{2,5},{3,5},
                     {0,3},{1,3},{-1}
                     },//stand light2 (3)
+                    {
+                    {4,3},{1,3},
+
+                    {10,10},{11,10},{-1},{-1},
+                    {10,11},{15,8},{16,8},{17,8},
+                    {10,12},{15,9},{16,9},{-1}
+                    },//crouch light1 (4)
+                    {
+                    {4,3},{1,3},
+
+                    {10,10},{11,10},{-1},{-1},
+                    {10,11},{13,10},{14,10},{15,10},
+                    {10,12},{13,11},{14,11},{-1}
+                    },//crouch light2 (5)
+                    {
+                    {2,4},{1,4},
+
+                    {2,0},{3,0},
+                    {2,1},{3,1},
+                    {2,2},{3,2},
+                    {2,3},{3,3}
+                    },//walk1 (6)
+                    {
+                    {2,4},{1,4},
+
+                    {4,0},{5,0},
+                    {4,1},{5,1},
+                    {4,2},{5,2},
+                    {4,3},{5,3}
+                    },//walk2 (7)
+                    {
+                    {2,4},{1,4},
+
+                    {6,0},{7,0},
+                    {6,1},{7,1},
+                    {6,2},{7,2},
+                    {6,3},{7,3}
+                    },//walk3 (8)
+                    {
+                    {2,4},{1,4},
+
+                    {8,0},{9,0},
+                    {8,1},{9,1},
+                    {8,2},{9,2},
+                    {8,3},{9,3}
+                    },//walk4 (9)
+                    {
+                    {2,4},{1,4},
+
+                    {10,0},{11,0},
+                    {10,1},{11,1},
+                    {10,2},{11,2},
+                    {10,3},{11,3}
+                    },//walk5 (10)
+                    {
+                    {2,4},{1,4},
+
+                    {12,0},{13,0},
+                    {12,1},{13,1},
+                    {12,2},{13,2},
+                    {12,3},{13,3}
+                    },//walk6 (11)
+                    {
+                    {2,4},{1,4},
+
+                    {14,0},{15,0},
+                    {14,1},{15,1},
+                    {14,2},{15,2},
+                    {14,3},{15,3}
+                    },//walk7 (12)
+                    {
+                    {2,4},{1,4},
+
+                    {16,0},{17,0},
+                    {16,1},{17,1},
+                    {16,2},{17,2},
+                    {16,3},{17,3}
+                    },//walk8 (13)
+                    {
+                    {2,4},{1,4},
+
+                    {18,0},{19,0},
+                    {18,1},{19,1},
+                    {18,2},{19,2},
+                    {18,3},{19,3}
+                    },//walk9 (14)
                    }//char2
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
-                    {2,3,3},//char2
+                    {2,2,3,3,3,3,2,2,2,2,2,2,2,2,2},//char2
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
-                   {0,1},//char 2
+                   {0,1,1},//char 2
                    };
 float comboscaling=100.0,
 colbox[16][8][1][2][2]={
@@ -494,7 +580,7 @@ colbox[16][8][1][2][2]={
                     },//char 0
                     {-1},//char 1
                     {{{{-7,-24},{9,32}}},//standing
-                    {{{-7,-1},{9,32}}},//crouching
+                    {{{-7,-8},{9,32}}},//crouching
                     {{{-31,20},{16,32}}},//knockdown
                     {{{0,0},{0,0}}},//grabbed
                     },//char 2
@@ -566,8 +652,20 @@ hurtbox[16][64][8][2][2]={
                     {-1},//char 1
                     {
                     {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//idle (0)
-                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}},{{4,-14},{24,4}}},//stand u1 (1)
-                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}},{{4,-14},{28,-4}}},//stand u2 (2)
+                    {{{-11,0},{16,32}},{{-1,-15},{15,0}}},//crouch (1)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}},{{4,-14},{24,4}}},//stand u1 (2)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}},{{4,-14},{28,-4}}},//stand u2 (3)
+                    {{{-11,0},{16,32}},{{-1,-15},{15,0}},{{4,0},{30,14}}},//crouch u1 (4)
+                    {{{-11,0},{16,32}},{{-1,-15},{15,0}},{{4,0},{35,8}}},//crouch u2 (5)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk1 (6)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk2 (7)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk3 (8)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk4 (9)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk5 (10)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk6 (11)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk7 (12)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk8 (13)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk9 (14)
                     },//char 2
                     },
 hitbox[16][16][4][2][2]={
@@ -586,15 +684,7 @@ hitbox[16][16][4][2][2]={
                     {-1},//char 1
                     {{0},//idle (0)
                     {{{4,-12},{32,0}}},//stand u(1)
-                    {{{5,11},{30,20}}},//stand i(2)
-                    {{{5,25},{26,32}}},//crouch u(3)
-                    {{{6,-13},{19,20}}},//crouch o(4)
-                    {{{-2,-2},{27,14}}},//specialA(5)
-                    {{{8,2},{36,9}}},//stand o(6)
-                    {{{7,3},{16,18}}},//specialB1(7)
-                    {{{-6,-32},{16,-4}}},//specialB2(8)
-                    {{{9,8},{27,15}}},//crouch i(9)
-                    {{{0,16},{18,32}}},//jump u(10)
+                    {{{4,-1},{37,10}}},//stand i(2)
                     }//char 2
                     };
 bool flash=true;
@@ -622,7 +712,7 @@ public:
 class player
 {
 public:
-    std::deque<int> animq,hitboxanim,atkfx;
+    std::deque<short> animq,idleanim,hitboxanim,atkfx;
     std::deque<projectile> proj;
     attackdata attack;
     short hbframe=0,anim[64][2]={},act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
@@ -2141,10 +2231,24 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 if(!P.air){
                     if(P.x<enemyx)P.right=true;
                     else P.right=false;
-                    memcpy(P.anim,animlib[P.character][0],sizeof(animlib[P.character][0]));
+                    if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0});
                 }
                 P.col=0;P.frame=0;P.block=-1;
             }
+            else if(P.act==1){//left walk
+                P.col=0;
+                if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{14,14,14,14,13,13,13,13,12,12,12,12,11,11,11,11,10,10,10,10,9,9,9,9,8,8,8,8,7,7,7,7,6,6,6,6});
+                if(P.right)P.x-=P.walkspeed;else P.x+=P.walkspeed;
+                if(P.x<enemyx)P.right=true;else P.right=false;
+            }
+            else if(P.act==2){P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=-7;else P.jumpx=7;P.landdelay=7;}//left dash
+            else if(P.act==3){//right walk
+                P.col=0;
+                if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13,14,14,14,14});
+                if(P.right)P.x+=P.walkspeed;else P.x-=P.walkspeed;
+                if(P.x<enemyx)P.right=true;else P.right=false;
+            }
+            else if(P.act==4){P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=7;else P.jumpx=-7;P.landdelay=7;}//right dash
             else if(P.act==8){//u (light normal)
                 if(P.air){
                     P.col=0;P.multihit=false;P.hitstop=12;P.kback=2;P.hitstun=8;P.blockstun=1;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
@@ -2152,7 +2256,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,10,10,10,10,10,10,10,10});
                 }
                 else{
-                    P.col=0;P.multihit=false;P.hitstop=12;P.kback=4;P.hitstun=5;P.blockstun=2;P.dmg=12;P.movetype=2;P.mgain=4;
+                    P.col=0;P.multihit=false;P.hitstop=12;P.kback=4;P.hitstun=5;P.blockstun=2;P.dmg=11;P.movetype=2;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{2,2,2,2,3,3,3,2,2,2});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,1});
                     short temp[15]={9,10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
@@ -2161,8 +2265,14 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
             else if(P.act==11||P.act==20){//crouch & crouch block
                 if(P.x<enemyx)P.right=true;
                 else P.right=false;
-                P.col=1;P.frame=8;
+                P.col=1;P.frame=1;
                 memcpy(P.anim,animlib[P.character][1],sizeof(animlib[P.character][1]));
+            }
+            else if(P.act==12){//crouch u
+                P.col=1;P.multihit=false;P.hitstop=12;P.kback=5;P.hitstun=4;P.blockstun=0;P.dmg=10;P.movetype=1;P.mgain=4;
+                P.animq.insert(P.animq.begin(),{4,4,4,4,5,5,5,4,4,4});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,2});
+                short temp[15]={13,14,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
             }
         }
     }
@@ -2199,9 +2309,14 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
     }
     else P.hbframe=0;
     if(!P.animq.empty()){
+        P.idleanim.clear();
         P.neutural=false;P.frame=P.animq[0];
         memcpy(P.anim,animlib[P.character][P.animq[0]],sizeof(animlib[P.character][P.animq[0]]));
         if(!(P.animq[0]==19&&P.hp<=0)&&!(P.air&&P.animq.size()==1))P.animq.pop_front();
+    }
+    else if(!P.idleanim.empty()){
+        memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
+        P.idleanim.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
@@ -2375,8 +2490,11 @@ int main()
 
             while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
             float overlap[2],overlap2[2],bgx=0;
-                p1.x=100.0;p1.y=176.0;p1.hp=1000.0;p1.maxhp=1000.0;
-                p2.x=156.0;p2.y=176.0;p2.hp=1000.0;p2.maxhp=1000.0;
+                p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;
+                p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
+                if(p1.character==2){
+                    p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.walkspeed=2.2;
+                }
 
                 p1.meter=100.0;
                 p2.meter=100.0;
@@ -2501,11 +2619,19 @@ int main()
                     if(roundwait<=0)break;
                     else if(p1.hp<=0||p2.hp<=0)roundwait--;
 
-                    if(p1.buffer==0)p1.act=chooseaction(1,p1.air,p1input,p1.meter);
+                    if(p1.buffer==0){
+                        short temp=chooseaction(1,p1.air,p1input,p1.meter);
+                        if(temp!=p1.act)p1.idleanim.clear();
+                        p1.act=temp;
+                    }
                     else if(!p1.animq.empty()&&!p1.whiff)p1.act=p1.buffer;
                     if(p1.animq.empty()){if(!p1.whiff){p1.act=p1.buffer;}p1.buffer=0;}
 
-                    if(p2.buffer==0)p2.act=chooseaction(2,p2.air,p2input,p2.meter);
+                    if(p2.buffer==0){
+                        short temp=chooseaction(2,p2.air,p2input,p2.meter);
+                        if(temp!=p2.act)p2.idleanim.clear();
+                        p2.act=temp;
+                    }
                     else if(!p2.animq.empty()&&!p2.whiff)p2.act=p2.buffer;
                     if(p2.animq.empty()){if(!p2.whiff){p2.act=p2.buffer;}p2.buffer=0;}
 
@@ -2852,9 +2978,9 @@ int main()
             if(p1.hp>0&&p2.hp<=0)p1.wins++;
             else if(p1.hp<=0&&p2.hp>0)p2.wins++;
             menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
-            p1.animq.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
+            p1.animq.clear();p1.idleanim.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
             p1.air=false;p1.buffer=0;p1.act=0;p1.kdowned=0;p1.hit=false;
-            p2.animq.clear();p2.atkfx.clear();p2.hitboxanim.clear();p2.proj.clear();
+            p2.animq.clear();p2.idleanim.clear();p2.atkfx.clear();p2.hitboxanim.clear();p2.proj.clear();
             p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
             dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
             dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
