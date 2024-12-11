@@ -4,7 +4,29 @@
 	<ActiveTarget name="Release" />
 	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="13333" topLine="423" />
+			<Cursor1 position="13778" topLine="439" />
 		</Cursor>
+		<Folding>
+			<Collapse line="691" />
+			<Collapse line="700" />
+			<Collapse line="712" />
+			<Collapse line="726" />
+			<Collapse line="782" />
+			<Collapse line="838" />
+			<Collapse line="922" />
+			<Collapse line="953" />
+			<Collapse line="1082" />
+			<Collapse line="1155" />
+			<Collapse line="1226" />
+			<Collapse line="1287" />
+			<Collapse line="1385" />
+			<Collapse line="1551" />
+			<Collapse line="1600" />
+			<Collapse line="1752" />
+			<Collapse line="1756" />
+			<Collapse line="1776" />
+			<Collapse line="1882" />
+			<Collapse line="1891" />
+		</Folding>
 	</File>
 </CodeBlocks_layout_file>

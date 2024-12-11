@@ -561,15 +561,92 @@ animlib[16][64][32][2]=
                     {18,2},{19,2},
                     {18,3},{19,3}
                     },//walk9 (14)
+                    {
+                    {4,4},{2,4},
+
+                    {-1},{1,6},{2,6},{-1},
+                    {0,7},{1,7},{2,7},{-1},
+                    {0,8},{1,8},{2,8},{3,6},
+                    {-1},{3,8},{4,8},{3,7}
+                    },//hurt1 (15)
+                    {
+                    {4,4},{2,4},
+
+                    {-1},{1,9},{2,9},{-1},
+                    {0,10},{1,10},{2,10},{-1},
+                    {0,11},{1,11},{2,11},{-1},
+                    {-1},{3,9},{4,9},{5,9}
+                    },//hurt2 (16)
+                    {
+                    {2,4},{1,4},
+
+                    {6,8},{7,8},
+                    {6,9},{7,9},
+                    {6,10},{7,10},
+                    {6,11},{7,11}
+                    },//block1 (17)
+                    {
+                    {2,4},{1,4},
+
+                    {8,8},{9,8},
+                    {8,9},{9,9},
+                    {8,10},{9,10},
+                    {8,11},{9,11}
+                    },//block2 (18)
+                    {
+                    {2,4},{1,4},
+
+                    {4,4},{5,4},
+                    {4,5},{5,5},
+                    {4,6},{5,6},
+                    {4,7},{5,7}
+                    },//stand medium1 (19)
+                    {
+                    {4,4},{1,4},
+
+                    {6,4},{7,4},{-1},{-1},
+                    {6,5},{7,5},{-1},{-1},
+                    {6,6},{7,6},{8,6},{9,6},
+                    {6,7},{7,7},{8,7},{9,7}
+                    },//stand medium2 (20)
+                    {
+                    {4,4},{1,4},
+
+                    {8,4},{9,4},{-1},{-1},
+                    {8,5},{9,5},{-1},{-1},
+                    {10,4},{11,4},{12,4},{13,4},
+                    {10,5},{11,5},{12,5},{13,5}
+                    },//stand medium3 (21)
+                    {
+                    {3,3},{1,3},
+
+                    {7,12},{8,12},{9,12},
+                    {7,13},{8,13},{9,13},
+                    {7,14},{8,14},{9,14}
+                    },//crouch heavy1 (22)
+                    {
+                    {4,3},{1,3},
+
+                    {7,12},{8,12},{9,12},{-1},
+                    {7,13},{10,13},{11,13},{-1},
+                    {7,14},{10,14},{11,14},{12,14}
+                    },//crouch heavy2 (23)
+                    {
+                    {4,3},{1,3},
+
+                    {7,12},{8,12},{9,12},{-1},
+                    {7,13},{13,13},{14,13},{-1},
+                    {7,14},{13,14},{14,14},{15,14}
+                    },//crouch heavy3 (24)
                    }//char2
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
-                    {2,2,3,3,3,3,2,2,2,2,2,2,2,2,2},//char2
+                    {2,2,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3},//char2
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
-                   {0,1,1},//char 2
+                   {0,1,1,1,1},//char 2
                    };
 float comboscaling=100.0,
 colbox[16][8][1][2][2]={
@@ -580,7 +657,7 @@ colbox[16][8][1][2][2]={
                     },//char 0
                     {-1},//char 1
                     {{{{-7,-24},{9,32}}},//standing
-                    {{{-7,-8},{9,32}}},//crouching
+                    {{{-7,-8},{12,32}}},//crouching
                     {{{-31,20},{16,32}}},//knockdown
                     {{{0,0},{0,0}}},//grabbed
                     },//char 2
@@ -666,6 +743,16 @@ hurtbox[16][64][8][2][2]={
                     {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk7 (12)
                     {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk8 (13)
                     {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//walk9 (14)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//hurt1 (15)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//hurt2 (16)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//block1 (17)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//block2 (18)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//stand i1 (19)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}},{{6,10},{40,32}}},//stand i2 (20)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}},{{6,10},{40,32}}},//stand i3 (21)
+                    {{{-11,0},{16,32}},{{-1,-15},{15,0}}},//crouch o1(22)
+                    {{{-11,0},{16,32}},{{-1,-15},{15,0}},{{3,12},{39,32}}},//crouch o2(23)
+                    {{{-11,0},{16,32}},{{-1,-15},{15,0}},{{3,14},{37,32}}},//crouch o3(24)
                     },//char 2
                     },
 hitbox[16][16][4][2][2]={
@@ -683,8 +770,10 @@ hitbox[16][16][4][2][2]={
                     },//char 0
                     {-1},//char 1
                     {{0},//idle (0)
-                    {{{4,-12},{32,0}}},//stand u(1)
-                    {{{4,-1},{37,10}}},//stand i(2)
+                    {{{4,-16},{32,0}}},//stand u(1)
+                    {{{4,-1},{37,10}}},//crouch u(2)
+                    {{{6,12},{42,32}}},//stand i(3)
+                    {{{3,16},{39,32}}},//crouch o(4)
                     }//char 2
                     };
 bool flash=true;
@@ -716,7 +805,7 @@ public:
     std::deque<projectile> proj;
     attackdata attack;
     short hbframe=0,anim[64][2]={},act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
-    hitstun=0,blockstun=0,hitstop=0,hitwait=0,wins=0,character=0,
+    hitstun=0,blockstun=0,hitstop=0,hitwait=0,wins=0,character=0,hurtframes[5]={56,56,57,32,33},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block
     buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
     landdelay=0,hitstopped=0,grabstate=-1;//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
     bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,multihit=false,neutural=true,comboed=false,hitbefore=false,super=false;
@@ -1704,8 +1793,8 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
     else if(P1.hitbefore==true)P1.hit=false;
     if(P1.hit==true){
         if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
-            if(P1.block==1)memcpy(P1.anim,animlib[P1.character][33],sizeof(animlib[P1.character][33]));
-            else memcpy(P1.anim,animlib[P1.character][32],sizeof(animlib[P1.character][32]));
+            if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
+            else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
             P1.meter+=P2.mgain/10*11;
             if(!projcheck)P2.meter+=P2.mgain;
             P2.dmg/=5;
@@ -1713,7 +1802,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             P2.hitstopped=P1.hitstopped;
         }
         else{
-            if(P1.col==1)memcpy(P1.anim,animlib[P1.character][57],sizeof(animlib[P1.character][57]));else memcpy(P1.anim,animlib[P1.character][56],sizeof(animlib[P1.character][56]));
+            if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
             if(P2.hitstop!=0||P2.dmg!=0)combo++;
             if(combo>3)comboscaling=comboscaling/10*9;
             P1.meter+=P2.mgain/7*8;
@@ -1939,7 +2028,10 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 if(P.attack.movetype==1)P.block=1;
                 else P.block=0;
             }
-            if(P.block==0)for(short i=0;i<P.attack.hitwait+P.attack.blockstun;i++)P.animq.push_back(32);
+            if(P.block==0)for(short i=0;i<P.attack.hitwait+P.attack.blockstun;i++){
+                if(P.character==2)P.animq.push_back(18);
+                else P.animq.push_back(32);
+            }
             if(P.block==1)for(short i=0;i<P.attack.hitwait+P.attack.blockstun;i++)P.animq.push_back(33);
             P.block=2;
         }
@@ -1950,7 +2042,10 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
             P.comboed=true;
             if(P.attack.grab[0]!=0||P.attack.grab[1]!=0)P.col=3;
             if(P.col==1)for(short i=0;i<P.attack.hitwait+P.attack.hitstun;i++)P.animq.push_back(53);
-            else for(short i=0;i<P.attack.hitwait+P.attack.hitstun;i++)P.animq.push_back(9);
+            else for(short i=0;i<P.attack.hitwait+P.attack.hitstun;i++){
+                if(P.character==2)P.animq.push_back(16);
+                else P.animq.push_back(9);
+            }
             if(P.attack.kdown==2||P.hp<=0)P.kdowned=2;
             else if(P.attack.kdown==1||P.attack.launch>0||P.air)P.kdowned=1;
             else P.kdowned=0;
@@ -2262,6 +2357,22 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     short temp[15]={9,10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
                 }
             }
+            else if(P.act==9){//i (middle normal)
+                if(P.air){
+                    P.col=0;P.multihit=false;P.hitstop=13;P.kback=3;P.hitstun=10;P.blockstun=3;P.dmg=25;P.movetype=3;P.landdelay=3;P.mgain=6;
+                    P.animq.insert(P.animq.begin(),{3,4,5,5,5,6,7,7,7,7});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,2,2,2,2});
+                }
+                else{
+                    P.col=0;P.multihit=false;P.hitstop=13;P.kback=5;P.hitstun=1;P.blockstun=-5;P.slide=true;P.dmg=28;P.movetype=2;P.mgain=6;
+                    P.animq.insert(P.animq.begin(),{19,19,19,19,19,19,19,19,20,21,21,21,21,21,21,21,20,19,19,19,19,19,19,19});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,3,3});
+                    short temp[14]={10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+                    P.movewaitx=9;
+                    if(P.right)P.jumpx=3;
+                    else P.jumpx=-3;
+                }
+            }
             else if(P.act==11||P.act==20){//crouch & crouch block
                 if(P.x<enemyx)P.right=true;
                 else P.right=false;
@@ -2273,6 +2384,13 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 P.animq.insert(P.animq.begin(),{4,4,4,4,5,5,5,4,4,4});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,2});
                 short temp[15]={13,14,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+            }
+            else if(P.act==14){//crouch o
+                P.col=1;P.multihit=false;P.hitstop=14;P.kback=3;P.hitstun=1;P.blockstun=-5;P.slide=true;P.movewaitx=11;P.dmg=37;P.kdown=2;P.movetype=2;P.mgain=8;
+                P.animq.insert(P.animq.begin(),{22,22,22,22,22,22,22,22,22,22,22,23,24,24,24,24,23,22,22,22,22});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,4});
+                if(P.right)P.jumpx=3;else P.jumpx=-3;
+                short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
             }
         }
     }
@@ -2315,6 +2433,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
         if(!(P.animq[0]==19&&P.hp<=0)&&!(P.air&&P.animq.size()==1))P.animq.pop_front();
     }
     else if(!P.idleanim.empty()){
+        P.frame=P.idleanim[0];
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
         P.idleanim.pop_front();
     }
@@ -2493,7 +2612,7 @@ int main()
                 p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;
                 p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
                 if(p1.character==2){
-                    p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.walkspeed=2.2;
+                    p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.walkspeed=2.2;p1.hurtframes[0]=15;p1.hurtframes[3]=17;
                 }
 
                 p1.meter=100.0;
