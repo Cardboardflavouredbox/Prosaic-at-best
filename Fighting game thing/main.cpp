@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include <iostream>
 #include <stdio.h>
 #include <random>
@@ -2496,7 +2497,11 @@ int main()
     if (!renderTexture.create(256, 240)){}
     sf::Font font;
     if(!font.loadFromFile("PerfectDOSVGA437.ttf"))window.close();
-    char p1input[5]={'5','0'},p2input[5]={'5','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
+    sf::UdpSocket socket;
+    sf::IpAddress localip;
+    localip=sf::IpAddress::getLocalAddress();
+    unsigned short port=53333;
+    char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
     short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
@@ -2579,6 +2584,8 @@ int main()
 
         if(!gamequit){
             bool training=false;
+            bool online=false;
+            bool p2controls=true;
             short rounds=2;
 
             menus.setmenu(6,92,72,0,16,1);
@@ -2622,7 +2629,12 @@ int main()
                 p1.right=true;
                 p2.right=false;
 
-            if(menuselect==3)training=true;
+            if(menuselect==2){
+                    if (socket.bind(port) != sf::Socket::Done){window.close();gamequit=true;}
+                    online=true;
+                    p2controls=false;
+                }
+            else if(menuselect==3)training=true;
 
             while (window.isOpen()&&!gamequit){
                 while (window.pollEvent(event))if (event.type == sf::Event::Closed){window.close();gamequit=true;}
@@ -2656,12 +2668,6 @@ int main()
                 keypresscheck(mediumkey1,&p1input[2]);
                 keypresscheck(heavykey1,&p1input[3]);
                 keypresscheck(specialkey1,&p1input[4]);
-
-                keypresscheck(sf::Keyboard::Z,&p2input[1]);
-                keypresscheck(sf::Keyboard::X,&p2input[2]);
-                keypresscheck(sf::Keyboard::C,&p2input[3]);
-                keypresscheck(sf::Keyboard::LAlt,&p2input[4]);
-
                 if(w&&!a&&!s&&!d)p1input[0]='8';
                 else if(!w&&a&&!s&&!d)p1input[0]='4';
                 else if(!w&&!a&&s&&!d)p1input[0]='2';
@@ -2680,23 +2686,31 @@ int main()
                     else if(p1input[0]=='1')p1input[0]='3';
                 }
 
-                if(w2&&!a2&&!s2&&!d2)p2input[0]='8';
-                else if(!w2&&a2&&!s2&&!d2)p2input[0]='4';
-                else if(!w2&&!a2&&s2&&!d2)p2input[0]='2';
-                else if(!w2&&!a2&&!s2&&d2)p2input[0]='6';
-                else if(w2&&a2&&!s2&&!d2)p2input[0]='7';
-                else if(!w2&&a2&&s2&&!d2)p2input[0]='1';
-                else if(!w2&&!a2&&s2&&d2)p2input[0]='3';
-                else if(w2&&!a2&&!s2&&d2)p2input[0]='9';
-                else p2input[0]='5';
-                if(!p2.right){
-                    if(p2input[0]=='7')p2input[0]='9';
-                    else if(p2input[0]=='9')p2input[0]='7';
-                    else if(p2input[0]=='4')p2input[0]='6';
-                    else if(p2input[0]=='6')p2input[0]='4';
-                    else if(p2input[0]=='3')p2input[0]='1';
-                    else if(p2input[0]=='1')p2input[0]='3';
+                if(p2controls){
+                    keypresscheck(sf::Keyboard::Z,&p2input[1]);
+                    keypresscheck(sf::Keyboard::X,&p2input[2]);
+                    keypresscheck(sf::Keyboard::C,&p2input[3]);
+                    keypresscheck(sf::Keyboard::LAlt,&p2input[4]);
+                    if(w2&&!a2&&!s2&&!d2)p2input[0]='8';
+                    else if(!w2&&a2&&!s2&&!d2)p2input[0]='4';
+                    else if(!w2&&!a2&&s2&&!d2)p2input[0]='2';
+                    else if(!w2&&!a2&&!s2&&d2)p2input[0]='6';
+                    else if(w2&&a2&&!s2&&!d2)p2input[0]='7';
+                    else if(!w2&&a2&&s2&&!d2)p2input[0]='1';
+                    else if(!w2&&!a2&&s2&&d2)p2input[0]='3';
+                    else if(w2&&!a2&&!s2&&d2)p2input[0]='9';
+                    else p2input[0]='5';
+                    if(!p2.right){
+                        if(p2input[0]=='7')p2input[0]='9';
+                        else if(p2input[0]=='9')p2input[0]='7';
+                        else if(p2input[0]=='4')p2input[0]='6';
+                        else if(p2input[0]=='6')p2input[0]='4';
+                        else if(p2input[0]=='3')p2input[0]='1';
+                        else if(p2input[0]=='1')p2input[0]='3';
+                    }
                 }
+
+
 
                 if(!pause){
                     dirkeys.push_front(p1input[0]);
@@ -2874,6 +2888,7 @@ int main()
                     while(p2.x+bgx<11)p2.x++;
                     while(p2.x+bgx>245)p2.x--;
                 }
+
 
                 if(!pause){
                     char keytemp=dirkeys[1],keytemp2=p1input[0];
@@ -3093,6 +3108,20 @@ int main()
                     for(short i=0;i<p2.proj.size();i++)window.draw(P_Hitbox2[i]);
                 }
                 window.display();
+
+                if(online){
+                    sf::Packet packet;
+                    sf::Uint8 dir=p1input[0],u=p1input[1],i=p1input[2],o=p1input[3],k=p1input[4],len=p1.animq.size();
+                    packet<<p1.x<<p1.y<<dir<<u<<i<<o<<k;
+                    if (socket.send(packet,localip,port) != sf::Socket::Done){window.close();gamequit=true;}
+                    socket.receive(packet,localip,port);
+                    float temp=0;
+                    packet>>temp>>p2.y>>dir>>u>>i>>o>>k;
+                    p2input[0]=dir;p2input[1]=u;p2input[2]=i;p2input[3]=o;p2input[4]=k;
+                    temp+=75;
+                    p2.x=temp;
+                }
+
             }
             if(p1.hp>0&&p2.hp<=0)p1.wins++;
             else if(p1.hp<=0&&p2.hp>0)p2.wins++;

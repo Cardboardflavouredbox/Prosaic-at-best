@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1733924515 source:d:\문서\codeblocks\fighting game thing\main.cpp
+1733996672 source:d:\문서\codeblocks\fighting game thing\main.cpp
 	<SFML/Graphics.hpp>
+	<SFML/Network.hpp>
 	<iostream>
 	<stdio.h>
 	<random>
@@ -428,4 +429,79 @@
 
 1732266924 d:\문서\codeblocks\fighting game thing\ggponet.h
 	<stdarg.h>
+
+1719558231 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network.hpp
+	<SFML/System.hpp>
+	<SFML/Network/Ftp.hpp>
+	<SFML/Network/Http.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/Packet.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/Network/SocketSelector.hpp>
+	<SFML/Network/TcpListener.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/Network/UdpSocket.hpp>
+
+1719558233 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\ftp.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1719558233 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\export.hpp
+	<SFML/Config.hpp>
+
+1719558234 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\tcpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/System/Time.hpp>
+
+1719558234 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\socket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<vector>
+
+1719558234 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\sockethandle.hpp
+	<SFML/Config.hpp>
+	<basetsd.h>
+
+1719558233 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\http.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<map>
+	<string>
+
+1719558233 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\ipaddress.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+	<istream>
+	<ostream>
+	<string>
+
+1719558233 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\packet.hpp
+	<SFML/Network/Export.hpp>
+	<string>
+	<vector>
+
+1719558234 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\socketselector.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1719558234 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\tcplistener.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+
+1719558234 d:\sfml-2.6.1-windows-gcc-13.1.0-mingw-64-bit\sfml-2.6.1\include\sfml\network\udpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<vector>
 
