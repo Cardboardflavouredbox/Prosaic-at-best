@@ -639,11 +639,27 @@ animlib[16][64][32][2]=
                     {7,13},{13,13},{14,13},{-1},
                     {7,14},{13,14},{14,14},{15,14}
                     },//crouch heavy3 (24)
+                    {
+                    {3,4},{2,4},
+
+                    {1,12},{0,0},{1,0},
+                    {0,12},{0,13},{1,1},
+                    {-1},{0,14},{1,2},
+                    {-1},{0,3},{1,3}
+                    },//special1 (25)
+                    {
+                    {3,4},{2,4},
+
+                    {-1},{0,0},{1,0},
+                    {0,15},{1,14},{1,1},
+                    {-1},{1,15},{1,2},
+                    {-1},{0,3},{1,3}
+                    },//special2 (26)
                    }//char2
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
-                    {2,2,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3},//char2
+                    {2,2,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2},//char2
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
@@ -754,6 +770,8 @@ hurtbox[16][64][8][2][2]={
                     {{{-11,0},{16,32}},{{-1,-15},{15,0}}},//crouch o1(22)
                     {{{-11,0},{16,32}},{{-1,-15},{15,0}},{{3,12},{39,32}}},//crouch o2(23)
                     {{{-11,0},{16,32}},{{-1,-15},{15,0}},{{3,14},{37,32}}},//crouch o3(24)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//special1 (25)
+                    {{{-11,-16},{11,32}},{{-7,-31},{9,-16}}},//special2 (26)
                     },//char 2
                     },
 hitbox[16][16][4][2][2]={
@@ -777,7 +795,7 @@ hitbox[16][16][4][2][2]={
                     {{{3,16},{39,32}}},//crouch o(4)
                     }//char 2
                     };
-bool flash=true;
+bool flash=true,screenfocused=true;
 
 class attackdata{
 public:
@@ -1841,7 +1859,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
 }
 
 void keypresscheck(sf::Keyboard::Key keycode,char *key){
-    if(sf::Keyboard::isKeyPressed(keycode)){if(*key=='0')*key='2';else if(*key=='2')*key='1';}else *key='0';
+    if(screenfocused&&sf::Keyboard::isKeyPressed(keycode)){if(*key=='0')*key='2';else if(*key=='2')*key='1';}else *key='0';
 }
 
 bool cmdcheck(int playercode,int len,char s[][5]){
@@ -2393,6 +2411,9 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 if(P.right)P.jumpx=3;else P.jumpx=-3;
                 short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
             }
+            else if(P.act==15){//k (gimmick)
+                P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,25,25,26,26,26});
+            }
         }
     }
     if(P.movewaitx>0)P.movewaitx-=1;
@@ -2507,7 +2528,11 @@ int main()
     float screenWidth = 256.f,screenHeight = 240.f;
 
     while(window.isOpen()){
-        while (window.pollEvent(event))if (event.type == sf::Event::Closed)window.close();
+        while (window.pollEvent(event)){
+                    if (event.type == sf::Event::Closed){window.close();gamequit=true;}
+                    if(event.type == sf::Event::GainedFocus)screenfocused=true;
+                    else if(event.type == sf::Event::LostFocus)screenfocused=false;
+            }
 
         sf::Vector2u size = window.getSize();
         float  heightRatio = screenHeight / screenWidth,widthRatio = screenWidth / screenHeight;
@@ -2547,7 +2572,11 @@ int main()
             if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
             else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
             window.setSize(size);
-            while (window.pollEvent(event))if (event.type == sf::Event::Closed){window.close();gamequit=true;}
+            while (window.pollEvent(event)){
+                    if (event.type == sf::Event::Closed){window.close();gamequit=true;}
+                    if(event.type == sf::Event::GainedFocus)screenfocused=true;
+                    else if(event.type == sf::Event::LostFocus)screenfocused=false;
+            }
             keypresscheck(lightkey1,&menuconfirm);
             keypresscheck(mediumkey1,&menucancel);
             keypresscheck(upkey1,&menuup);
@@ -2637,30 +2666,34 @@ int main()
             else if(menuselect==3)training=true;
 
             while (window.isOpen()&&!gamequit){
-                while (window.pollEvent(event))if (event.type == sf::Event::Closed){window.close();gamequit=true;}
+                while (window.pollEvent(event)){
+                    if (event.type == sf::Event::Closed){window.close();gamequit=true;}
+                    if(event.type == sf::Event::GainedFocus)screenfocused=true;
+                    else if(event.type == sf::Event::LostFocus)screenfocused=false;
+                }
                 sf::Vector2u size = window.getSize();
                 heightRatio = screenHeight / screenWidth;widthRatio = screenWidth / screenHeight;
                 if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
                 else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
                 window.setSize(size);
 
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
                 w=false;a=false;s=false;d=false;
-                if(sf::Keyboard::isKeyPressed(upkey1))w=true;
-                if(sf::Keyboard::isKeyPressed(leftkey1))a=true;
-                if(sf::Keyboard::isKeyPressed(downkey1))s=true;
-                if(sf::Keyboard::isKeyPressed(rightkey1))d=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(upkey1))w=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(leftkey1))a=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(downkey1))s=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(rightkey1))d=true;
                 if(w&&s){w=true;s=false;}
                 if(a&&d){a=false;d=false;}
 
                 w2=false;a2=false;s2=false;d2=false;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))w2=true;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))a2=true;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))s2=true;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))d2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Up))w2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Left))a2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Down))s2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Right))d2=true;
                 if(w2==true&&s2==true){w2=true;s2=false;}
                 if(a2==true&&d2==true){a2=false;d2=false;}
 
@@ -3111,15 +3144,33 @@ int main()
 
                 if(online){
                     sf::Packet packet;
-                    sf::Uint8 dir=p1input[0],u=p1input[1],i=p1input[2],o=p1input[3],k=p1input[4],len=p1.animq.size();
-                    packet<<p1.x<<p1.y<<dir<<u<<i<<o<<k;
+                    sf::Uint8 dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
+                    temp=p1.y;
+                    packet<<temp<<dir<<U<<I<<O<<K;
+                    len=p1.animq.size();packet<<len;for(short i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
+                    len=p1.hitboxanim.size();packet<<len;for(short i=0;i<len;i++){temp=p1.hitboxanim[i];packet<<temp;}
+                    len=dirkeys.size();packet<<len;for(short i=0;i<len;i++){temp=dirkeys[i];packet<<temp;}
+                    len=ukey.size();packet<<len;for(short i=0;i<len;i++){temp=ukey[i];packet<<temp;}
+                    len=ikey.size();packet<<len;for(short i=0;i<len;i++){temp=ikey[i];packet<<temp;}
+                    len=okey.size();packet<<len;for(short i=0;i<len;i++){temp=okey[i];packet<<temp;}
+                    len=kkey.size();packet<<len;for(short i=0;i<len;i++){temp=kkey[i];packet<<temp;}
+
                     if (socket.send(packet,localip,port) != sf::Socket::Done){window.close();gamequit=true;}
                     socket.receive(packet,localip,port);
-                    float temp=0;
-                    packet>>temp>>p2.y>>dir>>u>>i>>o>>k;
-                    p2input[0]=dir;p2input[1]=u;p2input[2]=i;p2input[3]=o;p2input[4]=k;
-                    temp+=75;
-                    p2.x=temp;
+
+                    //float xtemp=0;
+                    packet>>temp>>dir>>U>>I>>O>>K;
+                    p2.y=temp;
+                    p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
+                    packet>>len;p2.animq.clear();for(short i=0;i<len;i++){packet>>temp;p2.animq.push_back(temp);}
+                    packet>>len;p2.hitboxanim.clear();for(short i=0;i<len;i++){packet>>temp;p2.hitboxanim.push_back(temp);}
+                    packet>>len;dirkeys2.clear();for(short i=0;i<len;i++){packet>>temp;dirkeys2.push_back(temp);}
+                    packet>>len;ukey2.clear();for(short i=0;i<len;i++){packet>>temp;ukey2.push_back(temp);}
+                    packet>>len;ikey2.clear();for(short i=0;i<len;i++){packet>>temp;ikey2.push_back(temp);}
+                    packet>>len;okey2.clear();for(short i=0;i<len;i++){packet>>temp;okey2.push_back(temp);}
+                    packet>>len;kkey2.clear();for(short i=0;i<len;i++){packet>>temp;kkey2.push_back(temp);}
+                    //xtemp+=75;
+                    //p2.x=xtemp;
                 }
 
             }
