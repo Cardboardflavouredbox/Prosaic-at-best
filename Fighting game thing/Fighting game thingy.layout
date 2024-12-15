@@ -4,29 +4,29 @@
 	<ActiveTarget name="Release" />
 	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="119624" topLine="1471" />
+			<Cursor1 position="139737" topLine="1970" />
 		</Cursor>
 		<Folding>
-			<Collapse line="948" />
-			<Collapse line="957" />
-			<Collapse line="969" />
-			<Collapse line="984" />
-			<Collapse line="1040" />
-			<Collapse line="1096" />
-			<Collapse line="1181" />
-			<Collapse line="1212" />
-			<Collapse line="1341" />
-			<Collapse line="1414" />
-			<Collapse line="1485" />
-			<Collapse line="1546" />
-			<Collapse line="1644" />
-			<Collapse line="1810" />
-			<Collapse line="1859" />
-			<Collapse line="2011" />
-			<Collapse line="2015" />
-			<Collapse line="2035" />
-			<Collapse line="2141" />
-			<Collapse line="2150" />
+			<Collapse line="950" />
+			<Collapse line="959" />
+			<Collapse line="971" />
+			<Collapse line="986" />
+			<Collapse line="1042" />
+			<Collapse line="1098" />
+			<Collapse line="1183" />
+			<Collapse line="1214" />
+			<Collapse line="1343" />
+			<Collapse line="1416" />
+			<Collapse line="1487" />
+			<Collapse line="1548" />
+			<Collapse line="1646" />
+			<Collapse line="1812" />
+			<Collapse line="1879" />
+			<Collapse line="2013" />
+			<Collapse line="2017" />
+			<Collapse line="2037" />
+			<Collapse line="2143" />
+			<Collapse line="2152" />
 		</Folding>
 	</File>
 </CodeBlocks_layout_file>
