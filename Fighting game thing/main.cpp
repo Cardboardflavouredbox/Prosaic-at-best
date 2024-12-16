@@ -1948,7 +1948,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             }
         }
         if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-            P2.proj[j].hit=true;
+            P2.proj[j].hit=true;projcheck=true;
             if(temp2[0]<temp4[0])overlap[0]=temp2[0];
             else overlap[0]=temp4[0];
             if(temp[0]<temp3[0])overlap[0]+=temp3[0];
@@ -1964,10 +1964,20 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
         }
         }
     }
+    if(P2.hitstopped==0){
+        if((P2.grabstate==1|P2.grabstate==2)&&P2.movetype==4&&(P1.air||P1.comboed))hitcheck=false;
+        if(hitcheck==true)P2.whiff=false;
+        if(hitcheck==false){P1.hitbefore=false;P2.whiff=true;}
+        else if(hitcheck==true&&P2.multihit==false&&P1.hitbefore==false)P1.hitbefore=true;
+        else if(P1.hitbefore)hitcheck=false;
+    }
+    else if(projcheck){
+        if(P1.hitbefore)hitcheck=false;
+    }
+    projcheck=false;
     for(short i=0;i<P2.proj.size();i++){
         if(hitcheck&&!P1.hitbefore)P2.proj[i].hit=false;
         if(P2.proj[i].hit){
-                P1.hitbefore=false;
                 projcheck=true;
                 P2.grabstate=-1;
                 P2.grab[0]=0;
@@ -1984,59 +1994,61 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
                 P2.mgain=P2.proj[i].mgain;
                 break;
             }
-    }
-    if(P2.hitstopped==0||projcheck){
-        if((P2.grabstate==1|P2.grabstate==2)&&P2.movetype==4&&(P1.air||P1.comboed))hitcheck=false;
-        if(hitcheck==true)P2.whiff=false;
-        if(hitcheck==false){P1.hitbefore=false;P2.whiff=true;}
-        else if(hitcheck==true&&P2.multihit==false&&P1.hitbefore==false)P1.hitbefore=true;
-        else if(P1.hitbefore)hitcheck=false;
-        if(hitcheck||projcheck){
-            if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
-                if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
-                else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
-                P1.meter+=P2.mgain/10*11;
-                if(!projcheck)P2.meter+=P2.mgain;
-                P2.dmg/=5;
-                P1.hitstopped=P2.hitstop*5/4;
-                P2.hitstopped=P1.hitstopped;
-            }
-            else{
-                if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
-                if(P2.hitstop!=0||P2.dmg!=0)combo++;
-                if(combo>3)comboscaling=comboscaling/10*9;
-                P1.meter+=P2.mgain/7*8;
-                if(!projcheck)P2.meter+=P2.mgain;
-                P2.dmg=P2.dmg/100*comboscaling;
-                P1.hitstopped=P2.hitstop;
-                P2.hitstopped=P1.hitstopped;
-            }
-            P1.attack.hitwait=P2.hitwait;
-            P1.attack.movetype=P2.movetype;
-            P1.attack.hitstun=P2.hitstun;
-            P1.attack.blockstun=P2.blockstun;
-            P1.attack.kback=P2.kback;
-            if(P2.right)P1.attack.kback*=-1;
-            P1.attack.launch=P2.launch;
-            P1.attack.grab[0]=P2.grab[0];
-            P1.attack.grab[1]=P2.grab[1];
-            P1.attack.kdown=P2.kdown;
-            P1.attack.pushaway=true;
-            P1.hp-=P2.dmg;
-            P1.hit=true;
-            }
-    }
-    for(short i=0;i<P2.proj.size();i++){
-        if(P2.proj[i].hit){
-            P2.hitstopped=0;
-            P2.whiff=true;
-            P1.attack.pushaway=false;
-            P1.attack.kback=P2.kback;
-            if(P2.proj[i].right)P1.attack.kback*=-1;
-            P2.proj[i].hitstopped=P1.hitstopped;
-            break;
         }
-    }
+    if((P2.hitstopped==0&&hitcheck)||projcheck){
+        if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
+            if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
+            else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
+            P1.meter+=P2.mgain/10*11;
+            if(!projcheck)P2.meter+=P2.mgain;
+            P2.dmg/=5;
+            P1.hitstopped=P2.hitstop*5/4;
+            if(!projcheck)P2.hitstopped=P1.hitstopped;
+        }
+        else{
+            if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
+            if(P2.hitstop!=0||P2.dmg!=0)combo++;
+            if(combo>3)comboscaling=comboscaling/10*9;
+            P1.meter+=P2.mgain/7*8;
+            if(!projcheck)P2.meter+=P2.mgain;
+            P2.dmg=P2.dmg/100*comboscaling;
+            P1.hitstopped=P2.hitstop;
+            if(!projcheck)P2.hitstopped=P1.hitstopped;
+        }
+        P1.attack.hitwait=P2.hitwait;
+        P1.attack.movetype=P2.movetype;
+        P1.attack.hitstun=P2.hitstun;
+        P1.attack.blockstun=P2.blockstun;
+        P1.attack.kback=P2.kback;
+        if(P2.right)P1.attack.kback*=-1;
+        P1.attack.launch=P2.launch;
+        P1.attack.grab[0]=P2.grab[0];
+        P1.attack.grab[1]=P2.grab[1];
+        P1.attack.kdown=P2.kdown;
+        P1.attack.pushaway=!projcheck;
+        P1.hp-=P2.dmg;
+        P1.hit=true;
+        P1.comboed=true;
+        }
+    if(projcheck)
+        for(short i=0;i<P2.proj.size();i++){
+            if(P2.proj[i].hit){
+                P1.attack.kback=P2.proj[i].kback;
+                if(P2.proj[i].right)P1.attack.kback*=-1;
+                P1.attack.grab[0]=0;
+                P1.attack.grab[1]=0;
+                P1.attack.movetype=P2.proj[i].movetype;
+                P1.attack.hitwait=0;
+                P1.attack.blockstun=P2.blockstun;
+                P1.attack.kdown=P2.proj[i].knockdown;
+                P1.attack.hitstun=P2.proj[i].hitstun;
+                P1.attack.blockstun=P2.proj[i].blockstun;
+                P1.attack.launch=P2.proj[i].launch;
+
+                //P2.proj[i].hitstopped=P1.hitstopped;
+                break;
+            }
+        }
     #undef P1
     #undef P2
 }
@@ -2529,8 +2541,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
         else if(P.character==2){
             if(P.act==0){//neutural
                 if(!P.air){
-                    if(P.x<enemyx)P.right=true;
-                    else P.right=false;
+                    if(P.x<enemyx)P.right=true;else P.right=false;
                     if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0});
                 }
                 P.col=0;P.frame=0;P.block=-1;
@@ -2636,7 +2647,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
             }
             if(P.y>175){
                 if(P.kdowned>0){}//add downed landing animation
-                if(!P.comboed){P.col=1;P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();for(short i=0;i<P.landdelay;i++)P.animq.push_back(8);}
+                if(!P.comboed){P.col=1;P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();if(P.x<enemyx)P.right=true;else P.right=false;for(short i=0;i<P.landdelay;i++)P.animq.push_back(8);}
                 P.landdelay=0;
                 P.movetype=0;
                 P.jumpx=0;P.jumpy=0;P.y=176;P.air=false;
@@ -2701,7 +2712,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 if(P.right)temp.x=P.x+32;
                 else temp.x=P.x-32;
                 temp.y=P.y;
-                if(P.atkfx[0]==1)temp.movex=0.1;
+                if(P.atkfx[0]==1)temp.movex=1;
                 temp.movey=0;
                 temp.hitcount=1;
                 temp.hitstop=P.hitstop;
