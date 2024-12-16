@@ -1886,7 +1886,7 @@ private:
 
 
 void collisionchecks(player *p1,player *p2,float overlap[]){
-    bool projcheck=false;
+    bool projcheck=false,hitcheck=false;
     #define P1 (*p1)
     #define P2 (*p2)
     float temp[2],temp2[2],temp3[2],temp4[2];
@@ -1917,7 +1917,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             temp4[1]=hitbox[P2.character][P2.hbframe][j][1][1]+int(P2.y);
         }
         if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-            P1.hit=true;
+            hitcheck=true;
             if(temp2[0]<temp4[0])overlap[0]=temp2[0];
             else overlap[0]=temp4[0];
             if(temp[0]<temp3[0])overlap[0]+=temp3[0];
@@ -1932,7 +1932,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             }
         }
     for(short j=0;j<P2.proj.size();j++){
-        if(P2.proj[j].hitstopped==0){
+        if(P2.proj[j].hitstopped==0&&P2.proj[j].hitcount>0){
         for(short k=0;k<hurtboxcount[P2.character][P2.proj[j].frame];k++){
             if(P2.proj[j].right==true){
                 temp3[0]=hurtbox[P2.character][P2.proj[j].frame][k][0][0]+int(P2.proj[j].x);
@@ -1948,7 +1948,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             }
         }
         if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-            P2.proj[j].hit=true;projcheck=true;
+            P2.proj[j].hit=true;
             if(temp2[0]<temp4[0])overlap[0]=temp2[0];
             else overlap[0]=temp4[0];
             if(temp[0]<temp3[0])overlap[0]+=temp3[0];
@@ -1965,9 +1965,10 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
         }
     }
     for(short i=0;i<P2.proj.size();i++){
-        if(P1.hit)P2.proj[i].hit=false;
-        else if(P2.proj[i].hit){
-                P1.hit=true;
+        if(hitcheck&&!P1.hitbefore)P2.proj[i].hit=false;
+        if(P2.proj[i].hit){
+                P1.hitbefore=false;
+                projcheck=true;
                 P2.grabstate=-1;
                 P2.grab[0]=0;
                 P2.grab[1]=0;
@@ -1984,44 +1985,47 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
                 break;
             }
     }
-    if((P2.grabstate==1|P2.grabstate==2)&&P2.movetype==4&&(P1.air||P1.comboed))P1.hit=false;
-    if(P1.hit==true)P2.whiff=false;
-    if(P1.hit==false){P1.hitbefore=false;P2.whiff=true;}
-    else if(P1.hit==true&&P2.multihit==false&&P1.hitbefore==false)P1.hitbefore=true;
-    else if(P1.hitbefore&&!projcheck)P1.hit=false;
-    if(P1.hit==true){
-        if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
-            if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
-            else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
-            P1.meter+=P2.mgain/10*11;
-            if(!projcheck)P2.meter+=P2.mgain;
-            P2.dmg/=5;
-            P1.hitstopped=P2.hitstop*5/4;
-            P2.hitstopped=P1.hitstopped;
-        }
-        else{
-            if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
-            if(P2.hitstop!=0||P2.dmg!=0)combo++;
-            if(combo>3)comboscaling=comboscaling/10*9;
-            P1.meter+=P2.mgain/7*8;
-            if(!projcheck)P2.meter+=P2.mgain;
-            P2.dmg=P2.dmg/100*comboscaling;
-            P1.hitstopped=P2.hitstop;
-            P2.hitstopped=P1.hitstopped;
-        }
-        P1.attack.hitwait=P2.hitwait;
-        P1.attack.movetype=P2.movetype;
-        P1.attack.hitstun=P2.hitstun;
-        P1.attack.blockstun=P2.blockstun;
-        P1.attack.kback=P2.kback;
-        if(P2.right)P1.attack.kback*=-1;
-        P1.attack.launch=P2.launch;
-        P1.attack.grab[0]=P2.grab[0];
-        P1.attack.grab[1]=P2.grab[1];
-        P1.attack.kdown=P2.kdown;
-        P1.attack.pushaway=true;
-        P1.hp-=P2.dmg;
-        }
+    if(P2.hitstopped==0||projcheck){
+        if((P2.grabstate==1|P2.grabstate==2)&&P2.movetype==4&&(P1.air||P1.comboed))hitcheck=false;
+        if(hitcheck==true)P2.whiff=false;
+        if(hitcheck==false){P1.hitbefore=false;P2.whiff=true;}
+        else if(hitcheck==true&&P2.multihit==false&&P1.hitbefore==false)P1.hitbefore=true;
+        else if(P1.hitbefore)hitcheck=false;
+        if(hitcheck||projcheck){
+            if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
+                if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
+                else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
+                P1.meter+=P2.mgain/10*11;
+                if(!projcheck)P2.meter+=P2.mgain;
+                P2.dmg/=5;
+                P1.hitstopped=P2.hitstop*5/4;
+                P2.hitstopped=P1.hitstopped;
+            }
+            else{
+                if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
+                if(P2.hitstop!=0||P2.dmg!=0)combo++;
+                if(combo>3)comboscaling=comboscaling/10*9;
+                P1.meter+=P2.mgain/7*8;
+                if(!projcheck)P2.meter+=P2.mgain;
+                P2.dmg=P2.dmg/100*comboscaling;
+                P1.hitstopped=P2.hitstop;
+                P2.hitstopped=P1.hitstopped;
+            }
+            P1.attack.hitwait=P2.hitwait;
+            P1.attack.movetype=P2.movetype;
+            P1.attack.hitstun=P2.hitstun;
+            P1.attack.blockstun=P2.blockstun;
+            P1.attack.kback=P2.kback;
+            if(P2.right)P1.attack.kback*=-1;
+            P1.attack.launch=P2.launch;
+            P1.attack.grab[0]=P2.grab[0];
+            P1.attack.grab[1]=P2.grab[1];
+            P1.attack.kdown=P2.kdown;
+            P1.attack.pushaway=true;
+            P1.hp-=P2.dmg;
+            P1.hit=true;
+            }
+    }
     for(short i=0;i<P2.proj.size();i++){
         if(P2.proj[i].hit){
             P2.hitstopped=0;
@@ -2716,7 +2720,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 temp.loopanim[4]=43;
                 temp.loopanim[5]=43;
                 temp.launch=P.launch;
-                temp.endanim.insert(temp.endanim.begin(),{42});
+                //temp.endanim.insert(temp.endanim.begin(),{42});
                 if(P.proj.size()<8)P.proj.push_back(temp);
                     }
             else if(P.atkfx[0]==3){//gimmick
@@ -3094,8 +3098,8 @@ int main()
                     if(p2.air)p2.hitwait=0;
                     else p2.hitwait=p2.animq.size();
 
-                    if(p1.hitstopped==0&&superstop==0)collisionchecks(&p1,&p2,overlap);
-                    if(p2.hitstopped==0&&superstop==0)collisionchecks(&p2,&p1,overlap2);
+                    if(superstop==0)collisionchecks(&p1,&p2,overlap);
+                    if(superstop==0)collisionchecks(&p2,&p1,overlap2);
 
 
                     for(short j=0;j<p1.proj.size();j++){
