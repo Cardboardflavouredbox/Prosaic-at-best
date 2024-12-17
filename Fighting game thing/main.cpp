@@ -2011,7 +2011,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
     }
     projcheck=false;
     for(short i=0;i<P2.proj.size();i++){
-        if(hitcheck&&!P1.hitbefore)P2.proj[i].hit=false;
+        if(hitcheck)P2.proj[i].hit=false;
         if(P2.proj[i].hit){
                 projcheck=true;
                 P2.grabstate=-1;
@@ -2027,6 +2027,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
                 P2.launch=P2.proj[i].launch;
                 P2.multihit=P2.proj[i].multihit;
                 P2.mgain=P2.proj[i].mgain;
+                P2.hitstop=P2.proj[i].hitstop;
                 break;
             }
         }
