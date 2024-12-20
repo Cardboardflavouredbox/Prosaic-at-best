@@ -794,7 +794,7 @@ unsigned char animlib[16][64][32][2]=
 
                     {3,10},{4,10},{5,10},
                     {3,11},{4,11},{5,11},
-                    {3,12},{4,12},{5,12},
+                    {255,255},{4,12},{5,12},
                     {255,255},{4,13},{6,12}
                     },//jumprise (44)
                     {
@@ -2105,6 +2105,9 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
 void keypresscheck(sf::Keyboard::Key keycode,char *key){
     if(screenfocused&&sf::Keyboard::isKeyPressed(keycode)){if(*key=='0')*key='2';else if(*key=='2')*key='1';}else *key='0';
 }
+void macrokeypresscheck(sf::Keyboard::Key keycode,sf::Keyboard::Key keycode2,char *key){
+    if(screenfocused&&(sf::Keyboard::isKeyPressed(keycode)||sf::Keyboard::isKeyPressed(keycode2))){if(*key=='0')*key='2';else if(*key=='2')*key='1';}else *key='0';
+}
 
 bool cmdcheck(int playercode,int len,char s[][5]){
     //s[][0]==num,s[][1]==u,s[][2]==i,s[][3]==o,s[][4]==k
@@ -2167,11 +2170,17 @@ int chooseaction(int playercode, bool air, char keyinput[], float meter){
                 }
                 else{
                     //grounded actions
-                    if(keyinput[1]=='2'&&keyinput[2]=='2'){
-                        c214[0][1]='2';c214[0][2]='2';
+                    if((keyinput[1]=='2'&&keyinput[2]=='2')||(keyinput[2]=='2'&&keyinput[3]=='2')||(keyinput[1]=='2'&&keyinput[3]=='2')){
+                        c214[0][1]='2';c214[0][2]='2';c214[0][3]='2';
+                        if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
+                        c214[0][3]='0';
+                        if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
+                        c214[0][3]='2';c214[0][1]='0';
+                        if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
+                        c214[0][1]='0';c214[0][2]='0';
                         if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
                         else return 25;//grab
-                        c214[0][1]='0';c214[0][2]='0';
+                        c214[0][1]='0';c214[0][2]='0';c214[0][3]='0';
                     }
                     if(keyinput[3]=='2'){
                         c214[0][3]='2';c236[0][3]='2';c636[0][3]='2';c626[0][3]='2';c63236[0][3]='2';c6236[0][3]='2';
@@ -2817,7 +2826,7 @@ int main()
     sf::Event event;
     sf::Keyboard::Key upkey1=sf::Keyboard::W,downkey1=sf::Keyboard::S,leftkey1=sf::Keyboard::A,rightkey1=sf::Keyboard::D,
                 lightkey1=sf::Keyboard::U,mediumkey1=sf::Keyboard::I,heavykey1=sf::Keyboard::O,
-                grabkey1=sf::Keyboard::H,specialkey1=sf::Keyboard::K,assistkey1=sf::Keyboard::L;
+                grabkey1=sf::Keyboard::H,specialkey1=sf::Keyboard::K;//assistkey1=sf::Keyboard::L;
     sf::Sprite title;
     sf::Texture titletexture;
     if (!titletexture.loadFromFile("title.png"))window.close();
@@ -3009,9 +3018,9 @@ int main()
                 if(w2==true&&s2==true){w2=true;s2=false;}
                 if(a2==true&&d2==true){a2=false;d2=false;}
 
-                keypresscheck(lightkey1,&p1input[1]);
-                keypresscheck(mediumkey1,&p1input[2]);
-                keypresscheck(heavykey1,&p1input[3]);
+                macrokeypresscheck(lightkey1,grabkey1,&p1input[1]);
+                macrokeypresscheck(mediumkey1,grabkey1,&p1input[2]);
+                macrokeypresscheck(heavykey1,grabkey1,&p1input[3]);
                 keypresscheck(specialkey1,&p1input[4]);
                 if(w&&!a&&!s&&!d)p1input[0]='8';
                 else if(!w&&a&&!s&&!d)p1input[0]='4';
