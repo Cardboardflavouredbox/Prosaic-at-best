@@ -863,6 +863,38 @@ unsigned char animlib[16][64][32][2]=
                     {11,8},{12,8},{13,8},{14,8},
                     {11,9},{12,9},{13,9},{14,9}
                     },//stand medium4 (52)
+                    {
+                    {2,4},{1,4},
+
+                    {0,0},{1,0},
+                    {7,16},{8,16},
+                    {7,17},{1,2},
+                    {0,3},{1,3}
+                    },//specialB1 (53)
+                    {
+                    {2,4},{1,4},
+
+                    {2,12},{3,12},
+                    {2,13},{3,13},
+                    {2,14},{3,14},
+                    {2,15},{3,15}
+                    },//specialB2 (54)
+                    {
+                    {3,4},{1,4},
+
+                    {0,16},{1,16},{255,255},
+                    {0,17},{1,17},{2,17},
+                    {3,16},{4,16},{255,255},
+                    {3,17},{4,17},{255,255}
+                    },//specialB3 (55)
+                    {
+                    {3,4},{2,4},
+
+                    {255,255},{0,0},{1,0},
+                    {255,255},{9,16},{1,1},
+                    {8,17},{9,17},{1,2},
+                    {255,255},{0,3},{1,3}
+                    },//specialB4 (56)
                    }//char2
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
@@ -871,7 +903,7 @@ unsigned char animlib[16][64][32][2]=
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
-                   {0,1,1,1,1},//char 2
+                   {0,1,1,1,1,1},//char 2
                    };
 float comboscaling=100.0,
 colbox[16][8][1][2][2]={
@@ -961,6 +993,7 @@ hitbox[16][16][4][2][2]={
                     {{{4,-1},{37,10}}},//crouch u(2)
                     {{{6,12},{42,32}}},//stand i(3)
                     {{{3,16},{39,32}}},//crouch o(4)
+                    {{{4,-16},{32,0}}},//specialB(5)
                     }//char 2
                     };
 bool flash=true,screenfocused=true;
@@ -992,7 +1025,7 @@ public:
     std::deque<projectile> proj;
     attackdata attack;
     unsigned char anim[64][2]={};
-    short hbframe=0,act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
+    short gimmick=0,hbframe=0,act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
     hitstun=0,blockstun=0,hitstop=0,wins=0,character=0,hurtframes[5]={56,56,57,32,33},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block
     buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
     landdelay=0,hitstopped=0,grabstate=-1;//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
@@ -2229,11 +2262,14 @@ if((*p1).proj[0].x<-128||(*p1).proj[0].x>384||(*p1).proj[0].y<0||(*p1).proj[0].y
     }
 }
 
-void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enemypaway,short enemygstate,short *superstop){
+void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick){
     #define P (*p)
     float walkspeed,jumprise,jumpfall;
     if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
-    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;}
+    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick>0)P.gimmick--;}
+
+    if(enemycharacter==2&&enemygimmick>0){walkspeed/=2;jumpfall/=2;}
+
     if(P.kdowned==1&&P.animq.size()<28&&!P.comboed&&P.act==1&&P.hp>0){
         P.slide=true;
         if(P.right)P.jumpx=-5;else P.jumpx=5;
@@ -2326,7 +2362,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
 
     if(enemyhp<=0||roundframecount/60>=99)P.act=0;
     if(P.grabstate==1&&!P.whiff)P.grabstate=3;
-    if(P.grabstate==2&&!P.whiff)P.grabstate=3;
+    if(P.grabstate==2&&!P.whiff)P.grabstate=4;
     if(P.grabstate==3){
             if(enemygstate==0)P.grabstate=-1;
             else if(P.animq.size()<12){
@@ -2334,7 +2370,10 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 else P.act=26;
             }
     }
-    if(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3)))){
+    if(P.grabstate==4){
+            if(P.animq.size()<P.blockstun)for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}
+    }
+    if(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4)))){
         if(P.cancel[P.act]==true){
             P.buffer=0;P.slide=false;P.hitstun=0;P.blockstun=0;P.kback=0;P.dmg=0;P.launch=0;P.kdown=0;P.movewaitx=-1;P.movewaity=-1;
             P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.landdelay=0;if(!P.air){P.jumpx=0;P.jumpy=0;}P.mgain=0;P.super=false;
@@ -2637,12 +2676,34 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,1});
                 P.cancel[32]=true;
             }
+            else if(P.act==21){//special B(u)
+                P.col=0;P.multihit=false;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=5;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=27;P.grab[1]=15;P.grabstate=2;
+                P.animq.insert(P.animq.begin(),{53,53,53,53,53,53,53,53,53,53,53,54,55,55,55,55,55,55,55,55,55,55,55,55,54,53,53,53,53});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5});
+                P.cancel[33]=true;
+                if(P.right)P.jumpx=3;else P.jumpx=-3;
+            }
+            else if(P.act==33){//special B(u)2
+                P.col=3;P.multihit=false;P.hitstop=15;P.kback=-12;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=1;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;P.gimmick=180;
+                P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{5});
+                if(P.right)P.jumpx=4;else P.jumpx=-4;
+            }
         }
     }
-    if(P.movewaitx>0)P.movewaitx-=1;
-    else{P.x+=P.jumpx;P.movewaitx=-1;}
-    if(P.movewaity>0)P.movewaity-=1;
-    else{if(P.jumpy<0)P.air=true;P.y+=P.jumpy;P.movewaity=-1;}
+    if(P.movewaitx>0&&(enemycharacter!=2||enemygimmick%2==0))P.movewaitx-=1;
+    else{
+        if(enemycharacter==2&&enemygimmick>0)P.x+=P.jumpx/2;
+        else P.x+=P.jumpx;
+        P.movewaitx=-1;
+    }
+    if(P.movewaity>0&&(enemycharacter!=2||enemygimmick%2==0))P.movewaity-=1;
+    else{
+        if(P.jumpy<0)P.air=true;
+        if(enemycharacter==2&&enemygimmick>0)P.y+=P.jumpy/2;
+        else P.y+=P.jumpy;
+        P.movewaity=-1;
+    }
     if(P.slide&&P.movewaitx==-1){
         if(P.jumpx>0)P.jumpx-=1;
         else if(P.jumpx<0)P.jumpx+=1;
@@ -2671,19 +2732,19 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
         }
     if(!P.hitboxanim.empty()){
         P.hbframe=P.hitboxanim[0];
-        P.hitboxanim.pop_front();
+        if(enemycharacter!=2||enemygimmick%2==0)P.hitboxanim.pop_front();
     }
     else P.hbframe=0;
     if(!P.animq.empty()){
         P.idleanim.clear();
         P.neutural=false;P.frame=P.animq[0];
         memcpy(P.anim,animlib[P.character][P.animq[0]],sizeof(animlib[P.character][P.animq[0]]));
-        if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
+        if(enemycharacter!=2||enemygimmick%2==0)if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
     }
     else if(!P.idleanim.empty()){
         P.frame=P.idleanim[0];
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
-        P.idleanim.pop_front();
+        if(enemycharacter!=2||enemygimmick%2==0)P.idleanim.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
@@ -3078,12 +3139,12 @@ int main()
 
                     //make an attack clashing system at some point
                     if(p1.hit){
-                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,p2.hp,&p2.pushaway,p2.grabstate,&superstop);
-                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,p1.hp,&p1.pushaway,p1.grabstate,&superstop);
+                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,p2.hp,&p2.pushaway,p2.grabstate,&superstop,p2.character,p2.gimmick);
+                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,p1.hp,&p1.pushaway,p1.grabstate,&superstop,p1.character,p1.gimmick);
                                         }
                     else{
-                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,p1.hp,&p1.pushaway,p1.grabstate,&superstop);
-                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,p2.hp,&p2.pushaway,p2.grabstate,&superstop);
+                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,p1.hp,&p1.pushaway,p1.grabstate,&superstop,p1.character,p1.gimmick);
+                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,p2.hp,&p2.pushaway,p2.grabstate,&superstop,p2.character,p2.gimmick);
                                         }
                     if(!p1.proj.empty())projectiledata(&p1,superstop);
                     if(!p2.proj.empty())projectiledata(&p2,superstop);
