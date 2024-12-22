@@ -1927,6 +1927,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
         temp2[0]=-hurtbox[P1.character][P1.frame][i][0][0]+int(P1.x);
         temp2[1]=hurtbox[P1.character][P1.frame][i][1][1]+int(P1.y);
     }
+    if(P2.grabstate!=3&&P2.grabstate!=4)
     for(short j=0;j<P2.proj.size();j++){
         if(P2.proj[j].hitstopped==0&&P2.proj[j].hitcount>0){
         for(short k=0;k<hurtboxcount[P2.character][P2.proj[j].frame];k++){
@@ -2289,7 +2290,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
         if(P.hp<=0)P.block=-1;
         if(((P.attack.movetype==1||P.attack.movetype==2)&&P.block==1)||((P.attack.movetype==3||P.attack.movetype==2)&&P.block==0)||P.block==2){
             P.slide=true;
-            P.attack.kback=P.attack.kback/3*2;
+            //P.attack.kback=P.attack.kback*5/6;
             if(P.block==2){
                 if(P.attack.movetype==1)P.block=1;
                 else P.block=0;
@@ -2660,7 +2661,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 short temp[16]={13,14,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
             }
             else if(P.act==14){//crouch o
-                P.col=1;P.multihit=false;P.hitstop=14;P.kback=3;P.hitstun=1;P.blockstun=-5;P.slide=true;P.movewaitx=11;P.dmg=37;P.kdown=2;P.movetype=2;P.mgain=8;
+                P.col=1;P.multihit=false;P.hitstop=14;P.kback=3;P.hitstun=1;P.blockstun=7;P.slide=true;P.movewaitx=11;P.dmg=37;P.kdown=2;P.movetype=2;P.mgain=8;
                 P.animq.insert(P.animq.begin(),{22,22,22,22,22,22,22,22,22,22,22,23,24,24,24,24,23,22,22,22,22});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,4});
                 if(P.right)P.jumpx=3;else P.jumpx=-3;
@@ -2722,7 +2723,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     else if(P.character==2)P.idleanim.insert(P.idleanim.begin(),{45,45,45,46,46,46});
                 }
             }
-            if(P.y>175){
+            if(P.y>=176){
                 if(P.kdowned>0){}//add downed landing animation
                 if(!P.comboed){P.col=1;P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();if(P.x<enemyx)P.right=true;else P.right=false;for(short i=0;i<P.landdelay;i++)P.animq.push_back(8);}
                 P.landdelay=0;
@@ -2750,6 +2751,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
         else P.x=enemyx+P.attack.grab[0];
         P.y=enemyy-P.attack.grab[1];
+        if(P.y<176)P.air=true;
     }
     if(!P.atkfx.empty()){
         if(P.character==0){
@@ -2831,6 +2833,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
             }
         }
         P.atkfx.pop_front();
+        if(enemycharacter==2&&enemygimmick%2==1)P.atkfx.push_front(0);
     }
     #undef P
 }
