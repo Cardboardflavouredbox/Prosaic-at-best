@@ -1040,7 +1040,7 @@ public:
     bool load(const std::string& tileset)
     {
         if (!m_tileset.loadFromFile(tileset))return false;
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(64);
         return true;
     }
@@ -1096,7 +1096,7 @@ public:
     bool load(const std::string& tileset)
     {
         if (!m_tileset.loadFromFile(tileset))return false;
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(64);
         return true;
     }
@@ -1153,7 +1153,7 @@ public:
     {
         m_tileset=tread;
 
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(300);
 
         for (unsigned int i = 0; i < 6; ++i)
@@ -1236,7 +1236,7 @@ public:
     void create(short frame,float py){
         frame=frame/2-4;
         if(frame<1)frame=1;
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(16);
         sf::Vertex* triangles = &m_vertices[6];
         triangles[0].position = sf::Vector2f(0,py-frame+1);
@@ -1265,7 +1265,7 @@ class hitflash : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float px,float py,bool hit){
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(32);
         if(hit){
             for(unsigned int i=0;i<3;i++){
@@ -1303,7 +1303,7 @@ public:
                 triangles[i*3+2].position = sf::Vector2f(0,0);
             }
         }
-        m_lines.setPrimitiveType(sf::Lines);
+        m_lines.setPrimitiveType(sf::PrimitiveType::Lines);
         m_lines.resize(32);
         for(unsigned int i=0;i<8;i++){
             float angle=i * 3.14f / 4.f;
@@ -1314,7 +1314,7 @@ public:
             if(hit){line[i*2].color=sf::Color::White;line[i*2+1].color=sf::Color::White;}
             else {line[i*2].color=sf::Color (85, 255, 255);line[i*2+1].color=sf::Color (85, 255, 255);}
         }
-        m_circle.setPrimitiveType(sf::Lines);
+        m_circle.setPrimitiveType(sf::PrimitiveType::Lines);
         m_circle.resize(64);
         sf::Vertex* circle = &m_circle[32];
         for(unsigned int i=0;i<12;i++){
@@ -1328,7 +1328,7 @@ public:
 
 
     void update(float px,float py,bool hit){
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(32);
         for(unsigned int i=0;i<3;i++){
             sf::Vertex* triangles = &m_vertices[i*3];
@@ -1343,7 +1343,7 @@ public:
             triangles[i*3+2].color = sf::Color::White;
             }
         }
-        m_lines.setPrimitiveType(sf::Lines);
+        m_lines.setPrimitiveType(sf::PrimitiveType::Lines);
         m_lines.resize(32);
         for(unsigned int i=0;i<8;i++){
             float angle=i * 3.14f / 4.f;
@@ -1357,7 +1357,7 @@ public:
                     else {line[i*2].color=sf::Color (85, 255, 255);line[i*2+1].color=sf::Color (85, 255, 255);}
             }
         }
-        m_circle.setPrimitiveType(sf::Lines);
+        m_circle.setPrimitiveType(sf::PrimitiveType::Lines);
         m_circle.resize(64);
         sf::Vertex* circle = &m_circle[32];
         for(unsigned int i=0;i<12;i++){
@@ -1394,9 +1394,9 @@ class meterbar : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float meter,float meter2){
-        m_vertices.setPrimitiveType(sf::Triangles);
-        m_vertices2.setPrimitiveType(sf::Triangles);
-        m_vertices3.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+        m_vertices2.setPrimitiveType(sf::PrimitiveType::Triangles);
+        m_vertices3.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(32);
         m_vertices2.resize(32);
         m_vertices3.resize(32);
@@ -1467,9 +1467,9 @@ class healthbar : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float hp,float hp2){
-        m_vertices.setPrimitiveType(sf::Triangles);
-        m_vertices2.setPrimitiveType(sf::Triangles);
-        m_vertices3.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+        m_vertices2.setPrimitiveType(sf::PrimitiveType::Triangles);
+        m_vertices3.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(32);
         m_vertices2.resize(32);
         m_vertices3.resize(32);
@@ -1543,7 +1543,7 @@ public:
         return true;
     }
     void create(){
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(32);
         sf::Vertex* triangles = &m_vertices[12];
         triangles[0].position = sf::Vector2f(120,8);
@@ -1604,7 +1604,7 @@ public:
         return true;
     }
     void create(bool right){
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(16);
         m_tileset.setRepeated(true);
         sf::Vertex* tri = &m_vertices[6];
@@ -1630,7 +1630,7 @@ public:
         tri[3].texCoords = sf::Vector2f(48,0);
         tri[4].texCoords = sf::Vector2f(0,48);
         tri[5].texCoords = sf::Vector2f(48,48);
-        m_vertices2.setPrimitiveType(sf::Triangles);
+        m_vertices2.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices2.resize(16);
         sf::Vertex* tri2 = &m_vertices2[6];
         float temp=comboscaling/100*42;
@@ -1650,7 +1650,7 @@ public:
             tri2[4].position = sf::Vector2f(254+slide,74);
             tri2[5].position = sf::Vector2f(254-temp+slide,74);
         }
-        m_vertices3.setPrimitiveType(sf::Triangles);
+        m_vertices3.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices3.resize(16);
         sf::Vertex* tri3 = &m_vertices3[6];
         if(right){
@@ -1702,7 +1702,7 @@ public:
         return true;
     }
     void create(std::deque<char>keylist,bool right){
-        m_vertices.setPrimitiveType(sf::Triangles);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(768);
         m_tileset.setRepeated(true);
         for(short i=0;i<keylist.size()/5;i++)
@@ -1863,7 +1863,7 @@ class box : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float px,float py,float xy[][2][2],bool right,short count,sf::Color col){
-        m_vertices.setPrimitiveType(sf::Lines);
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
         m_vertices.resize(64);
         for(unsigned int i=0;i<count;i++){
             sf::Vertex* box = &m_vertices[i*8];
@@ -2840,26 +2840,24 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(256,240), "Prosaic at Best");
-    sf::Event event;
-    sf::Keyboard::Key upkey1=sf::Keyboard::W,downkey1=sf::Keyboard::S,leftkey1=sf::Keyboard::A,rightkey1=sf::Keyboard::D,
-                lightkey1=sf::Keyboard::U,mediumkey1=sf::Keyboard::I,heavykey1=sf::Keyboard::O,
-                grabkey1=sf::Keyboard::H,specialkey1=sf::Keyboard::K;//assistkey1=sf::Keyboard::L;
-    sf::Sprite title;
+    sf::RenderWindow window(sf::VideoMode({256,240}), "Prosaic at Best");
+    std::optional event=window.pollEvent();
+    sf::Keyboard::Key upkey1=sf::Keyboard::Key::W,downkey1=sf::Keyboard::Key::S,leftkey1=sf::Keyboard::Key::A,rightkey1=sf::Keyboard::Key::D,
+                lightkey1=sf::Keyboard::Key::U,mediumkey1=sf::Keyboard::Key::I,heavykey1=sf::Keyboard::Key::O,
+                grabkey1=sf::Keyboard::Key::H,specialkey1=sf::Keyboard::Key::K;//assistkey1=sf::Keyboard::Key::L;
     sf::Texture titletexture;
     if (!titletexture.loadFromFile("title.png"))window.close();
-    title.setTexture(titletexture);
+    sf::Sprite title(titletexture);
 	menu menus;
 	if (!menus.load("menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
     window.setFramerateLimit(60);
     sf::RenderTexture renderTexture;
-    if (!renderTexture.create(256, 240)){}
+    if (!renderTexture.resize({256, 240})){}
     sf::Font font;
-    if(!font.loadFromFile("PerfectDOSVGA437.ttf"))window.close();
+    if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
-    sf::IpAddress localip;
-    localip=sf::IpAddress::getLocalAddress();
+    auto localip=sf::IpAddress::getLocalAddress();
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
     short menuselect=0;
@@ -2867,10 +2865,10 @@ int main()
     float screenWidth = 256.f,screenHeight = 240.f;
 
     while(window.isOpen()){
-        while (window.pollEvent(event)){
-                    if (event.type == sf::Event::Closed){window.close();gamequit=true;}
-                    if(event.type == sf::Event::GainedFocus)screenfocused=true;
-                    else if(event.type == sf::Event::LostFocus)screenfocused=false;
+        while (event = window.pollEvent()){
+                    if (event->is<sf::Event::Closed>()){window.close();gamequit=true;}
+                    if(event->is<sf::Event::FocusGained>())screenfocused=true;
+                    else if(event->is<sf::Event::FocusLost>())screenfocused=false;
             }
 
         sf::Vector2u size = window.getSize();
@@ -2911,10 +2909,10 @@ int main()
             if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
             else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
             window.setSize(size);
-            while (window.pollEvent(event)){
-                    if (event.type == sf::Event::Closed){window.close();gamequit=true;}
-                    if(event.type == sf::Event::GainedFocus)screenfocused=true;
-                    else if(event.type == sf::Event::LostFocus)screenfocused=false;
+            while (event = window.pollEvent()){
+                    if (event->is<sf::Event::Closed>()){window.close();gamequit=true;}
+                    if(event->is<sf::Event::FocusGained>())screenfocused=true;
+                    else if(event->is<sf::Event::FocusLost>())screenfocused=false;
             }
             keypresscheck(lightkey1,&menuconfirm);
             keypresscheck(mediumkey1,&menucancel);
@@ -2929,13 +2927,13 @@ int main()
             if(menuconfirm=='2')break;
             if(menucancel=='2'){gamequit=true;break;}
             charselect.setselect(4,2,menux,menuy);
-            sf::RectangleShape rect(sf::Vector2f(256.f, 32.f)),rect2(sf::Vector2f(256.f, 112.f));
+            sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
-            rect2.setPosition(0,128);
+            rect2.setPosition({0,128});
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("stage1.png")){}
             sf::Sprite bg(bgtexture);
-            bg.setPosition(-125.f,0.f);
+            bg.setPosition({-125.f,0.f});
 
             window.clear();
             renderTexture.clear();
@@ -2976,10 +2974,9 @@ int main()
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
-            sf::Sprite background,healthui,meterui;
-            background.setTexture(bgtexture);healthui.setTexture(hutexture);meterui.setTexture(metertexture);
-            sf::Text combotext;
-            combotext.setFont(font);combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
+            sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture);
+            sf::Text combotext(font);
+            combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             std::deque<char>p1keylist,p2keylist;
 
             while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
@@ -2997,18 +2994,20 @@ int main()
                 p1.right=true;
                 p2.right=false;
 
+            /*
             if(menuselect==2){
-                    if (socket.bind(port) != sf::Socket::Done){window.close();gamequit=true;}
+                    if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
                     online=true;
                     p2controls=false;
                 }
-            else if(menuselect==3)training=true;
+            */
+            if(menuselect==3)training=true;
 
             while (window.isOpen()&&!gamequit){
-                while (window.pollEvent(event)){
-                    if (event.type == sf::Event::Closed){window.close();gamequit=true;}
-                    if(event.type == sf::Event::GainedFocus)screenfocused=true;
-                    else if(event.type == sf::Event::LostFocus)screenfocused=false;
+                while (event = window.pollEvent()){
+                    if (event->is<sf::Event::Closed>()){window.close();gamequit=true;}
+                    if(event->is<sf::Event::FocusGained>())screenfocused=true;
+                    else if(event->is<sf::Event::FocusLost>())screenfocused=false;
                 }
                 sf::Vector2u size = window.getSize();
                 heightRatio = screenHeight / screenWidth;widthRatio = screenWidth / screenHeight;
@@ -3016,9 +3015,9 @@ int main()
                 else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
                 window.setSize(size);
 
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
                 w=false;a=false;s=false;d=false;
                 if(screenfocused&&sf::Keyboard::isKeyPressed(upkey1))w=true;
@@ -3029,10 +3028,10 @@ int main()
                 if(a&&d){a=false;d=false;}
 
                 w2=false;a2=false;s2=false;d2=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Up))w2=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Left))a2=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Down))s2=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Right))d2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))w2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))a2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))s2=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))d2=true;
                 if(w2==true&&s2==true){w2=true;s2=false;}
                 if(a2==true&&d2==true){a2=false;d2=false;}
 
@@ -3059,10 +3058,10 @@ int main()
                 }
 
                 if(p2controls){
-                    keypresscheck(sf::Keyboard::Z,&p2input[1]);
-                    keypresscheck(sf::Keyboard::X,&p2input[2]);
-                    keypresscheck(sf::Keyboard::C,&p2input[3]);
-                    keypresscheck(sf::Keyboard::LAlt,&p2input[4]);
+                    keypresscheck(sf::Keyboard::Key::Z,&p2input[1]);
+                    keypresscheck(sf::Keyboard::Key::X,&p2input[2]);
+                    keypresscheck(sf::Keyboard::Key::C,&p2input[3]);
+                    keypresscheck(sf::Keyboard::Key::LAlt,&p2input[4]);
                     if(w2&&!a2&&!s2&&!d2)p2input[0]='8';
                     else if(!w2&&a2&&!s2&&!d2)p2input[0]='4';
                     else if(!w2&&!a2&&s2&&!d2)p2input[0]='2';
@@ -3350,7 +3349,7 @@ int main()
                 std::string tempstr;
                 tempstr = std::to_string(combo);
                 combotext.setString(tempstr);
-                combotext.setOrigin(combotext.getLocalBounds().width,0);
+                combotext.setOrigin({16,0});
                 if (combo>1)cui.create(p2.comboed||p2.kdowned);
 
                 p1ilist.create(p1keylist,true);
@@ -3358,15 +3357,15 @@ int main()
                 hb.create(p1.hp,p2.hp);
                 mb.create(p1.meter,p2.meter);
 
-                healthui.setPosition(0.f,0.f);
-                sf.setPosition(0,0);
-                if(p2.comboed||p2.kdowned)combotext.setPosition(36.f-cui.slide,25.f);
-                else combotext.setPosition(248.f+cui.slide,25.f);
-                p1graphics.setPosition(int(p1.x)-64+bgx,int(p1.y-64));
-                p1shadow.setPosition(int(p1.x)-64+bgx,184+(p1.y-176)/8);
-                p2graphics.setPosition(int(p2.x)-64+bgx,int(p2.y-64));
-                p2shadow.setPosition(int(p2.x)-64+bgx,184+(p2.y-176)/8);
-                background.setPosition(int(bgx)-125,0.f);
+                healthui.setPosition({0.f,0.f});
+                sf.setPosition({0,0});
+                if(p2.comboed||p2.kdowned)combotext.setPosition({36.f-cui.slide,25.f});
+                else combotext.setPosition({248.f+cui.slide,25.f});
+                p1graphics.setPosition({int(p1.x)-64+bgx,int(p1.y-64)});
+                p1shadow.setPosition({int(p1.x)-64+bgx,184+(p1.y-176)/8});
+                p2graphics.setPosition({int(p2.x)-64+bgx,int(p2.y-64)});
+                p2shadow.setPosition({int(p2.x)-64+bgx,184+(p2.y-176)/8});
+                background.setPosition({int(bgx)-125,0.f});
 
                 menus.setcolor(6,!pause,menuselect);
                 if(pause){
@@ -3382,7 +3381,7 @@ int main()
                     else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
                 }
 
-                sf::RectangleShape blackscreen(sf::Vector2f(256.f, 240.f));
+                sf::RectangleShape blackscreen({256.f, 240.f});
                 blackscreen.setFillColor(sf::Color(0,0,0,170));
 
                 p1graphics.setanim(p1.anim,p1.right);
@@ -3414,7 +3413,7 @@ int main()
                     for(short i=0;i<p1.proj.size();i++){
                         p_graphics[i].load(p1texture,false);
                         p_graphics[i].setanim(animlib[p1.character][p1.proj[i].frame],p1.proj[i].right);
-                        p_graphics[i].setPosition(int(p1.proj[i].x-64+bgx),int(p1.proj[i].y-64));
+                        p_graphics[i].setPosition({int(p1.proj[i].x-64+bgx),int(p1.proj[i].y-64)});
                         renderTexture.draw(p_graphics[i]);
                     }
                 }
@@ -3423,7 +3422,7 @@ int main()
                     for(short i=0;i<p2.proj.size();i++){
                         p_graphics[i].load(p2texture,false);
                         p_graphics[i].setanim(animlib[p2.character][p2.proj[i].frame],p2.proj[i].right);
-                        p_graphics[i].setPosition(int(p2.proj[i].x-64+bgx),int(p2.proj[i].y-64));
+                        p_graphics[i].setPosition({int(p2.proj[i].x-64+bgx),int(p2.proj[i].y-64)});
                         renderTexture.draw(p_graphics[i]);
                     }
                 }
@@ -3434,25 +3433,25 @@ int main()
                 renderTexture.draw(hb);
                 renderTexture.draw(healthui);
 
-                meterui.setPosition(0,208);
-                meterui.setScale(1.0f,1.0f);
+                meterui.setPosition({0,208});
+                meterui.setScale({1.0f,1.0f});
                 renderTexture.draw(meterui);
-                meterui.setPosition(256,208);
-                meterui.setScale(-1.0f,1.0f);
+                meterui.setPosition({256,208});
+                meterui.setScale({-1.0f,1.0f});
                 renderTexture.draw(meterui);
                 renderTexture.draw(mb);
 
                 if(roundframecount/60<99)time.timeset(99-roundframecount/60);
                 else time.timeset(0);
-                time.setPosition(0,0);
+                time.setPosition({0,0});
                 renderTexture.draw(time);
 
                 time.timeset(p1.meter/100);
-                time.setPosition(-107,208);
+                time.setPosition({-107,208});
                 renderTexture.draw(time);
 
                 time.timeset(p2.meter/100);
-                time.setPosition(109,208);
+                time.setPosition({109,208});
                 renderTexture.draw(time);
 
                 if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
@@ -3477,9 +3476,10 @@ int main()
                 }
                 window.display();
 
+                /*
                 if(online){
                     sf::Packet packet;
-                    sf::Uint8 dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
+                    std::uint8_t dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
                     temp=p1.y;
                     packet<<temp<<dir<<U<<I<<O<<K;
                     len=p1.animq.size();packet<<len;for(short i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
@@ -3490,7 +3490,7 @@ int main()
                     len=okey.size();packet<<len;for(short i=0;i<len;i++){temp=okey[i];packet<<temp;}
                     len=kkey.size();packet<<len;for(short i=0;i<len;i++){temp=kkey[i];packet<<temp;}
 
-                    if (socket.send(packet,localip,port) != sf::Socket::Done){window.close();gamequit=true;}
+                    socket.send(packet,localip,port);
                     socket.receive(packet,localip,port);
 
                     //float xtemp=0;
@@ -3507,6 +3507,7 @@ int main()
                     //xtemp+=75;
                     //p2.x=xtemp;
                 }
+                */
 
             }
             if(p1.hp>0&&p2.hp<=0)p1.wins++;
