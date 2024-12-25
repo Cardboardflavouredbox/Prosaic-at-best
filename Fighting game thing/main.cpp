@@ -3349,7 +3349,7 @@ int main()
                 std::string tempstr;
                 tempstr = std::to_string(combo);
                 combotext.setString(tempstr);
-                combotext.setOrigin({16,0});
+                combotext.setOrigin({32,0});
                 if (combo>1)cui.create(p2.comboed||p2.kdowned);
 
                 p1ilist.create(p1keylist,true);

@@ -4,13 +4,21 @@
 	<Project>
 		<Option title="Fighting game engine" />
 		<Option pch_mode="2" />
-		<Option compiler="copy_of_gnu_gcc_compiler" />
+		<Option compiler="newer_gnu_gcc_compiler" />
+		<MakeCommands>
+			<Build command="" />
+			<CompileFile command="" />
+			<Clean command="" />
+			<DistClean command="" />
+			<AskRebuildNeeded command="" />
+			<SilentBuild command=" &gt; $(CMD_NULL)" />
+		</MakeCommands>
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/Fighting game thingy" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="0" />
-				<Option compiler="copy_of_gnu_gcc_compiler" />
+				<Option compiler="newer_gnu_gcc_compiler" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -26,7 +34,7 @@
 				<Option output="bin/Release/Fighting game thingy" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
-				<Option compiler="copy_of_gnu_gcc_compiler" />
+				<Option compiler="newer_gnu_gcc_compiler" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -38,20 +46,6 @@
 				</Environment>
 			</Target>
 		</Build>
-		<Compiler>
-			<Add option="-Wall" />
-			<Add directory="D:/SFML-3.0.0/include" />
-		</Compiler>
-		<Linker>
-			<Add option="-static-libgcc" />
-			<Add option="-static" />
-			<Add library="sfml-graphics" />
-			<Add library="sfml-audio" />
-			<Add library="sfml-window" />
-			<Add library="sfml-system" />
-			<Add library="sfml-network" />
-			<Add directory="D:/SFML-3.0.0/lib" />
-		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
