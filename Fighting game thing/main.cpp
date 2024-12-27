@@ -1261,6 +1261,52 @@ private:
 
 };
 
+class effects : public sf::Drawable, public sf::Transformable
+{
+public:
+    void create(float bgx){
+        if(code==0){
+            m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+            m_vertices.resize(12);
+            sf::Vertex* tri = &m_vertices[6];
+            tri[0].position = sf::Vector2f(x-3+frame/2+bgx,y-frame);
+            tri[1].position = sf::Vector2f(x+3-frame/2+bgx,y-frame);
+            tri[2].position = sf::Vector2f(x+bgx,y-frame/2-8);
+            tri[3].position = sf::Vector2f(x-3+frame/2+bgx,y-frame);
+            tri[4].position = sf::Vector2f(x+3-frame/2+bgx,y-frame);
+            tri[5].position = sf::Vector2f(x+bgx,y+4-frame);
+        }
+        else if(code==1){
+            m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+            m_vertices.resize(12);
+            sf::Vertex* tri = &m_vertices[6];
+            tri[0].position = sf::Vector2f(x-frame+bgx,y-3+frame/2);
+            tri[1].position = sf::Vector2f(x-frame+bgx,y+3-frame/2);
+            tri[2].position = sf::Vector2f(x-frame/2-8+bgx,y);
+            tri[3].position = sf::Vector2f(x-frame+bgx,y-3+frame/2);
+            tri[4].position = sf::Vector2f(x-frame+bgx,y+3-frame/2);
+            tri[5].position = sf::Vector2f(x+4-frame+bgx,y);
+        }
+        frame++;
+    }
+
+    short frame=0,code=0,dir=0;
+    float x,y;
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        states.texture = NULL;
+
+        target.draw(m_vertices,states);
+    }
+   sf::VertexArray m_vertices;
+};
+std::deque<effects> effectslist;
+
 class hitflash : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -2238,29 +2284,39 @@ void boolfill(bool *arr,bool value,short a[]){
     }
 }
 
-void projectiledata(player *p1,short superstop){
-if((*p1).proj[0].x<-128||(*p1).proj[0].x>384||(*p1).proj[0].y<0||(*p1).proj[0].y>240)(*p1).proj.pop_front();
-    for(short i=0;i<(*p1).proj.size();i++){
+void projectiledata(player *p,short superstop){
+    #define P (*p)
+    for(short i=0;i<P.proj.size();i++){
         if(superstop==0){
-            if((*p1).proj[i].hit){(*p1).proj[i].hit=false;(*p1).proj[i].hitcount--;}
-            if((*p1).proj[i].hitcount<=0){
-                if((*p1).proj[i].endanim.empty())(*p1).proj[i].y=333;
+            if(P.proj[i].hit){P.proj[i].hit=false;P.proj[i].hitcount--;}
+            if(P.proj[i].x<-128||P.proj[i].x>384||P.proj[i].y<0||P.proj[i].y>240)P.proj.erase(P.proj.begin()+i);
+            if(P.proj[i].hitcount<=0){
+                if(P.proj[i].endanim.empty())P.proj.erase(P.proj.begin()+i);
                 else{
-                    (*p1).proj[i].frame=(*p1).proj[i].endanim[0];
-                    (*p1).proj[i].endanim.pop_front();
+                    P.proj[i].frame=P.proj[i].endanim[0];
+                    P.proj[i].endanim.pop_front();
                 }
             }
-            else if((*p1).proj[i].hitstopped>0&&superstop==0)(*p1).proj[i].hitstopped-=1;
+            else if(P.proj[i].hitstopped>0&&superstop==0)P.proj[i].hitstopped-=1;
             else{
-                if((*p1).proj[i].right)(*p1).proj[i].x+=(*p1).proj[i].movex;
-                else (*p1).proj[i].x-=(*p1).proj[i].movex;
-                (*p1).proj[i].y+=(*p1).proj[i].movey;
-                (*p1).proj[i].animloop+=1;
-                if((*p1).proj[i].looplen<=(*p1).proj[i].animloop)(*p1).proj[i].animloop=0;
-                (*p1).proj[i].frame=(*p1).proj[i].loopanim[(*p1).proj[i].animloop];
+                if(P.proj[i].right)P.proj[i].x+=P.proj[i].movex;
+                else P.proj[i].x-=P.proj[i].movex;
+                P.proj[i].y+=P.proj[i].movey;
+                P.proj[i].animloop+=1;
+                if(P.proj[i].looplen<=P.proj[i].animloop)P.proj[i].animloop=0;
+                P.proj[i].frame=P.proj[i].loopanim[P.proj[i].animloop];
+                if(P.character==0&&P.proj[i].animloop%2==1){
+                    effects temp;
+                    temp.x=P.proj[i].x;
+                    temp.y=P.proj[i].y+4;
+                    temp.code=1;
+                    temp.frame=0;
+                    effectslist.push_back(temp);
+                }
             }
         }
     }
+    #undef P
 }
 
 void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick){
@@ -3352,6 +3408,13 @@ int main()
                 combotext.setOrigin({32,0});
                 if (combo>1)cui.create(p2.comboed||p2.kdowned);
 
+                for(short i=0;i<effectslist.size();i++){
+                        if(effectslist[i].code==0||effectslist[i].code==1){
+                            effectslist[i].create(bgx);
+                            if(effectslist[i].frame>5)effectslist.erase(effectslist.begin()+i);
+                        }
+                    }
+
                 p1ilist.create(p1keylist,true);
                 p2ilist.create(p2keylist,false);
                 hb.create(p1.hp,p2.hp);
@@ -3426,6 +3489,8 @@ int main()
                         renderTexture.draw(p_graphics[i]);
                     }
                 }
+
+                for(short i=0;i<effectslist.size();i++)renderTexture.draw(effectslist[i]);
 
                 if(p1.hitstopped>0||p2.hitstopped)renderTexture.draw(hf);
 
