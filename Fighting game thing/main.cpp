@@ -1265,33 +1265,49 @@ class effects : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(float bgx){
-        if(code==0){
-            m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-            m_vertices.resize(12);
-            sf::Vertex* tri = &m_vertices[6];
-            tri[0].position = sf::Vector2f(x-3+frame/2+bgx,y-frame);
-            tri[1].position = sf::Vector2f(x+3-frame/2+bgx,y-frame);
-            tri[2].position = sf::Vector2f(x+bgx,y-frame/2-8);
-            tri[3].position = sf::Vector2f(x-3+frame/2+bgx,y-frame);
-            tri[4].position = sf::Vector2f(x+3-frame/2+bgx,y-frame);
-            tri[5].position = sf::Vector2f(x+bgx,y+4-frame);
+        if(code==0){//basic particles
+            m_vertices.setPrimitiveType(sf::PrimitiveType::Points);
+            m_vertices.resize(3);
+            sf::Vertex* point = &m_vertices[1];
+            point[0].position = sf::Vector2f(x+bgx+std::cos(dir*3.14/180)*frame,y+std::sin(dir*3.14/180)*frame);
+            point[0].color = color1;
         }
-        else if(code==1){
-            m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-            m_vertices.resize(12);
-            sf::Vertex* tri = &m_vertices[6];
-            tri[0].position = sf::Vector2f(x-frame+bgx,y-3+frame/2);
-            tri[1].position = sf::Vector2f(x-frame+bgx,y+3-frame/2);
-            tri[2].position = sf::Vector2f(x-frame/2-8+bgx,y);
-            tri[3].position = sf::Vector2f(x-frame+bgx,y-3+frame/2);
-            tri[4].position = sf::Vector2f(x-frame+bgx,y+3-frame/2);
-            tri[5].position = sf::Vector2f(x+4-frame+bgx,y);
+        else if(code==1){//hit lines
+            m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
+            m_vertices.resize(32);
+            for(short i=0;i<8;i++){
+                float angle=i * 3.14f / 4.f;
+                float xtemp=std::cos(angle),ytemp=std::sin(angle);
+                sf::Vertex* line = &m_vertices[i*2];
+                if(frame==0){
+                    line[i*2].position = sf::Vector2f(x+xtemp+bgx,y+ytemp);line[i*2+1].position = sf::Vector2f(xtemp*16+x+bgx,ytemp*16+y);
+                }
+                else{
+                    line[i*2].position = sf::Vector2f(xtemp*(frame+8)+bgx+x,ytemp*(frame+8)+y);
+                    line[i*2+1].position = sf::Vector2f(xtemp*(float(frame)/8+16)+bgx+x,ytemp*(float(frame)/8+16)+y);
+                }
+                if(frame>3&&frame%2==1&&flash){line[i*2].color=sf::Color::Transparent;line[i*2+1].color=sf::Color::Transparent;}
+                else {line[i*2].color=color1;line[i*2+1].color=color1;}
+            }
+        }
+        else if(code==2){//hit circle
+            m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
+            m_vertices.resize(64);
+            sf::Vertex* circle = &m_vertices[32];
+            for(unsigned int i=0;i<12;i++){
+                float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;;
+                circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)+x+bgx,(std::sin(angle))*(4+frame)+y);
+                circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)+x+bgx,(std::sin(angle2))*(4+frame)+y);
+                if(frame>3&&frame%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
+                else {circle[i*2].color=color1;circle[i*2+1].color=color1;}
+            }
         }
         frame++;
     }
 
-    short frame=0,code=0,dir=0;
-    float x,y;
+    short frame=0,code=0,len=0;
+    float dir=0,x,y;
+    sf::Color color1=sf::Color(255, 255, 255);
 
 private:
 
@@ -1349,27 +1365,6 @@ public:
                 triangles[i*3+2].position = sf::Vector2f(0,0);
             }
         }
-        m_lines.setPrimitiveType(sf::PrimitiveType::Lines);
-        m_lines.resize(32);
-        for(unsigned int i=0;i<8;i++){
-            float angle=i * 3.14f / 4.f;
-            float x=std::cos(angle),y=std::sin(angle);
-            sf::Vertex* line = &m_lines[i*2];
-            line[i*2].position = sf::Vector2f(px+x,py+y);
-            line[i*2+1].position = sf::Vector2f(x*16+px,y*16+py);
-            if(hit){line[i*2].color=sf::Color::White;line[i*2+1].color=sf::Color::White;}
-            else {line[i*2].color=sf::Color (85, 255, 255);line[i*2+1].color=sf::Color (85, 255, 255);}
-        }
-        m_circle.setPrimitiveType(sf::PrimitiveType::Lines);
-        m_circle.resize(64);
-        sf::Vertex* circle = &m_circle[32];
-        for(unsigned int i=0;i<12;i++){
-            float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;;
-            circle[i*2].position = sf::Vector2f((std::cos(angle))*4+px,(std::sin(angle))*4+py);
-            circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*4+px,(std::sin(angle2))*4+py);
-            if(hit){circle[i*2].color=sf::Color::White;circle[i*2+1].color=sf::Color::White;}
-            else {circle[i*2].color=sf::Color (85, 255, 255);circle[i*2+1].color=sf::Color (85, 255, 255);}
-        }
     }
 
 
@@ -1389,34 +1384,6 @@ public:
             triangles[i*3+2].color = sf::Color::White;
             }
         }
-        m_lines.setPrimitiveType(sf::PrimitiveType::Lines);
-        m_lines.resize(32);
-        for(unsigned int i=0;i<8;i++){
-            float angle=i * 3.14f / 4.f;
-            float x=std::cos(angle),y=std::sin(angle);
-            sf::Vertex* line = &m_lines[i*2];
-            line[i*2].position = sf::Vector2f(px+x*(frame+8),py+y*(frame+8));
-            line[i*2+1].position = sf::Vector2f(x*(float(frame)/8+16)+px,y*(float(frame)/8+16)+py);
-            if(frame>3&&frame%2==1&&flash){line[i*2].color=sf::Color::Transparent;line[i*2+1].color=sf::Color::Transparent;}
-            else {
-                    if(hit){line[i*2].color=sf::Color::White;line[i*2+1].color=sf::Color::White;}
-                    else {line[i*2].color=sf::Color (85, 255, 255);line[i*2+1].color=sf::Color (85, 255, 255);}
-            }
-        }
-        m_circle.setPrimitiveType(sf::PrimitiveType::Lines);
-        m_circle.resize(64);
-        sf::Vertex* circle = &m_circle[32];
-        for(unsigned int i=0;i<12;i++){
-            float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;;
-            circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)+px,(std::sin(angle))*(4+frame)+py);
-            circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)+px,(std::sin(angle2))*(4+frame)+py);
-
-            if(frame>3&&frame%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
-            else {
-                    if(hit){circle[i*2].color=sf::Color::White;circle[i*2+1].color=sf::Color::White;}
-                    else {circle[i*2].color=sf::Color (85, 255, 255);circle[i*2+1].color=sf::Color (85, 255, 255);}
-            }
-        }
     }
     short frame;
 
@@ -1429,10 +1396,8 @@ private:
         states.texture = NULL;
 
         target.draw(m_vertices);
-        target.draw(m_lines);
-        target.draw(m_circle, states);
     }
-   sf::VertexArray m_vertices,m_lines,m_circle;
+   sf::VertexArray m_vertices;
 
 };
 
@@ -2081,6 +2046,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             }
         }
     if((P2.hitstopped==0&&hitcheck)||projcheck){
+        effects fxtemp;
         if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
             if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
             else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
@@ -2089,6 +2055,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             P2.dmg/=5;
             P1.hitstopped=P2.hitstop*5/4;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
+            fxtemp.color1=sf::Color (85, 255, 255);
         }
         else{
             if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
@@ -2099,7 +2066,13 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             P2.dmg=P2.dmg/100*comboscaling;
             P1.hitstopped=P2.hitstop;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
+            fxtemp.color1=sf::Color (255, 255, 255);
         }
+        fxtemp.code=1;fxtemp.x=overlap[0];fxtemp.y=overlap[1];fxtemp.len=P1.hitstopped;
+        effectslist.push_back(fxtemp);
+        fxtemp.code=2;
+        effectslist.push_back(fxtemp);
+
         P1.attack.movetype=P2.movetype;
         P1.attack.hitstun=P2.hitstun;
         P1.attack.blockstun=P2.blockstun;
@@ -2293,6 +2266,21 @@ void projectiledata(player *p,short superstop){
             if(P.proj[i].hitcount<=0){
                 if(P.proj[i].endanim.empty())P.proj.erase(P.proj.begin()+i);
                 else{
+
+                    if(P.character==0){
+                        std::uniform_int_distribution<int> dis(-150,-30),dis2(-4,4);
+                        effects temp;
+                        temp.code=0;
+                        temp.frame=0;
+                        temp.len=16;
+                        for(short j=0;j<8;j++){
+                            if(P.proj[i].right){temp.dir=270+dis(gen);temp.x=P.proj[i].x+8+dis2(gen);}
+                            else{temp.dir=270-dis(gen);temp.x=P.proj[i].x-8+dis2(gen);}
+
+                            temp.y=P.proj[i].y+4+dis2(gen);
+                            effectslist.push_back(temp);
+                        }
+                    }
                     P.proj[i].frame=P.proj[i].endanim[0];
                     P.proj[i].endanim.pop_front();
                 }
@@ -2305,13 +2293,19 @@ void projectiledata(player *p,short superstop){
                 P.proj[i].animloop+=1;
                 if(P.proj[i].looplen<=P.proj[i].animloop)P.proj[i].animloop=0;
                 P.proj[i].frame=P.proj[i].loopanim[P.proj[i].animloop];
-                if(P.character==0&&P.proj[i].animloop%2==1){
+                if(P.character==0){
+                    std::uniform_int_distribution<int> dis(-120,-60),dis2(-4,4);
                     effects temp;
-                    temp.x=P.proj[i].x;
-                    temp.y=P.proj[i].y+4;
-                    temp.code=1;
+                    temp.code=0;
                     temp.frame=0;
-                    effectslist.push_back(temp);
+                    temp.len=8;
+                    for(short j=0;j<8;j++){
+                        if(P.proj[i].right)temp.dir=270+dis(gen);
+                        else temp.dir=270-dis(gen);
+                        temp.x=P.proj[i].x+dis2(gen);
+                        temp.y=P.proj[i].y+4+dis2(gen);
+                        effectslist.push_back(temp);
+                    }
                 }
             }
         }
@@ -2434,7 +2428,7 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
         if(P.cancel[P.act]==true){
             P.buffer=0;P.slide=false;P.hitstun=0;P.blockstun=0;P.kback=0;P.dmg=0;P.launch=0;P.kdown=0;P.movewaitx=-1;P.movewaity=-1;
             P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.landdelay=0;if(!P.air){P.jumpx=0;P.jumpy=0;}P.mgain=0;P.super=false;
-            short temp[0]={};boolfill(P.cancel,true,temp);
+            short temp[0]={};boolfill(P.cancel,true,temp);P.cancel[0]=false;
             P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
         }
 
@@ -2619,20 +2613,20 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
             }
             else if(P.act==28){//special C (u)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=3;P.blockstun=1;P.dmg=22;P.movetype=2;P.mgain=7;
-                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,1});
+                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,1});
                 P.cancel[32]=true;
             }
             else if(P.act==29){//special C (i)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=4;P.blockstun=2;P.dmg=22;P.movetype=2;P.mgain=8;
-                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,2});
+                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,2});
                 P.cancel[32]=true;
             }
             else if(P.act==30){//special C (o)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=5;P.blockstun=3;P.dmg=22;P.movetype=2;P.mgain=9;
-                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,3});
+                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,3});
                 P.cancel[32]=true;
             }
             else if(P.act==31){//special C (k)
@@ -2642,8 +2636,8 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
             }
             else if(P.act==32){//super
                 P.col=0;P.multihit=false;P.hitstop=14;P.kback=8;P.launch=5;P.hitstun=6;P.blockstun=5;P.slide=true;P.movewaitx=15;P.dmg=150;P.movetype=2;P.mgain=0;P.meter-=100;
-                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,4});
+                P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,5,0,0,4});
                 if(P.right)P.jumpx=-9;else P.jumpx=9;
             }
         }
@@ -3380,12 +3374,10 @@ int main()
 
                 if(p1.hitstopped==0&&p2.hitstopped==0)hf.frame=0;
                 if(p1.hit&&!p2.hit&&(!pause||nextframe)&&hf.frame==0){
-                    hf.create(overlap[0]+bgx,overlap[1],combo>0);
-                    hf.frame=1;
+                    hf.create(overlap[0]+bgx,overlap[1],combo>0);hf.frame=1;
                 }
                 else if(p2.hit&&!p1.hit&&(!pause||nextframe)&&hf.frame==0){
-                    hf.create(overlap2[0]+bgx,overlap2[1],combo>0);
-                    hf.frame=1;
+                    hf.create(overlap2[0]+bgx,overlap2[1],combo>0);hf.frame=1;
                 }
                 else if(hf.frame>0&&p1.hit&&!p2.hit&&(!pause||nextframe)){
                     hf.update(overlap[0]+bgx,overlap[1],combo>0);
@@ -3408,11 +3400,10 @@ int main()
                 combotext.setOrigin({32,0});
                 if (combo>1)cui.create(p2.comboed||p2.kdowned);
 
+                if(!pause||nextframe)
                 for(short i=0;i<effectslist.size();i++){
-                        if(effectslist[i].code==0||effectslist[i].code==1){
                             effectslist[i].create(bgx);
-                            if(effectslist[i].frame>5)effectslist.erase(effectslist.begin()+i);
-                        }
+                            if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);
                     }
 
                 p1ilist.create(p1keylist,true);
