@@ -1295,18 +1295,28 @@ public:
             m_vertices.resize(64);
             sf::Vertex* circle = &m_vertices[32];
             for(unsigned int i=0;i<12;i++){
-                float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;;
+                float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;
                 circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)+x+bgx,(std::sin(angle))*(4+frame)+y);
                 circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)+x+bgx,(std::sin(angle2))*(4+frame)+y);
                 if(frame>3&&frame%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
                 else {circle[i*2].color=color1;circle[i*2+1].color=color1;}
             }
         }
+        else if(code==3){//hit flash
+            m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+            m_vertices.resize(9);
+            sf::Vertex* tri = &m_vertices[3];
+            tri[0].position = sf::Vector2f(std::cos((dir)*3.14/180)*4+x+bgx,std::sin((dir)*3.14/180)*4+y);
+            tri[1].position = sf::Vector2f(std::cos((dir+fxsize/2)*3.14/180)*256+x+bgx,std::sin((dir+fxsize/2)*3.14/180)*256+y);
+            tri[2].position = sf::Vector2f(std::cos((dir-fxsize/2)*3.14/180)*240+x+bgx,std::sin((dir-fxsize/2)*3.14/180)*240+y);
+            if(frame%2==0&&frame>3&&flash){tri[0].color = sf::Color::Transparent;tri[1].color = sf::Color::Transparent;tri[+2].color = sf::Color::Transparent;}
+            else{tri[0].color = color1;tri[1].color = color1;tri[2].color = color1;}
+        }
         frame++;
     }
 
     short frame=0,code=0,len=0;
-    float dir=0,x,y;
+    float dir=0,x,y,fxsize=1;
     sf::Color color1=sf::Color(255, 255, 255);
 
 private:
@@ -1323,83 +1333,6 @@ private:
 };
 std::deque<effects> effectslist;
 
-class hitflash : public sf::Drawable, public sf::Transformable
-{
-public:
-    void create(float px,float py,bool hit){
-        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-        m_vertices.resize(32);
-        if(hit){
-            for(unsigned int i=0;i<3;i++){
-                float x,y,x2,y2;
-                std::uniform_int_distribution<int> dis(0,1);
-                if(dis(gen)==0){
-                    if(dis(gen)==0)y=0;
-                    else y=240;
-                    std::uniform_int_distribution<int> dis(0,256);
-                    x=dis(gen);
-                    std::uniform_int_distribution<int> dis2(-16,16);
-                    x2=x+dis2(gen);
-                    y2=y;
-                }
-                else {
-                    if(dis(gen)==0)x=0;
-                    else x=256;
-                    std::uniform_int_distribution<int> dis(0,240);
-                    y=dis(gen);
-                    std::uniform_int_distribution<int> dis2(-16,16);
-                    x2=x;
-                    y2=y+dis2(gen);
-                }
-                sf::Vertex* triangles = &m_vertices[i*3];
-                triangles[i*3].position = sf::Vector2f(px,py);
-                triangles[i*3+1].position = sf::Vector2f(x,y);
-                triangles[i*3+2].position = sf::Vector2f(x2,y2);
-            }
-        }
-        else{
-            for(unsigned int i=0;i<3;i++){
-                sf::Vertex* triangles = &m_vertices[i*3];
-                triangles[i*3].position = sf::Vector2f(0,0);
-                triangles[i*3+1].position = sf::Vector2f(0,0);
-                triangles[i*3+2].position = sf::Vector2f(0,0);
-            }
-        }
-    }
-
-
-    void update(float px,float py,bool hit){
-        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-        m_vertices.resize(32);
-        for(unsigned int i=0;i<3;i++){
-            sf::Vertex* triangles = &m_vertices[i*3];
-            if(frame%2==0&&frame>3&&flash){
-            triangles[i*3].color = sf::Color::Transparent;
-            triangles[i*3+1].color = sf::Color::Transparent;
-            triangles[i*3+2].color = sf::Color::Transparent;
-            }
-            else{
-            triangles[i*3].color = sf::Color::White;
-            triangles[i*3+1].color = sf::Color::White;
-            triangles[i*3+2].color = sf::Color::White;
-            }
-        }
-    }
-    short frame;
-
-private:
-
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-    {
-        states.transform *= getTransform();
-
-        states.texture = NULL;
-
-        target.draw(m_vertices);
-    }
-   sf::VertexArray m_vertices;
-
-};
 
 class meterbar : public sf::Drawable, public sf::Transformable
 {
@@ -2047,6 +1980,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
         }
     if((P2.hitstopped==0&&hitcheck)||projcheck){
         effects fxtemp;
+        fxtemp.code=1;fxtemp.x=overlap[0];fxtemp.y=overlap[1];
         if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
             if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
             else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
@@ -2055,6 +1989,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             P2.dmg/=5;
             P1.hitstopped=P2.hitstop*5/4;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
+            fxtemp.len=P1.hitstopped;
             fxtemp.color1=sf::Color (85, 255, 255);
         }
         else{
@@ -2067,8 +2002,14 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             P1.hitstopped=P2.hitstop;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
             fxtemp.color1=sf::Color (255, 255, 255);
+            std::uniform_int_distribution<int> dis(0,360),dis2(1,5);fxtemp.len=P1.hitstopped;
+            for(short i=0;i<3;i++){
+                fxtemp.code=3;fxtemp.dir=dis(gen);
+                fxtemp.fxsize=dis2(gen);
+                effectslist.push_back(fxtemp);
+            }
         }
-        fxtemp.code=1;fxtemp.x=overlap[0];fxtemp.y=overlap[1];fxtemp.len=P1.hitstopped;
+        fxtemp.code=1;
         effectslist.push_back(fxtemp);
         fxtemp.code=2;
         effectslist.push_back(fxtemp);
@@ -3009,7 +2950,7 @@ int main()
 
             p1.character=menux+menuy*4;
             p2.character=0;
-            hitflash hf;superflash sf;
+            superflash sf;
             healthbar hb;
             meterbar mb;
             timeui time;time.create();
@@ -3372,22 +3313,6 @@ int main()
                 for(short i=0;i<p1.proj.size();i++)P_Hitbox1[i].create(p1.proj[i].x+bgx,int(p1.proj[i].y),hurtbox[p1.character][p1.proj[i].frame],p1.proj[i].right,hurtboxcount[p1.character][p1.proj[i].frame],sf::Color::Red);
                 for(short i=0;i<p2.proj.size();i++)P_Hitbox2[i].create(p2.proj[i].x+bgx,int(p2.proj[i].y),hurtbox[p2.character][p2.proj[i].frame],p2.proj[i].right,hurtboxcount[p2.character][p2.proj[i].frame],sf::Color::Red);
 
-                if(p1.hitstopped==0&&p2.hitstopped==0)hf.frame=0;
-                if(p1.hit&&!p2.hit&&(!pause||nextframe)&&hf.frame==0){
-                    hf.create(overlap[0]+bgx,overlap[1],combo>0);hf.frame=1;
-                }
-                else if(p2.hit&&!p1.hit&&(!pause||nextframe)&&hf.frame==0){
-                    hf.create(overlap2[0]+bgx,overlap2[1],combo>0);hf.frame=1;
-                }
-                else if(hf.frame>0&&p1.hit&&!p2.hit&&(!pause||nextframe)){
-                    hf.update(overlap[0]+bgx,overlap[1],combo>0);
-                    hf.frame++;
-                }
-                else if(hf.frame>0&&!p1.hit&&p2.hit&&(!pause||nextframe)){
-                    hf.update(overlap2[0]+bgx,overlap2[1],combo>0);
-                    hf.frame++;
-                }
-
                 if(superstop>0){if(p1.super)sf.create(superstop,p1.y-8);else if(p2.super)sf.create(superstop,p2.y-8);}
 
                 if(combo>1&&cui.slide==0&&cui.slide2==0){cui.slide=64;cui.slide2=12;}
@@ -3482,8 +3407,6 @@ int main()
                 }
 
                 for(short i=0;i<effectslist.size();i++)renderTexture.draw(effectslist[i]);
-
-                if(p1.hitstopped>0||p2.hitstopped)renderTexture.draw(hf);
 
 
                 renderTexture.draw(hb);
