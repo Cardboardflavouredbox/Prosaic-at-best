@@ -3026,6 +3026,9 @@ int main()
     short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
+    sf::Shader shader;
+    if (!shader.loadFromFile("shader.frag",sf::Shader::Type::Fragment)){}
+
 
     while(window.isOpen()){
         while (event = window.pollEvent()){
@@ -3550,13 +3553,20 @@ int main()
 
                 if(p1.hit)playertop=true;
                 else if(p2.hit) playertop=false;
+                shader.setUniform("texture", sf::Shader::CurrentTexture);
+                shader.setUniform("r1",1.00f);shader.setUniform("g1",1.00f);shader.setUniform("b1",1.00f);
+                shader.setUniform("r2",0.00f);shader.setUniform("g2",0.67f);shader.setUniform("b2",0.67f);
+                shader.setUniform("r3",0.00f);shader.setUniform("g3",0.00f);shader.setUniform("b3",0.67f);
+                shader.setUniform("r4",1.00f);shader.setUniform("g4",0.33f);shader.setUniform("b4",0.33f);
+                shader.setUniform("r5",0.00f);shader.setUniform("g5",0.00f);shader.setUniform("b5",0.00f);
+                shader.setUniform("r6",0.67f);shader.setUniform("g6",0.00f);shader.setUniform("b6",0.00f);
                 if(playertop){
-                    renderTexture.draw(p1graphics);
-                    renderTexture.draw(p2graphics);
+                    renderTexture.draw(p1graphics,&shader);
+                    renderTexture.draw(p2graphics,&shader);
                 }
                 else{
-                    renderTexture.draw(p2graphics);
-                    renderTexture.draw(p1graphics);
+                    renderTexture.draw(p2graphics,&shader);
+                    renderTexture.draw(p1graphics,&shader);
                 }
 
                 if(!p1.proj.empty()){
