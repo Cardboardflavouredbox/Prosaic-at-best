@@ -3554,12 +3554,12 @@ int main()
                 if(p1.hit)playertop=true;
                 else if(p2.hit) playertop=false;
                 shader.setUniform("texture", sf::Shader::CurrentTexture);
-                shader.setUniform("r1",1.00f);shader.setUniform("g1",1.00f);shader.setUniform("b1",1.00f);
-                shader.setUniform("r2",0.00f);shader.setUniform("g2",0.67f);shader.setUniform("b2",0.67f);
-                shader.setUniform("r3",0.00f);shader.setUniform("g3",0.00f);shader.setUniform("b3",0.67f);
-                shader.setUniform("r4",1.00f);shader.setUniform("g4",0.33f);shader.setUniform("b4",0.33f);
-                shader.setUniform("r5",0.00f);shader.setUniform("g5",0.00f);shader.setUniform("b5",0.00f);
-                shader.setUniform("r6",0.67f);shader.setUniform("g6",0.00f);shader.setUniform("b6",0.00f);
+                shader.setUniform("r4",1.00f);shader.setUniform("g4",1.00f);shader.setUniform("b4",1.00f);
+                shader.setUniform("r6",0.00f);shader.setUniform("g6",0.67f);shader.setUniform("b6",0.67f);
+                shader.setUniform("r5",0.00f);shader.setUniform("g5",0.00f);shader.setUniform("b5",0.67f);
+                //shader.setUniform("r4",1.00f);shader.setUniform("g4",0.33f);shader.setUniform("b4",0.33f);
+                //shader.setUniform("r5",0.00f);shader.setUniform("g5",0.00f);shader.setUniform("b5",0.00f);
+                //shader.setUniform("r6",0.67f);shader.setUniform("g6",0.00f);shader.setUniform("b6",0.00f);
                 if(playertop){
                     renderTexture.draw(p1graphics,&shader);
                     renderTexture.draw(p2graphics,&shader);
@@ -3575,7 +3575,7 @@ int main()
                         p_graphics[i].load(p1texture,false);
                         p_graphics[i].setanim(animlib[p1.character][p1.proj[i].frame],p1.proj[i].right);
                         p_graphics[i].setPosition({int(p1.proj[i].x-64+bgx),int(p1.proj[i].y-64)});
-                        renderTexture.draw(p_graphics[i]);
+                        renderTexture.draw(p_graphics[i],&shader);
                     }
                 }
                 if(!p2.proj.empty()){
@@ -3584,7 +3584,7 @@ int main()
                         p_graphics[i].load(p2texture,false);
                         p_graphics[i].setanim(animlib[p2.character][p2.proj[i].frame],p2.proj[i].right);
                         p_graphics[i].setPosition({int(p2.proj[i].x-64+bgx),int(p2.proj[i].y-64)});
-                        renderTexture.draw(p_graphics[i]);
+                        renderTexture.draw(p_graphics[i],&shader);
                     }
                 }
 
