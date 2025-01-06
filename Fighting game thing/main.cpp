@@ -2767,9 +2767,9 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
             }
             else if(P.act==9){//i (middle normal)
                 if(P.air){
-                    P.col=0;P.multihit=false;P.hitstop=13;P.kback=3;P.hitstun=10;P.blockstun=3;P.dmg=25;P.movetype=3;P.landdelay=3;P.mgain=6;
-                    P.animq.insert(P.animq.begin(),{3,4,5,5,5,6,7,7,7,7});
-                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,2,2,2,2});
+                    P.col=0;P.multihit=false;P.hitstop=13;P.kback=3;P.hitstun=11;P.blockstun=6;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
+                    P.animq.insert(P.animq.begin(),{19,19,19,19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,3,3});
                 }
                 else{
                     P.col=0;P.multihit=false;P.hitstop=13;P.kback=5;P.hitstun=16;P.blockstun=10;P.slide=true;P.dmg=28;P.movetype=2;P.mgain=6;
@@ -3039,7 +3039,8 @@ int main()
     sf::UdpSocket socket;
     auto localip=sf::IpAddress::getLocalAddress();
     unsigned short port=53333;
-    char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0';
+    char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey[12]={'0'};
+    bool p1color[3][4]={{1,1,1,1},{0,1,1,0},{0,0,1,0}};
     short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
@@ -3103,6 +3104,18 @@ int main()
             keypresscheck(downkey1,&menudown);
             keypresscheck(leftkey1,&menuleft);
             keypresscheck(rightkey1,&menuright);
+            keypresscheck(sf::Keyboard::Key::Num1,&colorkey[0]);
+            keypresscheck(sf::Keyboard::Key::Num2,&colorkey[1]);
+            keypresscheck(sf::Keyboard::Key::Num3,&colorkey[2]);
+            keypresscheck(sf::Keyboard::Key::Num4,&colorkey[3]);
+            keypresscheck(sf::Keyboard::Key::Num5,&colorkey[4]);
+            keypresscheck(sf::Keyboard::Key::Num6,&colorkey[5]);
+            keypresscheck(sf::Keyboard::Key::Num7,&colorkey[6]);
+            keypresscheck(sf::Keyboard::Key::Num8,&colorkey[7]);
+            keypresscheck(sf::Keyboard::Key::Num9,&colorkey[8]);
+             keypresscheck(sf::Keyboard::Key::Num0,&colorkey[9]);
+            keypresscheck(sf::Keyboard::Key::Hyphen,&colorkey[10]);
+            keypresscheck(sf::Keyboard::Key::Equal,&colorkey[11]);
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}
             if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
             if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}
@@ -3110,9 +3123,13 @@ int main()
             if(menuconfirm=='2')break;
             if(menucancel=='2'){gamequit=true;break;}
             charselect.setselect(4,2,menux,menuy);
-            sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f});
+            for(short i=0;i<12;i++)if(colorkey[i]=='2'){if(p1color[i/4][i%4])p1color[i/4][i%4]=0;else p1color[i/4][i%4]=1;};
+            sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
-            rect2.setPosition({0,128});
+            crect1.setFillColor(sf::Color(p1color[0][0]*170+p1color[0][3]*85, p1color[0][1]*170+p1color[0][3]*85, p1color[0][2]*170+p1color[0][3]*85));
+            crect2.setFillColor(sf::Color(p1color[1][0]*170+p1color[1][3]*85, p1color[1][1]*170+p1color[1][3]*85, p1color[1][2]*170+p1color[1][3]*85));
+            crect3.setFillColor(sf::Color(p1color[2][0]*170+p1color[2][3]*85, p1color[2][1]*170+p1color[2][3]*85, p1color[2][2]*170+p1color[2][3]*85));
+            rect2.setPosition({0,128});crect1.setPosition({48,0});crect2.setPosition({80,0});crect3.setPosition({112,0});
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("stage1.png")){}
             sf::Sprite bg(bgtexture);
@@ -3124,6 +3141,7 @@ int main()
             renderTexture.draw(rect);
             renderTexture.draw(rect2);
             renderTexture.draw(charselect);
+            renderTexture.draw(crect1);renderTexture.draw(crect2);renderTexture.draw(crect3);
             renderTexture.display();
             const sf::Texture& texture = renderTexture.getTexture();
             sf::Sprite rt(texture);
@@ -3574,12 +3592,9 @@ int main()
                 if(p1.hit)playertop=true;
                 else if(p2.hit) playertop=false;
                 shader.setUniform("texture", sf::Shader::CurrentTexture);
-                shader.setUniform("r4",1.00f);shader.setUniform("g4",1.00f);shader.setUniform("b4",1.00f);
-                shader.setUniform("r6",0.00f);shader.setUniform("g6",0.67f);shader.setUniform("b6",0.67f);
-                shader.setUniform("r5",0.00f);shader.setUniform("g5",0.00f);shader.setUniform("b5",0.67f);
-                //shader.setUniform("r4",1.00f);shader.setUniform("g4",0.33f);shader.setUniform("b4",0.33f);
-                //shader.setUniform("r5",0.00f);shader.setUniform("g5",0.00f);shader.setUniform("b5",0.00f);
-                //shader.setUniform("r6",0.67f);shader.setUniform("g6",0.00f);shader.setUniform("b6",0.00f);
+                shader.setUniform("r4",float(p1color[0][0]*0.67+p1color[0][3]*0.33));shader.setUniform("g4",float(p1color[0][1]*0.67+p1color[0][3]*0.33));shader.setUniform("b4",float(p1color[0][2]*0.67+p1color[0][3]*0.33));
+                shader.setUniform("r6",float(p1color[1][0]*0.67+p1color[1][3]*0.33));shader.setUniform("g6",float(p1color[1][1]*0.67+p1color[1][3]*0.33));shader.setUniform("b6",float(p1color[1][2]*0.67+p1color[1][3]*0.33));
+                shader.setUniform("r5",float(p1color[2][0]*0.67+p1color[2][3]*0.33));shader.setUniform("g5",float(p1color[2][1]*0.67+p1color[2][3]*0.33));shader.setUniform("b5",float(p1color[2][2]*0.67+p1color[2][3]*0.33));
                 if(playertop){
                     renderTexture.draw(p1graphics,&shader);
                     renderTexture.draw(p2graphics,&shader);
