@@ -1007,12 +1007,28 @@ unsigned char animlib[16][128][32][2]=
                     {22,20},{23,20},
                     {22,21},{23,21}
                     },//stand heavy11 (70)
+                    {
+                    {2,4},{1,4},
+
+                    {0,0},{1,0},
+                    {2,10},{2,11},
+                    {0,2},{1,2},
+                    {0,3},{1,3}
+                    },//idle2 (71)
+                    {
+                    {2,4},{1,4},
+
+                    {24,19},{25,19},
+                    {24,20},{25,20},
+                    {24,21},{25,21},
+                    {0,3},{1,3}
+                    },//idle3 (72)
                    }//char2(Sinclair)
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
                     {2,2,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
-                    2,2,2,3,3,3,2,2,2,2,2},//char2(Sinclair)
+                    2,2,2,3,3,3,2,2,2,2,2,2,2},//char2(Sinclair)
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
@@ -1092,6 +1108,7 @@ hurtbox[16][128][8][2][2]={
                     {{{-8,-16},{18,32}},{{-4,-30},{12,-15}},{{5,-7},{27,15}}},/*stand heavy6 (65)*/{{{-8,-16},{18,32}},{{-4,-30},{12,-15}}},/*stand heavy7 (66)*/
                     {{{-8,-16},{18,32}},{{-4,-30},{12,-15}}},/*stand heavy8 (67)*/{{{-9,-16},{14,32}},{{-4,-30},{12,-15}}},/*stand heavy9 (68)*/
                     {{{-10,-16},{16,32}},{{-5,-30},{11,-15}}},/*stand heavy10 (69)*/{{{-11,-16},{11,32}},{{-6,-30},{10,-15}}},/*stand heavy11 (70)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle2 (71)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle3 (72)*/
                     },//char 2(Sinclair)
                     },
 hitbox[16][16][4][2][2]={
@@ -2529,33 +2546,38 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
         if(P.act==1)P.block=0;
         else if(P.act==20)P.block=1;
         else P.block=-1;
-        if(P.character==0){
-            if(P.act==0){//neutural
+        switch (P.character){
+        case 0:{
+            switch (P.act){
+            case 0:{//neutural
                 if(!P.air){
                     if(P.x<enemyx)P.right=true;
                     else P.right=false;
                     memcpy(P.anim,animlib[P.character][0],sizeof(animlib[P.character][0]));
                 }
                 P.col=0;P.frame=0;P.block=-1;
-            }
-            else if(P.act==1){//left walk
+                break;
+                }
+            case 1:{//left walk
                 P.col=0;
                 memcpy(P.anim,animlib[P.character][15],sizeof(animlib[P.character][0]));
                 if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
                 if(P.x<enemyx)P.right=true;else P.right=false;
-            }
-            else if(P.act==2){P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=-7;else P.jumpx=7;P.landdelay=7;}//left dash
-            else if(P.act==3){//right walk
+                break;
+                }
+            case 2:{P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=-7;else P.jumpx=7;P.landdelay=7;}//left dash
+            case 3:{//right walk
                 P.col=0;
                 memcpy(P.anim,animlib[P.character][17],sizeof(animlib[P.character][0]));
                 if(P.right)P.x+=walkspeed;else P.x-=walkspeed;
                 if(P.x<enemyx)P.right=true;else P.right=false;
-            }
-            else if(P.act==4){P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=7;else P.jumpx=-7;P.landdelay=7;}//right dash
-            else if(P.act==5){P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=5;}//up jump
-            else if(P.act==6){P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;}//left jump
-            else if(P.act==7){P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;}//right jump
-            else if(P.act==8){//u (light normal)
+                break;
+                }
+            case 4:{P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=7;else P.jumpx=-7;P.landdelay=7;break;}//right dash
+            case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=5;break;}//up jump
+            case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;break;}//left jump
+            case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;break;}//right jump
+            case 8:{//u (light normal)
                 if(P.air){
                     P.col=0;P.multihit=false;P.hitstop=12;P.kback=2;P.hitstun=9;P.blockstun=3;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{43,43,45,45,46,46,46});
@@ -2567,8 +2589,9 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,1});
                     short temp[15]={9,10,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
                 }
-            }
-            else if(P.act==9){//i (middle normal)
+                break;
+                }
+            case 9:{//i (middle normal)
                 if(P.air){
                     P.col=0;P.multihit=false;P.hitstop=13;P.kback=3;P.hitstun=10;P.blockstun=4;P.dmg=25;P.movetype=3;P.landdelay=3;P.mgain=6;
                     P.animq.insert(P.animq.begin(),{3,4,5,5,5,6,7,7,7,7});
@@ -2583,8 +2606,9 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     if(P.right)P.jumpx=3;
                     else P.jumpx=-3;
                 }
-            }
-            else if(P.act==10){//o (heavy normal)
+                break;
+                }
+            case 10:{//o (heavy normal)
                 if(P.air){
                     P.col=0;P.multihit=false;P.hitstop=14;P.kback=3;P.hitstun=12;P.blockstun=6;P.dmg=33;P.movetype=3;P.landdelay=3;P.mgain=8;
                     P.animq.insert(P.animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7});
@@ -2599,20 +2623,24 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     if(P.right)P.jumpx=5;
                     else P.jumpx=-5;
                 }
-            }
-            else if(P.act==11||P.act==20){//crouch & crouch block
+                break;
+                }
+            case 11:
+            case 20:{//crouch & crouch block
                 if(P.x<enemyx)P.right=true;
                 else P.right=false;
                 P.col=1;P.frame=8;
                 memcpy(P.anim,animlib[P.character][8],sizeof(animlib[P.character][8]));
-            }
-            else if(P.act==12){//crouch u
+                break;
+                }
+            case 12:{//crouch u
                 P.col=1;P.multihit=false;P.hitstop=12;P.kback=5;P.hitstun=13;P.blockstun=9;P.dmg=11;P.movetype=1;P.mgain=4;
                 P.animq.insert(P.animq.begin(),{10,10,10,11,11,11,10,10,10});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,3});
                 short temp[15]={13,14,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
-            }
-            else if(P.act==13){//crouch i
+                break;
+                }
+            case 13:{//crouch i
                 P.col=1;P.multihit=false;P.hitstop=13;P.kback=5;P.hitstun=14;P.blockstun=9;P.slide=true;P.dmg=24;P.movetype=1;P.mgain=6;
                 P.animq.insert(P.animq.begin(),{38,38,39,39,39,39,40,41,42,42,42,41,41,40,40,39,39,39,38,38,38,38});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,9,9,9});
@@ -2620,150 +2648,176 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 P.movewaitx=7;
                 if(P.right)P.jumpx=2;
                 else P.jumpx=-2;
-            }
-            else if(P.act==14){//crouch o
+                break;
+                }
+            case 14:{//crouch o
                 P.col=1;P.multihit=false;P.hitstop=14;P.kback=3;P.hitstun=12;P.blockstun=6;P.slide=true;P.movewaitx=7;P.dmg=35;P.launch=10;P.kdown=1;P.movetype=2;P.mgain=8;
                 P.animq.insert(P.animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
                 short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
-            }
-            else if(P.act==15){}//k (gimmick)
-            else if(P.act==16){//special A (u)
+                break;
+                }
+            case 15:break;//k (gimmick)
+            case 16:{//special A (u)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=7;P.hitstun=13;P.blockstun=9;P.slide=true;P.movewaitx=6;P.dmg=22;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{20,21,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,22,21,20,20});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,5,5});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=5;else P.jumpx=-5;
-            }
-            else if(P.act==17){//special A (i)
+                break;
+                }
+            case 17:{//special A (i)
                 P.col=0;P.multihit=false;P.hitstop=13;P.kback=7;P.hitstun=14;P.blockstun=11;P.slide=true;P.movewaitx=9;P.dmg=29;P.kdown=2;P.movetype=2;P.mgain=8;
                 P.animq.insert(P.animq.begin(),{20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,5,5});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=6;else P.jumpx=-6;
-            }
-            else if(P.act==18){//special A (o)
+                break;
+                }
+            case 18:{//special A (o)
                 P.col=0;P.multihit=false;P.hitstop=14;P.kback=0;P.hitstun=1;P.blockstun=12;P.slide=true;P.movewaitx=10;P.dmg=36;P.kdown=1;P.launch=11;P.movetype=2;P.mgain=9;
                 P.animq.insert(P.animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,22,21,21,20,20,20});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=7;else P.jumpx=-7;
-            }
-            else if(P.act==19){//special A (k)
+                break;
+                }
+            case 19:{//special A (k)
                 P.col=0;P.multihit=false;P.slide=true;P.movewaitx=6;P.movetype=0;
                 P.animq.insert(P.animq.begin(),{20,21,22,22,22,22,21,20});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
-            }
-            else if(P.act==21){//special B(u)
+                break;
+                }
+            case 21:{//special B(u)
                 P.col=0;P.multihit=false;P.hitstop=13;P.kback=5;P.hitstun=5;P.blockstun=12;P.slide=true;P.movewaity=4;P.movewaitx=4;P.dmg=28;P.mgain=7;P.iframes=3;
                 P.kdown=1;P.launch=8;P.movetype=2;P.jumpy=-11;P.landdelay=5;
                 P.animq.insert(P.animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=6;else P.jumpx=-6;
-            }
-            else if(P.act==22){//special B(i)
+                break;
+                }
+            case 22:{//special B(i)
                 P.col=0;P.multihit=false;P.hitstop=14;P.kback=5;P.hitstun=5;P.blockstun=7;P.slide=true;P.movewaity=4;P.movewaitx=2;P.dmg=39;P.mgain=8;P.iframes=3;
                 P.kdown=1;P.launch=9;P.movetype=2;P.jumpy=-12;P.landdelay=5;
                 P.animq.insert(P.animq.begin(),{34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,7,0,0,0,8,8,8,8,8,8,8,8,8,8});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=7;else P.jumpx=-7;
-            }
-            else if(P.act==23){//special B(o)
+                break;
+                }
+            case 23:{//special B(o)
                 P.col=0;P.multihit=false;P.hitstop=15;P.kback=5;P.hitstun=5;P.blockstun=5;P.slide=true;P.movewaity=5;P.dmg=51;P.mgain=9;P.iframes=3;
                 P.kdown=1;P.launch=10;P.movetype=2;P.jumpy=-13;P.landdelay=5;
                 P.animq.insert(P.animq.begin(),{34,34,34,34,34,35,35,35,36,37,37,37,37,37,37,37,37,37,37,37});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,7,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=8;else P.jumpx=-8;
-            }
-            else if(P.act==24){//special B(k)
+                break;
+                }
+            case 24:{//special B(k)
                 P.col=0;P.multihit=false;P.slide=true;P.movewaity=4;P.jumpy=-1;
                 P.animq.insert(P.animq.begin(),{34,34,34,34});
                 P.cancel[32]=true;
                 if(P.right)P.jumpx=6;else P.jumpx=-6;
-            }
-            else if(P.act==25){//grab
+                break;
+                }
+            case 25:{//grab
                 P.col=0;P.multihit=false;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=0;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=21;P.grab[1]=0;P.grabstate=1;
                 P.animq.insert(P.animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,11});
                 if(P.right)P.jumpx=5;else P.jumpx=-5;
                 short temp[2]={26,27};boolfill(P.cancel,true,temp);
-            }
-            else if(P.act==26){//grab attack forward
+                break;
+                }
+            case 26:{//grab attack forward
                 P.col=1;P.multihit=false;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;
                 P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
-            }
-            else if(P.act==27){//grab attack backward
+                break;
+                }
+            case 27:{//grab attack backward
                 P.col=1;P.multihit=false;P.hitstop=15;P.kback=-3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;
                 P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
-            }
-            else if(P.act==28){//special C (u)
+                break;
+                }
+            case 28:{//special C (u)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=3;P.blockstun=1;P.dmg=22;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,1});
                 P.cancel[32]=true;
-            }
-            else if(P.act==29){//special C (i)
+                break;
+                }
+            case 29:{//special C (i)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=4;P.blockstun=2;P.dmg=22;P.movetype=2;P.mgain=8;
                 P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,2});
                 P.cancel[32]=true;
-            }
-            else if(P.act==30){//special C (o)
+                break;
+                }
+            case 30:{//special C (o)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=5;P.blockstun=3;P.dmg=22;P.movetype=2;P.mgain=9;
                 P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,3});
                 P.cancel[32]=true;
-            }
-            else if(P.act==31){//special C (k)
+                break;
+                }
+            case 31:{//special C (k)
                 P.col=0;P.multihit=false;
                 P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,50,50,51,51,51,51,51,52,52});
                 P.cancel[32]=true;
-            }
-            else if(P.act==32){//super
+                break;
+                }
+            case 32:{//super
                 P.col=0;P.multihit=false;P.hitstop=14;P.kback=8;P.launch=5;P.hitstun=6;P.blockstun=5;P.slide=true;P.movewaitx=15;P.dmg=150;P.movetype=2;P.mgain=0;
                 P.animq.insert(P.animq.begin(),{47,47,47,48,49,49,49,49,49,49,49,50,50,51,51,51,51,51,51,51,51,51,51,51,51,51,52,52});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,5,0,0,4});
                 if(P.right)P.jumpx=-9;else P.jumpx=9;
+                break;
+                }
             }
+            break;
         }
-        else if(P.character==2){//Sinclair
-            if(P.act==0){//neutural
+        case 2:{//Sinclair
+            switch (P.act){
+            case 0:{//neutural
                 if(!P.air){
                     if(P.x<enemyx)P.right=true;else P.right=false;
-                    if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0});
+                    if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,71,71,71,71,
+                                                            72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,71,71,71,71,71});
                 }
                 P.col=0;P.frame=0;P.block=-1;
+                break;
             }
-            else if(P.act==1){//left walk
+            case 1:{//left walk
                 P.col=0;
                 if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{14,14,14,14,13,13,13,13,12,12,12,12,11,11,11,11,10,10,10,10,9,9,9,9,8,8,8,8,7,7,7,7,6,6,6,6});
                 if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
                 if(P.x<enemyx)P.right=true;else P.right=false;
+                break;
             }
-            else if(P.act==2){//left dash
+            case 2:{//left dash
                 P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;
                 P.animq.insert(P.animq.begin(),{51,47,47,47,47,47,47,47,47,48,48,49,49,50,50,50,50,50,51});
+                break;
             }
-            else if(P.act==3){//right walk
+            case 3:{//right walk
                 P.col=0;
                 if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13,14,14,14,14});
                 if(P.right)P.x+=walkspeed;else P.x-=walkspeed;
                 if(P.x<enemyx)P.right=true;else P.right=false;
+                break;
             }
-            else if(P.act==4){P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=8;else P.jumpx=-8;P.landdelay=7;}//right dash
-            else if(P.act==5){P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{1,1,1,44});P.landdelay=5;}//up jump
-            else if(P.act==6){P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;}//left jump
-            else if(P.act==7){P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;}//right jump
-            else if(P.act==8){//u (light normal)
+            case 4:{P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=8;else P.jumpx=-8;P.landdelay=7;break;}//right dash
+            case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{1,1,1,44});P.landdelay=5;break;}//up jump
+            case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;break;}//left jump
+            case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;break;}//right jump
+            case 8:{//u (light normal)
                 if(P.air){
                     P.col=0;P.multihit=false;P.hitstop=12;P.kback=2;P.hitstun=8;P.blockstun=1;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{43,43,45,45,46,46,46});
@@ -2775,8 +2829,9 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,1});
                     short temp[16]={9,10,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
                 }
+                break;
             }
-            else if(P.act==9){//i (middle normal)
+            case 9:{//i (middle normal)
                 if(P.air){
                     P.col=0;P.multihit=false;P.hitstop=13;P.kback=3;P.hitstun=11;P.blockstun=6;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
                     P.animq.insert(P.animq.begin(),{19,19,19,19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
@@ -2791,8 +2846,9 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     if(P.right)P.jumpx=3;
                     else P.jumpx=-3;
                 }
+                break;
             }
-            else if(P.act==10){//o (heavy normal)
+            case 10:{//o (heavy normal)
                 if(P.air){
                     P.col=0;P.multihit=false;P.hitstop=14;P.kback=3;P.hitstun=12;P.blockstun=6;P.dmg=33;P.movetype=3;P.landdelay=3;P.mgain=8;
                     P.animq.insert(P.animq.begin(),{3,4,5,5,5,5,5,6,7,7,7,7,7});
@@ -2807,56 +2863,66 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                     if(P.right)P.jumpx=4;
                     else P.jumpx=-4;
                 }
+                break;
             }
-            else if(P.act==11||P.act==20){//crouch & crouch block
+            case 11:
+            case 20:{//crouch & crouch block
                 if(P.x<enemyx)P.right=true;
                 else P.right=false;
                 P.col=1;P.frame=1;
                 if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{1});
+                break;
             }
-            else if(P.act==12){//crouch u
+            case 12:{//crouch u
                 P.col=1;P.multihit=false;P.hitstop=12;P.kback=4;P.hitstun=9;P.blockstun=5;P.dmg=10;P.movetype=1;P.mgain=4;
                 P.animq.insert(P.animq.begin(),{4,4,4,4,5,5,5,4,4,4});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,2});
                 short temp[16]={13,14,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+                break;
             }
-            else if(P.act==13){//crouch i
-                P.col=1;P.multihit=false;P.hitstop=13;P.kback=3;P.hitstun=12;P.blockstun=6;P.dmg=25;P.movetype=1;P.mgain=6;
+            case 13:{//crouch i
+                P.col=1;P.multihit=false;P.hitstop=13;P.kback=3;P.hitstun=14;P.blockstun=7;P.dmg=25;P.movetype=1;P.mgain=6;
                 P.animq.insert(P.animq.begin(),{58,58,58,58,58,58,59,59,59,59,59,59,59,58,58,58,58});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,6,6,6});
                 short temp[15]={14,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+                break;
             }
-            else if(P.act==14){//crouch o
+            case 14:{//crouch o
                 P.col=1;P.multihit=false;P.hitstop=14;P.kback=3;P.hitstun=1;P.blockstun=7;P.slide=true;P.movewaitx=11;P.dmg=37;P.kdown=2;P.movetype=2;P.mgain=8;
                 P.animq.insert(P.animq.begin(),{22,22,22,22,22,22,22,22,22,22,22,23,24,24,24,24,23,22,22,22,22});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,4});
                 if(P.right)P.jumpx=3;else P.jumpx=-3;
                 short temp[14]={15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+                break;
             }
-            else if(P.act==15){//k (gimmick)
+            case 15:{//k (gimmick)
                 P.animq.insert(P.animq.begin(),{25,25,25,25,25,26,26,26,26,26,26,26,26});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,4});
+                break;
             }
-            else if(P.act==16){//special A (u)
+            case 16:{//special A (u)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,1});
                 P.cancel[32]=true;
+                break;
             }
-            else if(P.act==18){//special A (o)
+            case 18:{//special A (o)
                 P.col=0;P.multihit=false;P.hitstop=12;P.kback=3;P.hitstun=6;P.blockstun=2;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,3});
                 P.cancel[32]=true;
+                break;
             }
-            else if(P.act==21){//special B(u)
+            case 21:{//special B(u)
                 P.col=0;P.multihit=false;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=5;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=27;P.grab[1]=15;P.grabstate=2;
                 P.animq.insert(P.animq.begin(),{53,53,53,53,53,53,53,53,53,53,53,54,55,55,55,55,55,55,55,55,55,55,55,55,54,53,53,53,53});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5});
                 P.cancel[33]=true;
                 if(P.right)P.jumpx=3;else P.jumpx=-3;
+                break;
             }
-            else if(P.act==24){//special B(k)
+            case 24:{//special B(k)
                 P.col=0;P.multihit=false;P.hitstop=0;P.kback=5;P.hitstun=17;P.blockstun=7;P.slide=true;P.dmg=12;P.movetype=2;P.mgain=8;P.landdelay=15;P.grab[0]=12;P.grab[1]=18;P.grabstate=2;P.iframes=3;
                 P.animq.insert(P.animq.begin(),{53,53,53,53,53,53,53,54,55,55,55,55,55,55,55,55,55,55,55,55,54,53,53,53,53});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,5,5});
@@ -2864,19 +2930,25 @@ void characterdata(player *p,float enemyx,float enemyy,float enemyhp,float *enem
                 P.movewaitx=5;
                 if(P.right)P.jumpx=7;
                 else P.jumpx=-7;
+                break;
             }
-            else if(P.act==33){//special B(u)2
+            case 33:{//special B(u)2
                 P.col=3;P.multihit=false;P.hitstop=15;P.kback=-12;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=1;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;P.gimmick=180;
                 P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{5});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
+                break;
             }
-            else if(P.act==36){//special B(k)2
-                P.col=3;P.multihit=true;P.hitstop=3;P.kback=-3;P.hitstun=1;P.blockstun=0;P.slide=true;P.dmg=25;P.launch=12;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick=30;
+            case 36:{//special B(k)2
+                P.col=3;P.multihit=true;P.hitstop=3;P.kback=3;P.hitstun=10;P.blockstun=0;P.slide=true;P.dmg=25;P.launch=4;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick=30;
                 P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{8,8,8,8,8});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
+                break;
             }
+            }
+            break;
+        }
         }
     }
     if(P.movewaitx>0&&(enemycharacter!=2||enemygimmick%2==0))P.movewaitx-=1;
