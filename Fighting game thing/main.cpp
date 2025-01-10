@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <iostream>
-#include <stdio.h>
 #include <random>
 #include <deque>
 #include <string.h>
@@ -1041,7 +1040,19 @@ unsigned char animlib[16][128][32][2]=
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
                    {0,1,1,1,1,1,1,2,1},//char 2
-                   };
+                   },
+                   colorpalettes[16][3]={
+                    {15,7,8},/*Francis*/
+                    {15,3,1},/*Sinclair*/
+                    {15,4,0},/*Sinclaircanon?*/
+                    {15,11,0},/*Cartoon??*/
+                    {15,11,3},/*Amber*/
+                    {15,13,5},/*Pink*/
+                    {6,4,0},/*Martha*/
+                    {14,12,4},/*Charlie*/
+                    {15,11,13},/*CGA*/
+                    {11,13,0},/*CGA2*/
+                    };
 float comboscaling=100.0,
 colbox[16][8][1][2][2]={
                     {{{{-7,-10},{9,32}}},//standing
@@ -2568,8 +2579,12 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     if(P.grabstate==1&&!P.whiff)P.grabstate=3;
     if(P.grabstate==2&&!P.whiff)P.grabstate=4;
     if(P.grabstate==3){
-            if(enemygstate==0)P.grabstate=-1;
-            else if(P.animq.size()<12){
+            if(enemygstate==0){
+                P.grabstate=-1;
+                P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
+                for(short i=0;i<20;i++)P.animq.push_back(32);
+            }
+            else if(P.animq.size()<16){
                 if(P.act==1)P.act=27;
                 else P.act=26;
             }
@@ -2768,9 +2783,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
             case 25:{//grab
                 P.col=0;P.multihit=false;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=0;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=21;P.grab[1]=0;P.grabstate=1;
-                P.animq.insert(P.animq.begin(),{20,20,21,21,22,22,22,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
-                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,11});
-                if(P.right)P.jumpx=5;else P.jumpx=-5;
+                P.animq.insert(P.animq.begin(),{20,21,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,11});
+                if(P.right)P.jumpx=2;else P.jumpx=-2;
                 short temp[2]={26,27};boolfill(P.cancel,true,temp);
                 break;
                 }
@@ -2917,8 +2932,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 12:{//crouch u
                 P.col=1;P.multihit=false;P.hitstop=12;P.kback=4;P.hitstun=9;P.blockstun=5;P.dmg=10;P.movetype=1;P.mgain=4;
-                P.animq.insert(P.animq.begin(),{4,4,4,5,5,5,4,4,4});
-                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,2});
+                P.animq.insert(P.animq.begin(),{4,4,4,4,4,5,5,5,4,4,4});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,2});
                 short temp[17]={12,13,14,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
                 break;
             }
@@ -3166,8 +3181,8 @@ int main()
     sf::UdpSocket socket;
     auto localip=sf::IpAddress::getLocalAddress();
     unsigned short port=53333;
-    char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey[12]={'0'};
-    bool p1color[3][4]={{1,1,1,1},{0,1,1,0},{0,0,1,0}};
+    char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0';
+    unsigned char p1color=0;
     short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
@@ -3232,18 +3247,7 @@ int main()
             keypresscheck(downkey1,&menudown);
             keypresscheck(leftkey1,&menuleft);
             keypresscheck(rightkey1,&menuright);
-            keypresscheck(sf::Keyboard::Key::Num1,&colorkey[0]);
-            keypresscheck(sf::Keyboard::Key::Num2,&colorkey[1]);
-            keypresscheck(sf::Keyboard::Key::Num3,&colorkey[2]);
-            keypresscheck(sf::Keyboard::Key::Num4,&colorkey[3]);
-            keypresscheck(sf::Keyboard::Key::Num5,&colorkey[4]);
-            keypresscheck(sf::Keyboard::Key::Num6,&colorkey[5]);
-            keypresscheck(sf::Keyboard::Key::Num7,&colorkey[6]);
-            keypresscheck(sf::Keyboard::Key::Num8,&colorkey[7]);
-            keypresscheck(sf::Keyboard::Key::Num9,&colorkey[8]);
-             keypresscheck(sf::Keyboard::Key::Num0,&colorkey[9]);
-            keypresscheck(sf::Keyboard::Key::Hyphen,&colorkey[10]);
-            keypresscheck(sf::Keyboard::Key::Equal,&colorkey[11]);
+            keypresscheck(heavykey1,&colorkey);
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}
             if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
             if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}
@@ -3251,12 +3255,12 @@ int main()
             if(menuconfirm=='2')break;
             if(menucancel=='2'){gamequit=true;break;}
             charselect.setselect(4,2,menux,menuy);
-            for(short i=0;i<12;i++)if(colorkey[i]=='2'){if(p1color[i/4][i%4])p1color[i/4][i%4]=0;else p1color[i/4][i%4]=1;};
+            if(colorkey=='2'){if(p1color>8)p1color=0;else p1color++;}
             sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
-            crect1.setFillColor(sf::Color(p1color[0][0]*170+p1color[0][3]*85, p1color[0][1]*170+p1color[0][3]*85, p1color[0][2]*170+p1color[0][3]*85));
-            crect2.setFillColor(sf::Color(p1color[1][0]*170+p1color[1][3]*85, p1color[1][1]*170+p1color[1][3]*85, p1color[1][2]*170+p1color[1][3]*85));
-            crect3.setFillColor(sf::Color(p1color[2][0]*170+p1color[2][3]*85, p1color[2][1]*170+p1color[2][3]*85, p1color[2][2]*170+p1color[2][3]*85));
+            crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
+            crect2.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
+            crect3.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));
             rect2.setPosition({0,128});crect1.setPosition({48,0});crect2.setPosition({80,0});crect3.setPosition({112,0});
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("stage1.png")){}
@@ -3318,7 +3322,8 @@ int main()
             */
             if(menuselect==3)training=true;
             else{
-                if(p1.character==0&&p2.character==0)dialogue="1Hello this is a test thingy hi$2Do you really think that? I don't.$1HERESY.$";
+                if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
+                else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
             }
             while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
             float overlap[2],overlap2[2],bgx=0;
@@ -3695,12 +3700,14 @@ int main()
                     if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
                     else tbox.create(p2.x+bgx+8,p2.y-16);
                     dtext.setString(dialogue.substr(1,dialoguecnt));
-                    if(dialogue[dialoguecnt+1]==temp){
-                        if(p1input[1]=='2'||p2input[1]=='2'||p1input[2]!='0'||p2input[2]!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
-                    }
-                    else{
-                        if(p1input[2]!='0'||p2input[2]!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
-                        else dialoguecnt++;
+                    if(!pause||nextframe){
+                        if(dialogue[dialoguecnt+1]==temp){
+                            if(p1input[1]=='2'||p2input[1]=='2'||p1input[2]!='0'||p2input[2]!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                        }
+                        else{
+                            if(p1input[2]!='0'||p2input[2]!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
+                            else dialoguecnt++;
+                        }
                     }
                     dtext.setPosition({16,8});
                 }
@@ -3750,9 +3757,9 @@ int main()
                 if(p1.hit)playertop=true;
                 else if(p2.hit) playertop=false;
                 shader.setUniform("texture", sf::Shader::CurrentTexture);
-                shader.setUniform("r4",float(p1color[0][0]*0.67+p1color[0][3]*0.33));shader.setUniform("g4",float(p1color[0][1]*0.67+p1color[0][3]*0.33));shader.setUniform("b4",float(p1color[0][2]*0.67+p1color[0][3]*0.33));
-                shader.setUniform("r6",float(p1color[1][0]*0.67+p1color[1][3]*0.33));shader.setUniform("g6",float(p1color[1][1]*0.67+p1color[1][3]*0.33));shader.setUniform("b6",float(p1color[1][2]*0.67+p1color[1][3]*0.33));
-                shader.setUniform("r5",float(p1color[2][0]*0.67+p1color[2][3]*0.33));shader.setUniform("g5",float(p1color[2][1]*0.67+p1color[2][3]*0.33));shader.setUniform("b5",float(p1color[2][2]*0.67+p1color[2][3]*0.33));
+                shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+                shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+                shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
                 if(playertop){
                     renderTexture.draw(p1graphics,&shader);
                     renderTexture.draw(p2graphics,&shader);
