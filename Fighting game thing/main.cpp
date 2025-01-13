@@ -1030,12 +1030,18 @@ unsigned char animlib[16][128][32][2]=
                     {22,19},{23,19},{255,255},
                     {0,3},{1,3},{255,255}
                     },//stand light3 (73)
+                    {
+                    {5,2},{2,2},
+
+                    {255,255},{28,1},{29,1},{255,255},{255,255},
+                    {26,4},{27,4},{28,4},{29,4},{29,0}
+                    },//knockdown (74)
                    }//char2(Sinclair)
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
-                    2,2,2,3,3,3,2,2,2,2,2,2,2,3},//char2(Sinclair)
+                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0},//char2(Sinclair)
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
@@ -1052,7 +1058,8 @@ unsigned char animlib[16][128][32][2]=
                     {14,12,4},/*Charlie*/
                     {15,11,13},/*CGA*/
                     {11,13,0},/*CGA2*/
-                    };
+                    },
+                    p1color=0;
 float comboscaling=100.0,
 colbox[16][8][1][2][2]={
                     {{{{-7,-10},{9,32}}},//standing
@@ -1128,6 +1135,7 @@ hurtbox[16][128][8][2][2]={
                     {{{-8,-16},{18,32}},{{-4,-30},{12,-15}}},/*stand heavy8 (67)*/{{{-9,-16},{14,32}},{{-4,-30},{12,-15}}},/*stand heavy9 (68)*/
                     {{{-10,-16},{16,32}},{{-5,-30},{11,-15}}},/*stand heavy10 (69)*/{{{-11,-16},{11,32}},{{-6,-30},{10,-15}}},/*stand heavy11 (70)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle2 (71)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle3 (72)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-14},{24,-4}}},/*stand u3 (73)*/
+                    {-1},/*knockdown (74)*/
                     },//char 2(Sinclair)
                     },
 hitbox[16][16][4][2][2]={
@@ -2411,6 +2419,7 @@ void projectiledata(player *p,short superstop){
                         temp.code=0;
                         temp.frame=0;
                         temp.len=16;
+                        temp.color1=(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
                         for(short j=0;j<8;j++){
                             if(P.proj[i].right){temp.dir=270+dis(gen);temp.x=P.proj[i].x+8+dis2(gen);}
                             else{temp.dir=270-dis(gen);temp.x=P.proj[i].x-8+dis2(gen);}
@@ -2437,6 +2446,7 @@ void projectiledata(player *p,short superstop){
                     effects temp;
                     temp.code=0;
                     temp.len=8;
+                    temp.color1=(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
                     for(short j=0;j<8;j++){
                         if(P.proj[i].right)temp.dir=270+dis(gen);
                         else temp.dir=270-dis(gen);
@@ -2465,6 +2475,7 @@ void projectiledata(player *p,short superstop){
 
 void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick){
     #define P (*p)
+    //when you jump over your opponent while they are walking towards you sometimes a glitch happens fix it
     float walkspeed,jumprise,jumpfall;
     if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
     else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick>0)P.gimmick--;}
@@ -2549,7 +2560,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     else if(P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1){
         if(P.comboed&&P.kdowned>0&&!P.air){
             P.col=2;P.comboed=false;
-            for(short i=0;i<32;i++){P.animq.push_back(19);}
+            if(P.character==0)for(short i=0;i<32;i++){P.animq.push_back(19);}
+            else for(short i=0;i<32;i++){P.animq.push_back(74);}
         }
         else if(P.kdowned>0&&P.hp>0&&!P.air){
             for(short i=0;i<3;i++){P.animq.push_back(8);}
@@ -3182,7 +3194,6 @@ int main()
     auto localip=sf::IpAddress::getLocalAddress();
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0';
-    unsigned char p1color=0;
     short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
@@ -3506,28 +3517,25 @@ int main()
                     float temp[2]={},temp2[2]={},temp3[2]={},temp4[2]={};
                     if(p1.right==true){
                         temp[0]=colbox[p1.character][p1.col][0][0][0]+int(p1.x);
-                        temp[1]=colbox[p1.character][p1.col][0][0][1]+int(p1.y);
                         temp2[0]=colbox[p1.character][p1.col][0][1][0]+int(p1.x);
-                        temp2[1]=colbox[p1.character][p1.col][0][1][1]+int(p1.y);
                     }
                     else{
                         temp[0]=-colbox[p1.character][p1.col][0][1][0]+int(p1.x);
-                        temp[1]=colbox[p1.character][p1.col][0][0][1]+int(p1.y);
                         temp2[0]=-colbox[p1.character][p1.col][0][0][0]+int(p1.x);
-                        temp2[1]=colbox[p1.character][p1.col][0][1][1]+int(p1.y);
+
                     }
+                    temp[1]=colbox[p1.character][p1.col][0][0][1]+int(p1.y);
+                    temp2[1]=colbox[p1.character][p1.col][0][1][1]+int(p1.y);
                     if(p2.right==true){
                         temp3[0]=colbox[p2.character][p2.col][0][0][0]+int(p2.x);
-                        temp3[1]=colbox[p2.character][p2.col][0][0][1]+int(p2.y);
                         temp4[0]=colbox[p2.character][p2.col][0][1][0]+int(p2.x);
-                        temp4[1]=colbox[p2.character][p2.col][0][1][1]+int(p2.y);
                     }
                     else{
                         temp3[0]=-colbox[p2.character][p2.col][0][1][0]+int(p2.x);
-                        temp3[1]=colbox[p2.character][p2.col][0][0][1]+int(p2.y);
                         temp4[0]=-colbox[p2.character][p2.col][0][0][0]+int(p2.x);
-                        temp4[1]=colbox[p2.character][p2.col][0][1][1]+int(p2.y);
                     }
+                    temp3[1]=colbox[p2.character][p2.col][0][0][1]+int(p2.y);
+                    temp4[1]=colbox[p2.character][p2.col][0][1][1]+int(p2.y);
                     while(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
                         if(p1.x<p2.x){
                             p1.x-=1;
