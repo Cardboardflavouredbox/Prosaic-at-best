@@ -1163,8 +1163,8 @@ hitbox[16][16][4][2][2]={
                     {{{6,-13},{19,20}}},//crouch o(4)
                     {{{-2,-2},{27,14}}},//specialA(5)
                     {{{8,2},{36,9}}},//stand o(6)
-                    {{{7,3},{16,18}}},//specialB1(7)
-                    {{{-6,-32},{16,-4}}},//specialB2(8)
+                    {{{7,-1},{18,18}}},//specialB1(7)
+                    {{{-12,-36},{16,-4}}},//specialB2(8)
                     {{{9,8},{27,15}}},//crouch i(9)
                     {{{0,16},{18,32}}},//jump u(10)
                     {{{-2,0},{24,12}}},//grab(11)
@@ -2075,7 +2075,7 @@ private:
 
 };
 
-void collisionchecks(player *p1,player *p2,float overlap[]){
+void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
     bool projcheck=false,hitcheck=false;
     #define P1 (*p1)
     #define P2 (*p2)
@@ -2215,6 +2215,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
             if(!projcheck)P2.hitstopped=P1.hitstopped;
             fxtemp.len=P1.hitstopped;
             fxtemp.color1=sf::Color (85, 255, 255);
+            *framedata=P2.blockstun-P2.animq.size();
         }
         else{
             if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
@@ -2232,6 +2233,7 @@ void collisionchecks(player *p1,player *p2,float overlap[]){
                 fxtemp.fxsize=dis2(gen);
                 effectslist.push_back(fxtemp);
             }
+            *framedata=P2.hitstun-P2.animq.size();
         }
         fxtemp.code=1;
         effectslist.push_back(fxtemp);
@@ -2923,8 +2925,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             case 9:{//i (middle normal)
                 if(P.air){
                     P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=11;P.blockstun=6;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
-                    P.animq.insert(P.animq.begin(),{19,19,19,19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
-                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,3,3});
+                    P.animq.insert(P.animq.begin(),{19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,3,3,3,3,3});
                 }
                 else{
                     P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=16;P.blockstun=10;P.slide=true;P.dmg=28;P.movetype=2;P.mgain=6;
@@ -3368,8 +3370,8 @@ int main()
 
                 p1.meter=100.0;
                 p2.meter=100.0;
-            short superstop=0,roundwait=90;
-            bool seeboxes=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false;
+            short superstop=0,roundwait=90,framedata=0;
+            bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                 p1.right=true;
                 p2.right=false;
 
@@ -3387,6 +3389,7 @@ int main()
                 else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
                 window.setSize(size);
 
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2)){if(!F2key){F2key=true;if(framedatashow)framedatashow=false;else framedatashow=true;}}else F2key=false;
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
@@ -3488,12 +3491,12 @@ int main()
                         if(p1.buffer==0&&!p1.animq.empty()){
                             p1.buffer=chooseaction(1,p1.air,p1input,p1.meter);
                             if(p1.cancel[p1.buffer]==false&&p1.animq.size()>10)p1.buffer=0;
-                            else if(p1.buffer==1||p1.buffer==3||p1.buffer==11||p1.buffer==20||(p1.air&&p1.jumpy<5))p1.buffer=0;
+                            else if((p1.buffer>0&&p1.buffer<8)||p1.buffer==11||p1.buffer==20||(p1.air&&p1.jumpy<5))p1.buffer=0;
                         }
                         if(p2.buffer==0&&!p2.animq.empty()){
                                 p2.buffer=chooseaction(2,p2.air,p2input,p2.meter);
                                 if(p2.cancel[p2.buffer]==false&&p2.animq.size()>10)p2.buffer=0;
-                                else if(p2.buffer==1||p2.buffer==3||p2.buffer==11||p2.buffer==20||(p2.air&&p2.jumpy<5))p2.buffer=0;
+                                else if((p2.buffer>0&&p2.buffer<8)||p2.buffer==11||p2.buffer==20||(p2.air&&p2.jumpy<5))p2.buffer=0;
                         }
                         if(p1.buffer==0){
                             short temp=chooseaction(1,p1.air,p1input,p1.meter);
@@ -3570,8 +3573,8 @@ int main()
                         }
                     }
 
-                    if(superstop==0)collisionchecks(&p1,&p2,overlap);
-                    if(superstop==0)collisionchecks(&p2,&p1,overlap2);
+                    if(superstop==0)collisionchecks(&p1,&p2,overlap,&framedata);
+                    if(superstop==0)collisionchecks(&p2,&p1,overlap2,&framedata);
 
 
                     //projectile collision
@@ -3707,9 +3710,6 @@ int main()
                 tempstr = std::to_string(combo);
                 combotext.setString(tempstr);
                 combotext.setOrigin({32,0});
-                short framedata=0;
-                if(!p1.animq.empty()&&!p2.animq.empty())framedata=p2.animq.size()-p1.animq.size();
-                else if(!p1.animq.empty()&&p2.hit){framedata=p2.attack.hitstun-p1.animq.size();}
                 if(framedata<0){tempstr = std::to_string(-framedata);tempstr="-"+tempstr;}
                 else {tempstr = std::to_string(framedata);}
                 frametext.setString(tempstr);
@@ -3858,7 +3858,7 @@ int main()
                 if(!dialogue.empty())renderTexture.draw(tbox);
                 if(!dialogue.empty())renderTexture.draw(dtext);
 
-                renderTexture.draw(frametext);
+                if(framedatashow)renderTexture.draw(frametext);
 
                 if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}
                 renderTexture.display();
