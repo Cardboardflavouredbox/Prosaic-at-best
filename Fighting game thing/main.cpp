@@ -3337,9 +3337,10 @@ int main()
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
             sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture);
-            sf::Text combotext(font),dtext(font);
+            sf::Text combotext(font),dtext(font),frametext(font);
             combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
+            frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
             std::deque<char>p1keylist,p2keylist;
             short dialoguecnt=0;
             /*
@@ -3706,6 +3707,13 @@ int main()
                 tempstr = std::to_string(combo);
                 combotext.setString(tempstr);
                 combotext.setOrigin({32,0});
+                short framedata=0;
+                if(!p1.animq.empty()&&!p2.animq.empty())framedata=p2.animq.size()-p1.animq.size();
+                else if(!p1.animq.empty()&&p2.hit){framedata=p2.attack.hitstun-p1.animq.size();}
+                if(framedata<0){tempstr = std::to_string(-framedata);tempstr="-"+tempstr;}
+                else {tempstr = std::to_string(framedata);}
+                frametext.setString(tempstr);
+                frametext.setOrigin({32,0});
                 if (combo>1)cui.create(p2.comboed||p2.kdowned);
 
                 if(!pause||nextframe)
@@ -3749,6 +3757,7 @@ int main()
                 p2graphics.setPosition({int(p2.x)-64+bgx,int(p2.y-64)});
                 p2shadow.setPosition({int(p2.x)-64+bgx,184+(p2.y-176)/8});
                 background.setPosition({int(bgx)-125,0.f});
+                frametext.setPosition({125,33.f});
 
                 menus.setcolor(6,!pause,menuselect);
                 if(pause){
@@ -3849,6 +3858,8 @@ int main()
                 if(!dialogue.empty())renderTexture.draw(tbox);
                 if(!dialogue.empty())renderTexture.draw(dtext);
 
+                renderTexture.draw(frametext);
+
                 if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
@@ -3905,6 +3916,7 @@ int main()
             if(p1.hp>0&&p2.hp<=0)p1.wins++;
             else if(p1.hp<=0&&p2.hp>0)p2.wins++;
             dialogue.erase();
+            effectslist.clear();
             menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
             p1.animq.clear();p1.idleanim.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
             p1.air=false;p1.buffer=0;p1.act=0;p1.kdowned=0;p1.hit=false;
