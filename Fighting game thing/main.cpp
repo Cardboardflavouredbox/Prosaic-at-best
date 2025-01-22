@@ -2561,7 +2561,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else P.animq.push_back(9);
             }
             if(P.attack.kdown==2||P.hp<=0)P.kdowned=2;
-            else if(P.attack.kdown==1||P.attack.launch>0||P.air)P.kdowned=1;
+            else if(P.attack.kdown==1||P.attack.launch>0/*||P.air*/)P.kdowned=1;
             else P.kdowned=0;
         }
         if(((P.x<-110&&P.attack.kback>0)||(P.x>360&&P.attack.kback<0))&&(P.attack.grab[0]==0&&P.attack.grab[1]==0)&&P.attack.pushaway){
@@ -3211,7 +3211,8 @@ int main()
     sf::Font font;
     if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
-    auto localip=sf::IpAddress::getLocalAddress();
+    auto localip2=sf::IpAddress::getLocalAddress();
+    sf::IpAddress localip(172,30,1,42);
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0';
     short menuselect=0;
@@ -3345,13 +3346,13 @@ int main()
             frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
             std::deque<char>p1keylist,p2keylist;
             short dialoguecnt=0;
-            /*
+
             if(menuselect==2){
                 if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
                 online=true;
                 p2controls=false;
                 }
-            */
+
             if(menuselect==3)training=true;
             else{
                 if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
@@ -3879,7 +3880,7 @@ int main()
                 }
                 window.display();
 
-                /*
+
                 if(online){
                     sf::Packet packet;
                     std::uint8_t dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
@@ -3893,8 +3894,8 @@ int main()
                     len=okey.size();packet<<len;for(short i=0;i<len;i++){temp=okey[i];packet<<temp;}
                     len=kkey.size();packet<<len;for(short i=0;i<len;i++){temp=kkey[i];packet<<temp;}
 
-                    socket.send(packet,localip,port);
-                    socket.receive(packet,localip,port);
+                    if(socket.send(packet,localip,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
+                    if(socket.receive(packet,localip2,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
 
                     //float xtemp=0;
                     packet>>temp>>dir>>U>>I>>O>>K;
@@ -3910,7 +3911,7 @@ int main()
                     //xtemp+=75;
                     //p2.x=xtemp;
                 }
-                */
+
 
             }
             if(p1.hp>0&&p2.hp<=0)p1.wins++;
