@@ -1075,7 +1075,7 @@ unsigned char animlib[16][128][32][2]=
                     {15,11,13},/*CGA*/
                     {11,13,0},/*CGA2*/
                     },
-                    p1color=0;
+                    p1color=0,p2color=0;
 float comboscaling=100.0,
 colbox[16][8][1][2][2]={
                     {{{{-7,-10},{9,32}}},//standing
@@ -1211,7 +1211,7 @@ public:
     std::deque<projectile> proj;
     attackdata attack;
     unsigned char anim[64][2]={};
-    short gimmick=0,hbframe=0,act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
+    short gimmick[8]={},hbframe=0,act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
     hitstun=0,blockstun=0,hitstop=0,wins=0,character=0,hurtframes[5]={56,56,57,32,33},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block
     buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
     landdelay=0,hitstopped=0,grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
@@ -2228,6 +2228,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             if(!projcheck)P2.hitstopped=P1.hitstopped;
             fxtemp.color1=sf::Color (255, 255, 255);
             std::uniform_int_distribution<int> dis(0,360),dis2(1,5);fxtemp.len=P1.hitstopped;
+            if(P2.hitstop>13)
             for(short i=0;i<3;i++){
                 fxtemp.code=3;fxtemp.dir=dis(gen);
                 fxtemp.fxsize=dis2(gen);
@@ -2495,15 +2496,15 @@ void projectiledata(player *p,short superstop){
     #undef P
 }
 
-void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick){
+void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick[]){
     #define P (*p)
     //when you jump over your opponent while they are walking towards you sometimes a glitch happens fix it
     float walkspeed,jumprise,jumpfall;
     if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
-    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick>0)P.gimmick--;}
+    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;}
 
     if(P.iframes>0)P.iframes--;
-    if(enemycharacter==2&&enemygimmick>0){
+    if(enemycharacter==2&&enemygimmick[0]>0){
             walkspeed/=2;jumpfall/=2;
             effects temp;//actually make this effect look good
             temp.color1=sf::Color (85, 255, 255);
@@ -3024,14 +3025,14 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 33:{//special B(u)2
-                P.col=3;P.hitcount=1;P.hitstop=15;P.kback=-12;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=1;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;P.gimmick=180;
+                P.col=3;P.hitcount=1;P.hitstop=15;P.kback=-12;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=1;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;P.gimmick[0]=180;
                 P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{5});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
                 break;
             }
             case 36:{//special B(k)2
-                P.col=3;P.hitcount=3;P.hitstop=3;P.kback=3;P.hitstun=10;P.blockstun=0;P.slide=true;P.dmg=25;P.launch=4;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick=30;
+                P.col=3;P.hitcount=3;P.hitstop=3;P.kback=3;P.hitstun=10;P.blockstun=0;P.slide=true;P.dmg=25;P.launch=4;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick[0]=30;
                 P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{8,8,8,8,8});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
@@ -3042,16 +3043,16 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
         }
     }
-    if(P.movewaitx>0&&(enemycharacter!=2||enemygimmick%2==0))P.movewaitx-=1;
+    if(P.movewaitx>0&&(enemycharacter!=2||enemygimmick[0]%2==0))P.movewaitx-=1;
     else{
-        if(enemycharacter==2&&enemygimmick>0)P.x+=P.jumpx/2;
+        if(enemycharacter==2&&enemygimmick[0]>0)P.x+=P.jumpx/2;
         else P.x+=P.jumpx;
         P.movewaitx=-1;
     }
-    if(P.movewaity>0&&(enemycharacter!=2||enemygimmick%2==0))P.movewaity-=1;
+    if(P.movewaity>0&&(enemycharacter!=2||enemygimmick[0]%2==0))P.movewaity-=1;
     else{
         if(P.jumpy<0)P.air=true;
-        if(enemycharacter==2&&enemygimmick>0)P.y+=P.jumpy/2;
+        if(enemycharacter==2&&enemygimmick[0]>0)P.y+=P.jumpy/2;
         else P.y+=P.jumpy;
         P.movewaity=-1;
     }
@@ -3083,19 +3084,19 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
     if(!P.hitboxanim.empty()){
         P.hbframe=P.hitboxanim[0];
-        if(enemycharacter!=2||enemygimmick%2==0)P.hitboxanim.pop_front();
+        if(enemycharacter!=2||enemygimmick[0]%2==0)P.hitboxanim.pop_front();
     }
     else P.hbframe=0;
     if(!P.animq.empty()){
         P.idleanim.clear();
         P.neutural=false;P.frame=P.animq[0];
         memcpy(P.anim,animlib[P.character][P.animq[0]],sizeof(animlib[P.character][P.animq[0]]));
-        if(enemycharacter!=2||enemygimmick%2==0)if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
+        if(enemycharacter!=2||enemygimmick[0]%2==0)if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
     }
     else if(!P.idleanim.empty()){
         P.frame=P.idleanim[0];
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
-        if(enemycharacter!=2||enemygimmick%2==0)P.idleanim.pop_front();
+        if(enemycharacter!=2||enemygimmick[0]%2==0)P.idleanim.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
@@ -3184,7 +3185,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
         }
         P.atkfx.pop_front();
-        if(enemycharacter==2&&enemygimmick%2==1)P.atkfx.push_front(0);
+        if(enemycharacter==2&&enemygimmick[0]%2==1)P.atkfx.push_front(0);
     }
     #undef P
 }
@@ -3215,6 +3216,7 @@ int main()
     sf::IpAddress localip(172,30,1,42);
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0';
+    std::deque<char>p1irecord[5],p2irecord[5];
     short menuselect=0;
     bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
@@ -3516,7 +3518,13 @@ int main()
                         if(p2.animq.empty()){if(!p2.whiff){p2.act=p2.buffer;}p2.buffer=0;}
 
 
-                        if(!training)roundframecount++;
+                        if(!training){
+                            for(short i=0;i<5;i++){
+                            p1irecord[i].push_back(p1input[i]);
+                            p2irecord[i].push_back(p2input[i]);
+                            }
+                            roundframecount++;
+                        }
                     }
                     else{p1.act=0;p2.act=0;}
 
@@ -3793,9 +3801,13 @@ int main()
                 if(p1.hit)playertop=true;
                 else if(p2.hit) playertop=false;
                 shader.setUniform("texture", sf::Shader::CurrentTexture);
+                if((p1.character==2&&p1.gimmick[0]>0)||(p2.character==2&&p2.gimmick[0]>0))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
+
                 shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
                 shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
                 shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+
+                if((p1.character==2&&p1.gimmick[0]>0)||(p2.character==2&&p2.gimmick[0]>0))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
                 if(playertop){
                     renderTexture.draw(p1graphics,&shader);
                     renderTexture.draw(p2graphics,&shader);
