@@ -641,17 +641,17 @@ unsigned char animlib[16][128][32][2]=
                     {
                     {3,4},{2,4},
 
-                    {1,12},{0,0},{1,0},
-                    {0,12},{0,13},{1,1},
-                    {255,255},{0,14},{1,2},
+                    {0,12},{1,12},{1,0},
+                    {0,13},{1,13},{1,1},
+                    {255,255},{1,14},{1,2},
                     {255,255},{0,3},{1,3}
                     },//gimmick1 (25)
                     {
                     {3,4},{2,4},
 
-                    {255,255},{0,0},{1,0},
-                    {0,15},{1,14},{1,1},
-                    {255,255},{1,15},{1,2},
+                    {0,12},{0,0},{1,0},
+                    {0,15},{1,15},{1,1},
+                    {255,255},{1,14},{1,2},
                     {255,255},{0,3},{1,3}
                     },//gimmick2 (26)
                     {
@@ -1052,12 +1052,20 @@ unsigned char animlib[16][128][32][2]=
                     {25,12},{26,12},{27,12},{255,255},
                     {255,255},{26,13},{255,255},{255,255}
                     },//jump light2(76)
+                    {
+                    {3,4},{2,4},
+
+                    {255,255},{0,0},{1,0},
+                    {3,10},{3,11},{1,1},
+                    {255,255},{1,14},{1,2},
+                    {255,255},{0,3},{1,3}
+                    },//gimmick3 (77)
                    }//char2(Sinclair)
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
-                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3},//char2(Sinclair)
+                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2},//char2(Sinclair)
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
@@ -1153,6 +1161,7 @@ hurtbox[16][128][8][2][2]={
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle2 (71)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle3 (72)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-14},{24,-4}}},/*stand u3 (73)*/
                     {-1},/*knockdown (74)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-16},{18,-3}}},/*jump light1 (75)*/{{{-18,-16},{4,32}},{{-8,-31},{8,-16}},{{4,-16},{27,-3}}},/*jump light2 (76)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*gimmick2 (77)*/
                     },//char 2(Sinclair)
                     },
 hitbox[16][16][4][2][2]={
@@ -2305,7 +2314,7 @@ bool cmdcheck(int playercode,int len,char s[][5]){
 
 }
 
-int chooseaction(int playercode, bool air, char keyinput[], float meter){
+int chooseaction(short character,int playercode, bool air, char keyinput[], float meter){
     char c236[4][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'}},
         c214[4][5]={{'0','0','0','0','0'},{'4','0','0','0','0'},{'1','0','0','0','0'},{'2','0','0','0','0'}},
         c623[4][5]={{'0','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}},
@@ -2417,6 +2426,39 @@ int chooseaction(int playercode, bool air, char keyinput[], float meter){
                 }
 }
 
+void inputcode(char pinput[],sf::Keyboard::Key upkey,sf::Keyboard::Key leftkey,sf::Keyboard::Key downkey,sf::Keyboard::Key rightkey,sf::Keyboard::Key lightkey,
+               sf::Keyboard::Key mediumkey,sf::Keyboard::Key heavykey,sf::Keyboard::Key specialkey,sf::Keyboard::Key grabkey,bool right){
+    bool w=false,a=false,s=false,d=false;
+    if(screenfocused&&sf::Keyboard::isKeyPressed(upkey))w=true;
+    if(screenfocused&&sf::Keyboard::isKeyPressed(leftkey))a=true;
+    if(screenfocused&&sf::Keyboard::isKeyPressed(downkey))s=true;
+    if(screenfocused&&sf::Keyboard::isKeyPressed(rightkey))d=true;
+    if(w&&s){w=true;s=false;}
+    if(a&&d){a=false;d=false;}
+
+    macrokeypresscheck(lightkey,grabkey,&pinput[1]);
+    macrokeypresscheck(mediumkey,grabkey,&pinput[2]);
+    macrokeypresscheck(heavykey,grabkey,&pinput[3]);
+    keypresscheck(specialkey,&pinput[4]);
+    if(w&&!a&&!s&&!d)pinput[0]='8';
+    else if(!w&&a&&!s&&!d)pinput[0]='4';
+    else if(!w&&!a&&s&&!d)pinput[0]='2';
+    else if(!w&&!a&&!s&&d)pinput[0]='6';
+    else if(w&&a&&!s&&!d)pinput[0]='7';
+    else if(!w&&a&&s&&!d)pinput[0]='1';
+    else if(!w&&!a&&s&&d)pinput[0]='3';
+    else if(w&&!a&&!s&&d)pinput[0]='9';
+    else pinput[0]='5';
+    if(!right){
+        if(pinput[0]=='7')pinput[0]='9';
+        else if(pinput[0]=='9')pinput[0]='7';
+        else if(pinput[0]=='4')pinput[0]='6';
+        else if(pinput[0]=='6')pinput[0]='4';
+        else if(pinput[0]=='3')pinput[0]='1';
+        else if(pinput[0]=='1')pinput[0]='3';
+    }
+}
+
 void boolfill(bool *arr,bool value,short a[]){
     short temp=0;
     for(int i=0;i<64;i++){
@@ -2501,7 +2543,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     //when you jump over your opponent while they are walking towards you sometimes a glitch happens fix it
     float walkspeed,jumprise,jumpfall;
     if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
-    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;}
+    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0)P.gimmick[1]--;}
 
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&enemygimmick[0]>0){
@@ -2988,7 +3030,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 15:{//k (gimmick)
-                P.animq.insert(P.animq.begin(),{25,25,25,25,25,26,26,26,26,26,26,26,26});
+                P.animq.insert(P.animq.begin(),{25,25,25,25,26,77,77,77,77,77,77,77});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,4});
                 break;
             }
@@ -3024,6 +3066,11 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else P.jumpx=-7;
                 break;
             }
+            case 32:{//super
+                P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77,77});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,6});
+                break;
+            }
             case 33:{//special B(u)2
                 P.col=3;P.hitcount=1;P.hitstop=15;P.kback=-12;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=1;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;P.gimmick[0]=180;
                 P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
@@ -3043,16 +3090,16 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
         }
     }
-    if(P.movewaitx>0&&(enemycharacter!=2||enemygimmick[0]%2==0))P.movewaitx-=1;
+    if(P.movewaitx>0&&(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0))P.movewaitx-=1;
     else{
-        if(enemycharacter==2&&enemygimmick[0]>0)P.x+=P.jumpx/2;
+        if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0))P.x+=P.jumpx/2;
         else P.x+=P.jumpx;
         P.movewaitx=-1;
     }
-    if(P.movewaity>0&&(enemycharacter!=2||enemygimmick[0]%2==0))P.movewaity-=1;
+    if(P.movewaity>0&&(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0))P.movewaity-=1;
     else{
         if(P.jumpy<0)P.air=true;
-        if(enemycharacter==2&&enemygimmick[0]>0)P.y+=P.jumpy/2;
+        if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0))P.y+=P.jumpy/2;
         else P.y+=P.jumpy;
         P.movewaity=-1;
     }
@@ -3084,19 +3131,19 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
     if(!P.hitboxanim.empty()){
         P.hbframe=P.hitboxanim[0];
-        if(enemycharacter!=2||enemygimmick[0]%2==0)P.hitboxanim.pop_front();
+        if(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0)P.hitboxanim.pop_front();
     }
     else P.hbframe=0;
     if(!P.animq.empty()){
         P.idleanim.clear();
         P.neutural=false;P.frame=P.animq[0];
         memcpy(P.anim,animlib[P.character][P.animq[0]],sizeof(animlib[P.character][P.animq[0]]));
-        if(enemycharacter!=2||enemygimmick[0]%2==0)if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
+        if(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0)if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
     }
     else if(!P.idleanim.empty()){
         P.frame=P.idleanim[0];
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
-        if(enemycharacter!=2||enemygimmick[0]%2==0)P.idleanim.pop_front();
+        if(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0)P.idleanim.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
@@ -3183,9 +3230,13 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     }
                 }
             }
+            else if(P.atkfx[0]==5){*superstop=20;P.super=true;P.meter-=100;}
+            else if(P.atkfx[0]==6){
+                P.gimmick[1]=180;
+            }
         }
         P.atkfx.pop_front();
-        if(enemycharacter==2&&enemygimmick[0]%2==1)P.atkfx.push_front(0);
+        if(enemycharacter==2&&(enemygimmick[0]%2==1||enemygimmick[1]%2==1))P.atkfx.push_front(0);
     }
     #undef P
 }
@@ -3218,7 +3269,7 @@ int main()
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0';
     std::deque<char>p1irecord[5],p2irecord[5];
     short menuselect=0;
-    bool w,a,s,d,w2,a2,s2,d2,gamequit=false;
+    bool gamequit=false;
     float screenWidth = 256.f,screenHeight = 240.f;
     std::string dialogue;
     sf::Shader shader;
@@ -3397,71 +3448,12 @@ int main()
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
-                w=false;a=false;s=false;d=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(upkey1))w=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(leftkey1))a=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(downkey1))s=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(rightkey1))d=true;
-                if(w&&s){w=true;s=false;}
-                if(a&&d){a=false;d=false;}
-
-                w2=false;a2=false;s2=false;d2=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(upkey2))w2=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(leftkey2))a2=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(downkey2))s2=true;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(rightkey2))d2=true;
-                if(w2==true&&s2==true){w2=true;s2=false;}
-                if(a2==true&&d2==true){a2=false;d2=false;}
-
-                macrokeypresscheck(lightkey1,grabkey1,&p1input[1]);
-                macrokeypresscheck(mediumkey1,grabkey1,&p1input[2]);
-                macrokeypresscheck(heavykey1,grabkey1,&p1input[3]);
-                keypresscheck(specialkey1,&p1input[4]);
-                if(w&&!a&&!s&&!d)p1input[0]='8';
-                else if(!w&&a&&!s&&!d)p1input[0]='4';
-                else if(!w&&!a&&s&&!d)p1input[0]='2';
-                else if(!w&&!a&&!s&&d)p1input[0]='6';
-                else if(w&&a&&!s&&!d)p1input[0]='7';
-                else if(!w&&a&&s&&!d)p1input[0]='1';
-                else if(!w&&!a&&s&&d)p1input[0]='3';
-                else if(w&&!a&&!s&&d)p1input[0]='9';
-                else p1input[0]='5';
-                if(!p1.right){
-                    if(p1input[0]=='7')p1input[0]='9';
-                    else if(p1input[0]=='9')p1input[0]='7';
-                    else if(p1input[0]=='4')p1input[0]='6';
-                    else if(p1input[0]=='6')p1input[0]='4';
-                    else if(p1input[0]=='3')p1input[0]='1';
-                    else if(p1input[0]=='1')p1input[0]='3';
-                }
-
-                if(p2controls){
-                    macrokeypresscheck(lightkey2,grabkey2,&p2input[1]);
-                    macrokeypresscheck(mediumkey2,grabkey2,&p2input[2]);
-                    macrokeypresscheck(heavykey2,grabkey2,&p2input[3]);
-                    keypresscheck(specialkey2,&p2input[4]);
-                    if(w2&&!a2&&!s2&&!d2)p2input[0]='8';
-                    else if(!w2&&a2&&!s2&&!d2)p2input[0]='4';
-                    else if(!w2&&!a2&&s2&&!d2)p2input[0]='2';
-                    else if(!w2&&!a2&&!s2&&d2)p2input[0]='6';
-                    else if(w2&&a2&&!s2&&!d2)p2input[0]='7';
-                    else if(!w2&&a2&&s2&&!d2)p2input[0]='1';
-                    else if(!w2&&!a2&&s2&&d2)p2input[0]='3';
-                    else if(w2&&!a2&&!s2&&d2)p2input[0]='9';
-                    else p2input[0]='5';
-                    if(!p2.right){
-                        if(p2input[0]=='7')p2input[0]='9';
-                        else if(p2input[0]=='9')p2input[0]='7';
-                        else if(p2input[0]=='4')p2input[0]='6';
-                        else if(p2input[0]=='6')p2input[0]='4';
-                        else if(p2input[0]=='3')p2input[0]='1';
-                        else if(p2input[0]=='1')p2input[0]='3';
-                    }
-                }
+                inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
+                inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
 
 
 
-                if(!pause){
+                if((!pause||(pause&&nextframe))){
                     dirkeys.push_front(p1input[0]);
                     ukey.push_front(p1input[1]);
                     ikey.push_front(p1input[2]);
@@ -3492,17 +3484,17 @@ int main()
 
                     if(p1.hp>0&&p2.hp>0&&roundframecount/60<99&&dialogue.empty()){//input to action code and roundframe counter
                         if(p1.buffer==0&&!p1.animq.empty()){
-                            p1.buffer=chooseaction(1,p1.air,p1input,p1.meter);
+                            p1.buffer=chooseaction(p1.character,1,p1.air,p1input,p1.meter);
                             if(p1.cancel[p1.buffer]==false&&p1.animq.size()>10)p1.buffer=0;
                             else if((p1.buffer>0&&p1.buffer<8)||p1.buffer==11||p1.buffer==20||(p1.air&&p1.jumpy<5))p1.buffer=0;
                         }
                         if(p2.buffer==0&&!p2.animq.empty()){
-                                p2.buffer=chooseaction(2,p2.air,p2input,p2.meter);
+                                p2.buffer=chooseaction(p2.character,2,p2.air,p2input,p2.meter);
                                 if(p2.cancel[p2.buffer]==false&&p2.animq.size()>10)p2.buffer=0;
                                 else if((p2.buffer>0&&p2.buffer<8)||p2.buffer==11||p2.buffer==20||(p2.air&&p2.jumpy<5))p2.buffer=0;
                         }
                         if(p1.buffer==0){
-                            short temp=chooseaction(1,p1.air,p1input,p1.meter);
+                            short temp=chooseaction(p1.character,1,p1.air,p1input,p1.meter);
                             if(temp!=p1.act)p1.idleanim.clear();
                             p1.act=temp;
                         }
@@ -3510,7 +3502,7 @@ int main()
                         if(p1.animq.empty()){if(!p1.whiff){p1.act=p1.buffer;}p1.buffer=0;}
 
                         if(p2.buffer==0){
-                            short temp=chooseaction(2,p2.air,p2input,p2.meter);
+                            short temp=chooseaction(p2.character,2,p2.air,p2input,p2.meter);
                             if(temp!=p2.act)p2.idleanim.clear();
                             p2.act=temp;
                         }
@@ -3790,8 +3782,19 @@ int main()
                 p1shadow.setanim(p1.anim,p1.right);
                 p2shadow.setanim(p2.anim,p2.right);
 
+                shader.setUniform("texture", sf::Shader::CurrentTexture);
+                if((p1.character==2&&(p1.gimmick[0]>0||p1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
+
+                shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+                shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+                shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+
+                if((p1.character==2&&(p1.gimmick[0]>0||p1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
+
                 window.clear();
                 renderTexture.clear();
+                //if(p1.character==2&&(p2.character==2&&p2.gimmick[0]>0))renderTexture.draw(background,&shader);
+                //else
                 renderTexture.draw(background);
                 renderTexture.draw(p1shadow);
                 renderTexture.draw(p2shadow);
@@ -3800,14 +3803,6 @@ int main()
 
                 if(p1.hit)playertop=true;
                 else if(p2.hit) playertop=false;
-                shader.setUniform("texture", sf::Shader::CurrentTexture);
-                if((p1.character==2&&p1.gimmick[0]>0)||(p2.character==2&&p2.gimmick[0]>0))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
-
-                shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-                shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-                shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
-
-                if((p1.character==2&&p1.gimmick[0]>0)||(p2.character==2&&p2.gimmick[0]>0))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
                 if(playertop){
                     renderTexture.draw(p1graphics,&shader);
                     renderTexture.draw(p2graphics,&shader);
