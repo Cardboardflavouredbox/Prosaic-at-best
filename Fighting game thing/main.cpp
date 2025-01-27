@@ -1260,12 +1260,12 @@ public:
         }
     }
 
-    void setselect(short xlen,short ylen,short x, short y){
+    void setselect(short xlen,short ylen,short x, short y,short x2,short y2){
         for(short i=0;i<ylen;i++)
             for(short j=0;j<xlen;j++){
             sf::Vertex* tri = &m_vertices[6*(i*xlen+j)];
             for(short k=0;k<6;k++){
-                if(x==j&&y==i)tri[k].color=sf::Color(255,255,255,255);
+                if((x==j&&y==i)||(x2==j&&y2==i))tri[k].color=sf::Color(255,255,255,255);
                 else tri[k].color=sf::Color(170,170,170,255);
             }
         }
@@ -2459,6 +2459,19 @@ void inputcode(char pinput[],sf::Keyboard::Key upkey,sf::Keyboard::Key leftkey,s
     }
 }
 
+void windowset(sf::RenderWindow& window,bool *gamequit){
+    sf::Vector2u size = window.getSize();
+    float  heightRatio = 240.f / 256.f,widthRatio = 256.f / 240.f;
+    if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
+    else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
+    window.setSize(size);
+    while (std::optional event = window.pollEvent()){
+            if (event->is<sf::Event::Closed>()){window.close();*gamequit=true;}
+            if(event->is<sf::Event::FocusGained>())screenfocused=true;
+            else if(event->is<sf::Event::FocusLost>())screenfocused=false;
+    }
+}
+
 void boolfill(bool *arr,bool value,short a[]){
     short temp=0;
     for(int i=0;i<64;i++){
@@ -3241,6 +3254,315 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     #undef P
 }
 
+void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2input[],short *superstop,float *bgx,short *framedata,float overlap[],float overlap2[]){
+    #define P1 (*p1)
+    #define P2 (*p2)
+
+    if(P1.hp>0&&P2.hp>0&&roundframecount/60<99&&dialogue.empty()){//input to action code and roundframe counter
+        if(P1.buffer==0&&!P1.animq.empty()){
+            P1.buffer=chooseaction(P1.character,1,P1.air,p1input,P1.meter);
+            if(P1.cancel[P1.buffer]==false&&P1.animq.size()>10)P1.buffer=0;
+            else if((P1.buffer>0&&P1.buffer<8)||P1.buffer==11||P1.buffer==20||(P1.air&&P1.jumpy<5))P1.buffer=0;
+        }
+        if(P2.buffer==0&&!P2.animq.empty()){
+                P2.buffer=chooseaction(P2.character,2,P2.air,p2input,P2.meter);
+                if(P2.cancel[P2.buffer]==false&&P2.animq.size()>10)P2.buffer=0;
+                else if((P2.buffer>0&&P2.buffer<8)||P2.buffer==11||P2.buffer==20||(P2.air&&P2.jumpy<5))P2.buffer=0;
+        }
+        if(P1.buffer==0){
+            short temp=chooseaction(P1.character,1,P1.air,p1input,P1.meter);
+            if(temp!=P1.act)P1.idleanim.clear();
+            P1.act=temp;
+        }
+        else if(!P1.animq.empty()&&!P1.whiff)P1.act=P1.buffer;
+        if(P1.animq.empty()){if(!P1.whiff){P1.act=P1.buffer;}P1.buffer=0;}
+
+        if(P2.buffer==0){
+            short temp=chooseaction(P2.character,2,P2.air,p2input,P2.meter);
+            if(temp!=P2.act)P2.idleanim.clear();
+            P2.act=temp;
+        }
+        else if(!P2.animq.empty()&&!P2.whiff)P2.act=P2.buffer;
+        if(P2.animq.empty()){if(!P2.whiff){P2.act=P2.buffer;}P2.buffer=0;}
+
+
+    }
+    else{P1.act=0;P2.act=0;}
+
+    //make an attack clashing system at some point
+    if(P1.hit){
+        if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick);
+        if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick);
+                        }
+    else{
+        if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick);
+        if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick);
+                        }
+    if(!P1.proj.empty())projectiledata(&P1,*superstop);
+    if(!P2.proj.empty())projectiledata(&P2,*superstop);
+    if(combo==0)comboscaling=100;
+    if(P1.hp>P1.maxhp)P1.hp=P1.maxhp;
+    if(P2.hp>P2.maxhp)P2.hp=P2.maxhp;
+    if(comboscaling<20)comboscaling=20;
+    float temp[2]={},temp2[2]={},temp3[2]={},temp4[2]={};
+    if(P1.right==true){
+        temp[0]=colbox[P1.character][P1.col][0][0][0]+int(P1.x);
+        temp2[0]=colbox[P1.character][P1.col][0][1][0]+int(P1.x);
+    }
+    else{
+        temp[0]=-colbox[P1.character][P1.col][0][1][0]+int(P1.x);
+        temp2[0]=-colbox[P1.character][P1.col][0][0][0]+int(P1.x);
+
+    }
+    temp[1]=colbox[P1.character][P1.col][0][0][1]+int(P1.y);
+    temp2[1]=colbox[P1.character][P1.col][0][1][1]+int(P1.y);
+    if(P2.right==true){
+        temp3[0]=colbox[P2.character][P2.col][0][0][0]+int(P2.x);
+        temp4[0]=colbox[P2.character][P2.col][0][1][0]+int(P2.x);
+    }
+    else{
+        temp3[0]=-colbox[P2.character][P2.col][0][1][0]+int(P2.x);
+        temp4[0]=-colbox[P2.character][P2.col][0][0][0]+int(P2.x);
+    }
+    temp3[1]=colbox[P2.character][P2.col][0][0][1]+int(P2.y);
+    temp4[1]=colbox[P2.character][P2.col][0][1][1]+int(P2.y);
+    while(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
+        if(P1.x<P2.x){
+            P1.x-=1;
+            temp[0]-=1;
+            P2.x+=1;
+            temp3[0]+=1;
+        }
+        else{
+            P1.x+=1;
+            temp[0]+=1;
+            P2.x-=1;
+            temp3[0]-=1;
+        }
+    }
+
+    if(*superstop==0)collisionchecks(&P1,&P2,overlap,&*framedata);
+    if(*superstop==0)collisionchecks(&P2,&P1,overlap2,&*framedata);
+
+
+    //projectile collision
+    for(short j=0;j<P1.proj.size();j++){
+            if(P1.proj[j].hitstopped==0){
+            for(short i=0;i<hurtboxcount[P1.character][P1.proj[j].frame];i++){
+            if(P1.proj[j].right==true){
+                temp[0]=hurtbox[P1.character][P1.proj[j].frame][i][0][0]+int(P1.proj[j].x);
+                temp[1]=hurtbox[P1.character][P1.proj[j].frame][i][0][1]+int(P1.proj[j].y);
+                temp2[0]=hurtbox[P1.character][P1.proj[j].frame][i][1][0]+int(P1.proj[j].x);
+                temp2[1]=hurtbox[P1.character][P1.proj[j].frame][i][1][1]+int(P1.proj[j].y);
+            }
+            else{
+                temp[0]=-hurtbox[P1.character][P1.proj[j].frame][i][1][0]+int(P1.proj[j].x);
+                temp[1]=hurtbox[P1.character][P1.proj[j].frame][i][0][1]+int(P1.proj[j].y);
+                temp2[0]=-hurtbox[P1.character][P1.proj[j].frame][i][0][0]+int(P1.proj[j].x);
+                temp2[1]=hurtbox[P1.character][P1.proj[j].frame][i][1][1]+int(P1.proj[j].y);
+            }
+
+            for(short l=0;l<P2.proj.size();l++){
+                if(P2.proj[l].hitstopped==0){
+                for(short k=0;k<hurtboxcount[P2.character][P2.proj[l].frame];k++){
+                    if(P2.proj[l].right==true){
+                        temp3[0]=hurtbox[P2.character][P2.proj[l].frame][k][0][0]+int(P2.proj[l].x);
+                        temp3[1]=hurtbox[P2.character][P2.proj[l].frame][k][0][1]+int(P2.proj[l].y);
+                        temp4[0]=hurtbox[P2.character][P2.proj[l].frame][k][1][0]+int(P2.proj[l].x);
+                        temp4[1]=hurtbox[P2.character][P2.proj[l].frame][k][1][1]+int(P2.proj[l].y);
+                    }
+                    else{
+                        temp3[0]=-hurtbox[P2.character][P2.proj[l].frame][k][1][0]+int(P2.proj[l].x);
+                        temp3[1]=hurtbox[P2.character][P2.proj[l].frame][k][0][1]+int(P2.proj[l].y);
+                        temp4[0]=-hurtbox[P2.character][P2.proj[l].frame][k][0][0]+int(P2.proj[l].x);
+                        temp4[1]=hurtbox[P2.character][P2.proj[l].frame][k][1][1]+int(P2.proj[l].y);
+                    }
+                }
+                if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){P1.proj[j].hitcount--;P2.proj[j].hitcount--;break;}
+                    }
+                }
+            }
+            }
+    }
+
+    if(P1.meter>1000)P1.meter=1000;
+    if(P2.meter>1000)P2.meter=1000;
+
+    while((P1.x+*bgx<32&&P2.x+*bgx<224)||(P2.x+*bgx<32&&P1.x+*bgx<224)){
+            if(*bgx<125)*bgx+=1;
+            else break;
+    }
+    while((P1.x+*bgx>224&&P2.x+*bgx>32)||(P2.x+*bgx>224&&P1.x+*bgx>32)){
+            if(*bgx>-119)*bgx-=1;
+            else break;
+    }
+    while(P1.x+*bgx<11)P1.x++;
+    while(P1.x+*bgx>245)P1.x--;
+    while(P2.x+*bgx<11)P2.x++;
+    while(P2.x+*bgx>245)P2.x--;
+    if(P1.hitstopped>0)P1.hitstopped--;
+    if(P2.hitstopped>0)P2.hitstopped--;
+    #undef P1
+    #undef P2
+}
+
+void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player *p1,player *p2,superflash sf,healthbar hb,meterbar mb,timeui time,comboui cui,inputlist p1ilist,inputlist p2ilist,
+            charactergraphics p1graphics,charactergraphics p2graphics,charactergraphics p1shadow,charactergraphics p2shadow,menu menus,sf::Shader &shader,textbox tbox,
+            sf::Text combotext,sf::Text dtext,sf::Text frametext,std::deque<char>p1keylist,std::deque<char>p2keylist,short framedata,std::string dialogue,float bgx,short superstop,
+            bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture){
+    #define P1 (*p1)
+    #define P2 (*p2)
+
+    box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2,P_Hitbox1[8],P_Hitbox2[8];
+    collisionbox1.create(P1.x+bgx,int(P1.y),colbox[P1.character][P1.col],P1.right,1,sf::Color::White);
+    collisionbox2.create(P2.x+bgx,int(P2.y),colbox[P2.character][P2.col],P2.right,1,sf::Color::White);
+    Hurtbox1.create(P1.x+bgx,int(P1.y),hurtbox[P1.character][P1.frame],P1.right,hurtboxcount[P1.character][P1.frame],sf::Color::Blue);
+    Hitbox1.create(P1.x+bgx,int(P1.y),hitbox[P1.character][P1.hbframe],P1.right,hitboxcount[P1.character][P1.hbframe],sf::Color::Red);
+    Hurtbox2.create(P2.x+bgx,int(P2.y),hurtbox[P2.character][P2.frame],P2.right,hurtboxcount[P2.character][P2.frame],sf::Color::Blue);
+    Hitbox2.create(P2.x+bgx,int(P2.y),hitbox[P2.character][P2.hbframe],P2.right,hitboxcount[P2.character][P2.hbframe],sf::Color::Red);
+    for(short i=0;i<P1.proj.size();i++)P_Hitbox1[i].create(P1.proj[i].x+bgx,int(P1.proj[i].y),hurtbox[P1.character][P1.proj[i].frame],P1.proj[i].right,hurtboxcount[P1.character][P1.proj[i].frame],sf::Color::Red);
+    for(short i=0;i<P2.proj.size();i++)P_Hitbox2[i].create(P2.proj[i].x+bgx,int(P2.proj[i].y),hurtbox[P2.character][P2.proj[i].frame],P2.proj[i].right,hurtboxcount[P2.character][P2.proj[i].frame],sf::Color::Red);
+
+    if(superstop>0){if(P1.super)sf.create(superstop,P1.y-8);else if(P2.super)sf.create(superstop,P2.y-8);}
+    /*
+    if(combo>1&&cui.slide==0&&cui.slide2==0){cui.slide=64;cui.slide2=12;}
+    if(cui.slide>0)cui.slide-=cui.slide2--;
+    if(cui.slide<0){cui.slide=0;}
+    if(cui.slide==0&&combo==0)cui.slide2=0;
+    */
+    std::string tempstr;
+    tempstr = std::to_string(combo);
+    combotext.setString(tempstr);
+    combotext.setOrigin({32,0});
+    if(framedata<0){tempstr = std::to_string(-framedata);tempstr="-"+tempstr;}
+    else {tempstr = std::to_string(framedata);}
+    frametext.setString(tempstr);
+    frametext.setOrigin({32,0});
+    if (combo>1)cui.create(P2.comboed||P2.kdowned);
+
+
+
+    p1ilist.create(p1keylist,true);p2ilist.create(p2keylist,false);hb.create(P1.hp,P2.hp);mb.create(P1.meter,P2.meter);
+
+
+    healthui.setPosition({0.f,8.f});
+    sf.setPosition({0,0});hb.setPosition({0,8});
+    if(P2.comboed||P2.kdowned)combotext.setPosition({36.f/*-cui.slide*/,33.f});
+    else combotext.setPosition({248.f/*+cui.slide*/,33.f});cui.setPosition({0,8});
+    p1graphics.setPosition({int(P1.x)-64+bgx,int(P1.y-64)});p1shadow.setPosition({int(P1.x)-64+bgx,184+(P1.y-176)/8});
+    p2graphics.setPosition({int(P2.x)-64+bgx,int(P2.y-64)});p2shadow.setPosition({int(P2.x)-64+bgx,184+(P2.y-176)/8});
+    background.setPosition({int(bgx)-125,0.f});frametext.setPosition({125,33.f});
+
+
+    sf::RectangleShape blackscreen({256.f, 240.f});blackscreen.setFillColor(sf::Color(0,0,0,170));
+
+    p1graphics.setanim(P1.anim,P1.right);p2graphics.setanim(P2.anim,P2.right);p1shadow.setanim(P1.anim,P1.right);p2shadow.setanim(P2.anim,P2.right);
+
+
+    window.clear();renderTexture.clear();
+    renderTexture.draw(background);renderTexture.draw(p1shadow);renderTexture.draw(p2shadow);
+
+    if(superstop>0){renderTexture.draw(blackscreen);renderTexture.draw(sf);}
+
+    if(P1.hit)playertop=true;else if(P2.hit) playertop=false;
+
+    shader.setUniform("texture", sf::Shader::CurrentTexture);
+
+
+    if(playertop){
+        if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
+        shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+        shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+        shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+        if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
+        renderTexture.draw(p1graphics,&shader);
+        if(!P1.proj.empty()){
+        charactergraphics p_graphics[P1.proj.size()];
+            for(short i=0;i<P1.proj.size();i++){
+                p_graphics[i].load(p1texture,false);
+                p_graphics[i].setanim(animlib[P1.character][P1.proj[i].frame],P1.proj[i].right);
+                p_graphics[i].setPosition({int(P1.proj[i].x-64+bgx),int(P1.proj[i].y-64)});
+                renderTexture.draw(p_graphics[i],&shader);
+            }
+        }
+    }
+
+    if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
+    shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
+    shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
+    shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));
+    if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
+    renderTexture.draw(p2graphics,&shader);
+    if(!P2.proj.empty()){
+    charactergraphics p_graphics[P2.proj.size()];
+        for(short i=0;i<P2.proj.size();i++){
+            p_graphics[i].load(p2texture,false);
+            p_graphics[i].setanim(animlib[P2.character][P2.proj[i].frame],P2.proj[i].right);
+            p_graphics[i].setPosition({int(P2.proj[i].x-64+bgx),int(P2.proj[i].y-64)});
+            renderTexture.draw(p_graphics[i],&shader);
+        }
+    }
+
+    if(!playertop){
+        if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
+        shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+        shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+        shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+        if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
+        renderTexture.draw(p1graphics,&shader);
+        if(!P1.proj.empty()){
+        charactergraphics p_graphics[P1.proj.size()];
+            for(short i=0;i<P1.proj.size();i++){
+                p_graphics[i].load(p1texture,false);
+                p_graphics[i].setanim(animlib[P1.character][P1.proj[i].frame],P1.proj[i].right);
+                p_graphics[i].setPosition({int(P1.proj[i].x-64+bgx),int(P1.proj[i].y-64)});
+                renderTexture.draw(p_graphics[i],&shader);
+            }
+        }
+    }
+
+
+    for(short i=0;i<effectslist.size();i++)renderTexture.draw(effectslist[i]);
+
+
+    renderTexture.draw(hb);renderTexture.draw(healthui);
+
+    meterui.setPosition({0,208});meterui.setScale({1.0f,1.0f});renderTexture.draw(meterui);
+    meterui.setPosition({256,208});meterui.setScale({-1.0f,1.0f});renderTexture.draw(meterui);
+    renderTexture.draw(mb);
+
+    if(roundframecount/60<99)time.timeset(99-roundframecount/60);
+    else time.timeset(0);
+    time.setPosition({0,8});renderTexture.draw(time);
+
+    time.timeset(P1.meter/100);time.setPosition({-107,208});renderTexture.draw(time);
+    time.timeset(P2.meter/100);time.setPosition({109,208});renderTexture.draw(time);
+
+
+    if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
+
+    if(combo>1){renderTexture.draw(cui);renderTexture.draw(combotext);}
+
+    if(!dialogue.empty()){renderTexture.draw(tbox);renderTexture.draw(dtext);}
+
+    if(framedatashow)renderTexture.draw(frametext);
+
+    if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}renderTexture.display();
+    const sf::Texture& texture = renderTexture.getTexture();sf::Sprite rt(texture);
+
+    window.draw(rt);
+
+    if(seeboxes){
+        window.draw(collisionbox1);window.draw(collisionbox2);
+        if(P1.iframes==0)window.draw(Hurtbox1);if(P2.iframes==0)window.draw(Hurtbox2);
+        window.draw(Hitbox1);window.draw(Hitbox2);
+        for(short i=0;i<P1.proj.size();i++)window.draw(P_Hitbox1[i]);
+        for(short i=0;i<P2.proj.size();i++)window.draw(P_Hitbox2[i]);
+    }
+    #undef P1
+    #undef P2
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({256,240}), "Prosaic at Best");
@@ -3266,28 +3588,18 @@ int main()
     auto localip2=sf::IpAddress::getLocalAddress();
     sf::IpAddress localip(172,30,1,42);
     unsigned short port=53333;
-    char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0';
+    char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
+    menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
     std::deque<char>p1irecord[5],p2irecord[5];
     short menuselect=0;
     bool gamequit=false;
-    float screenWidth = 256.f,screenHeight = 240.f;
     std::string dialogue;
     sf::Shader shader;
     if (!shader.loadFromFile("shader.frag",sf::Shader::Type::Fragment)){}
 
 
     while(window.isOpen()){
-        while (event = window.pollEvent()){
-                    if (event->is<sf::Event::Closed>()){window.close();gamequit=true;}
-                    if(event->is<sf::Event::FocusGained>())screenfocused=true;
-                    else if(event->is<sf::Event::FocusLost>())screenfocused=false;
-            }
-
-        sf::Vector2u size = window.getSize();
-        float  heightRatio = screenHeight / screenWidth,widthRatio = screenWidth / screenHeight;
-        if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
-        else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
-        window.setSize(size);
+        windowset(window,&gamequit);
 
         keypresscheck(lightkey1,&menuconfirm);
         keypresscheck(upkey1,&menuup);
@@ -3314,39 +3626,52 @@ int main()
         characterselect charselect;
         if (!charselect.load("charactericon.png")){}
         charselect.setcharselect(4,2,32,144);
-        short menux=0,menuy=0;
+        short menux=0,menuy=0,menux2=3,menuy2=0;
         while (window.isOpen()&&!gamequit){
-            sf::Vector2u size = window.getSize();
-            float  heightRatio = screenHeight / screenWidth,widthRatio = screenWidth / screenHeight;
-            if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
-            else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
-            window.setSize(size);
-            while (event = window.pollEvent()){
-                    if (event->is<sf::Event::Closed>()){window.close();gamequit=true;}
-                    if(event->is<sf::Event::FocusGained>())screenfocused=true;
-                    else if(event->is<sf::Event::FocusLost>())screenfocused=false;
-            }
-            keypresscheck(lightkey1,&menuconfirm);
-            keypresscheck(mediumkey1,&menucancel);
-            keypresscheck(upkey1,&menuup);
-            keypresscheck(downkey1,&menudown);
-            keypresscheck(leftkey1,&menuleft);
-            keypresscheck(rightkey1,&menuright);
+            windowset(window,&gamequit);
+
+            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+            keypresscheck(lightkey2,&menuconfirm2);keypresscheck(mediumkey2,&menucancel2);
+            keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
+            keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
             keypresscheck(heavykey1,&colorkey);
-            if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}
-            if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
-            if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}
-            if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
-            if(menuconfirm=='2')break;
-            if(menucancel=='2'){gamequit=true;break;}
-            charselect.setselect(4,2,menux,menuy);
-            if(colorkey=='2'){if(p1color>8)p1color=0;else p1color++;}
-            sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f});
+            keypresscheck(heavykey2,&colorkey2);
+
+
+            if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
+            if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
+
+            if(menuright2=='2'&&menuleft2!='2'){menux2++;if(menux2>3)menux2=0;}if(menuright2!='2'&&menuleft2=='2'){menux2--;if(menux2<0)menux2=3;}
+            if(menudown2=='2'&&menuup2!='2'){menuy2++;if(menuy2>1)menuy2=0;}if(menudown2!='2'&&menuup2=='2'){menuy2--;if(menuy2<0)menuy2=1;}
+
+            if(menuconfirm=='2')break;if(menucancel=='2'){gamequit=true;break;}if(menuconfirm2=='2')break;if(menucancel2=='2'){gamequit=true;break;}
+
+            charselect.setselect(4,2,menux,menuy,menux2,menuy2);
+
+            if(colorkey=='2'){
+                    if(p1color>8)p1color=0;
+                    else p1color++;
+                    if(p1color==p2color){p1color++;if(p1color>8)p1color=0;}
+            }
+            if(colorkey2=='2'){
+                    if(p2color>8)p2color=0;
+                    else p2color++;
+                    if(p1color==p2color){p2color++;if(p2color>8)p2color=0;}
+            }
+
+            sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f}),crect4({32.f, 32.f}),crect5({32.f, 32.f}),crect6({32.f, 32.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
             crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
             crect2.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
             crect3.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));
-            rect2.setPosition({0,128});crect1.setPosition({48,0});crect2.setPosition({80,0});crect3.setPosition({112,0});
+            crect4.setFillColor(sf::Color(170*((colorpalettes[p2color][0]/4)%2) + 85*(colorpalettes[p2color][0]/8), (1-(colorpalettes[p2color][0]==6)/3.0)*170*((colorpalettes[p2color][0]/2)%2) + 85*(colorpalettes[p2color][0]/8), 170*(colorpalettes[p2color][0]%2) + 85*(colorpalettes[p2color][0]/8)));
+            crect5.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));
+            crect6.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));
+            rect2.setPosition({0,128});
+            crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
+            crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("stage1.png")){}
             sf::Sprite bg(bgtexture);
@@ -3354,11 +3679,10 @@ int main()
 
             window.clear();
             renderTexture.clear();
-            renderTexture.draw(bg);
-            renderTexture.draw(rect);
-            renderTexture.draw(rect2);
-            renderTexture.draw(charselect);
+            renderTexture.draw(bg);renderTexture.draw(rect);
+            renderTexture.draw(rect2);renderTexture.draw(charselect);
             renderTexture.draw(crect1);renderTexture.draw(crect2);renderTexture.draw(crect3);
+            renderTexture.draw(crect4);renderTexture.draw(crect5);renderTexture.draw(crect6);
             renderTexture.display();
             const sf::Texture& texture = renderTexture.getTexture();
             sf::Sprite rt(texture);
@@ -3376,7 +3700,7 @@ int main()
             player p1,p2;
 
             p1.character=menux+menuy*4;
-            p2.character=0;
+            p2.character=menux2+menuy2*4;
             superflash sf;
             healthbar hb;
             meterbar mb;
@@ -3389,6 +3713,7 @@ int main()
             if(!bgtexture.loadFromFile("stage1.png")||!hutexture.loadFromFile("health_ui.png")){window.close();gamequit=true;}
             if(!p1texture.loadFromFile("char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;
+            textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
@@ -3432,16 +3757,7 @@ int main()
 
 
             while (window.isOpen()&&!gamequit){
-                while (event = window.pollEvent()){
-                    if (event->is<sf::Event::Closed>()){window.close();gamequit=true;}
-                    if(event->is<sf::Event::FocusGained>())screenfocused=true;
-                    else if(event->is<sf::Event::FocusLost>())screenfocused=false;
-                }
-                sf::Vector2u size = window.getSize();
-                heightRatio = screenHeight / screenWidth;widthRatio = screenWidth / screenHeight;
-                if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
-                else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
-                window.setSize(size);
+                windowset(window,&gamequit);
 
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2)){if(!F2key){F2key=true;if(framedatashow)framedatashow=false;else framedatashow=true;}}else F2key=false;
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
@@ -3451,192 +3767,35 @@ int main()
                 inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
                 inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
 
+                if((!pause||(pause&&nextframe))){//main match code stuff
+                    dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
+                    ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
+                    if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
+                    if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
 
+                    dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);
+                    ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
+                    if(dirkeys2.size()>20)dirkeys2.pop_back();if(ukey2.size()>20)ukey2.pop_back();
+                    if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
 
-                if((!pause||(pause&&nextframe))){
-                    dirkeys.push_front(p1input[0]);
-                    ukey.push_front(p1input[1]);
-                    ikey.push_front(p1input[2]);
-                    okey.push_front(p1input[3]);
-                    kkey.push_front(p1input[4]);
-                    if(dirkeys.size()>20)dirkeys.pop_back();
-                    if(ukey.size()>20)ukey.pop_back();
-                    if(ikey.size()>20)ikey.pop_back();
-                    if(okey.size()>20)okey.pop_back();
-                    if(kkey.size()>20)kkey.pop_back();
-
-                    dirkeys2.push_front(p2input[0]);
-                    ukey2.push_front(p2input[1]);
-                    ikey2.push_front(p2input[2]);
-                    okey2.push_front(p2input[3]);
-                    kkey2.push_front(p2input[4]);
-                    if(dirkeys2.size()>20)dirkeys2.pop_back();
-                    if(ukey2.size()>20)ukey2.pop_back();
-                    if(ikey2.size()>20)ikey2.pop_back();
-                    if(okey2.size()>20)okey2.pop_back();
-                    if(kkey2.size()>20)kkey2.pop_back();
-
-                }
-                if((!pause||(pause&&nextframe))){
                     nextframe=false;
-                    if(roundwait<=0)break;
-                    else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                    if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                    matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&bgx,&framedata,overlap,overlap2);
+                    if(training&&combo==0&&p1.hp<p1.maxhp)p1.hp+=10;if(training&&combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
 
-                    if(p1.hp>0&&p2.hp>0&&roundframecount/60<99&&dialogue.empty()){//input to action code and roundframe counter
-                        if(p1.buffer==0&&!p1.animq.empty()){
-                            p1.buffer=chooseaction(p1.character,1,p1.air,p1input,p1.meter);
-                            if(p1.cancel[p1.buffer]==false&&p1.animq.size()>10)p1.buffer=0;
-                            else if((p1.buffer>0&&p1.buffer<8)||p1.buffer==11||p1.buffer==20||(p1.air&&p1.jumpy<5))p1.buffer=0;
+                    if(superstop>0)superstop--;
+
+                    if(!training){
+                        for(short i=0;i<5;i++){
+                        p1irecord[i].push_back(p1input[i]);
+                        p2irecord[i].push_back(p2input[i]);
                         }
-                        if(p2.buffer==0&&!p2.animq.empty()){
-                                p2.buffer=chooseaction(p2.character,2,p2.air,p2input,p2.meter);
-                                if(p2.cancel[p2.buffer]==false&&p2.animq.size()>10)p2.buffer=0;
-                                else if((p2.buffer>0&&p2.buffer<8)||p2.buffer==11||p2.buffer==20||(p2.air&&p2.jumpy<5))p2.buffer=0;
-                        }
-                        if(p1.buffer==0){
-                            short temp=chooseaction(p1.character,1,p1.air,p1input,p1.meter);
-                            if(temp!=p1.act)p1.idleanim.clear();
-                            p1.act=temp;
-                        }
-                        else if(!p1.animq.empty()&&!p1.whiff)p1.act=p1.buffer;
-                        if(p1.animq.empty()){if(!p1.whiff){p1.act=p1.buffer;}p1.buffer=0;}
-
-                        if(p2.buffer==0){
-                            short temp=chooseaction(p2.character,2,p2.air,p2input,p2.meter);
-                            if(temp!=p2.act)p2.idleanim.clear();
-                            p2.act=temp;
-                        }
-                        else if(!p2.animq.empty()&&!p2.whiff)p2.act=p2.buffer;
-                        if(p2.animq.empty()){if(!p2.whiff){p2.act=p2.buffer;}p2.buffer=0;}
-
-
-                        if(!training){
-                            for(short i=0;i<5;i++){
-                            p1irecord[i].push_back(p1input[i]);
-                            p2irecord[i].push_back(p2input[i]);
-                            }
-                            roundframecount++;
-                        }
+                        roundframecount++;
                     }
-                    else{p1.act=0;p2.act=0;}
-
-                    //make an attack clashing system at some point
-                    if(p1.hit){
-                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,&p2.pushaway,p2.grabstate,&superstop,p2.character,p2.gimmick);
-                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,&p1.pushaway,p1.grabstate,&superstop,p1.character,p1.gimmick);
-                                        }
-                    else{
-                        if(p2.hitstopped==0&&superstop==0)characterdata(&p2,p1.x,p1.y,&p1.pushaway,p1.grabstate,&superstop,p1.character,p1.gimmick);
-                        if(p1.hitstopped==0&&superstop==0)characterdata(&p1,p2.x,p2.y,&p2.pushaway,p2.grabstate,&superstop,p2.character,p2.gimmick);
-                                        }
-                    if(!p1.proj.empty())projectiledata(&p1,superstop);
-                    if(!p2.proj.empty())projectiledata(&p2,superstop);
-                    if(combo==0)comboscaling=100;
-                    if(training&&combo==0&&p1.hp<p1.maxhp)p1.hp+=10;
-                    if(training&&combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
-                    if(p1.hp>p1.maxhp)p1.hp=p1.maxhp;
-                    if(p2.hp>p2.maxhp)p2.hp=p2.maxhp;
-                    if(comboscaling<20)comboscaling=20;
-                    float temp[2]={},temp2[2]={},temp3[2]={},temp4[2]={};
-                    if(p1.right==true){
-                        temp[0]=colbox[p1.character][p1.col][0][0][0]+int(p1.x);
-                        temp2[0]=colbox[p1.character][p1.col][0][1][0]+int(p1.x);
-                    }
-                    else{
-                        temp[0]=-colbox[p1.character][p1.col][0][1][0]+int(p1.x);
-                        temp2[0]=-colbox[p1.character][p1.col][0][0][0]+int(p1.x);
-
-                    }
-                    temp[1]=colbox[p1.character][p1.col][0][0][1]+int(p1.y);
-                    temp2[1]=colbox[p1.character][p1.col][0][1][1]+int(p1.y);
-                    if(p2.right==true){
-                        temp3[0]=colbox[p2.character][p2.col][0][0][0]+int(p2.x);
-                        temp4[0]=colbox[p2.character][p2.col][0][1][0]+int(p2.x);
-                    }
-                    else{
-                        temp3[0]=-colbox[p2.character][p2.col][0][1][0]+int(p2.x);
-                        temp4[0]=-colbox[p2.character][p2.col][0][0][0]+int(p2.x);
-                    }
-                    temp3[1]=colbox[p2.character][p2.col][0][0][1]+int(p2.y);
-                    temp4[1]=colbox[p2.character][p2.col][0][1][1]+int(p2.y);
-                    while(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
-                        if(p1.x<p2.x){
-                            p1.x-=1;
-                            temp[0]-=1;
-                            p2.x+=1;
-                            temp3[0]+=1;
-                        }
-                        else{
-                            p1.x+=1;
-                            temp[0]+=1;
-                            p2.x-=1;
-                            temp3[0]-=1;
-                        }
-                    }
-
-                    if(superstop==0)collisionchecks(&p1,&p2,overlap,&framedata);
-                    if(superstop==0)collisionchecks(&p2,&p1,overlap2,&framedata);
-
-
-                    //projectile collision
-                    for(short j=0;j<p1.proj.size();j++){
-                            if(p1.proj[j].hitstopped==0){
-                            for(short i=0;i<hurtboxcount[p1.character][p1.proj[j].frame];i++){
-                            if(p1.proj[j].right==true){
-                                temp[0]=hurtbox[p1.character][p1.proj[j].frame][i][0][0]+int(p1.proj[j].x);
-                                temp[1]=hurtbox[p1.character][p1.proj[j].frame][i][0][1]+int(p1.proj[j].y);
-                                temp2[0]=hurtbox[p1.character][p1.proj[j].frame][i][1][0]+int(p1.proj[j].x);
-                                temp2[1]=hurtbox[p1.character][p1.proj[j].frame][i][1][1]+int(p1.proj[j].y);
-                            }
-                            else{
-                                temp[0]=-hurtbox[p1.character][p1.proj[j].frame][i][1][0]+int(p1.proj[j].x);
-                                temp[1]=hurtbox[p1.character][p1.proj[j].frame][i][0][1]+int(p1.proj[j].y);
-                                temp2[0]=-hurtbox[p1.character][p1.proj[j].frame][i][0][0]+int(p1.proj[j].x);
-                                temp2[1]=hurtbox[p1.character][p1.proj[j].frame][i][1][1]+int(p1.proj[j].y);
-                            }
-
-                            for(short l=0;l<p2.proj.size();l++){
-                                if(p2.proj[l].hitstopped==0){
-                                for(short k=0;k<hurtboxcount[p2.character][p2.proj[l].frame];k++){
-                                    if(p2.proj[l].right==true){
-                                        temp3[0]=hurtbox[p2.character][p2.proj[l].frame][k][0][0]+int(p2.proj[l].x);
-                                        temp3[1]=hurtbox[p2.character][p2.proj[l].frame][k][0][1]+int(p2.proj[l].y);
-                                        temp4[0]=hurtbox[p2.character][p2.proj[l].frame][k][1][0]+int(p2.proj[l].x);
-                                        temp4[1]=hurtbox[p2.character][p2.proj[l].frame][k][1][1]+int(p2.proj[l].y);
-                                    }
-                                    else{
-                                        temp3[0]=-hurtbox[p2.character][p2.proj[l].frame][k][1][0]+int(p2.proj[l].x);
-                                        temp3[1]=hurtbox[p2.character][p2.proj[l].frame][k][0][1]+int(p2.proj[l].y);
-                                        temp4[0]=-hurtbox[p2.character][p2.proj[l].frame][k][0][0]+int(p2.proj[l].x);
-                                        temp4[1]=hurtbox[p2.character][p2.proj[l].frame][k][1][1]+int(p2.proj[l].y);
-                                    }
-                                }
-                                if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){p1.proj[j].hitcount--;p2.proj[j].hitcount--;break;}
-                                    }
-                                }
-                            }
-                            }
-                    }
-
-                    if(p1.meter>1000)p1.meter=1000;
-                    if(p2.meter>1000)p2.meter=1000;
-
-                    while((p1.x+bgx<32&&p2.x+bgx<224)||(p2.x+bgx<32&&p1.x+bgx<224)){
-                            if(bgx<125)bgx+=1;
-                            else break;
-                    }
-                    while((p1.x+bgx>224&&p2.x+bgx>32)||(p2.x+bgx>224&&p1.x+bgx>32)){
-                            if(bgx>-119)bgx-=1;
-                            else break;
-                    }
-                    while(p1.x+bgx<11)p1.x++;
-                    while(p1.x+bgx>245)p1.x--;
-                    while(p2.x+bgx<11)p2.x++;
-                    while(p2.x+bgx>245)p2.x--;
+                    for(short i=0;i<effectslist.size();i++){effectslist[i].create(bgx);if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
                 }
 
-
-                if(!pause){
+                if(!pause){//trainingkeylist
                     char keytemp=dirkeys[1],keytemp2=p1input[0];
                     if(!p1.right){
                         if(keytemp=='7')keytemp='9';
@@ -3687,50 +3846,18 @@ int main()
                     if(p2keylist.size()>40)for(short i=0;i<5;i++)p2keylist.pop_back();
                 }
 
-                if(p1.hitstopped>0&&(!pause||nextframe))p1.hitstopped--;
-                if(p2.hitstopped>0&&(!pause||nextframe))p2.hitstopped--;
-                if(superstop>0&&(!pause||nextframe))superstop--;
-
-                box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2,P_Hitbox1[8],P_Hitbox2[8];
-                collisionbox1.create(p1.x+bgx,int(p1.y),colbox[p1.character][p1.col],p1.right,1,sf::Color::White);
-                collisionbox2.create(p2.x+bgx,int(p2.y),colbox[p2.character][p2.col],p2.right,1,sf::Color::White);
-                Hurtbox1.create(p1.x+bgx,int(p1.y),hurtbox[p1.character][p1.frame],p1.right,hurtboxcount[p1.character][p1.frame],sf::Color::Blue);
-                Hitbox1.create(p1.x+bgx,int(p1.y),hitbox[p1.character][p1.hbframe],p1.right,hitboxcount[p1.character][p1.hbframe],sf::Color::Red);
-                Hurtbox2.create(p2.x+bgx,int(p2.y),hurtbox[p2.character][p2.frame],p2.right,hurtboxcount[p2.character][p2.frame],sf::Color::Blue);
-                Hitbox2.create(p2.x+bgx,int(p2.y),hitbox[p2.character][p2.hbframe],p2.right,hitboxcount[p2.character][p2.hbframe],sf::Color::Red);
-                for(short i=0;i<p1.proj.size();i++)P_Hitbox1[i].create(p1.proj[i].x+bgx,int(p1.proj[i].y),hurtbox[p1.character][p1.proj[i].frame],p1.proj[i].right,hurtboxcount[p1.character][p1.proj[i].frame],sf::Color::Red);
-                for(short i=0;i<p2.proj.size();i++)P_Hitbox2[i].create(p2.proj[i].x+bgx,int(p2.proj[i].y),hurtbox[p2.character][p2.proj[i].frame],p2.proj[i].right,hurtboxcount[p2.character][p2.proj[i].frame],sf::Color::Red);
-
-                if(superstop>0){if(p1.super)sf.create(superstop,p1.y-8);else if(p2.super)sf.create(superstop,p2.y-8);}
-
-                if(combo>1&&cui.slide==0&&cui.slide2==0){cui.slide=64;cui.slide2=12;}
-                if(cui.slide>0)cui.slide-=cui.slide2--;
-                if(cui.slide<0){cui.slide=0;}
-                if(cui.slide==0&&combo==0)cui.slide2=0;
-                std::string tempstr;
-                tempstr = std::to_string(combo);
-                combotext.setString(tempstr);
-                combotext.setOrigin({32,0});
-                if(framedata<0){tempstr = std::to_string(-framedata);tempstr="-"+tempstr;}
-                else {tempstr = std::to_string(framedata);}
-                frametext.setString(tempstr);
-                frametext.setOrigin({32,0});
-                if (combo>1)cui.create(p2.comboed||p2.kdowned);
-
-                if(!pause||nextframe)
-                for(short i=0;i<effectslist.size();i++){
-                            effectslist[i].create(bgx);
-                            if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);
-                    }
-
-                p1ilist.create(p1keylist,true);
-                p2ilist.create(p2keylist,false);
-                hb.create(p1.hp,p2.hp);
-                mb.create(p1.meter,p2.meter);
-
-                textbox tbox;
-
-                if(!dialogue.empty()){
+                menus.setcolor(6,!pause,menuselect);
+                if(pause){//pause menu
+                    keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                    keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                    if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
+                    else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
+                    if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
+                    else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
+                    else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
+                    else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
+                }
+                if(!dialogue.empty()){//dialogue stuff
                     char temp='$',temp1='1';
                     if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
                     else tbox.create(p2.x+bgx+8,p2.y-16);
@@ -3747,146 +3874,10 @@ int main()
                     dtext.setPosition({16,8});
                 }
 
-                healthui.setPosition({0.f,8.f});
-                sf.setPosition({0,0});
-                hb.setPosition({0,8});
-                if(p2.comboed||p2.kdowned)combotext.setPosition({36.f-cui.slide,33.f});
-                else combotext.setPosition({248.f+cui.slide,33.f});
-                cui.setPosition({0,8});
-                p1graphics.setPosition({int(p1.x)-64+bgx,int(p1.y-64)});
-                p1shadow.setPosition({int(p1.x)-64+bgx,184+(p1.y-176)/8});
-                p2graphics.setPosition({int(p2.x)-64+bgx,int(p2.y-64)});
-                p2shadow.setPosition({int(p2.x)-64+bgx,184+(p2.y-176)/8});
-                background.setPosition({int(bgx)-125,0.f});
-                frametext.setPosition({125,33.f});
-
-                menus.setcolor(6,!pause,menuselect);
-                if(pause){
-                    keypresscheck(lightkey1,&menuconfirm);
-                    keypresscheck(mediumkey1,&menucancel);
-                    keypresscheck(upkey1,&menuup);
-                    keypresscheck(downkey1,&menudown);
-                    if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
-                    else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
-                    if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
-                    else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
-                    else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
-                    else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
-                }
-
-                sf::RectangleShape blackscreen({256.f, 240.f});
-                blackscreen.setFillColor(sf::Color(0,0,0,170));
-
-                p1graphics.setanim(p1.anim,p1.right);
-                p2graphics.setanim(p2.anim,p2.right);
-                p1shadow.setanim(p1.anim,p1.right);
-                p2shadow.setanim(p2.anim,p2.right);
-
-                shader.setUniform("texture", sf::Shader::CurrentTexture);
-                if((p1.character==2&&(p1.gimmick[0]>0||p1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
-
-                shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-                shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-                shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
-
-                if((p1.character==2&&(p1.gimmick[0]>0||p1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
-
-                window.clear();
-                renderTexture.clear();
-                //if(p1.character==2&&(p2.character==2&&p2.gimmick[0]>0))renderTexture.draw(background,&shader);
-                //else
-                renderTexture.draw(background);
-                renderTexture.draw(p1shadow);
-                renderTexture.draw(p2shadow);
-
-                if(superstop>0){renderTexture.draw(blackscreen);renderTexture.draw(sf);}
-
-                if(p1.hit)playertop=true;
-                else if(p2.hit) playertop=false;
-                if(playertop){
-                    renderTexture.draw(p1graphics,&shader);
-                    renderTexture.draw(p2graphics,&shader);
-                }
-                else{
-                    renderTexture.draw(p2graphics,&shader);
-                    renderTexture.draw(p1graphics,&shader);
-                }
-
-                if(!p1.proj.empty()){
-                charactergraphics p_graphics[p1.proj.size()];
-                    for(short i=0;i<p1.proj.size();i++){
-                        p_graphics[i].load(p1texture,false);
-                        p_graphics[i].setanim(animlib[p1.character][p1.proj[i].frame],p1.proj[i].right);
-                        p_graphics[i].setPosition({int(p1.proj[i].x-64+bgx),int(p1.proj[i].y-64)});
-                        renderTexture.draw(p_graphics[i],&shader);
-                    }
-                }
-                if(!p2.proj.empty()){
-                charactergraphics p_graphics[p2.proj.size()];
-                    for(short i=0;i<p2.proj.size();i++){
-                        p_graphics[i].load(p2texture,false);
-                        p_graphics[i].setanim(animlib[p2.character][p2.proj[i].frame],p2.proj[i].right);
-                        p_graphics[i].setPosition({int(p2.proj[i].x-64+bgx),int(p2.proj[i].y-64)});
-                        renderTexture.draw(p_graphics[i],&shader);
-                    }
-                }
-
-                for(short i=0;i<effectslist.size();i++)renderTexture.draw(effectslist[i]);
-
-
-                renderTexture.draw(hb);
-                renderTexture.draw(healthui);
-
-                meterui.setPosition({0,208});
-                meterui.setScale({1.0f,1.0f});
-                renderTexture.draw(meterui);
-                meterui.setPosition({256,208});
-                meterui.setScale({-1.0f,1.0f});
-                renderTexture.draw(meterui);
-                renderTexture.draw(mb);
-
-                if(roundframecount/60<99)time.timeset(99-roundframecount/60);
-                else time.timeset(0);
-                time.setPosition({0,8});
-                renderTexture.draw(time);
-
-                time.timeset(p1.meter/100);
-                time.setPosition({-107,208});
-                renderTexture.draw(time);
-
-                time.timeset(p2.meter/100);
-                time.setPosition({109,208});
-                renderTexture.draw(time);
-
-
-                if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
-
-                if(combo>1){renderTexture.draw(cui);renderTexture.draw(combotext);}
-
-                if(!dialogue.empty())renderTexture.draw(tbox);
-                if(!dialogue.empty())renderTexture.draw(dtext);
-
-                if(framedatashow)renderTexture.draw(frametext);
-
-                if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}
-                renderTexture.display();
-                const sf::Texture& texture = renderTexture.getTexture();
-                sf::Sprite rt(texture);
-
-                window.draw(rt);
-
-                if(seeboxes){
-                    window.draw(collisionbox1);
-                    window.draw(collisionbox2);
-                    if(p1.iframes==0)window.draw(Hurtbox1);
-                    if(p2.iframes==0)window.draw(Hurtbox2);
-                    window.draw(Hitbox1);
-                    window.draw(Hitbox2);
-                    for(short i=0;i<p1.proj.size();i++)window.draw(P_Hitbox1[i]);
-                    for(short i=0;i<p2.proj.size();i++)window.draw(P_Hitbox2[i]);
-                }
+                drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                          dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
+                          background,healthui,meterui,p1texture,p2texture);
                 window.display();
-
 
                 if(online){
                     sf::Packet packet;
@@ -3918,9 +3909,8 @@ int main()
                     //xtemp+=75;
                     //p2.x=xtemp;
                 }
-
-
             }
+
             if(p1.hp>0&&p2.hp<=0)p1.wins++;
             else if(p1.hp<=0&&p2.hp>0)p2.wins++;
             dialogue.erase();
