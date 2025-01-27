@@ -3590,7 +3590,6 @@ int main()
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
-    std::deque<char>p1irecord[5],p2irecord[5];
     short menuselect=0;
     bool gamequit=false;
     std::string dialogue;
@@ -3691,9 +3690,6 @@ int main()
         }
 
         if(!gamequit){
-            bool training=false;
-            bool online=false;
-            bool p2controls=true;
             short rounds=2;
 
             menus.setmenu(6,92,72,0,16,1);
@@ -3725,203 +3721,407 @@ int main()
             std::deque<char>p1keylist,p2keylist;
             short dialoguecnt=0;
 
-            if(menuselect==2){
-                if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
-                online=true;
-                p2controls=false;
+            if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
+            else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
+            if(menuselect==0){//vsmode
+                while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
+                float overlap[2],overlap2[2],bgx=0;
+                    p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;
+                    p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
+                    if(p1.character==2){
+                        p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;
+                    }
+                    if(p2.character==2){
+                        p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;
+                    }
+
+                    p1.meter=100.0;
+                    p2.meter=100.0;
+                short superstop=0,roundwait=90,framedata=0;
+                bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
+                    p1.right=true;
+                    p2.right=false;
+
+
+
+                while (window.isOpen()&&!gamequit){
+                    windowset(window,&gamequit);
+
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2)){if(!F2key){F2key=true;if(framedatashow)framedatashow=false;else framedatashow=true;}}else F2key=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
+
+                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
+                    inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
+
+                    if((!pause||(pause&&nextframe))){//main match code stuff
+                        dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
+                        ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
+                        if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
+                        if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
+
+                        dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);
+                        ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
+                        if(dirkeys2.size()>20)dirkeys2.pop_back();if(ukey2.size()>20)ukey2.pop_back();
+                        if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
+
+                        nextframe=false;
+                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                        matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&bgx,&framedata,overlap,overlap2);
+
+                        if(superstop>0)superstop--;
+                        roundframecount++;
+                        for(short i=0;i<effectslist.size();i++){effectslist[i].create(bgx);if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
+                    }
+
+                    menus.setcolor(6,!pause,menuselect);
+                    if(pause){//pause menu
+                        keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                        keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                        if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
+                        else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
+                        if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
+                        else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
+                        else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
+                        else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
+                    }
+                    if(!dialogue.empty()){//dialogue stuff
+                        char temp='$',temp1='1';
+                        if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
+                        else tbox.create(p2.x+bgx+8,p2.y-16);
+                        dtext.setString(dialogue.substr(1,dialoguecnt));
+                        if(!pause||nextframe){
+                            if(dialogue[dialoguecnt+1]==temp){
+                                if(p1input[1]=='2'||p2input[1]=='2'||p1input[2]!='0'||p2input[2]!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                            }
+                            else{
+                                if(p1input[2]!='0'||p2input[2]!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
+                                else dialoguecnt++;
+                            }
+                        }
+                        dtext.setPosition({16,8});
+                    }
+
+                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
+                              background,healthui,meterui,p1texture,p2texture);
+                    window.display();
                 }
 
-            if(menuselect==3)training=true;
-            else{
-                if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
-                else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
+                if(p1.hp>0&&p2.hp<=0)p1.wins++;
+                else if(p1.hp<=0&&p2.hp>0)p2.wins++;
+                dialogue.erase();
+                effectslist.clear();
+                menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
+                p1.animq.clear();p1.idleanim.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
+                p1.air=false;p1.buffer=0;p1.act=0;p1.kdowned=0;p1.hit=false;
+                p2.animq.clear();p2.idleanim.clear();p2.atkfx.clear();p2.hitboxanim.clear();p2.proj.clear();
+                p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
+                dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
+                dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
+                }
             }
-            while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
-            float overlap[2],overlap2[2],bgx=0;
-                p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;
-                p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
-                if(p1.character==2){
-                    p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;
-                }
-                if(p2.character==2){
-                    p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;
-                }
+            if(menuselect==2){//online
+                std::deque<player> precord;
+                if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
+                while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
+                float overlap[2],overlap2[2],bgx=0;
+                    p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;
+                    p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
+                    if(p1.character==2){
+                        p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;
+                    }
+                    if(p2.character==2){
+                        p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;
+                    }
 
-                p1.meter=100.0;
-                p2.meter=100.0;
-            short superstop=0,roundwait=90,framedata=0;
-            bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
-                p1.right=true;
-                p2.right=false;
+                    p1.meter=100.0;
+                    p2.meter=100.0;
+                short superstop=0,roundwait=90,framedata=0;
+                bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
+                    p1.right=true;
+                    p2.right=false;
 
 
 
-            while (window.isOpen()&&!gamequit){
-                windowset(window,&gamequit);
+                while (window.isOpen()&&!gamequit){
+                    windowset(window,&gamequit);
 
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2)){if(!F2key){F2key=true;if(framedatashow)framedatashow=false;else framedatashow=true;}}else F2key=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2)){if(!F2key){F2key=true;if(framedatashow)framedatashow=false;else framedatashow=true;}}else F2key=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
+                    //if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
-                inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
-                inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
+                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
+                    //inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
 
-                if((!pause||(pause&&nextframe))){//main match code stuff
+                    //main match code stuff
                     dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
                     ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
-                    if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
-                    if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
+                    if(dirkeys.size()>64)dirkeys.pop_back();if(ukey.size()>64)ukey.pop_back();
+                    if(ikey.size()>64)ikey.pop_back();if(okey.size()>64)okey.pop_back();if(kkey.size()>64)kkey.pop_back();
 
                     dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);
                     ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
-                    if(dirkeys2.size()>20)dirkeys2.pop_back();if(ukey2.size()>20)ukey2.pop_back();
-                    if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
+                    if(dirkeys2.size()>64)dirkeys2.pop_back();if(ukey2.size()>64)ukey2.pop_back();
+                    if(ikey2.size()>64)ikey2.pop_back();if(okey2.size()>64)okey2.pop_back();if(kkey2.size()>64)kkey2.pop_back();
 
                     nextframe=false;
                     if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                     matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&bgx,&framedata,overlap,overlap2);
-                    if(training&&combo==0&&p1.hp<p1.maxhp)p1.hp+=10;if(training&&combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
 
                     if(superstop>0)superstop--;
 
-                    if(!training){
-                        for(short i=0;i<5;i++){
-                        p1irecord[i].push_back(p1input[i]);
-                        p2irecord[i].push_back(p2input[i]);
-                        }
-                        roundframecount++;
-                    }
+                    roundframecount++;
+
                     for(short i=0;i<effectslist.size();i++){effectslist[i].create(bgx);if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
-                }
-
-                if(!pause){//trainingkeylist
-                    char keytemp=dirkeys[1],keytemp2=p1input[0];
-                    if(!p1.right){
-                        if(keytemp=='7')keytemp='9';
-                        else if(keytemp=='9')keytemp='7';
-                        else if(keytemp=='4')keytemp='6';
-                        else if(keytemp=='6')keytemp='4';
-                        else if(keytemp=='3')keytemp='1';
-                        else if(keytemp=='1')keytemp='3';
-                        if(keytemp2=='7')keytemp2='9';
-                        else if(keytemp2=='9')keytemp2='7';
-                        else if(keytemp2=='4')keytemp2='6';
-                        else if(keytemp2=='6')keytemp2='4';
-                        else if(keytemp2=='3')keytemp2='1';
-                        else if(keytemp2=='1')keytemp2='3';
-                    }
-
-                    if(keytemp2!=keytemp)p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
-                    if(p1input[1]=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
-                    if(p1input[2]=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
-                    if(p1input[3]=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
-                    if(p1input[4]=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
-                    if(p1keylist[0]=='0'&&p1keylist[1]=='0'&&p1keylist[2]=='0'&&p1keylist[3]=='0'&&p1keylist[4]=='0')for(short i=0;i<5;i++)p1keylist.pop_front();
-                    if(p1keylist.size()>40)for(short i=0;i<5;i++)p1keylist.pop_back();
 
 
-                    keytemp=dirkeys2[1],keytemp2=p2input[0];
-                    if(!p2.right){
-                        if(keytemp=='7')keytemp='9';
-                        else if(keytemp=='9')keytemp='7';
-                        else if(keytemp=='4')keytemp='6';
-                        else if(keytemp=='6')keytemp='4';
-                        else if(keytemp=='3')keytemp='1';
-                        else if(keytemp=='1')keytemp='3';
-                        if(keytemp2=='7')keytemp2='9';
-                        else if(keytemp2=='9')keytemp2='7';
-                        else if(keytemp2=='4')keytemp2='6';
-                        else if(keytemp2=='6')keytemp2='4';
-                        else if(keytemp2=='3')keytemp2='1';
-                        else if(keytemp2=='1')keytemp2='3';
-                    }
 
-                    if(keytemp2!=keytemp)p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
-                    if(p2input[1]=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
-                    if(p2input[2]=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
-                    if(p2input[3]=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
-                    if(p2input[4]=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
-                    if(p2keylist[0]=='0'&&p2keylist[1]=='0'&&p2keylist[2]=='0'&&p2keylist[3]=='0'&&p2keylist[4]=='0')for(short i=0;i<5;i++)p2keylist.pop_front();
-                    if(p2keylist.size()>40)for(short i=0;i<5;i++)p2keylist.pop_back();
-                }
-
-                menus.setcolor(6,!pause,menuselect);
-                if(pause){//pause menu
-                    keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
-                    keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
-                    if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
-                    else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
-                    if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
-                    else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
-                    else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
-                    else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
-                }
-                if(!dialogue.empty()){//dialogue stuff
-                    char temp='$',temp1='1';
-                    if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
-                    else tbox.create(p2.x+bgx+8,p2.y-16);
-                    dtext.setString(dialogue.substr(1,dialoguecnt));
-                    if(!pause||nextframe){
-                        if(dialogue[dialoguecnt+1]==temp){
-                            if(p1input[1]=='2'||p2input[1]=='2'||p1input[2]!='0'||p2input[2]!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                    if(!dialogue.empty()){//dialogue stuff
+                        char temp='$',temp1='1';
+                        if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
+                        else tbox.create(p2.x+bgx+8,p2.y-16);
+                        dtext.setString(dialogue.substr(1,dialoguecnt));
+                        if(!pause||nextframe){
+                            if(dialogue[dialoguecnt+1]==temp){
+                                if(p1input[1]=='2'||p2input[1]=='2'||p1input[2]!='0'||p2input[2]!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                            }
+                            else{
+                                if(p1input[2]!='0'||p2input[2]!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
+                                else dialoguecnt++;
+                            }
                         }
-                        else{
-                            if(p1input[2]!='0'||p2input[2]!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
-                            else dialoguecnt++;
-                        }
+                        dtext.setPosition({16,8});
                     }
-                    dtext.setPosition({16,8});
-                }
 
-                drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
-                          dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
-                          background,healthui,meterui,p1texture,p2texture);
-                window.display();
+                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
+                              background,healthui,meterui,p1texture,p2texture);
+                    window.display();
 
-                if(online){
+
                     sf::Packet packet;
-                    std::uint8_t dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
-                    temp=p1.y;
+                    std::uint8_t dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp=roundframecount;
+                    //temp=p1.y;
                     packet<<temp<<dir<<U<<I<<O<<K;
-                    len=p1.animq.size();packet<<len;for(short i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
-                    len=p1.hitboxanim.size();packet<<len;for(short i=0;i<len;i++){temp=p1.hitboxanim[i];packet<<temp;}
-                    len=dirkeys.size();packet<<len;for(short i=0;i<len;i++){temp=dirkeys[i];packet<<temp;}
-                    len=ukey.size();packet<<len;for(short i=0;i<len;i++){temp=ukey[i];packet<<temp;}
-                    len=ikey.size();packet<<len;for(short i=0;i<len;i++){temp=ikey[i];packet<<temp;}
-                    len=okey.size();packet<<len;for(short i=0;i<len;i++){temp=okey[i];packet<<temp;}
-                    len=kkey.size();packet<<len;for(short i=0;i<len;i++){temp=kkey[i];packet<<temp;}
+                    //len=p1.animq.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
+                    //len=p1.hitboxanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.hitboxanim[i];packet<<temp;}
+                    len=dirkeys.size();if(len>20)len=20;packet<<len;for(unsigned char i=0;i<len;i++){temp=dirkeys[i];packet<<temp;}
+                    len=ukey.size();if(len>20)len=20;packet<<len;for(unsigned char i=0;i<len;i++){temp=ukey[i];packet<<temp;}
+                    len=ikey.size();if(len>20)len=20;packet<<len;for(unsigned char i=0;i<len;i++){temp=ikey[i];packet<<temp;}
+                    len=okey.size();if(len>20)len=20;packet<<len;for(unsigned char i=0;i<len;i++){temp=okey[i];packet<<temp;}
+                    len=kkey.size();if(len>20)len=20;packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey[i];packet<<temp;}
 
                     if(socket.send(packet,localip,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
                     if(socket.receive(packet,localip2,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
 
                     //float xtemp=0;
                     packet>>temp>>dir>>U>>I>>O>>K;
-                    p2.y=temp;
+                    //p2.y=temp;
+                    short onlineframe=temp;
                     p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
-                    packet>>len;p2.animq.clear();for(short i=0;i<len;i++){packet>>temp;p2.animq.push_back(temp);}
-                    packet>>len;p2.hitboxanim.clear();for(short i=0;i<len;i++){packet>>temp;p2.hitboxanim.push_back(temp);}
-                    packet>>len;dirkeys2.clear();for(short i=0;i<len;i++){packet>>temp;dirkeys2.push_back(temp);}
-                    packet>>len;ukey2.clear();for(short i=0;i<len;i++){packet>>temp;ukey2.push_back(temp);}
-                    packet>>len;ikey2.clear();for(short i=0;i<len;i++){packet>>temp;ikey2.push_back(temp);}
-                    packet>>len;okey2.clear();for(short i=0;i<len;i++){packet>>temp;okey2.push_back(temp);}
-                    packet>>len;kkey2.clear();for(short i=0;i<len;i++){packet>>temp;kkey2.push_back(temp);}
+                    //packet>>len;p2.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;p2.animq.push_back(temp);}
+                    //packet>>len;p2.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;p2.hitboxanim.push_back(temp);}
+                    packet>>len;dirkeys2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dirkeys2.push_back(temp);}
+                    packet>>len;ukey2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ukey2.push_back(temp);}
+                    packet>>len;ikey2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ikey2.push_back(temp);}
+                    packet>>len;okey2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;okey2.push_back(temp);}
+                    packet>>len;kkey2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;kkey2.push_back(temp);}
                     //xtemp+=75;
                     //p2.x=xtemp;
+                    char onlineinput[5]={};
+                    onlineinput[0]=char(dir);onlineinput[1]=char(U);onlineinput[2]=char(I);onlineinput[3]=char(O);onlineinput[4]=char(K);
+
+                    /*for(short i=onlineframe;i<=roundframecount;i++){
+                        p1input[0]=dirkeys[roundframecount-i];
+                        p1input[1]=ukey[roundframecount-i];p1input[2]=ikey[roundframecount-i];
+                        p1input[3]=okey[roundframecount-i];p1input[4]=kkey[roundframecount-i];
+
+                        //main match code stuff
+                        //dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
+                        //ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
+                        //if(dirkeys.size()>64)dirkeys.pop_back();if(ukey.size()>64)ukey.pop_back();
+                        //if(ikey.size()>64)ikey.pop_back();if(okey.size()>64)okey.pop_back();if(kkey.size()>64)kkey.pop_back();
+
+                        dirkeys2.push_front(onlineinput[0]);ukey2.push_front(onlineinput[1]);
+                        ikey2.push_front(onlineinput[2]);okey2.push_front(onlineinput[3]);kkey2.push_front(onlineinput[4]);
+                        if(dirkeys2.size()>64)dirkeys2.pop_back();if(ukey2.size()>64)ukey2.pop_back();
+                        if(ikey2.size()>64)ikey2.pop_back();if(okey2.size()>64)okey2.pop_back();if(kkey2.size()>64)kkey2.pop_back();
+
+                        nextframe=false;
+                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                        matchcode(&p1,&p2,dialogue,p1input,onlineinput,&superstop,&bgx,&framedata,overlap,overlap2);
+
+                        if(superstop>0)superstop--;
+                    }*/
+                }
+
+                if(p1.hp>0&&p2.hp<=0)p1.wins++;
+                else if(p1.hp<=0&&p2.hp>0)p2.wins++;
+                dialogue.erase();
+                effectslist.clear();
+                menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
+                p1.animq.clear();p1.idleanim.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
+                p1.air=false;p1.buffer=0;p1.act=0;p1.kdowned=0;p1.hit=false;
+                p2.animq.clear();p2.idleanim.clear();p2.atkfx.clear();p2.hitboxanim.clear();p2.proj.clear();
+                p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
+                dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
+                dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
+                }
+                }
+            if(menuselect==3){//training
+                while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
+                float overlap[2],overlap2[2],bgx=0;
+                    p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;
+                    p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
+                    if(p1.character==2){
+                        p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;
+                    }
+                    if(p2.character==2){
+                        p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;
+                    }
+
+                    p1.meter=100.0;
+                    p2.meter=100.0;
+                short superstop=0,roundwait=90,framedata=0;
+                bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
+                    p1.right=true;
+                    p2.right=false;
+
+
+
+                while (window.isOpen()&&!gamequit){
+                    windowset(window,&gamequit);
+
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2)){if(!F2key){F2key=true;if(framedatashow)framedatashow=false;else framedatashow=true;}}else F2key=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
+
+                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
+                    inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
+
+                    if((!pause||(pause&&nextframe))){//main match code stuff
+                        dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
+                        ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
+                        if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
+                        if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
+
+                        dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);
+                        ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
+                        if(dirkeys2.size()>20)dirkeys2.pop_back();if(ukey2.size()>20)ukey2.pop_back();
+                        if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
+
+                        nextframe=false;
+                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                        matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&bgx,&framedata,overlap,overlap2);
+                        if(combo==0&&p1.hp<p1.maxhp)p1.hp+=10;if(combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
+
+                        if(superstop>0)superstop--;
+
+                        for(short i=0;i<effectslist.size();i++){effectslist[i].create(bgx);if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
+                    }
+
+                    if(!pause){//trainingkeylist
+                        char keytemp=dirkeys[1],keytemp2=p1input[0];
+                        if(!p1.right){
+                            if(keytemp=='7')keytemp='9';
+                            else if(keytemp=='9')keytemp='7';
+                            else if(keytemp=='4')keytemp='6';
+                            else if(keytemp=='6')keytemp='4';
+                            else if(keytemp=='3')keytemp='1';
+                            else if(keytemp=='1')keytemp='3';
+                            if(keytemp2=='7')keytemp2='9';
+                            else if(keytemp2=='9')keytemp2='7';
+                            else if(keytemp2=='4')keytemp2='6';
+                            else if(keytemp2=='6')keytemp2='4';
+                            else if(keytemp2=='3')keytemp2='1';
+                            else if(keytemp2=='1')keytemp2='3';
+                        }
+
+                        if(keytemp2!=keytemp)p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
+                        if(p1input[1]=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
+                        if(p1input[2]=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
+                        if(p1input[3]=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
+                        if(p1input[4]=='2')p1keylist.push_front('k');else p1keylist.push_front('0');
+                        if(p1keylist[0]=='0'&&p1keylist[1]=='0'&&p1keylist[2]=='0'&&p1keylist[3]=='0'&&p1keylist[4]=='0')for(short i=0;i<5;i++)p1keylist.pop_front();
+                        if(p1keylist.size()>40)for(short i=0;i<5;i++)p1keylist.pop_back();
+
+
+                        keytemp=dirkeys2[1],keytemp2=p2input[0];
+                        if(!p2.right){
+                            if(keytemp=='7')keytemp='9';
+                            else if(keytemp=='9')keytemp='7';
+                            else if(keytemp=='4')keytemp='6';
+                            else if(keytemp=='6')keytemp='4';
+                            else if(keytemp=='3')keytemp='1';
+                            else if(keytemp=='1')keytemp='3';
+                            if(keytemp2=='7')keytemp2='9';
+                            else if(keytemp2=='9')keytemp2='7';
+                            else if(keytemp2=='4')keytemp2='6';
+                            else if(keytemp2=='6')keytemp2='4';
+                            else if(keytemp2=='3')keytemp2='1';
+                            else if(keytemp2=='1')keytemp2='3';
+                        }
+
+                        if(keytemp2!=keytemp)p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
+                        if(p2input[1]=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
+                        if(p2input[2]=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
+                        if(p2input[3]=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
+                        if(p2input[4]=='2')p2keylist.push_front('k');else p2keylist.push_front('0');
+                        if(p2keylist[0]=='0'&&p2keylist[1]=='0'&&p2keylist[2]=='0'&&p2keylist[3]=='0'&&p2keylist[4]=='0')for(short i=0;i<5;i++)p2keylist.pop_front();
+                        if(p2keylist.size()>40)for(short i=0;i<5;i++)p2keylist.pop_back();
+                    }
+
+                    menus.setcolor(6,!pause,menuselect);
+                    if(pause){//pause menu
+                        keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                        keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                        if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
+                        else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
+                        if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
+                        else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
+                        else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
+                        else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
+                    }
+                    if(!dialogue.empty()){//dialogue stuff
+                        char temp='$',temp1='1';
+                        if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
+                        else tbox.create(p2.x+bgx+8,p2.y-16);
+                        dtext.setString(dialogue.substr(1,dialoguecnt));
+                        if(!pause||nextframe){
+                            if(dialogue[dialoguecnt+1]==temp){
+                                if(p1input[1]=='2'||p2input[1]=='2'||p1input[2]!='0'||p2input[2]!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                            }
+                            else{
+                                if(p1input[2]!='0'||p2input[2]!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
+                                else dialoguecnt++;
+                            }
+                        }
+                        dtext.setPosition({16,8});
+                    }
+
+                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
+                              background,healthui,meterui,p1texture,p2texture);
+                    window.display();
+
+                }
+                dialogue.erase();
+                effectslist.clear();
+                menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
+                p1.animq.clear();p1.idleanim.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
+                p1.air=false;p1.buffer=0;p1.act=0;p1.kdowned=0;p1.hit=false;
+                p2.animq.clear();p2.idleanim.clear();p2.atkfx.clear();p2.hitboxanim.clear();p2.proj.clear();
+                p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
+                dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
+                dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
                 }
             }
+            else{
 
-            if(p1.hp>0&&p2.hp<=0)p1.wins++;
-            else if(p1.hp<=0&&p2.hp>0)p2.wins++;
-            dialogue.erase();
-            effectslist.clear();
-            menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
-            p1.animq.clear();p1.idleanim.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
-            p1.air=false;p1.buffer=0;p1.act=0;p1.kdowned=0;p1.hit=false;
-            p2.animq.clear();p2.idleanim.clear();p2.atkfx.clear();p2.hitboxanim.clear();p2.proj.clear();
-            p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
-            dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
-            dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
             }
         }
         gamequit=false;
