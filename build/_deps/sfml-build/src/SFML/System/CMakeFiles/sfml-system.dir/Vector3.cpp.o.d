@@ -1,10 +1,10 @@
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o: \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector3.cpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector3.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Vector3.cpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector3.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Config.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/TargetConditionals.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector3.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector3.inl \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler \

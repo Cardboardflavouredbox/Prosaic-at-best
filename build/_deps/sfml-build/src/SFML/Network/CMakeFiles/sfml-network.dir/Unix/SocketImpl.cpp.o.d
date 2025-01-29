@@ -1,11 +1,11 @@
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o: \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/SocketImpl.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Socket.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/SocketImpl.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Network/Socket.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Network/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Config.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/TargetConditionals.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/SocketHandle.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Network/SocketHandle.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/arpa/inet.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/cdefs.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_symbol_aliasing.h \
@@ -147,8 +147,8 @@ _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cp
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_max_align_t.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_offsetof.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstdint \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Err.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Err.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Export.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iosfwd \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/fstream.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/string.h \

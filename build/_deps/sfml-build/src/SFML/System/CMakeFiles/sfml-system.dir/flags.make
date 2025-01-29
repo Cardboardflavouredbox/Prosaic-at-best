@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/clang++
 CXX_DEFINES = -DSFML_STATIC
 
-CXX_INCLUDES = -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src
+CXX_INCLUDES = -I/Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include -I/Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src
 
 CXX_FLAGSarm64 = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1 -fvisibility=hidden -fvisibility-inlines-hidden -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wcast-align -Wunused -Woverloaded-virtual -Wconversion -Wsign-conversion -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough -Wsuggest-override -Wnull-dereference -Wold-style-cast -Wpedantic -Wno-unknown-warning-option
 

@@ -1,12 +1,12 @@
 _deps/freetype-build/CMakeFiles/freetype.dir/src/autofit/autofit.c.o: \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/autofit.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/ft-hb.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/freetype.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/ft2build.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/ftheader.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/include/freetype/config/ftconfig.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/include/freetype/config/ftoption.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/ftstdlib.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/autofit.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/ft-hb.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/freetype.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/ft2build.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/ftheader.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-build/include/freetype/config/ftconfig.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-build/include/freetype/config/ftoption.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/ftstdlib.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_header_macro.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_ptrdiff_t.h \
@@ -119,67 +119,67 @@ _deps/freetype-build/CMakeFiles/freetype.dir/src/autofit/autofit.c.o: \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg_va_arg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg___va_copy.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stdarg_va_copy.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/integer-types.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/public-macros.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/mac-support.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/integer-types.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/public-macros.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/mac-support.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/errno.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/errno.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityMacros.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/TargetConditionals.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/fttypes.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftsystem.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftimage.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/fttypes.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftsystem.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftimage.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_rsize_t.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/fterrors.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftmoderr.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/fterrdef.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/tttables.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afblue.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/aftypes.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftoutln.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/ftobjs.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftrender.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftmodapi.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftglyph.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftsizes.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftlcdfil.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftparams.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/ftmemory.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/compiler-macros.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/ftgloadr.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/ftdrv.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/autohint.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/ftserv.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/ftcalc.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftincrem.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/ftdebug.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afblue.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afws-iter.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afscript.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afcover.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afstyles.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afcjk.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftadvanc.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afglobal.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afmodule.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afshaper.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/aflatin.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afhints.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afcjk.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/aferrors.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afdummy.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afdummy.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afglobal.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afranges.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afws-decl.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afindic.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afhints.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afindic.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/aflatin.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afloader.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afloader.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afmodule.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftdriver.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/internal/services/svprop.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afranges.c \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/src/autofit/afshaper.c
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/fterrors.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftmoderr.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/fterrdef.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/tttables.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afblue.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/aftypes.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftoutln.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/ftobjs.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftrender.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftmodapi.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftglyph.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftsizes.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftlcdfil.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftparams.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/ftmemory.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/compiler-macros.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/ftgloadr.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/ftdrv.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/autohint.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/ftserv.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/ftcalc.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftincrem.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/ftdebug.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afblue.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afws-iter.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afscript.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afcover.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afstyles.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afcjk.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftadvanc.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afglobal.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afmodule.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afshaper.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/aflatin.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afhints.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afcjk.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/aferrors.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afdummy.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afdummy.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afglobal.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afranges.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afws-decl.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afindic.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afhints.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afindic.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/aflatin.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afloader.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afloader.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afmodule.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftdriver.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/internal/services/svprop.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afranges.c \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/src/autofit/afshaper.c

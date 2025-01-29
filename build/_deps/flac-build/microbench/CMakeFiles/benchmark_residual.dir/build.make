@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing"
+CMAKE_SOURCE_DIR = /Users/greenbox/projects/sfmltest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best/build
+CMAKE_BINARY_DIR = /Users/greenbox/projects/sfmltest/build
 
 # Include any dependencies generated for this target.
 include _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/depend.make
@@ -73,32 +73,32 @@ _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/codegen:
 .PHONY : _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/codegen
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o: _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/flags.make
-_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/benchmark_residual.c
+_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o: _deps/flac-src/microbench/benchmark_residual.c
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o: _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o -MF CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o.d -o CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/benchmark_residual.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o -MF CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o.d -o CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/benchmark_residual.c
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/benchmark_residual.dir/benchmark_residual.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/benchmark_residual.c > CMakeFiles/benchmark_residual.dir/benchmark_residual.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/benchmark_residual.c > CMakeFiles/benchmark_residual.dir/benchmark_residual.c.i
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/benchmark_residual.dir/benchmark_residual.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/benchmark_residual.c -o CMakeFiles/benchmark_residual.dir/benchmark_residual.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/benchmark_residual.c -o CMakeFiles/benchmark_residual.dir/benchmark_residual.c.s
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o: _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/flags.make
-_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/util.c
+_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o: _deps/flac-src/microbench/util.c
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o: _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o -MF CMakeFiles/benchmark_residual.dir/util.c.o.d -o CMakeFiles/benchmark_residual.dir/util.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/util.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o -MF CMakeFiles/benchmark_residual.dir/util.c.o.d -o CMakeFiles/benchmark_residual.dir/util.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/util.c
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/benchmark_residual.dir/util.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/util.c > CMakeFiles/benchmark_residual.dir/util.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/util.c > CMakeFiles/benchmark_residual.dir/util.c.i
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/benchmark_residual.dir/util.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/util.c -o CMakeFiles/benchmark_residual.dir/util.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/util.c -o CMakeFiles/benchmark_residual.dir/util.c.s
 
 # Object files for target benchmark_residual
 benchmark_residual_OBJECTS = \
@@ -114,18 +114,18 @@ _deps/sfml-build/bin/benchmark_residual: _deps/flac-build/microbench/CMakeFiles/
 _deps/sfml-build/bin/benchmark_residual: _deps/sfml-build/lib/libFLACd.a
 _deps/sfml-build/bin/benchmark_residual: _deps/sfml-build/lib/liboggd.a
 _deps/sfml-build/bin/benchmark_residual: _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable ../../sfml-build/bin/benchmark_residual"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/benchmark_residual.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable ../../sfml-build/bin/benchmark_residual"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/benchmark_residual.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/build: _deps/sfml-build/bin/benchmark_residual
 .PHONY : _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/build
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/clean:
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench && $(CMAKE_COMMAND) -P CMakeFiles/benchmark_residual.dir/cmake_clean.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench && $(CMAKE_COMMAND) -P CMakeFiles/benchmark_residual.dir/cmake_clean.cmake
 .PHONY : _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/clean
 
 _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/depend:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing" /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench /Users/greenbox/projects/Prosaic-at-best/build /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/greenbox/projects/sfmltest /Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench /Users/greenbox/projects/sfmltest/build /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench /Users/greenbox/projects/sfmltest/build/_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/depend
 

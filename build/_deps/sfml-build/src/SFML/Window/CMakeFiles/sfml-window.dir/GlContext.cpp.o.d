@@ -1,10 +1,10 @@
 _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/GlContext.cpp.o: \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Window/GlContext.cpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Context.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Window/GlContext.cpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/Context.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Config.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/TargetConditionals.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/GlResource.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/GlResource.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/memory \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler \
@@ -519,15 +519,15 @@ _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/GlContext.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/unreachable_sentinel.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/wrap_iter.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stdexcept \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector2.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Angle.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Angle.inl \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_static_assert.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector2.inl \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/string_view \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__fwd/string_view.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__string/char_traits.h \
@@ -813,10 +813,10 @@ _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/GlContext.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/byteswap.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/endian.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/has_single_bit.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/ContextSettings.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Window/GlContext.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Err.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/glad/include/glad/gl.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/ContextSettings.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Window/GlContext.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Err.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/glad/include/glad/gl.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iomanip \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/istream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/ostream \
@@ -974,4 +974,4 @@ _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/GlContext.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_tuple.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/unistd.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Window/macOS/SFContext.hpp
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Window/macOS/SFContext.hpp

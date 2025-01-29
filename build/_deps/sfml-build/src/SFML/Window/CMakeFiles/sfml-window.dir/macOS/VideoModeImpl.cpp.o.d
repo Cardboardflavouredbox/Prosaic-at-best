@@ -1,14 +1,14 @@
 _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/macOS/VideoModeImpl.cpp.o: \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Window/macOS/VideoModeImpl.cpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Window/VideoModeImpl.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/VideoMode.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Window/macOS/VideoModeImpl.cpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Window/VideoModeImpl.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/VideoMode.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Config.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/TargetConditionals.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector2.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Angle.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Angle.inl \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler \
@@ -93,7 +93,7 @@ _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/macOS/VideoModeImpl.
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_mode_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_static_assert.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector2.inl \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy_move_common.h \
@@ -916,7 +916,7 @@ _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/macOS/VideoModeImpl.
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstdarg \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/temp_value.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__split_buffer \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Window/macOS/cg_sf_conversion.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Window/macOS/cg_sf_conversion.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreServices.framework/Headers/CoreServices.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h \
@@ -1465,7 +1465,7 @@ _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/macOS/VideoModeImpl.
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATSUI.framework/Headers/ATSUnicodeFlattening.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATSUI.framework/Headers/ATSUnicodeDirectAccess.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/SpeechSynthesis.framework/Headers/SpeechSynthesis.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Err.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Err.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/ostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/bitset \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/format \

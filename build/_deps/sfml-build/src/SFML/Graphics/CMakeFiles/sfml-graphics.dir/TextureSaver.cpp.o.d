@@ -1,10 +1,10 @@
 _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/TextureSaver.cpp.o: \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Graphics/TextureSaver.cpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Graphics/GLCheck.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Graphics/TextureSaver.cpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Graphics/GLCheck.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Config.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/TargetConditionals.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Graphics/GLExtensions.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/glad/include/glad/gl.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Graphics/GLExtensions.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/glad/include/glad/gl.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stdint.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__config_site \
@@ -29,8 +29,8 @@ _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/TextureSaver.cpp
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_uintptr_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_types/_intmax_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_types/_uintmax_t.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Err.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Err.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Export.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iosfwd \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler \
@@ -981,4 +981,4 @@ _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/TextureSaver.cpp
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Graphics/TextureSaver.hpp
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Graphics/TextureSaver.hpp

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing"
+CMAKE_SOURCE_DIR = /Users/greenbox/projects/sfmltest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best/build
+CMAKE_BINARY_DIR = /Users/greenbox/projects/sfmltest/build
 
 # Include any dependencies generated for this target.
 include _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/depend.make
@@ -73,284 +73,284 @@ _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codegen:
 .PHONY : _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codegen
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mdct.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o: _deps/vorbis-src/lib/mdct.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o -MF CMakeFiles/vorbis.dir/mdct.c.o.d -o CMakeFiles/vorbis.dir/mdct.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mdct.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.o -MF CMakeFiles/vorbis.dir/mdct.c.o.d -o CMakeFiles/vorbis.dir/mdct.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/mdct.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/mdct.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mdct.c > CMakeFiles/vorbis.dir/mdct.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/mdct.c > CMakeFiles/vorbis.dir/mdct.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mdct.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/mdct.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mdct.c -o CMakeFiles/vorbis.dir/mdct.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/mdct.c -o CMakeFiles/vorbis.dir/mdct.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/smallft.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o: _deps/vorbis-src/lib/smallft.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o -MF CMakeFiles/vorbis.dir/smallft.c.o.d -o CMakeFiles/vorbis.dir/smallft.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/smallft.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.o -MF CMakeFiles/vorbis.dir/smallft.c.o.d -o CMakeFiles/vorbis.dir/smallft.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/smallft.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/smallft.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/smallft.c > CMakeFiles/vorbis.dir/smallft.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/smallft.c > CMakeFiles/vorbis.dir/smallft.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/smallft.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/smallft.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/smallft.c -o CMakeFiles/vorbis.dir/smallft.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/smallft.c -o CMakeFiles/vorbis.dir/smallft.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/block.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o: _deps/vorbis-src/lib/block.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o -MF CMakeFiles/vorbis.dir/block.c.o.d -o CMakeFiles/vorbis.dir/block.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/block.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.o -MF CMakeFiles/vorbis.dir/block.c.o.d -o CMakeFiles/vorbis.dir/block.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/block.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/block.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/block.c > CMakeFiles/vorbis.dir/block.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/block.c > CMakeFiles/vorbis.dir/block.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/block.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/block.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/block.c -o CMakeFiles/vorbis.dir/block.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/block.c -o CMakeFiles/vorbis.dir/block.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/envelope.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o: _deps/vorbis-src/lib/envelope.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o -MF CMakeFiles/vorbis.dir/envelope.c.o.d -o CMakeFiles/vorbis.dir/envelope.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/envelope.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.o -MF CMakeFiles/vorbis.dir/envelope.c.o.d -o CMakeFiles/vorbis.dir/envelope.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/envelope.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/envelope.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/envelope.c > CMakeFiles/vorbis.dir/envelope.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/envelope.c > CMakeFiles/vorbis.dir/envelope.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/envelope.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/envelope.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/envelope.c -o CMakeFiles/vorbis.dir/envelope.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/envelope.c -o CMakeFiles/vorbis.dir/envelope.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/window.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o: _deps/vorbis-src/lib/window.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o -MF CMakeFiles/vorbis.dir/window.c.o.d -o CMakeFiles/vorbis.dir/window.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/window.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.o -MF CMakeFiles/vorbis.dir/window.c.o.d -o CMakeFiles/vorbis.dir/window.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/window.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/window.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/window.c > CMakeFiles/vorbis.dir/window.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/window.c > CMakeFiles/vorbis.dir/window.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/window.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/window.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/window.c -o CMakeFiles/vorbis.dir/window.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/window.c -o CMakeFiles/vorbis.dir/window.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lsp.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o: _deps/vorbis-src/lib/lsp.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o -MF CMakeFiles/vorbis.dir/lsp.c.o.d -o CMakeFiles/vorbis.dir/lsp.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lsp.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.o -MF CMakeFiles/vorbis.dir/lsp.c.o.d -o CMakeFiles/vorbis.dir/lsp.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lsp.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/lsp.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lsp.c > CMakeFiles/vorbis.dir/lsp.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lsp.c > CMakeFiles/vorbis.dir/lsp.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lsp.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/lsp.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lsp.c -o CMakeFiles/vorbis.dir/lsp.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lsp.c -o CMakeFiles/vorbis.dir/lsp.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lpc.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o: _deps/vorbis-src/lib/lpc.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o -MF CMakeFiles/vorbis.dir/lpc.c.o.d -o CMakeFiles/vorbis.dir/lpc.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lpc.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.o -MF CMakeFiles/vorbis.dir/lpc.c.o.d -o CMakeFiles/vorbis.dir/lpc.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lpc.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/lpc.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lpc.c > CMakeFiles/vorbis.dir/lpc.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lpc.c > CMakeFiles/vorbis.dir/lpc.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lpc.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/lpc.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lpc.c -o CMakeFiles/vorbis.dir/lpc.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lpc.c -o CMakeFiles/vorbis.dir/lpc.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/analysis.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o: _deps/vorbis-src/lib/analysis.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o -MF CMakeFiles/vorbis.dir/analysis.c.o.d -o CMakeFiles/vorbis.dir/analysis.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/analysis.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.o -MF CMakeFiles/vorbis.dir/analysis.c.o.d -o CMakeFiles/vorbis.dir/analysis.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/analysis.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/analysis.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/analysis.c > CMakeFiles/vorbis.dir/analysis.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/analysis.c > CMakeFiles/vorbis.dir/analysis.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/analysis.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/analysis.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/analysis.c -o CMakeFiles/vorbis.dir/analysis.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/analysis.c -o CMakeFiles/vorbis.dir/analysis.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/synthesis.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o: _deps/vorbis-src/lib/synthesis.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o -MF CMakeFiles/vorbis.dir/synthesis.c.o.d -o CMakeFiles/vorbis.dir/synthesis.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/synthesis.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.o -MF CMakeFiles/vorbis.dir/synthesis.c.o.d -o CMakeFiles/vorbis.dir/synthesis.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/synthesis.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/synthesis.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/synthesis.c > CMakeFiles/vorbis.dir/synthesis.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/synthesis.c > CMakeFiles/vorbis.dir/synthesis.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/synthesis.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/synthesis.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/synthesis.c -o CMakeFiles/vorbis.dir/synthesis.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/synthesis.c -o CMakeFiles/vorbis.dir/synthesis.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/psy.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o: _deps/vorbis-src/lib/psy.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o -MF CMakeFiles/vorbis.dir/psy.c.o.d -o CMakeFiles/vorbis.dir/psy.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/psy.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.o -MF CMakeFiles/vorbis.dir/psy.c.o.d -o CMakeFiles/vorbis.dir/psy.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/psy.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/psy.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/psy.c > CMakeFiles/vorbis.dir/psy.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/psy.c > CMakeFiles/vorbis.dir/psy.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/psy.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/psy.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/psy.c -o CMakeFiles/vorbis.dir/psy.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/psy.c -o CMakeFiles/vorbis.dir/psy.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/info.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o: _deps/vorbis-src/lib/info.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o -MF CMakeFiles/vorbis.dir/info.c.o.d -o CMakeFiles/vorbis.dir/info.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/info.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.o -MF CMakeFiles/vorbis.dir/info.c.o.d -o CMakeFiles/vorbis.dir/info.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/info.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/info.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/info.c > CMakeFiles/vorbis.dir/info.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/info.c > CMakeFiles/vorbis.dir/info.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/info.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/info.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/info.c -o CMakeFiles/vorbis.dir/info.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/info.c -o CMakeFiles/vorbis.dir/info.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor1.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o: _deps/vorbis-src/lib/floor1.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o -MF CMakeFiles/vorbis.dir/floor1.c.o.d -o CMakeFiles/vorbis.dir/floor1.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor1.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.o -MF CMakeFiles/vorbis.dir/floor1.c.o.d -o CMakeFiles/vorbis.dir/floor1.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/floor1.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/floor1.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor1.c > CMakeFiles/vorbis.dir/floor1.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/floor1.c > CMakeFiles/vorbis.dir/floor1.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor1.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/floor1.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor1.c -o CMakeFiles/vorbis.dir/floor1.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/floor1.c -o CMakeFiles/vorbis.dir/floor1.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor0.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o: _deps/vorbis-src/lib/floor0.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o -MF CMakeFiles/vorbis.dir/floor0.c.o.d -o CMakeFiles/vorbis.dir/floor0.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor0.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.o -MF CMakeFiles/vorbis.dir/floor0.c.o.d -o CMakeFiles/vorbis.dir/floor0.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/floor0.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/floor0.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor0.c > CMakeFiles/vorbis.dir/floor0.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/floor0.c > CMakeFiles/vorbis.dir/floor0.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/floor0.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/floor0.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/floor0.c -o CMakeFiles/vorbis.dir/floor0.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/floor0.c -o CMakeFiles/vorbis.dir/floor0.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/res0.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o: _deps/vorbis-src/lib/res0.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o -MF CMakeFiles/vorbis.dir/res0.c.o.d -o CMakeFiles/vorbis.dir/res0.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/res0.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.o -MF CMakeFiles/vorbis.dir/res0.c.o.d -o CMakeFiles/vorbis.dir/res0.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/res0.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/res0.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/res0.c > CMakeFiles/vorbis.dir/res0.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/res0.c > CMakeFiles/vorbis.dir/res0.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/res0.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/res0.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/res0.c -o CMakeFiles/vorbis.dir/res0.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/res0.c -o CMakeFiles/vorbis.dir/res0.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mapping0.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o: _deps/vorbis-src/lib/mapping0.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o -MF CMakeFiles/vorbis.dir/mapping0.c.o.d -o CMakeFiles/vorbis.dir/mapping0.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mapping0.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.o -MF CMakeFiles/vorbis.dir/mapping0.c.o.d -o CMakeFiles/vorbis.dir/mapping0.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/mapping0.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/mapping0.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mapping0.c > CMakeFiles/vorbis.dir/mapping0.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/mapping0.c > CMakeFiles/vorbis.dir/mapping0.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/mapping0.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/mapping0.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/mapping0.c -o CMakeFiles/vorbis.dir/mapping0.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/mapping0.c -o CMakeFiles/vorbis.dir/mapping0.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/registry.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o: _deps/vorbis-src/lib/registry.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o -MF CMakeFiles/vorbis.dir/registry.c.o.d -o CMakeFiles/vorbis.dir/registry.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/registry.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.o -MF CMakeFiles/vorbis.dir/registry.c.o.d -o CMakeFiles/vorbis.dir/registry.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/registry.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/registry.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/registry.c > CMakeFiles/vorbis.dir/registry.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/registry.c > CMakeFiles/vorbis.dir/registry.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/registry.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/registry.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/registry.c -o CMakeFiles/vorbis.dir/registry.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/registry.c -o CMakeFiles/vorbis.dir/registry.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/codebook.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o: _deps/vorbis-src/lib/codebook.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o -MF CMakeFiles/vorbis.dir/codebook.c.o.d -o CMakeFiles/vorbis.dir/codebook.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/codebook.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.o -MF CMakeFiles/vorbis.dir/codebook.c.o.d -o CMakeFiles/vorbis.dir/codebook.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/codebook.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/codebook.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/codebook.c > CMakeFiles/vorbis.dir/codebook.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/codebook.c > CMakeFiles/vorbis.dir/codebook.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/codebook.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/codebook.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/codebook.c -o CMakeFiles/vorbis.dir/codebook.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/codebook.c -o CMakeFiles/vorbis.dir/codebook.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/sharedbook.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o: _deps/vorbis-src/lib/sharedbook.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o -MF CMakeFiles/vorbis.dir/sharedbook.c.o.d -o CMakeFiles/vorbis.dir/sharedbook.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/sharedbook.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.o -MF CMakeFiles/vorbis.dir/sharedbook.c.o.d -o CMakeFiles/vorbis.dir/sharedbook.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/sharedbook.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/sharedbook.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/sharedbook.c > CMakeFiles/vorbis.dir/sharedbook.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/sharedbook.c > CMakeFiles/vorbis.dir/sharedbook.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/sharedbook.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/sharedbook.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/sharedbook.c -o CMakeFiles/vorbis.dir/sharedbook.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/sharedbook.c -o CMakeFiles/vorbis.dir/sharedbook.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lookup.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o: _deps/vorbis-src/lib/lookup.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o -MF CMakeFiles/vorbis.dir/lookup.c.o.d -o CMakeFiles/vorbis.dir/lookup.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lookup.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.o -MF CMakeFiles/vorbis.dir/lookup.c.o.d -o CMakeFiles/vorbis.dir/lookup.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lookup.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/lookup.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lookup.c > CMakeFiles/vorbis.dir/lookup.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lookup.c > CMakeFiles/vorbis.dir/lookup.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/lookup.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/lookup.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/lookup.c -o CMakeFiles/vorbis.dir/lookup.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/lookup.c -o CMakeFiles/vorbis.dir/lookup.c.s
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/flags.make
-_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/bitrate.c
+_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o: _deps/vorbis-src/lib/bitrate.c
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o -MF CMakeFiles/vorbis.dir/bitrate.c.o.d -o CMakeFiles/vorbis.dir/bitrate.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/bitrate.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o -MF CMakeFiles/vorbis.dir/bitrate.c.o.d -o CMakeFiles/vorbis.dir/bitrate.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/bitrate.c
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/vorbis.dir/bitrate.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/bitrate.c > CMakeFiles/vorbis.dir/bitrate.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/bitrate.c > CMakeFiles/vorbis.dir/bitrate.c.i
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/vorbis.dir/bitrate.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib/bitrate.c -o CMakeFiles/vorbis.dir/bitrate.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib/bitrate.c -o CMakeFiles/vorbis.dir/bitrate.c.s
 
 # Object files for target vorbis
 vorbis_OBJECTS = \
@@ -400,19 +400,19 @@ _deps/sfml-build/lib/libvorbisd.a: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/
 _deps/sfml-build/lib/libvorbisd.a: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/bitrate.c.o
 _deps/sfml-build/lib/libvorbisd.a: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/build.make
 _deps/sfml-build/lib/libvorbisd.a: _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking C static library ../../sfml-build/lib/libvorbisd.a"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && $(CMAKE_COMMAND) -P CMakeFiles/vorbis.dir/cmake_clean_target.cmake
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/vorbis.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking C static library ../../sfml-build/lib/libvorbisd.a"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && $(CMAKE_COMMAND) -P CMakeFiles/vorbis.dir/cmake_clean_target.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/vorbis.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/build: _deps/sfml-build/lib/libvorbisd.a
 .PHONY : _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/build
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/clean:
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib && $(CMAKE_COMMAND) -P CMakeFiles/vorbis.dir/cmake_clean.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib && $(CMAKE_COMMAND) -P CMakeFiles/vorbis.dir/cmake_clean.cmake
 .PHONY : _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/clean
 
 _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/depend:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing" /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib /Users/greenbox/projects/Prosaic-at-best/build /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/greenbox/projects/sfmltest /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib /Users/greenbox/projects/sfmltest/build /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib /Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/depend
 

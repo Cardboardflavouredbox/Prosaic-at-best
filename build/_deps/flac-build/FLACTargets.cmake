@@ -51,7 +51,7 @@ add_library(FLAC::FLAC STATIC IMPORTED)
 
 set_target_properties(FLAC::FLAC PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "\$<\$<NOT:\$<BOOL:OFF>>:FLAC__NO_DLL>"
-  INTERFACE_INCLUDE_DIRECTORIES "/Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/include"
+  INTERFACE_INCLUDE_DIRECTORIES "/Users/greenbox/projects/sfmltest/build/_deps/flac-src/include"
   INTERFACE_LINK_LIBRARIES "\$<\$<BOOL:1>:m>;Ogg::ogg"
 )
 
@@ -59,7 +59,7 @@ set_target_properties(FLAC::FLAC PROPERTIES
 set_property(TARGET FLAC::FLAC APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
 set_target_properties(FLAC::FLAC PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "C"
-  IMPORTED_LOCATION_DEBUG "/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/lib/libFLACd.a"
+  IMPORTED_LOCATION_DEBUG "/Users/greenbox/projects/sfmltest/build/_deps/sfml-build/lib/libFLACd.a"
   )
 
 # Make sure the targets which have been exported in some other

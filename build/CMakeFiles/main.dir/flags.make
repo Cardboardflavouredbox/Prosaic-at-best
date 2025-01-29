@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/clang++
 CXX_DEFINES = -DSFML_STATIC
 
-CXX_INCLUDES = -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include
+CXX_INCLUDES = -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include
 
 CXX_FLAGSarm64 = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1
 

@@ -1,15 +1,15 @@
 _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/Font.cpp.o: \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Graphics/Font.cpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Font.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Graphics/Font.cpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Font.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Config.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/TargetConditionals.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Glyph.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Rect.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Glyph.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Rect.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector2.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Angle.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Angle.inl \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler \
@@ -94,7 +94,7 @@ _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/Font.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_mode_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_static_assert.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Vector2.inl \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/optional \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/compare_three_way_result.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/make_const_lvalue_ref.h \
@@ -531,11 +531,11 @@ _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/Font.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/temporary_buffer.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/uses_allocator_construction.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/stdexcept \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Rect.inl \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Texture.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/CoordinateType.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/GlResource.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Export.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Rect.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Texture.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/CoordinateType.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/GlResource.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Window/Export.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/filesystem \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/copy_options.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/directory_entry.h \
@@ -994,32 +994,32 @@ _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/Font.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Image.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Color.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Color.inl \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Err.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Exception.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/InputStream.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Utils.hpp \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/ft2build.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/ftheader.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/freetype.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/include/freetype/config/ftconfig.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/include/freetype/config/ftoption.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/ftstdlib.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Image.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Color.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/Graphics/Color.inl \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Err.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/Exception.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include/SFML/System/InputStream.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Utils.hpp \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/ft2build.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/ftheader.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/freetype.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-build/include/freetype/config/ftconfig.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-build/include/freetype/config/ftoption.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/ftstdlib.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/setjmp.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/integer-types.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/public-macros.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/config/mac-support.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/integer-types.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/public-macros.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/config/mac-support.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityMacros.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/fttypes.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftsystem.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftimage.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/fterrors.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftmoderr.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/fterrdef.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftglyph.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftoutln.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftbitmap.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftcolor.h \
-  /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include/freetype/ftstroke.h
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/fttypes.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftsystem.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftimage.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/fterrors.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftmoderr.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/fterrdef.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftglyph.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftoutln.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftbitmap.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftcolor.h \
+  /Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include/freetype/ftstroke.h

@@ -6,7 +6,7 @@
 # compile OBJCXX with /Library/Developer/CommandLineTools/usr/bin/clang++
 CXX_DEFINES = -DSFML_STATIC
 
-CXX_INCLUDES = -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/glad/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/vulkan -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+CXX_INCLUDES = -I/Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/glad/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/vulkan -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
 
 CXX_FLAGSarm64 = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1 -fvisibility=hidden -fvisibility-inlines-hidden -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wcast-align -Wunused -Woverloaded-virtual -Wconversion -Wsign-conversion -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough -Wsuggest-override -Wnull-dereference -Wold-style-cast -Wpedantic -Wno-unknown-warning-option
 
@@ -14,7 +14,7 @@ CXX_FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLine
 
 OBJC_DEFINES = -DSFML_STATIC
 
-OBJC_INCLUDES = -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/glad/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/vulkan -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+OBJC_INCLUDES = -I/Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/glad/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/vulkan -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
 
 OBJC_FLAGSarm64 = -g -std=gnu17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1 -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wcast-align -Wunused -Woverloaded-virtual -Wconversion -Wsign-conversion -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough -Wsuggest-override -Wnull-dereference -Wold-style-cast -Wpedantic -Wno-unknown-warning-option
 
@@ -22,7 +22,7 @@ OBJC_FLAGS = -g -std=gnu17 -arch arm64 -isysroot /Library/Developer/CommandLineT
 
 OBJCXX_DEFINES = -DSFML_STATIC
 
-OBJCXX_INCLUDES = -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/glad/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/extlibs/headers/vulkan -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+OBJCXX_INCLUDES = -I/Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/glad/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/extlibs/headers/vulkan -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
 
 OBJCXX_FLAGSarm64 = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1 -fvisibility-inlines-hidden -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wcast-align -Wunused -Woverloaded-virtual -Wconversion -Wsign-conversion -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough -Wsuggest-override -Wnull-dereference -Wold-style-cast -Wpedantic -Wno-unknown-warning-option
 

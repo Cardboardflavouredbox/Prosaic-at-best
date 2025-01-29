@@ -2,5 +2,5 @@
 # The update step will be re-executed if anything in this file changes.
 # No other meaning or use of this file is supported.
 
-command=/opt/homebrew/bin/cmake;-DVORBIS_DIR=/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src;-P;/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/tools/vorbis/PatchVorbis.cmake
-work_dir=/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src
+command=/opt/homebrew/bin/cmake;-DVORBIS_DIR=/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src;-P;/Users/greenbox/projects/sfmltest/build/_deps/sfml-src/tools/vorbis/PatchVorbis.cmake
+work_dir=/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src

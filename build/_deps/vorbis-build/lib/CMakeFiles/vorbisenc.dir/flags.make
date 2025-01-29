@@ -4,7 +4,7 @@
 # compile C with /usr/bin/clang
 C_DEFINES = 
 
-C_INCLUDES = -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/lib -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/include -isystem /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build/include
+C_INCLUDES = -I/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/lib -isystem /Users/greenbox/projects/sfmltest/build/_deps/vorbis-src/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/ogg-src/include -isystem /Users/greenbox/projects/sfmltest/build/_deps/ogg-build/include
 
 C_FLAGSarm64 = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1
 

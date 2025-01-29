@@ -3,11 +3,11 @@
 
 cmake_minimum_required(VERSION ${CMAKE_VERSION}) # this file comes with cmake
 
-if(EXISTS "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt" AND EXISTS "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitinfo.txt" AND
-  "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt" IS_NEWER_THAN "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitinfo.txt")
+if(EXISTS "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt" AND EXISTS "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitinfo.txt" AND
+  "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt" IS_NEWER_THAN "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitinfo.txt")
   message(VERBOSE
     "Avoiding repeated git clone, stamp file is up to date: "
-    "'/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt'"
+    "'/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt'"
   )
   return()
 endif()
@@ -22,12 +22,12 @@ else()
 endif()
 
 execute_process(
-  COMMAND ${CMAKE_COMMAND} -E rm -rf "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src"
+  COMMAND ${CMAKE_COMMAND} -E rm -rf "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src"
   RESULT_VARIABLE error_code
   ${maybe_show_command}
 )
 if(error_code)
-  message(FATAL_ERROR "Failed to remove directory: '/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src'")
+  message(FATAL_ERROR "Failed to remove directory: '/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src'")
 endif()
 
 # try the clone 3 times in case there is an odd git clone issue
@@ -37,7 +37,7 @@ while(error_code AND number_of_tries LESS 3)
   execute_process(
     COMMAND "/usr/bin/git"
             clone --no-checkout --depth 1 --no-single-branch --config "advice.detachedHead=false" "https://github.com/xiph/vorbis.git" "vorbis-src"
-    WORKING_DIRECTORY "/Users/greenbox/projects/Prosaic-at-best/build/_deps"
+    WORKING_DIRECTORY "/Users/greenbox/projects/sfmltest/build/_deps"
     RESULT_VARIABLE error_code
     ${maybe_show_command}
   )
@@ -53,7 +53,7 @@ endif()
 execute_process(
   COMMAND "/usr/bin/git"
           checkout "v1.3.7" --
-  WORKING_DIRECTORY "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src"
+  WORKING_DIRECTORY "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src"
   RESULT_VARIABLE error_code
   ${maybe_show_command}
 )
@@ -66,22 +66,22 @@ if(init_submodules)
   execute_process(
     COMMAND "/usr/bin/git" 
             submodule update --recursive --init 
-    WORKING_DIRECTORY "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src"
+    WORKING_DIRECTORY "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src"
     RESULT_VARIABLE error_code
     ${maybe_show_command}
   )
 endif()
 if(error_code)
-  message(FATAL_ERROR "Failed to update submodules in: '/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src'")
+  message(FATAL_ERROR "Failed to update submodules in: '/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src'")
 endif()
 
 # Complete success, update the script-last-run stamp file:
 #
 execute_process(
-  COMMAND ${CMAKE_COMMAND} -E copy "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitinfo.txt" "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt"
+  COMMAND ${CMAKE_COMMAND} -E copy "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitinfo.txt" "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt"
   RESULT_VARIABLE error_code
   ${maybe_show_command}
 )
 if(error_code)
-  message(FATAL_ERROR "Failed to copy script-last-run stamp file: '/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt'")
+  message(FATAL_ERROR "Failed to copy script-last-run stamp file: '/Users/greenbox/projects/sfmltest/build/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-gitclone-lastrun.txt'")
 endif()

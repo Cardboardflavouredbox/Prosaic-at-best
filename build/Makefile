@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing"
+CMAKE_SOURCE_DIR = /Users/greenbox/projects/sfmltest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best-1/build
+CMAKE_BINARY_DIR = /Users/greenbox/projects/sfmltest/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -78,7 +78,7 @@ package/fast: package
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Run CPack packaging tool for source..."
-	/opt/homebrew/bin/cpack --config ./CPackSourceConfig.cmake /Users/greenbox/projects/Prosaic-at-best-1/build/CPackSourceConfig.cmake
+	/opt/homebrew/bin/cpack --config ./CPackSourceConfig.cmake /Users/greenbox/projects/sfmltest/build/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -152,9 +152,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/Prosaic-at-best-1/build/CMakeFiles /Users/greenbox/projects/Prosaic-at-best-1/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/sfmltest/build/CMakeFiles /Users/greenbox/projects/sfmltest/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/Prosaic-at-best-1/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/sfmltest/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -204,7 +204,7 @@ sfml-system: cmake_check_build_system
 
 # fast build rule for target.
 sfml-system/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/build.make _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/build
 .PHONY : sfml-system/fast
 
 #=============================================================================
@@ -217,7 +217,7 @@ sfml-window: cmake_check_build_system
 
 # fast build rule for target.
 sfml-window/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/build.make _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/build
 .PHONY : sfml-window/fast
 
 #=============================================================================
@@ -230,7 +230,7 @@ sfml-network: cmake_check_build_system
 
 # fast build rule for target.
 sfml-network/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/build.make _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/build
 .PHONY : sfml-network/fast
 
 #=============================================================================
@@ -243,7 +243,7 @@ sfml-graphics: cmake_check_build_system
 
 # fast build rule for target.
 sfml-graphics/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/build.make _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/build
 .PHONY : sfml-graphics/fast
 
 #=============================================================================
@@ -256,7 +256,7 @@ freetype: cmake_check_build_system
 
 # fast build rule for target.
 freetype/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/CMakeFiles/freetype.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/CMakeFiles/freetype.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/freetype-build/CMakeFiles/freetype.dir/build.make _deps/freetype-build/CMakeFiles/freetype.dir/build
 .PHONY : freetype/fast
 
 #=============================================================================
@@ -269,7 +269,7 @@ sfml-audio: cmake_check_build_system
 
 # fast build rule for target.
 sfml-audio/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Audio/CMakeFiles/sfml-audio.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Audio/CMakeFiles/sfml-audio.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/sfml-build/src/SFML/Audio/CMakeFiles/sfml-audio.dir/build.make _deps/sfml-build/src/SFML/Audio/CMakeFiles/sfml-audio.dir/build
 .PHONY : sfml-audio/fast
 
 #=============================================================================
@@ -282,7 +282,7 @@ ogg: cmake_check_build_system
 
 # fast build rule for target.
 ogg/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build/CMakeFiles/ogg.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build/CMakeFiles/ogg.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/ogg-build/CMakeFiles/ogg.dir/build.make _deps/ogg-build/CMakeFiles/ogg.dir/build
 .PHONY : ogg/fast
 
 #=============================================================================
@@ -295,7 +295,7 @@ FLAC: cmake_check_build_system
 
 # fast build rule for target.
 FLAC/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build
 .PHONY : FLAC/fast
 
 #=============================================================================
@@ -308,7 +308,7 @@ benchmark_residual: cmake_check_build_system
 
 # fast build rule for target.
 benchmark_residual/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/build.make _deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/build
 .PHONY : benchmark_residual/fast
 
 #=============================================================================
@@ -321,7 +321,7 @@ vorbis: cmake_check_build_system
 
 # fast build rule for target.
 vorbis/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib/CMakeFiles/vorbis.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/build.make _deps/vorbis-build/lib/CMakeFiles/vorbis.dir/build
 .PHONY : vorbis/fast
 
 #=============================================================================
@@ -334,7 +334,7 @@ vorbisenc: cmake_check_build_system
 
 # fast build rule for target.
 vorbisenc/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib/CMakeFiles/vorbisenc.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib/CMakeFiles/vorbisenc.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/vorbis-build/lib/CMakeFiles/vorbisenc.dir/build.make _deps/vorbis-build/lib/CMakeFiles/vorbisenc.dir/build
 .PHONY : vorbisenc/fast
 
 #=============================================================================
@@ -347,7 +347,7 @@ vorbisfile: cmake_check_build_system
 
 # fast build rule for target.
 vorbisfile/fast:
-	$(MAKE) $(MAKESILENT) -f /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib/CMakeFiles/vorbisfile.dir/build.make /Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/lib/CMakeFiles/vorbisfile.dir/build
+	$(MAKE) $(MAKESILENT) -f _deps/vorbis-build/lib/CMakeFiles/vorbisfile.dir/build.make _deps/vorbis-build/lib/CMakeFiles/vorbisfile.dir/build
 .PHONY : vorbisfile/fast
 
 src/main.o: src/main.cpp.o

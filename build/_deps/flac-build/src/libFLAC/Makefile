@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing"
+CMAKE_SOURCE_DIR = /Users/greenbox/projects/sfmltest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best/build
+CMAKE_BINARY_DIR = /Users/greenbox/projects/sfmltest/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best/build
 # Special rule for the target package
 package: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Run CPack packaging tool..."
-	cd /Users/greenbox/projects/Prosaic-at-best/build && /opt/homebrew/bin/cpack --config ./CPackConfig.cmake
+	cd /Users/greenbox/projects/sfmltest/build && /opt/homebrew/bin/cpack --config ./CPackConfig.cmake
 .PHONY : package
 
 # Special rule for the target package
@@ -78,7 +78,7 @@ package/fast: package
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Run CPack packaging tool for source..."
-	cd /Users/greenbox/projects/Prosaic-at-best/build && /opt/homebrew/bin/cpack --config ./CPackSourceConfig.cmake /Users/greenbox/projects/Prosaic-at-best/build/CPackSourceConfig.cmake
+	cd /Users/greenbox/projects/sfmltest/build && /opt/homebrew/bin/cpack --config ./CPackSourceConfig.cmake /Users/greenbox/projects/sfmltest/build/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -152,14 +152,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles /Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/src/libFLAC//CMakeFiles/progress.marks
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles 0
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/sfmltest/build/CMakeFiles /Users/greenbox/projects/sfmltest/build/_deps/flac-build/src/libFLAC//CMakeFiles/progress.marks
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/greenbox/projects/sfmltest/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/clean
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/clean
 .PHONY : clean
 
 # The main clean target
@@ -168,22 +168,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/preinstall
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/preinstall
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/rule:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/rule
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/rule
 .PHONY : _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/rule
 
 # Convenience name for target.
@@ -192,7 +192,7 @@ FLAC: _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/rule
 
 # fast build rule for target.
 FLAC/fast:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build
 .PHONY : FLAC/fast
 
 bitmath.o: bitmath.c.o
@@ -200,7 +200,7 @@ bitmath.o: bitmath.c.o
 
 # target to build an object file
 bitmath.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitmath.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitmath.c.o
 .PHONY : bitmath.c.o
 
 bitmath.i: bitmath.c.i
@@ -208,7 +208,7 @@ bitmath.i: bitmath.c.i
 
 # target to preprocess a source file
 bitmath.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitmath.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitmath.c.i
 .PHONY : bitmath.c.i
 
 bitmath.s: bitmath.c.s
@@ -216,7 +216,7 @@ bitmath.s: bitmath.c.s
 
 # target to generate assembly for a file
 bitmath.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitmath.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitmath.c.s
 .PHONY : bitmath.c.s
 
 bitreader.o: bitreader.c.o
@@ -224,7 +224,7 @@ bitreader.o: bitreader.c.o
 
 # target to build an object file
 bitreader.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitreader.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitreader.c.o
 .PHONY : bitreader.c.o
 
 bitreader.i: bitreader.c.i
@@ -232,7 +232,7 @@ bitreader.i: bitreader.c.i
 
 # target to preprocess a source file
 bitreader.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitreader.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitreader.c.i
 .PHONY : bitreader.c.i
 
 bitreader.s: bitreader.c.s
@@ -240,7 +240,7 @@ bitreader.s: bitreader.c.s
 
 # target to generate assembly for a file
 bitreader.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitreader.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitreader.c.s
 .PHONY : bitreader.c.s
 
 bitwriter.o: bitwriter.c.o
@@ -248,7 +248,7 @@ bitwriter.o: bitwriter.c.o
 
 # target to build an object file
 bitwriter.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitwriter.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitwriter.c.o
 .PHONY : bitwriter.c.o
 
 bitwriter.i: bitwriter.c.i
@@ -256,7 +256,7 @@ bitwriter.i: bitwriter.c.i
 
 # target to preprocess a source file
 bitwriter.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitwriter.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitwriter.c.i
 .PHONY : bitwriter.c.i
 
 bitwriter.s: bitwriter.c.s
@@ -264,7 +264,7 @@ bitwriter.s: bitwriter.c.s
 
 # target to generate assembly for a file
 bitwriter.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitwriter.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/bitwriter.c.s
 .PHONY : bitwriter.c.s
 
 cpu.o: cpu.c.o
@@ -272,7 +272,7 @@ cpu.o: cpu.c.o
 
 # target to build an object file
 cpu.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/cpu.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/cpu.c.o
 .PHONY : cpu.c.o
 
 cpu.i: cpu.c.i
@@ -280,7 +280,7 @@ cpu.i: cpu.c.i
 
 # target to preprocess a source file
 cpu.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/cpu.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/cpu.c.i
 .PHONY : cpu.c.i
 
 cpu.s: cpu.c.s
@@ -288,7 +288,7 @@ cpu.s: cpu.c.s
 
 # target to generate assembly for a file
 cpu.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/cpu.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/cpu.c.s
 .PHONY : cpu.c.s
 
 crc.o: crc.c.o
@@ -296,7 +296,7 @@ crc.o: crc.c.o
 
 # target to build an object file
 crc.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/crc.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/crc.c.o
 .PHONY : crc.c.o
 
 crc.i: crc.c.i
@@ -304,7 +304,7 @@ crc.i: crc.c.i
 
 # target to preprocess a source file
 crc.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/crc.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/crc.c.i
 .PHONY : crc.c.i
 
 crc.s: crc.c.s
@@ -312,7 +312,7 @@ crc.s: crc.c.s
 
 # target to generate assembly for a file
 crc.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/crc.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/crc.c.s
 .PHONY : crc.c.s
 
 fixed.o: fixed.c.o
@@ -320,7 +320,7 @@ fixed.o: fixed.c.o
 
 # target to build an object file
 fixed.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed.c.o
 .PHONY : fixed.c.o
 
 fixed.i: fixed.c.i
@@ -328,7 +328,7 @@ fixed.i: fixed.c.i
 
 # target to preprocess a source file
 fixed.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed.c.i
 .PHONY : fixed.c.i
 
 fixed.s: fixed.c.s
@@ -336,7 +336,7 @@ fixed.s: fixed.c.s
 
 # target to generate assembly for a file
 fixed.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed.c.s
 .PHONY : fixed.c.s
 
 fixed_intrin_avx2.o: fixed_intrin_avx2.c.o
@@ -344,7 +344,7 @@ fixed_intrin_avx2.o: fixed_intrin_avx2.c.o
 
 # target to build an object file
 fixed_intrin_avx2.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_avx2.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_avx2.c.o
 .PHONY : fixed_intrin_avx2.c.o
 
 fixed_intrin_avx2.i: fixed_intrin_avx2.c.i
@@ -352,7 +352,7 @@ fixed_intrin_avx2.i: fixed_intrin_avx2.c.i
 
 # target to preprocess a source file
 fixed_intrin_avx2.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_avx2.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_avx2.c.i
 .PHONY : fixed_intrin_avx2.c.i
 
 fixed_intrin_avx2.s: fixed_intrin_avx2.c.s
@@ -360,7 +360,7 @@ fixed_intrin_avx2.s: fixed_intrin_avx2.c.s
 
 # target to generate assembly for a file
 fixed_intrin_avx2.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_avx2.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_avx2.c.s
 .PHONY : fixed_intrin_avx2.c.s
 
 fixed_intrin_sse2.o: fixed_intrin_sse2.c.o
@@ -368,7 +368,7 @@ fixed_intrin_sse2.o: fixed_intrin_sse2.c.o
 
 # target to build an object file
 fixed_intrin_sse2.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse2.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse2.c.o
 .PHONY : fixed_intrin_sse2.c.o
 
 fixed_intrin_sse2.i: fixed_intrin_sse2.c.i
@@ -376,7 +376,7 @@ fixed_intrin_sse2.i: fixed_intrin_sse2.c.i
 
 # target to preprocess a source file
 fixed_intrin_sse2.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse2.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse2.c.i
 .PHONY : fixed_intrin_sse2.c.i
 
 fixed_intrin_sse2.s: fixed_intrin_sse2.c.s
@@ -384,7 +384,7 @@ fixed_intrin_sse2.s: fixed_intrin_sse2.c.s
 
 # target to generate assembly for a file
 fixed_intrin_sse2.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse2.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse2.c.s
 .PHONY : fixed_intrin_sse2.c.s
 
 fixed_intrin_sse42.o: fixed_intrin_sse42.c.o
@@ -392,7 +392,7 @@ fixed_intrin_sse42.o: fixed_intrin_sse42.c.o
 
 # target to build an object file
 fixed_intrin_sse42.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse42.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse42.c.o
 .PHONY : fixed_intrin_sse42.c.o
 
 fixed_intrin_sse42.i: fixed_intrin_sse42.c.i
@@ -400,7 +400,7 @@ fixed_intrin_sse42.i: fixed_intrin_sse42.c.i
 
 # target to preprocess a source file
 fixed_intrin_sse42.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse42.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse42.c.i
 .PHONY : fixed_intrin_sse42.c.i
 
 fixed_intrin_sse42.s: fixed_intrin_sse42.c.s
@@ -408,7 +408,7 @@ fixed_intrin_sse42.s: fixed_intrin_sse42.c.s
 
 # target to generate assembly for a file
 fixed_intrin_sse42.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse42.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_sse42.c.s
 .PHONY : fixed_intrin_sse42.c.s
 
 fixed_intrin_ssse3.o: fixed_intrin_ssse3.c.o
@@ -416,7 +416,7 @@ fixed_intrin_ssse3.o: fixed_intrin_ssse3.c.o
 
 # target to build an object file
 fixed_intrin_ssse3.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_ssse3.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_ssse3.c.o
 .PHONY : fixed_intrin_ssse3.c.o
 
 fixed_intrin_ssse3.i: fixed_intrin_ssse3.c.i
@@ -424,7 +424,7 @@ fixed_intrin_ssse3.i: fixed_intrin_ssse3.c.i
 
 # target to preprocess a source file
 fixed_intrin_ssse3.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_ssse3.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_ssse3.c.i
 .PHONY : fixed_intrin_ssse3.c.i
 
 fixed_intrin_ssse3.s: fixed_intrin_ssse3.c.s
@@ -432,7 +432,7 @@ fixed_intrin_ssse3.s: fixed_intrin_ssse3.c.s
 
 # target to generate assembly for a file
 fixed_intrin_ssse3.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_ssse3.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/fixed_intrin_ssse3.c.s
 .PHONY : fixed_intrin_ssse3.c.s
 
 float.o: float.c.o
@@ -440,7 +440,7 @@ float.o: float.c.o
 
 # target to build an object file
 float.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/float.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/float.c.o
 .PHONY : float.c.o
 
 float.i: float.c.i
@@ -448,7 +448,7 @@ float.i: float.c.i
 
 # target to preprocess a source file
 float.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/float.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/float.c.i
 .PHONY : float.c.i
 
 float.s: float.c.s
@@ -456,7 +456,7 @@ float.s: float.c.s
 
 # target to generate assembly for a file
 float.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/float.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/float.c.s
 .PHONY : float.c.s
 
 format.o: format.c.o
@@ -464,7 +464,7 @@ format.o: format.c.o
 
 # target to build an object file
 format.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/format.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/format.c.o
 .PHONY : format.c.o
 
 format.i: format.c.i
@@ -472,7 +472,7 @@ format.i: format.c.i
 
 # target to preprocess a source file
 format.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/format.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/format.c.i
 .PHONY : format.c.i
 
 format.s: format.c.s
@@ -480,7 +480,7 @@ format.s: format.c.s
 
 # target to generate assembly for a file
 format.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/format.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/format.c.s
 .PHONY : format.c.s
 
 lpc.o: lpc.c.o
@@ -488,7 +488,7 @@ lpc.o: lpc.c.o
 
 # target to build an object file
 lpc.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc.c.o
 .PHONY : lpc.c.o
 
 lpc.i: lpc.c.i
@@ -496,7 +496,7 @@ lpc.i: lpc.c.i
 
 # target to preprocess a source file
 lpc.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc.c.i
 .PHONY : lpc.c.i
 
 lpc.s: lpc.c.s
@@ -504,7 +504,7 @@ lpc.s: lpc.c.s
 
 # target to generate assembly for a file
 lpc.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc.c.s
 .PHONY : lpc.c.s
 
 lpc_intrin_avx2.o: lpc_intrin_avx2.c.o
@@ -512,7 +512,7 @@ lpc_intrin_avx2.o: lpc_intrin_avx2.c.o
 
 # target to build an object file
 lpc_intrin_avx2.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_avx2.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_avx2.c.o
 .PHONY : lpc_intrin_avx2.c.o
 
 lpc_intrin_avx2.i: lpc_intrin_avx2.c.i
@@ -520,7 +520,7 @@ lpc_intrin_avx2.i: lpc_intrin_avx2.c.i
 
 # target to preprocess a source file
 lpc_intrin_avx2.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_avx2.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_avx2.c.i
 .PHONY : lpc_intrin_avx2.c.i
 
 lpc_intrin_avx2.s: lpc_intrin_avx2.c.s
@@ -528,7 +528,7 @@ lpc_intrin_avx2.s: lpc_intrin_avx2.c.s
 
 # target to generate assembly for a file
 lpc_intrin_avx2.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_avx2.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_avx2.c.s
 .PHONY : lpc_intrin_avx2.c.s
 
 lpc_intrin_fma.o: lpc_intrin_fma.c.o
@@ -536,7 +536,7 @@ lpc_intrin_fma.o: lpc_intrin_fma.c.o
 
 # target to build an object file
 lpc_intrin_fma.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_fma.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_fma.c.o
 .PHONY : lpc_intrin_fma.c.o
 
 lpc_intrin_fma.i: lpc_intrin_fma.c.i
@@ -544,7 +544,7 @@ lpc_intrin_fma.i: lpc_intrin_fma.c.i
 
 # target to preprocess a source file
 lpc_intrin_fma.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_fma.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_fma.c.i
 .PHONY : lpc_intrin_fma.c.i
 
 lpc_intrin_fma.s: lpc_intrin_fma.c.s
@@ -552,7 +552,7 @@ lpc_intrin_fma.s: lpc_intrin_fma.c.s
 
 # target to generate assembly for a file
 lpc_intrin_fma.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_fma.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_fma.c.s
 .PHONY : lpc_intrin_fma.c.s
 
 lpc_intrin_neon.o: lpc_intrin_neon.c.o
@@ -560,7 +560,7 @@ lpc_intrin_neon.o: lpc_intrin_neon.c.o
 
 # target to build an object file
 lpc_intrin_neon.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_neon.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_neon.c.o
 .PHONY : lpc_intrin_neon.c.o
 
 lpc_intrin_neon.i: lpc_intrin_neon.c.i
@@ -568,7 +568,7 @@ lpc_intrin_neon.i: lpc_intrin_neon.c.i
 
 # target to preprocess a source file
 lpc_intrin_neon.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_neon.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_neon.c.i
 .PHONY : lpc_intrin_neon.c.i
 
 lpc_intrin_neon.s: lpc_intrin_neon.c.s
@@ -576,7 +576,7 @@ lpc_intrin_neon.s: lpc_intrin_neon.c.s
 
 # target to generate assembly for a file
 lpc_intrin_neon.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_neon.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_neon.c.s
 .PHONY : lpc_intrin_neon.c.s
 
 lpc_intrin_sse2.o: lpc_intrin_sse2.c.o
@@ -584,7 +584,7 @@ lpc_intrin_sse2.o: lpc_intrin_sse2.c.o
 
 # target to build an object file
 lpc_intrin_sse2.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse2.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse2.c.o
 .PHONY : lpc_intrin_sse2.c.o
 
 lpc_intrin_sse2.i: lpc_intrin_sse2.c.i
@@ -592,7 +592,7 @@ lpc_intrin_sse2.i: lpc_intrin_sse2.c.i
 
 # target to preprocess a source file
 lpc_intrin_sse2.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse2.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse2.c.i
 .PHONY : lpc_intrin_sse2.c.i
 
 lpc_intrin_sse2.s: lpc_intrin_sse2.c.s
@@ -600,7 +600,7 @@ lpc_intrin_sse2.s: lpc_intrin_sse2.c.s
 
 # target to generate assembly for a file
 lpc_intrin_sse2.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse2.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse2.c.s
 .PHONY : lpc_intrin_sse2.c.s
 
 lpc_intrin_sse41.o: lpc_intrin_sse41.c.o
@@ -608,7 +608,7 @@ lpc_intrin_sse41.o: lpc_intrin_sse41.c.o
 
 # target to build an object file
 lpc_intrin_sse41.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse41.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse41.c.o
 .PHONY : lpc_intrin_sse41.c.o
 
 lpc_intrin_sse41.i: lpc_intrin_sse41.c.i
@@ -616,7 +616,7 @@ lpc_intrin_sse41.i: lpc_intrin_sse41.c.i
 
 # target to preprocess a source file
 lpc_intrin_sse41.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse41.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse41.c.i
 .PHONY : lpc_intrin_sse41.c.i
 
 lpc_intrin_sse41.s: lpc_intrin_sse41.c.s
@@ -624,7 +624,7 @@ lpc_intrin_sse41.s: lpc_intrin_sse41.c.s
 
 # target to generate assembly for a file
 lpc_intrin_sse41.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse41.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/lpc_intrin_sse41.c.s
 .PHONY : lpc_intrin_sse41.c.s
 
 md5.o: md5.c.o
@@ -632,7 +632,7 @@ md5.o: md5.c.o
 
 # target to build an object file
 md5.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/md5.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/md5.c.o
 .PHONY : md5.c.o
 
 md5.i: md5.c.i
@@ -640,7 +640,7 @@ md5.i: md5.c.i
 
 # target to preprocess a source file
 md5.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/md5.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/md5.c.i
 .PHONY : md5.c.i
 
 md5.s: md5.c.s
@@ -648,7 +648,7 @@ md5.s: md5.c.s
 
 # target to generate assembly for a file
 md5.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/md5.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/md5.c.s
 .PHONY : md5.c.s
 
 memory.o: memory.c.o
@@ -656,7 +656,7 @@ memory.o: memory.c.o
 
 # target to build an object file
 memory.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/memory.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/memory.c.o
 .PHONY : memory.c.o
 
 memory.i: memory.c.i
@@ -664,7 +664,7 @@ memory.i: memory.c.i
 
 # target to preprocess a source file
 memory.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/memory.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/memory.c.i
 .PHONY : memory.c.i
 
 memory.s: memory.c.s
@@ -672,7 +672,7 @@ memory.s: memory.c.s
 
 # target to generate assembly for a file
 memory.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/memory.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/memory.c.s
 .PHONY : memory.c.s
 
 metadata_iterators.o: metadata_iterators.c.o
@@ -680,7 +680,7 @@ metadata_iterators.o: metadata_iterators.c.o
 
 # target to build an object file
 metadata_iterators.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_iterators.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_iterators.c.o
 .PHONY : metadata_iterators.c.o
 
 metadata_iterators.i: metadata_iterators.c.i
@@ -688,7 +688,7 @@ metadata_iterators.i: metadata_iterators.c.i
 
 # target to preprocess a source file
 metadata_iterators.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_iterators.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_iterators.c.i
 .PHONY : metadata_iterators.c.i
 
 metadata_iterators.s: metadata_iterators.c.s
@@ -696,7 +696,7 @@ metadata_iterators.s: metadata_iterators.c.s
 
 # target to generate assembly for a file
 metadata_iterators.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_iterators.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_iterators.c.s
 .PHONY : metadata_iterators.c.s
 
 metadata_object.o: metadata_object.c.o
@@ -704,7 +704,7 @@ metadata_object.o: metadata_object.c.o
 
 # target to build an object file
 metadata_object.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_object.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_object.c.o
 .PHONY : metadata_object.c.o
 
 metadata_object.i: metadata_object.c.i
@@ -712,7 +712,7 @@ metadata_object.i: metadata_object.c.i
 
 # target to preprocess a source file
 metadata_object.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_object.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_object.c.i
 .PHONY : metadata_object.c.i
 
 metadata_object.s: metadata_object.c.s
@@ -720,7 +720,7 @@ metadata_object.s: metadata_object.c.s
 
 # target to generate assembly for a file
 metadata_object.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_object.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/metadata_object.c.s
 .PHONY : metadata_object.c.s
 
 ogg_decoder_aspect.o: ogg_decoder_aspect.c.o
@@ -728,7 +728,7 @@ ogg_decoder_aspect.o: ogg_decoder_aspect.c.o
 
 # target to build an object file
 ogg_decoder_aspect.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_decoder_aspect.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_decoder_aspect.c.o
 .PHONY : ogg_decoder_aspect.c.o
 
 ogg_decoder_aspect.i: ogg_decoder_aspect.c.i
@@ -736,7 +736,7 @@ ogg_decoder_aspect.i: ogg_decoder_aspect.c.i
 
 # target to preprocess a source file
 ogg_decoder_aspect.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_decoder_aspect.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_decoder_aspect.c.i
 .PHONY : ogg_decoder_aspect.c.i
 
 ogg_decoder_aspect.s: ogg_decoder_aspect.c.s
@@ -744,7 +744,7 @@ ogg_decoder_aspect.s: ogg_decoder_aspect.c.s
 
 # target to generate assembly for a file
 ogg_decoder_aspect.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_decoder_aspect.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_decoder_aspect.c.s
 .PHONY : ogg_decoder_aspect.c.s
 
 ogg_encoder_aspect.o: ogg_encoder_aspect.c.o
@@ -752,7 +752,7 @@ ogg_encoder_aspect.o: ogg_encoder_aspect.c.o
 
 # target to build an object file
 ogg_encoder_aspect.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_encoder_aspect.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_encoder_aspect.c.o
 .PHONY : ogg_encoder_aspect.c.o
 
 ogg_encoder_aspect.i: ogg_encoder_aspect.c.i
@@ -760,7 +760,7 @@ ogg_encoder_aspect.i: ogg_encoder_aspect.c.i
 
 # target to preprocess a source file
 ogg_encoder_aspect.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_encoder_aspect.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_encoder_aspect.c.i
 .PHONY : ogg_encoder_aspect.c.i
 
 ogg_encoder_aspect.s: ogg_encoder_aspect.c.s
@@ -768,7 +768,7 @@ ogg_encoder_aspect.s: ogg_encoder_aspect.c.s
 
 # target to generate assembly for a file
 ogg_encoder_aspect.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_encoder_aspect.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_encoder_aspect.c.s
 .PHONY : ogg_encoder_aspect.c.s
 
 ogg_helper.o: ogg_helper.c.o
@@ -776,7 +776,7 @@ ogg_helper.o: ogg_helper.c.o
 
 # target to build an object file
 ogg_helper.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_helper.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_helper.c.o
 .PHONY : ogg_helper.c.o
 
 ogg_helper.i: ogg_helper.c.i
@@ -784,7 +784,7 @@ ogg_helper.i: ogg_helper.c.i
 
 # target to preprocess a source file
 ogg_helper.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_helper.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_helper.c.i
 .PHONY : ogg_helper.c.i
 
 ogg_helper.s: ogg_helper.c.s
@@ -792,7 +792,7 @@ ogg_helper.s: ogg_helper.c.s
 
 # target to generate assembly for a file
 ogg_helper.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_helper.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_helper.c.s
 .PHONY : ogg_helper.c.s
 
 ogg_mapping.o: ogg_mapping.c.o
@@ -800,7 +800,7 @@ ogg_mapping.o: ogg_mapping.c.o
 
 # target to build an object file
 ogg_mapping.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_mapping.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_mapping.c.o
 .PHONY : ogg_mapping.c.o
 
 ogg_mapping.i: ogg_mapping.c.i
@@ -808,7 +808,7 @@ ogg_mapping.i: ogg_mapping.c.i
 
 # target to preprocess a source file
 ogg_mapping.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_mapping.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_mapping.c.i
 .PHONY : ogg_mapping.c.i
 
 ogg_mapping.s: ogg_mapping.c.s
@@ -816,7 +816,7 @@ ogg_mapping.s: ogg_mapping.c.s
 
 # target to generate assembly for a file
 ogg_mapping.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_mapping.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/ogg_mapping.c.s
 .PHONY : ogg_mapping.c.s
 
 stream_decoder.o: stream_decoder.c.o
@@ -824,7 +824,7 @@ stream_decoder.o: stream_decoder.c.o
 
 # target to build an object file
 stream_decoder.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_decoder.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_decoder.c.o
 .PHONY : stream_decoder.c.o
 
 stream_decoder.i: stream_decoder.c.i
@@ -832,7 +832,7 @@ stream_decoder.i: stream_decoder.c.i
 
 # target to preprocess a source file
 stream_decoder.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_decoder.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_decoder.c.i
 .PHONY : stream_decoder.c.i
 
 stream_decoder.s: stream_decoder.c.s
@@ -840,7 +840,7 @@ stream_decoder.s: stream_decoder.c.s
 
 # target to generate assembly for a file
 stream_decoder.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_decoder.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_decoder.c.s
 .PHONY : stream_decoder.c.s
 
 stream_encoder.o: stream_encoder.c.o
@@ -848,7 +848,7 @@ stream_encoder.o: stream_encoder.c.o
 
 # target to build an object file
 stream_encoder.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder.c.o
 .PHONY : stream_encoder.c.o
 
 stream_encoder.i: stream_encoder.c.i
@@ -856,7 +856,7 @@ stream_encoder.i: stream_encoder.c.i
 
 # target to preprocess a source file
 stream_encoder.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder.c.i
 .PHONY : stream_encoder.c.i
 
 stream_encoder.s: stream_encoder.c.s
@@ -864,7 +864,7 @@ stream_encoder.s: stream_encoder.c.s
 
 # target to generate assembly for a file
 stream_encoder.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder.c.s
 .PHONY : stream_encoder.c.s
 
 stream_encoder_framing.o: stream_encoder_framing.c.o
@@ -872,7 +872,7 @@ stream_encoder_framing.o: stream_encoder_framing.c.o
 
 # target to build an object file
 stream_encoder_framing.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_framing.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_framing.c.o
 .PHONY : stream_encoder_framing.c.o
 
 stream_encoder_framing.i: stream_encoder_framing.c.i
@@ -880,7 +880,7 @@ stream_encoder_framing.i: stream_encoder_framing.c.i
 
 # target to preprocess a source file
 stream_encoder_framing.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_framing.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_framing.c.i
 .PHONY : stream_encoder_framing.c.i
 
 stream_encoder_framing.s: stream_encoder_framing.c.s
@@ -888,7 +888,7 @@ stream_encoder_framing.s: stream_encoder_framing.c.s
 
 # target to generate assembly for a file
 stream_encoder_framing.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_framing.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_framing.c.s
 .PHONY : stream_encoder_framing.c.s
 
 stream_encoder_intrin_avx2.o: stream_encoder_intrin_avx2.c.o
@@ -896,7 +896,7 @@ stream_encoder_intrin_avx2.o: stream_encoder_intrin_avx2.c.o
 
 # target to build an object file
 stream_encoder_intrin_avx2.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_avx2.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_avx2.c.o
 .PHONY : stream_encoder_intrin_avx2.c.o
 
 stream_encoder_intrin_avx2.i: stream_encoder_intrin_avx2.c.i
@@ -904,7 +904,7 @@ stream_encoder_intrin_avx2.i: stream_encoder_intrin_avx2.c.i
 
 # target to preprocess a source file
 stream_encoder_intrin_avx2.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_avx2.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_avx2.c.i
 .PHONY : stream_encoder_intrin_avx2.c.i
 
 stream_encoder_intrin_avx2.s: stream_encoder_intrin_avx2.c.s
@@ -912,7 +912,7 @@ stream_encoder_intrin_avx2.s: stream_encoder_intrin_avx2.c.s
 
 # target to generate assembly for a file
 stream_encoder_intrin_avx2.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_avx2.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_avx2.c.s
 .PHONY : stream_encoder_intrin_avx2.c.s
 
 stream_encoder_intrin_sse2.o: stream_encoder_intrin_sse2.c.o
@@ -920,7 +920,7 @@ stream_encoder_intrin_sse2.o: stream_encoder_intrin_sse2.c.o
 
 # target to build an object file
 stream_encoder_intrin_sse2.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_sse2.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_sse2.c.o
 .PHONY : stream_encoder_intrin_sse2.c.o
 
 stream_encoder_intrin_sse2.i: stream_encoder_intrin_sse2.c.i
@@ -928,7 +928,7 @@ stream_encoder_intrin_sse2.i: stream_encoder_intrin_sse2.c.i
 
 # target to preprocess a source file
 stream_encoder_intrin_sse2.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_sse2.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_sse2.c.i
 .PHONY : stream_encoder_intrin_sse2.c.i
 
 stream_encoder_intrin_sse2.s: stream_encoder_intrin_sse2.c.s
@@ -936,7 +936,7 @@ stream_encoder_intrin_sse2.s: stream_encoder_intrin_sse2.c.s
 
 # target to generate assembly for a file
 stream_encoder_intrin_sse2.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_sse2.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_sse2.c.s
 .PHONY : stream_encoder_intrin_sse2.c.s
 
 stream_encoder_intrin_ssse3.o: stream_encoder_intrin_ssse3.c.o
@@ -944,7 +944,7 @@ stream_encoder_intrin_ssse3.o: stream_encoder_intrin_ssse3.c.o
 
 # target to build an object file
 stream_encoder_intrin_ssse3.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_ssse3.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_ssse3.c.o
 .PHONY : stream_encoder_intrin_ssse3.c.o
 
 stream_encoder_intrin_ssse3.i: stream_encoder_intrin_ssse3.c.i
@@ -952,7 +952,7 @@ stream_encoder_intrin_ssse3.i: stream_encoder_intrin_ssse3.c.i
 
 # target to preprocess a source file
 stream_encoder_intrin_ssse3.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_ssse3.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_ssse3.c.i
 .PHONY : stream_encoder_intrin_ssse3.c.i
 
 stream_encoder_intrin_ssse3.s: stream_encoder_intrin_ssse3.c.s
@@ -960,7 +960,7 @@ stream_encoder_intrin_ssse3.s: stream_encoder_intrin_ssse3.c.s
 
 # target to generate assembly for a file
 stream_encoder_intrin_ssse3.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_ssse3.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/stream_encoder_intrin_ssse3.c.s
 .PHONY : stream_encoder_intrin_ssse3.c.s
 
 window.o: window.c.o
@@ -968,7 +968,7 @@ window.o: window.c.o
 
 # target to build an object file
 window.c.o:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/window.c.o
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/window.c.o
 .PHONY : window.c.o
 
 window.i: window.c.i
@@ -976,7 +976,7 @@ window.i: window.c.i
 
 # target to preprocess a source file
 window.c.i:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/window.c.i
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/window.c.i
 .PHONY : window.c.i
 
 window.s: window.c.s
@@ -984,7 +984,7 @@ window.s: window.c.s
 
 # target to generate assembly for a file
 window.c.s:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/window.c.s
+	cd /Users/greenbox/projects/sfmltest/build && $(MAKE) $(MAKESILENT) -f _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/build.make _deps/flac-build/src/libFLAC/CMakeFiles/FLAC.dir/window.c.s
 .PHONY : window.c.s
 
 # Help Target
@@ -1112,6 +1112,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

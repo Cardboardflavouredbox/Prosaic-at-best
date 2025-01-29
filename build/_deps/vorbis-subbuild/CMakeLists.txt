@@ -27,9 +27,9 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 
 include(ExternalProject)
 ExternalProject_Add(vorbis-populate
-                     "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/xiph/vorbis.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "v1.3.7" "GIT_SHALLOW" "ON" "PATCH_COMMAND" "/opt/homebrew/bin/cmake" "-DVORBIS_DIR=/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src" "-P" "/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/tools/vorbis/PatchVorbis.cmake"
-                    SOURCE_DIR          "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-src"
-                    BINARY_DIR          "/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build"
+                     "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/xiph/vorbis.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "v1.3.7" "GIT_SHALLOW" "ON" "PATCH_COMMAND" "/opt/homebrew/bin/cmake" "-DVORBIS_DIR=/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src" "-P" "/Users/greenbox/projects/sfmltest/build/_deps/sfml-src/tools/vorbis/PatchVorbis.cmake"
+                    SOURCE_DIR          "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-src"
+                    BINARY_DIR          "/Users/greenbox/projects/sfmltest/build/_deps/vorbis-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

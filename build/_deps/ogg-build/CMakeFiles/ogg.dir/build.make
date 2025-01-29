@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing"
+CMAKE_SOURCE_DIR = /Users/greenbox/projects/sfmltest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best/build
+CMAKE_BINARY_DIR = /Users/greenbox/projects/sfmltest/build
 
 # Include any dependencies generated for this target.
 include _deps/ogg-build/CMakeFiles/ogg.dir/depend.make
@@ -73,32 +73,32 @@ _deps/ogg-build/CMakeFiles/ogg.dir/codegen:
 .PHONY : _deps/ogg-build/CMakeFiles/ogg.dir/codegen
 
 _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o: _deps/ogg-build/CMakeFiles/ogg.dir/flags.make
-_deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/bitwise.c
+_deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o: _deps/ogg-src/src/bitwise.c
 _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o: _deps/ogg-build/CMakeFiles/ogg.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o -MF CMakeFiles/ogg.dir/src/bitwise.c.o.d -o CMakeFiles/ogg.dir/src/bitwise.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/bitwise.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.o -MF CMakeFiles/ogg.dir/src/bitwise.c.o.d -o CMakeFiles/ogg.dir/src/bitwise.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/ogg-src/src/bitwise.c
 
 _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/ogg.dir/src/bitwise.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/bitwise.c > CMakeFiles/ogg.dir/src/bitwise.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/ogg-src/src/bitwise.c > CMakeFiles/ogg.dir/src/bitwise.c.i
 
 _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/ogg.dir/src/bitwise.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/bitwise.c -o CMakeFiles/ogg.dir/src/bitwise.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/ogg-src/src/bitwise.c -o CMakeFiles/ogg.dir/src/bitwise.c.s
 
 _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o: _deps/ogg-build/CMakeFiles/ogg.dir/flags.make
-_deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/framing.c
+_deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o: _deps/ogg-src/src/framing.c
 _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o: _deps/ogg-build/CMakeFiles/ogg.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o -MF CMakeFiles/ogg.dir/src/framing.c.o.d -o CMakeFiles/ogg.dir/src/framing.c.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/framing.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o -MF CMakeFiles/ogg.dir/src/framing.c.o.d -o CMakeFiles/ogg.dir/src/framing.c.o -c /Users/greenbox/projects/sfmltest/build/_deps/ogg-src/src/framing.c
 
 _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/ogg.dir/src/framing.c.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/framing.c > CMakeFiles/ogg.dir/src/framing.c.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/ogg-src/src/framing.c > CMakeFiles/ogg.dir/src/framing.c.i
 
 _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/ogg.dir/src/framing.c.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src/src/framing.c -o CMakeFiles/ogg.dir/src/framing.c.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && /usr/bin/clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/ogg-src/src/framing.c -o CMakeFiles/ogg.dir/src/framing.c.s
 
 # Object files for target ogg
 ogg_OBJECTS = \
@@ -112,19 +112,19 @@ _deps/sfml-build/lib/liboggd.a: _deps/ogg-build/CMakeFiles/ogg.dir/src/bitwise.c
 _deps/sfml-build/lib/liboggd.a: _deps/ogg-build/CMakeFiles/ogg.dir/src/framing.c.o
 _deps/sfml-build/lib/liboggd.a: _deps/ogg-build/CMakeFiles/ogg.dir/build.make
 _deps/sfml-build/lib/liboggd.a: _deps/ogg-build/CMakeFiles/ogg.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C static library ../sfml-build/lib/liboggd.a"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && $(CMAKE_COMMAND) -P CMakeFiles/ogg.dir/cmake_clean_target.cmake
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ogg.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C static library ../sfml-build/lib/liboggd.a"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && $(CMAKE_COMMAND) -P CMakeFiles/ogg.dir/cmake_clean_target.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ogg.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 _deps/ogg-build/CMakeFiles/ogg.dir/build: _deps/sfml-build/lib/liboggd.a
 .PHONY : _deps/ogg-build/CMakeFiles/ogg.dir/build
 
 _deps/ogg-build/CMakeFiles/ogg.dir/clean:
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build && $(CMAKE_COMMAND) -P CMakeFiles/ogg.dir/cmake_clean.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/ogg-build && $(CMAKE_COMMAND) -P CMakeFiles/ogg.dir/cmake_clean.cmake
 .PHONY : _deps/ogg-build/CMakeFiles/ogg.dir/clean
 
 _deps/ogg-build/CMakeFiles/ogg.dir/depend:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing" /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-src /Users/greenbox/projects/Prosaic-at-best/build /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build /Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build/CMakeFiles/ogg.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/greenbox/projects/sfmltest /Users/greenbox/projects/sfmltest/build/_deps/ogg-src /Users/greenbox/projects/sfmltest/build /Users/greenbox/projects/sfmltest/build/_deps/ogg-build /Users/greenbox/projects/sfmltest/build/_deps/ogg-build/CMakeFiles/ogg.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : _deps/ogg-build/CMakeFiles/ogg.dir/depend
 

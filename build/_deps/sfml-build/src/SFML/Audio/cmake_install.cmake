@@ -1,4 +1,4 @@
-# Install script for directory: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Audio
+# Install script for directory: /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Audio
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,21 +39,21 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/greenbox/projects/Prosaic-at-best/build/_deps/ogg-build/cmake_install.cmake")
+  include("/Users/greenbox/projects/sfmltest/build/_deps/ogg-build/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-build/cmake_install.cmake")
+  include("/Users/greenbox/projects/sfmltest/build/_deps/flac-build/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/greenbox/projects/Prosaic-at-best/build/_deps/vorbis-build/cmake_install.cmake")
+  include("/Users/greenbox/projects/sfmltest/build/_deps/vorbis-build/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "devel" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/lib/libsfml-audio-s-d.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/greenbox/projects/sfmltest/build/_deps/sfml-build/lib/libsfml-audio-s-d.a")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libsfml-audio-s-d.a" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libsfml-audio-s-d.a")
     execute_process(COMMAND "/usr/bin/ranlib" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libsfml-audio-s-d.a")
@@ -61,12 +61,12 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "devel" OR NOT CMAKE_INSTALL_COMPONENT)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "devel" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/SFML" TYPE FILE FILES "/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Audio/SFMLAudioDependencies.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/SFML" TYPE FILE FILES "/Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Audio/SFMLAudioDependencies.cmake")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Audio/install_local_manifest.txt"
+  file(WRITE "/Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Audio/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

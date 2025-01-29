@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/benchmark_residual.c" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o" "gcc" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o.d"
-  "/Users/greenbox/projects/Prosaic-at-best/build/_deps/flac-src/microbench/util.c" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o" "gcc" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o.d"
+  "/Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/benchmark_residual.c" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o" "gcc" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/benchmark_residual.c.o.d"
+  "/Users/greenbox/projects/sfmltest/build/_deps/flac-src/microbench/util.c" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o" "gcc" "_deps/flac-build/microbench/CMakeFiles/benchmark_residual.dir/util.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

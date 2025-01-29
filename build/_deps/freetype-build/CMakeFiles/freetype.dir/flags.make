@@ -4,7 +4,7 @@
 # compile C with /usr/bin/clang
 C_DEFINES = -DFT2_BUILD_LIBRARY
 
-C_INCLUDES = -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/include -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/include -I/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/include/freetype/config
+C_INCLUDES = -I/Users/greenbox/projects/sfmltest/build/_deps/freetype-build/include -I/Users/greenbox/projects/sfmltest/build/_deps/freetype-src/include -I/Users/greenbox/projects/sfmltest/build/_deps/freetype-build/include/freetype/config
 
 C_FLAGSarm64 = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mmacosx-version-min=15.1 -fvisibility=hidden
 

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing"
+CMAKE_SOURCE_DIR = /Users/greenbox/projects/sfmltest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best/build
+CMAKE_BINARY_DIR = /Users/greenbox/projects/sfmltest/build
 
 # Include any dependencies generated for this target.
 include _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/depend.make
@@ -73,144 +73,144 @@ _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/codegen:
 .PHONY : _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/codegen
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Clock.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o: _deps/sfml-src/src/SFML/System/Clock.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o -MF CMakeFiles/sfml-system.dir/Clock.cpp.o.d -o CMakeFiles/sfml-system.dir/Clock.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Clock.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.o -MF CMakeFiles/sfml-system.dir/Clock.cpp.o.d -o CMakeFiles/sfml-system.dir/Clock.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Clock.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/Clock.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Clock.cpp > CMakeFiles/sfml-system.dir/Clock.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Clock.cpp > CMakeFiles/sfml-system.dir/Clock.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Clock.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/Clock.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Clock.cpp -o CMakeFiles/sfml-system.dir/Clock.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Clock.cpp -o CMakeFiles/sfml-system.dir/Clock.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Err.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o: _deps/sfml-src/src/SFML/System/Err.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o -MF CMakeFiles/sfml-system.dir/Err.cpp.o.d -o CMakeFiles/sfml-system.dir/Err.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Err.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.o -MF CMakeFiles/sfml-system.dir/Err.cpp.o.d -o CMakeFiles/sfml-system.dir/Err.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Err.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/Err.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Err.cpp > CMakeFiles/sfml-system.dir/Err.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Err.cpp > CMakeFiles/sfml-system.dir/Err.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Err.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/Err.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Err.cpp -o CMakeFiles/sfml-system.dir/Err.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Err.cpp -o CMakeFiles/sfml-system.dir/Err.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Sleep.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o: _deps/sfml-src/src/SFML/System/Sleep.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o -MF CMakeFiles/sfml-system.dir/Sleep.cpp.o.d -o CMakeFiles/sfml-system.dir/Sleep.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Sleep.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.o -MF CMakeFiles/sfml-system.dir/Sleep.cpp.o.d -o CMakeFiles/sfml-system.dir/Sleep.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Sleep.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/Sleep.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Sleep.cpp > CMakeFiles/sfml-system.dir/Sleep.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Sleep.cpp > CMakeFiles/sfml-system.dir/Sleep.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Sleep.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/Sleep.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Sleep.cpp -o CMakeFiles/sfml-system.dir/Sleep.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Sleep.cpp -o CMakeFiles/sfml-system.dir/Sleep.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/String.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o: _deps/sfml-src/src/SFML/System/String.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o -MF CMakeFiles/sfml-system.dir/String.cpp.o.d -o CMakeFiles/sfml-system.dir/String.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/String.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.o -MF CMakeFiles/sfml-system.dir/String.cpp.o.d -o CMakeFiles/sfml-system.dir/String.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/String.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/String.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/String.cpp > CMakeFiles/sfml-system.dir/String.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/String.cpp > CMakeFiles/sfml-system.dir/String.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/String.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/String.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/String.cpp -o CMakeFiles/sfml-system.dir/String.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/String.cpp -o CMakeFiles/sfml-system.dir/String.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Utils.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o: _deps/sfml-src/src/SFML/System/Utils.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o -MF CMakeFiles/sfml-system.dir/Utils.cpp.o.d -o CMakeFiles/sfml-system.dir/Utils.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.o -MF CMakeFiles/sfml-system.dir/Utils.cpp.o.d -o CMakeFiles/sfml-system.dir/Utils.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Utils.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/Utils.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Utils.cpp > CMakeFiles/sfml-system.dir/Utils.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Utils.cpp > CMakeFiles/sfml-system.dir/Utils.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/Utils.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Utils.cpp -o CMakeFiles/sfml-system.dir/Utils.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Utils.cpp -o CMakeFiles/sfml-system.dir/Utils.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector2.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o: _deps/sfml-src/src/SFML/System/Vector2.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o -MF CMakeFiles/sfml-system.dir/Vector2.cpp.o.d -o CMakeFiles/sfml-system.dir/Vector2.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector2.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.o -MF CMakeFiles/sfml-system.dir/Vector2.cpp.o.d -o CMakeFiles/sfml-system.dir/Vector2.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Vector2.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/Vector2.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector2.cpp > CMakeFiles/sfml-system.dir/Vector2.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Vector2.cpp > CMakeFiles/sfml-system.dir/Vector2.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector2.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/Vector2.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector2.cpp -o CMakeFiles/sfml-system.dir/Vector2.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Vector2.cpp -o CMakeFiles/sfml-system.dir/Vector2.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector3.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o: _deps/sfml-src/src/SFML/System/Vector3.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o -MF CMakeFiles/sfml-system.dir/Vector3.cpp.o.d -o CMakeFiles/sfml-system.dir/Vector3.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.o -MF CMakeFiles/sfml-system.dir/Vector3.cpp.o.d -o CMakeFiles/sfml-system.dir/Vector3.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Vector3.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/Vector3.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector3.cpp > CMakeFiles/sfml-system.dir/Vector3.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Vector3.cpp > CMakeFiles/sfml-system.dir/Vector3.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Vector3.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/Vector3.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Vector3.cpp -o CMakeFiles/sfml-system.dir/Vector3.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Vector3.cpp -o CMakeFiles/sfml-system.dir/Vector3.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/FileInputStream.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o: _deps/sfml-src/src/SFML/System/FileInputStream.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o -MF CMakeFiles/sfml-system.dir/FileInputStream.cpp.o.d -o CMakeFiles/sfml-system.dir/FileInputStream.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/FileInputStream.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.o -MF CMakeFiles/sfml-system.dir/FileInputStream.cpp.o.d -o CMakeFiles/sfml-system.dir/FileInputStream.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/FileInputStream.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/FileInputStream.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/FileInputStream.cpp > CMakeFiles/sfml-system.dir/FileInputStream.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/FileInputStream.cpp > CMakeFiles/sfml-system.dir/FileInputStream.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/FileInputStream.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/FileInputStream.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/FileInputStream.cpp -o CMakeFiles/sfml-system.dir/FileInputStream.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/FileInputStream.cpp -o CMakeFiles/sfml-system.dir/FileInputStream.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/MemoryInputStream.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o: _deps/sfml-src/src/SFML/System/MemoryInputStream.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o -MF CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o.d -o CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/MemoryInputStream.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o -MF CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o.d -o CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/MemoryInputStream.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/MemoryInputStream.cpp > CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/MemoryInputStream.cpp > CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/MemoryInputStream.cpp -o CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/MemoryInputStream.cpp -o CMakeFiles/sfml-system.dir/MemoryInputStream.cpp.s
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/flags.make
-_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp
+_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o: _deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o -MF CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o.d -o CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o -MF CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o.d -o CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp > CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp > CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.i
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp -o CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System/Unix/SleepImpl.cpp -o CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.s
 
 # Object files for target sfml-system
 sfml__system_OBJECTS = \
@@ -240,19 +240,19 @@ _deps/sfml-build/lib/libsfml-system-s-d.a: _deps/sfml-build/src/SFML/System/CMak
 _deps/sfml-build/lib/libsfml-system-s-d.a: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/Unix/SleepImpl.cpp.o
 _deps/sfml-build/lib/libsfml-system-s-d.a: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/build.make
 _deps/sfml-build/lib/libsfml-system-s-d.a: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX static library ../../../lib/libsfml-system-s-d.a"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && $(CMAKE_COMMAND) -P CMakeFiles/sfml-system.dir/cmake_clean_target.cmake
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sfml-system.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX static library ../../../lib/libsfml-system-s-d.a"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && $(CMAKE_COMMAND) -P CMakeFiles/sfml-system.dir/cmake_clean_target.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sfml-system.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/build: _deps/sfml-build/lib/libsfml-system-s-d.a
 .PHONY : _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/build
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/clean:
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System && $(CMAKE_COMMAND) -P CMakeFiles/sfml-system.dir/cmake_clean.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System && $(CMAKE_COMMAND) -P CMakeFiles/sfml-system.dir/cmake_clean.cmake
 .PHONY : _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/clean
 
 _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/depend:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing" /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/System /Users/greenbox/projects/Prosaic-at-best/build /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/greenbox/projects/sfmltest /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/System /Users/greenbox/projects/sfmltest/build /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/depend
 

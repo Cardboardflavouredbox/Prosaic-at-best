@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing"
+CMAKE_SOURCE_DIR = /Users/greenbox/projects/sfmltest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/greenbox/projects/Prosaic-at-best/build
+CMAKE_BINARY_DIR = /Users/greenbox/projects/sfmltest/build
 
 # Include any dependencies generated for this target.
 include _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/depend.make
@@ -73,144 +73,144 @@ _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/codegen:
 .PHONY : _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/codegen
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Ftp.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o: _deps/sfml-src/src/SFML/Network/Ftp.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o -MF CMakeFiles/sfml-network.dir/Ftp.cpp.o.d -o CMakeFiles/sfml-network.dir/Ftp.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Ftp.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.o -MF CMakeFiles/sfml-network.dir/Ftp.cpp.o.d -o CMakeFiles/sfml-network.dir/Ftp.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Ftp.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/Ftp.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Ftp.cpp > CMakeFiles/sfml-network.dir/Ftp.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Ftp.cpp > CMakeFiles/sfml-network.dir/Ftp.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Ftp.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/Ftp.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Ftp.cpp -o CMakeFiles/sfml-network.dir/Ftp.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Ftp.cpp -o CMakeFiles/sfml-network.dir/Ftp.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Http.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o: _deps/sfml-src/src/SFML/Network/Http.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o -MF CMakeFiles/sfml-network.dir/Http.cpp.o.d -o CMakeFiles/sfml-network.dir/Http.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Http.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.o -MF CMakeFiles/sfml-network.dir/Http.cpp.o.d -o CMakeFiles/sfml-network.dir/Http.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Http.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/Http.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Http.cpp > CMakeFiles/sfml-network.dir/Http.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Http.cpp > CMakeFiles/sfml-network.dir/Http.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Http.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/Http.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Http.cpp -o CMakeFiles/sfml-network.dir/Http.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Http.cpp -o CMakeFiles/sfml-network.dir/Http.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/IpAddress.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o: _deps/sfml-src/src/SFML/Network/IpAddress.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o -MF CMakeFiles/sfml-network.dir/IpAddress.cpp.o.d -o CMakeFiles/sfml-network.dir/IpAddress.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/IpAddress.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.o -MF CMakeFiles/sfml-network.dir/IpAddress.cpp.o.d -o CMakeFiles/sfml-network.dir/IpAddress.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/IpAddress.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/IpAddress.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/IpAddress.cpp > CMakeFiles/sfml-network.dir/IpAddress.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/IpAddress.cpp > CMakeFiles/sfml-network.dir/IpAddress.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/IpAddress.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/IpAddress.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/IpAddress.cpp -o CMakeFiles/sfml-network.dir/IpAddress.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/IpAddress.cpp -o CMakeFiles/sfml-network.dir/IpAddress.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Packet.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o: _deps/sfml-src/src/SFML/Network/Packet.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o -MF CMakeFiles/sfml-network.dir/Packet.cpp.o.d -o CMakeFiles/sfml-network.dir/Packet.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Packet.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.o -MF CMakeFiles/sfml-network.dir/Packet.cpp.o.d -o CMakeFiles/sfml-network.dir/Packet.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Packet.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/Packet.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Packet.cpp > CMakeFiles/sfml-network.dir/Packet.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Packet.cpp > CMakeFiles/sfml-network.dir/Packet.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Packet.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/Packet.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Packet.cpp -o CMakeFiles/sfml-network.dir/Packet.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Packet.cpp -o CMakeFiles/sfml-network.dir/Packet.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Socket.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o: _deps/sfml-src/src/SFML/Network/Socket.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o -MF CMakeFiles/sfml-network.dir/Socket.cpp.o.d -o CMakeFiles/sfml-network.dir/Socket.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Socket.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.o -MF CMakeFiles/sfml-network.dir/Socket.cpp.o.d -o CMakeFiles/sfml-network.dir/Socket.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Socket.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/Socket.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Socket.cpp > CMakeFiles/sfml-network.dir/Socket.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Socket.cpp > CMakeFiles/sfml-network.dir/Socket.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Socket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/Socket.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Socket.cpp -o CMakeFiles/sfml-network.dir/Socket.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Socket.cpp -o CMakeFiles/sfml-network.dir/Socket.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/SocketSelector.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o: _deps/sfml-src/src/SFML/Network/SocketSelector.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o -MF CMakeFiles/sfml-network.dir/SocketSelector.cpp.o.d -o CMakeFiles/sfml-network.dir/SocketSelector.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/SocketSelector.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.o -MF CMakeFiles/sfml-network.dir/SocketSelector.cpp.o.d -o CMakeFiles/sfml-network.dir/SocketSelector.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/SocketSelector.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/SocketSelector.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/SocketSelector.cpp > CMakeFiles/sfml-network.dir/SocketSelector.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/SocketSelector.cpp > CMakeFiles/sfml-network.dir/SocketSelector.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/SocketSelector.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/SocketSelector.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/SocketSelector.cpp -o CMakeFiles/sfml-network.dir/SocketSelector.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/SocketSelector.cpp -o CMakeFiles/sfml-network.dir/SocketSelector.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpListener.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o: _deps/sfml-src/src/SFML/Network/TcpListener.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o -MF CMakeFiles/sfml-network.dir/TcpListener.cpp.o.d -o CMakeFiles/sfml-network.dir/TcpListener.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpListener.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.o -MF CMakeFiles/sfml-network.dir/TcpListener.cpp.o.d -o CMakeFiles/sfml-network.dir/TcpListener.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/TcpListener.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/TcpListener.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpListener.cpp > CMakeFiles/sfml-network.dir/TcpListener.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/TcpListener.cpp > CMakeFiles/sfml-network.dir/TcpListener.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpListener.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/TcpListener.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpListener.cpp -o CMakeFiles/sfml-network.dir/TcpListener.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/TcpListener.cpp -o CMakeFiles/sfml-network.dir/TcpListener.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpSocket.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o: _deps/sfml-src/src/SFML/Network/TcpSocket.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o -MF CMakeFiles/sfml-network.dir/TcpSocket.cpp.o.d -o CMakeFiles/sfml-network.dir/TcpSocket.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpSocket.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.o -MF CMakeFiles/sfml-network.dir/TcpSocket.cpp.o.d -o CMakeFiles/sfml-network.dir/TcpSocket.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/TcpSocket.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/TcpSocket.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpSocket.cpp > CMakeFiles/sfml-network.dir/TcpSocket.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/TcpSocket.cpp > CMakeFiles/sfml-network.dir/TcpSocket.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/TcpSocket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/TcpSocket.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/TcpSocket.cpp -o CMakeFiles/sfml-network.dir/TcpSocket.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/TcpSocket.cpp -o CMakeFiles/sfml-network.dir/TcpSocket.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/UdpSocket.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o: _deps/sfml-src/src/SFML/Network/UdpSocket.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o -MF CMakeFiles/sfml-network.dir/UdpSocket.cpp.o.d -o CMakeFiles/sfml-network.dir/UdpSocket.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/UdpSocket.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.o -MF CMakeFiles/sfml-network.dir/UdpSocket.cpp.o.d -o CMakeFiles/sfml-network.dir/UdpSocket.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/UdpSocket.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/UdpSocket.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/UdpSocket.cpp > CMakeFiles/sfml-network.dir/UdpSocket.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/UdpSocket.cpp > CMakeFiles/sfml-network.dir/UdpSocket.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/UdpSocket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/UdpSocket.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/UdpSocket.cpp -o CMakeFiles/sfml-network.dir/UdpSocket.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/UdpSocket.cpp -o CMakeFiles/sfml-network.dir/UdpSocket.cpp.s
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/flags.make
-_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o: /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp
+_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o: _deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o -MF CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o.d -o CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o -c /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o -MF CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o.d -o CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o -c /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.i"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp > CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.i
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp > CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.i
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.s"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp -o CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.s
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && /usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network/Unix/SocketImpl.cpp -o CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.s
 
 # Object files for target sfml-network
 sfml__network_OBJECTS = \
@@ -240,19 +240,19 @@ _deps/sfml-build/lib/libsfml-network-s-d.a: _deps/sfml-build/src/SFML/Network/CM
 _deps/sfml-build/lib/libsfml-network-s-d.a: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/Unix/SocketImpl.cpp.o
 _deps/sfml-build/lib/libsfml-network-s-d.a: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/build.make
 _deps/sfml-build/lib/libsfml-network-s-d.a: _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/Prosaic-at-best/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX static library ../../../lib/libsfml-network-s-d.a"
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && $(CMAKE_COMMAND) -P CMakeFiles/sfml-network.dir/cmake_clean_target.cmake
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sfml-network.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/greenbox/projects/sfmltest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX static library ../../../lib/libsfml-network-s-d.a"
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && $(CMAKE_COMMAND) -P CMakeFiles/sfml-network.dir/cmake_clean_target.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sfml-network.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/build: _deps/sfml-build/lib/libsfml-network-s-d.a
 .PHONY : _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/build
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/clean:
-	cd /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network && $(CMAKE_COMMAND) -P CMakeFiles/sfml-network.dir/cmake_clean.cmake
+	cd /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network && $(CMAKE_COMMAND) -P CMakeFiles/sfml-network.dir/cmake_clean.cmake
 .PHONY : _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/clean
 
 _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/depend:
-	cd /Users/greenbox/projects/Prosaic-at-best/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing" /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network /Users/greenbox/projects/Prosaic-at-best/build /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/greenbox/projects/sfmltest/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/greenbox/projects/sfmltest /Users/greenbox/projects/sfmltest/build/_deps/sfml-src/src/SFML/Network /Users/greenbox/projects/sfmltest/build /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network /Users/greenbox/projects/sfmltest/build/_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : _deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/depend
 
