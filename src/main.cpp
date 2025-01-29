@@ -1060,12 +1060,52 @@ unsigned char animlib[16][128][32][2]=
                     {255,255},{1,14},{1,2},
                     {255,255},{0,3},{1,3}
                     },//gimmick3 (77)
+                    {
+                    {2,4},{1,4},
+
+                    {26,14},{27,14},
+                    {26,15},{27,15},
+                    {26,16},{27,16},
+                    {26,17},{27,17}
+                    },//specialC1 (78)
+                    {
+                    {3,4},{1,4},
+
+                    {26,18},{27,18},{255,255},
+                    {26,19},{27,19},{29,12},
+                    {26,20},{27,20},{28,13},
+                    {26,21},{27,21},{255,255}
+                    },//specialC2 (79)
+                    {
+                    {3,4},{1,4},
+
+                    {255,255},{28,17},{29,17},
+                    {29,20},{28,18},{29,18},
+                    {29,21},{28,19},{29,19},
+                    {28,21},{28,20},{255,255}
+                    },//specialC3 (80)
+                    {
+                    {3,4},{1,4},
+
+                    {255,255},{30,17},{31,17},
+                    {255,255},{30,18},{31,18},
+                    {31,20},{30,19},{31,19},
+                    {31,21},{30,20},{255,255}
+                    },//specialC4 (81)
+                    {
+                    {3,4},{1,4},
+
+                    {255,255},{30,13},{255,255},
+                    {31,13},{30,14},{31,14},
+                    {31,16},{30,15},{31,15},
+                    {31,21},{30,16},{255,255}
+                    },//specialC5 (82)
                    }//char2(Sinclair)
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
-                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2},//char2(Sinclair)
+                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2},//char2(Sinclair)
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
@@ -1162,6 +1202,8 @@ hurtbox[16][128][8][2][2]={
                     {-1},/*knockdown (74)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-16},{18,-3}}},/*jump light1 (75)*/{{{-18,-16},{4,32}},{{-8,-31},{8,-16}},{{4,-16},{27,-3}}},/*jump light2 (76)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*gimmick2 (77)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC1 (78)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC2 (79)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC3 (80)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC4 (81)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}},}/*specialC5 (82)*/
                     },//char 2(Sinclair)
                     },
 hitbox[16][16][4][2][2]={
@@ -3079,6 +3121,16 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else P.jumpx=-7;
                 break;
             }
+            case 28:{//special C (u)
+                P.col=0;P.hitcount=1;P.hitstop=12;P.kback=5;P.hitstun=7;P.blockstun=5;P.dmg=22;P.slide=true;P.movetype=2;P.mgain=7;
+                P.animq.insert(P.animq.begin(),{78,78,78,79,79,79,80,81,81,81,81,81,81,81,81,82,82,82});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,1,1,1,1});
+                P.cancel[32]=true;
+                P.movewaitx=7;
+                if(P.right)P.jumpx=8;
+                else P.jumpx=-8;
+                break;
+                }
             case 32:{//super
                 P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77,77});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,6});
@@ -3574,7 +3626,7 @@ int main()
                 lightkey2=sf::Keyboard::Key::Z,mediumkey2=sf::Keyboard::Key::X,heavykey2=sf::Keyboard::Key::C,
                 grabkey2=sf::Keyboard::Key::LControl,specialkey2=sf::Keyboard::Key::LAlt;
     sf::Texture titletexture;
-    if (!titletexture.loadFromFile("assets/title.png"))window.close();
+    if (!titletexture.loadFromFile("title.png"))window.close();
     sf::Sprite title(titletexture);
 	menu menus;
 	if (!menus.load("menu.png")){}
@@ -3583,10 +3635,10 @@ int main()
     sf::RenderTexture renderTexture;
     if (!renderTexture.resize({256, 240})){}
     sf::Font font;
-    if(!font.openFromFile("assets/PerfectDOSVGA437.ttf"))window.close();
+    if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
     auto localip2=sf::IpAddress::getLocalAddress();
-    sf::IpAddress localip(172,30,1,42);
+    sf::IpAddress localip(192,168,35,173);//(172,30,1,42);
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
@@ -3594,7 +3646,7 @@ int main()
     bool gamequit=false;
     std::string dialogue;
     sf::Shader shader;
-    if (!shader.loadFromFile("assets/shader.frag",sf::Shader::Type::Fragment)){}
+    if (!shader.loadFromFile("shader.frag",sf::Shader::Type::Fragment)){}
 
 
     while(window.isOpen()){
@@ -3623,7 +3675,7 @@ int main()
         else if(menuconfirm=='2'&&menuselect!=4){
 
         characterselect charselect;
-        if (!charselect.load("assets/charactericon.png")){}
+        if (!charselect.load("charactericon.png")){}
         charselect.setcharselect(4,2,32,144);
         short menux=0,menuy=0,menux2=3,menuy2=0;
         while (window.isOpen()&&!gamequit){
@@ -3672,7 +3724,7 @@ int main()
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
             sf::Texture bgtexture;
-            if (!bgtexture.loadFromFile("assets/stage1.png")){}
+            if (!bgtexture.loadFromFile("stage1.png")){}
             sf::Sprite bg(bgtexture);
             bg.setPosition({-125.f,0.f});
 
@@ -3704,10 +3756,10 @@ int main()
             comboui cui;
             inputlist p1ilist,p2ilist;
             sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture;
-            if(!p1ilist.load("assets/inputicon.png")||!p2ilist.load("assets/inputicon.png")){window.close();gamequit=true;}
-            if(!time.load("assets/time_ui.png")||!cui.load("assets/combo_ui.png")||!metertexture.loadFromFile("assets/meter_ui.png")){window.close();gamequit=true;}
-            if(!bgtexture.loadFromFile("assets/stage1.png")||!hutexture.loadFromFile("assets/health_ui.png")){window.close();gamequit=true;}
-            if(!p1texture.loadFromFile("assets/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
+            if(!p1ilist.load("inputicon.png")||!p2ilist.load("inputicon.png")){window.close();gamequit=true;}
+            if(!time.load("time_ui.png")||!cui.load("combo_ui.png")||!metertexture.loadFromFile("meter_ui.png")){window.close();gamequit=true;}
+            if(!bgtexture.loadFromFile("stage1.png")||!hutexture.loadFromFile("health_ui.png")){window.close();gamequit=true;}
+            if(!p1texture.loadFromFile("char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;
             textbox tbox;
 
