@@ -1048,215 +1048,199 @@ CMakeFiles/main.dir/src/main.cpp.o: /Users/greenbox/projects/Prosaic-at-best/Fig
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
-  _deps/sfml-src/include/SFML/Config.hpp \
-  _deps/sfml-src/include/SFML/Graphics.hpp \
-  _deps/sfml-src/include/SFML/Graphics/BlendMode.hpp \
-  _deps/sfml-src/include/SFML/Graphics/CircleShape.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Color.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Color.inl \
-  _deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp \
-  _deps/sfml-src/include/SFML/Graphics/CoordinateType.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Drawable.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Export.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Font.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Glsl.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Glsl.inl \
-  _deps/sfml-src/include/SFML/Graphics/Glyph.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Image.hpp \
-  _deps/sfml-src/include/SFML/Graphics/PrimitiveType.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Rect.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Rect.inl \
-  _deps/sfml-src/include/SFML/Graphics/RectangleShape.hpp \
-  _deps/sfml-src/include/SFML/Graphics/RenderStates.hpp \
-  _deps/sfml-src/include/SFML/Graphics/RenderTarget.hpp \
-  _deps/sfml-src/include/SFML/Graphics/RenderTexture.hpp \
-  _deps/sfml-src/include/SFML/Graphics/RenderWindow.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Shader.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Shape.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Sprite.hpp \
-  _deps/sfml-src/include/SFML/Graphics/StencilMode.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Text.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Texture.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Transform.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Transform.inl \
-  _deps/sfml-src/include/SFML/Graphics/Transformable.hpp \
-  _deps/sfml-src/include/SFML/Graphics/Vertex.hpp \
-  _deps/sfml-src/include/SFML/Graphics/VertexArray.hpp \
-  _deps/sfml-src/include/SFML/Graphics/VertexBuffer.hpp \
-  _deps/sfml-src/include/SFML/Graphics/View.hpp \
-  _deps/sfml-src/include/SFML/Network.hpp \
-  _deps/sfml-src/include/SFML/Network/Export.hpp \
-  _deps/sfml-src/include/SFML/Network/Ftp.hpp \
-  _deps/sfml-src/include/SFML/Network/Http.hpp \
-  _deps/sfml-src/include/SFML/Network/IpAddress.hpp \
-  _deps/sfml-src/include/SFML/Network/Packet.hpp \
-  _deps/sfml-src/include/SFML/Network/Socket.hpp \
-  _deps/sfml-src/include/SFML/Network/SocketHandle.hpp \
-  _deps/sfml-src/include/SFML/Network/SocketSelector.hpp \
-  _deps/sfml-src/include/SFML/Network/TcpListener.hpp \
-  _deps/sfml-src/include/SFML/Network/TcpSocket.hpp \
-  _deps/sfml-src/include/SFML/Network/UdpSocket.hpp \
-  _deps/sfml-src/include/SFML/System.hpp \
-  _deps/sfml-src/include/SFML/System/Angle.hpp \
-  _deps/sfml-src/include/SFML/System/Angle.inl \
-  _deps/sfml-src/include/SFML/System/Clock.hpp \
-  _deps/sfml-src/include/SFML/System/Err.hpp \
-  _deps/sfml-src/include/SFML/System/Exception.hpp \
-  _deps/sfml-src/include/SFML/System/Export.hpp \
-  _deps/sfml-src/include/SFML/System/FileInputStream.hpp \
-  _deps/sfml-src/include/SFML/System/InputStream.hpp \
-  _deps/sfml-src/include/SFML/System/MemoryInputStream.hpp \
-  _deps/sfml-src/include/SFML/System/Sleep.hpp \
-  _deps/sfml-src/include/SFML/System/String.hpp \
-  _deps/sfml-src/include/SFML/System/String.inl \
-  _deps/sfml-src/include/SFML/System/Time.hpp \
-  _deps/sfml-src/include/SFML/System/Time.inl \
-  _deps/sfml-src/include/SFML/System/Utf.hpp \
-  _deps/sfml-src/include/SFML/System/Utf.inl \
-  _deps/sfml-src/include/SFML/System/Vector2.hpp \
-  _deps/sfml-src/include/SFML/System/Vector2.inl \
-  _deps/sfml-src/include/SFML/System/Vector3.hpp \
-  _deps/sfml-src/include/SFML/System/Vector3.inl \
-  _deps/sfml-src/include/SFML/Window.hpp \
-  _deps/sfml-src/include/SFML/Window/Clipboard.hpp \
-  _deps/sfml-src/include/SFML/Window/Context.hpp \
-  _deps/sfml-src/include/SFML/Window/ContextSettings.hpp \
-  _deps/sfml-src/include/SFML/Window/Cursor.hpp \
-  _deps/sfml-src/include/SFML/Window/Event.hpp \
-  _deps/sfml-src/include/SFML/Window/Event.inl \
-  _deps/sfml-src/include/SFML/Window/Export.hpp \
-  _deps/sfml-src/include/SFML/Window/GlResource.hpp \
-  _deps/sfml-src/include/SFML/Window/Joystick.hpp \
-  _deps/sfml-src/include/SFML/Window/Keyboard.hpp \
-  _deps/sfml-src/include/SFML/Window/Mouse.hpp \
-  _deps/sfml-src/include/SFML/Window/Sensor.hpp \
-  _deps/sfml-src/include/SFML/Window/Touch.hpp \
-  _deps/sfml-src/include/SFML/Window/VideoMode.hpp \
-  _deps/sfml-src/include/SFML/Window/Vulkan.hpp \
-  _deps/sfml-src/include/SFML/Window/Window.hpp \
-  _deps/sfml-src/include/SFML/Window/WindowBase.hpp \
-  _deps/sfml-src/include/SFML/Window/WindowBase.inl \
-  _deps/sfml-src/include/SFML/Window/WindowEnums.hpp \
-  _deps/sfml-src/include/SFML/Window/WindowHandle.hpp
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/BlendMode.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/CircleShape.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Color.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Color.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/CoordinateType.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Drawable.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Export.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Font.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Glsl.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Glsl.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Glyph.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Image.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/PrimitiveType.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Rect.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Rect.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RectangleShape.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderStates.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderTarget.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderTexture.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderWindow.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Shader.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Shape.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Sprite.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/StencilMode.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Text.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Texture.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Transform.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Transform.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Transformable.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Vertex.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/VertexArray.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/VertexBuffer.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/View.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Export.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Ftp.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Http.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/IpAddress.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Packet.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Socket.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/SocketHandle.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/SocketSelector.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/TcpListener.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/TcpSocket.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/UdpSocket.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Clock.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Err.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Exception.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/FileInputStream.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/InputStream.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/MemoryInputStream.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Sleep.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/String.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/String.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Time.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Time.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Utf.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Utf.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector3.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector3.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Clipboard.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Context.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/ContextSettings.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Cursor.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Event.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Event.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Export.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/GlResource.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Joystick.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Keyboard.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Mouse.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Sensor.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Touch.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/VideoMode.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Vulkan.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Window.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowBase.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowBase.inl \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowEnums.hpp \
+  /Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowHandle.hpp
 
 
-_deps/sfml-src/include/SFML/Window/WindowHandle.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowBase.inl:
 
-_deps/sfml-src/include/SFML/Window/WindowEnums.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowBase.hpp:
 
-_deps/sfml-src/include/SFML/Window/Vulkan.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Window.hpp:
 
-_deps/sfml-src/include/SFML/Window/VideoMode.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Vulkan.hpp:
 
-_deps/sfml-src/include/SFML/Window/Touch.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/VideoMode.hpp:
 
-_deps/sfml-src/include/SFML/Window/Mouse.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Sensor.hpp:
 
-_deps/sfml-src/include/SFML/Window/Joystick.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Mouse.hpp:
 
-_deps/sfml-src/include/SFML/Window/GlResource.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Keyboard.hpp:
 
-_deps/sfml-src/include/SFML/Window/Export.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/GlResource.hpp:
 
-_deps/sfml-src/include/SFML/Window/Event.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Event.inl:
 
-_deps/sfml-src/include/SFML/Window/ContextSettings.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Event.hpp:
 
-_deps/sfml-src/include/SFML/Window/Clipboard.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Context.hpp:
 
-_deps/sfml-src/include/SFML/Window.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector3.inl:
 
-_deps/sfml-src/include/SFML/System/Vector3.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector3.hpp:
 
-_deps/sfml-src/include/SFML/System/Vector2.inl:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.inl:
 
-_deps/sfml-src/include/SFML/System/Utf.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Utf.hpp:
 
-_deps/sfml-src/include/SFML/System/Time.inl:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Time.inl:
 
-_deps/sfml-src/include/SFML/System/Time.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/String.hpp:
 
-_deps/sfml-src/include/SFML/System/String.inl:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Sleep.hpp:
 
-_deps/sfml-src/include/SFML/System/String.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/InputStream.hpp:
 
-_deps/sfml-src/include/SFML/System/Sleep.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Export.hpp:
 
-_deps/sfml-src/include/SFML/System/MemoryInputStream.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.inl:
 
-_deps/sfml-src/include/SFML/System/InputStream.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Angle.hpp:
 
-_deps/sfml-src/include/SFML/System/FileInputStream.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Socket.hpp:
 
-_deps/sfml-src/include/SFML/System/Export.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Packet.hpp:
 
-_deps/sfml-src/include/SFML/System/Err.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Http.hpp:
 
-_deps/sfml-src/include/SFML/System/Angle.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Ftp.hpp:
 
-_deps/sfml-src/include/SFML/System.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network.hpp:
 
-_deps/sfml-src/include/SFML/Network/UdpSocket.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/View.hpp:
 
-_deps/sfml-src/include/SFML/Network/TcpListener.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Transform.inl:
 
-_deps/sfml-src/include/SFML/Network/SocketSelector.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Transform.hpp:
 
-_deps/sfml-src/include/SFML/Network/SocketHandle.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Text.hpp:
 
-_deps/sfml-src/include/SFML/Network/Socket.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/TcpListener.hpp:
 
-_deps/sfml-src/include/SFML/Network/IpAddress.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/StencilMode.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/VertexBuffer.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Sprite.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/VertexArray.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Shader.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Vertex.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderTexture.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Transformable.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderTarget.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Transform.inl:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Rect.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Transform.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Image.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Text.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Glsl.inl:
 
-_deps/sfml-src/include/SFML/Graphics/StencilMode.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Glsl.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Shape.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Drawable.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/RenderWindow.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/CoordinateType.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/RectangleShape.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Rect.inl:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Color.hpp:
 
-_deps/sfml-src/include/SFML/Graphics/Rect.hpp:
-
-_deps/sfml-src/include/SFML/Graphics/PrimitiveType.hpp:
-
-_deps/sfml-src/include/SFML/Graphics/Image.hpp:
-
-_deps/sfml-src/include/SFML/Graphics/Glsl.inl:
-
-_deps/sfml-src/include/SFML/Graphics/Drawable.hpp:
-
-_deps/sfml-src/include/SFML/Graphics/CoordinateType.hpp:
-
-_deps/sfml-src/include/SFML/Graphics/Color.inl:
-
-_deps/sfml-src/include/SFML/Graphics/CircleShape.hpp:
-
-_deps/sfml-src/include/SFML/Graphics.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics.hpp:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/limits.h:
 
-/Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_size_t.h:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Export.hpp:
 
-_deps/sfml-src/include/SFML/Window/Keyboard.hpp:
+/Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_size_t.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_rsize_t.h:
 
@@ -1296,6 +1280,8 @@ _deps/sfml-src/include/SFML/Window/Keyboard.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_va_list.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/ContextSettings.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_useconds_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_ucontext.h:
@@ -1314,6 +1300,8 @@ _deps/sfml-src/include/SFML/Window/Keyboard.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_nlink_t.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Export.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_mbstate_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_mach_port_t.h:
@@ -1330,11 +1318,11 @@ _deps/sfml-src/include/SFML/Window/Keyboard.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_zero.h:
 
-_deps/sfml-src/include/SFML/System/Clock.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_setsize.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_isset.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Shape.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_fd_copy.h:
 
@@ -1358,6 +1346,8 @@ _deps/sfml-src/include/SFML/System/Clock.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_pthread/_pthread_attr_t.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/PrimitiveType.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_pid_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_endian.h:
@@ -1366,6 +1356,8 @@ _deps/sfml-src/include/SFML/System/Clock.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/string.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/VertexBuffer.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/pthread/sched.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_blkcnt_t.h:
@@ -1373,6 +1365,8 @@ _deps/sfml-src/include/SFML/System/Clock.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/pthread/qos.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/pthread/pthread_impl.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Time.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/pthread.h:
 
@@ -1397,8 +1391,6 @@ _deps/sfml-src/include/SFML/System/Clock.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/mach/machine/_structs.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/locale.h:
-
-_deps/sfml-src/include/SFML/System/Exception.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/libkern/arm/_OSByteOrder.h:
 
@@ -1446,6 +1438,8 @@ _deps/sfml-src/include/SFML/System/Exception.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/queue:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Cursor.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/print:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/ostream:
@@ -1482,15 +1476,11 @@ _deps/sfml-src/include/SFML/System/Exception.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/ctime:
 
-_deps/sfml-src/include/SFML/Graphics/Font.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstring:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstdlib:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstdio:
-
-_deps/sfml-src/include/SFML/Network/Packet.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/compare:
 
@@ -1518,8 +1508,6 @@ _deps/sfml-src/include/SFML/Network/Packet.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/rel_ops.h:
 
-_deps/sfml-src/include/SFML/Config.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/priority_tag.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/no_destroy.h:
@@ -1536,17 +1524,15 @@ _deps/sfml-src/include/SFML/Config.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/convert_to_integral.h:
 
-_deps/sfml-src/include/SFML/Window/Cursor.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/auto_cast.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/String.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/as_lvalue.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__undef_macros:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/void_t.h:
-
-_deps/sfml-src/include/SFML/Network/Ftp.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/underlying_type.h:
 
@@ -1576,7 +1562,7 @@ _deps/sfml-src/include/SFML/Network/Ftp.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_unbounded_array.h:
 
-_deps/sfml-src/include/SFML/Graphics/Texture.hpp:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Transformable.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_lexicographically_comparable.h:
 
@@ -1612,6 +1598,8 @@ _deps/sfml-src/include/SFML/Graphics/Texture.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_pod.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Color.inl:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/stdint.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/atomic_flag.h:
@@ -1623,8 +1611,6 @@ _deps/sfml-src/include/SFML/Graphics/Texture.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/partial_sum.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_copy_constructible.h:
-
-_deps/sfml-src/include/SFML/System/Vector2.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__tuple/tuple_element.h:
 
@@ -1658,17 +1644,19 @@ _deps/sfml-src/include/SFML/System/Vector2.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_char_like_type.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Clipboard.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/exponential_functions.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_bounded_array.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_move_constructible.h:
 
-_deps/sfml-src/include/SFML/System/Utf.inl:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/midpoint.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_base_of.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/CircleShape.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/type_list.h:
 
@@ -1798,8 +1786,6 @@ _deps/sfml-src/include/SFML/System/Utf.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/negative_binomial_distribution.h:
 
-_deps/sfml-src/include/SFML/Graphics/RenderStates.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/is_seed_sequence.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_copy_assignable.h:
@@ -1811,10 +1797,6 @@ _deps/sfml-src/include/SFML/Graphics/RenderStates.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/extreme_value_distribution.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/exponential_distribution.h:
-
-_deps/sfml-src/include/SFML/Window/Window.hpp:
-
-_deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/discrete_distribution.h:
 
@@ -1857,6 +1839,8 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__system_error/errc.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_valid_expansion.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/Export.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/iota.h:
 
@@ -1938,15 +1922,21 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/rank.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowHandle.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/filesystem:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/allocator_arg_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_literal_type.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/FileInputStream.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_in_addr_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/allocator.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/WindowEnums.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__utility/unreachable.h:
 
@@ -2002,6 +1992,8 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/ranges_iterator_traits.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Clock.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/unwrap_ref.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_header_macro.h:
@@ -2019,6 +2011,8 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/ios:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/move_sentinel.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/VertexArray.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/mutex:
 
@@ -2096,6 +2090,8 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/cpp17_iterator_concepts.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/SocketHandle.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__numeric/gcd_lcm.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/counted_iterator.h:
@@ -2112,9 +2108,15 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__hash_table:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderWindow.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_default_constructible.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/linear_congruential_engine.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RectangleShape.hpp:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Rect.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backends/cpu_backends/transform_reduce.h:
 
@@ -2204,6 +2206,8 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/is_transparent.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System.hpp:
+
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_wchar_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/invoke.h:
@@ -2232,6 +2236,8 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/parser_std_format_spec.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Touch.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/random_device.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/lognormal_distribution.h:
@@ -2258,8 +2264,6 @@ _deps/sfml-src/include/SFML/System/Vector3.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__mutex/mutex.h:
 
-_deps/sfml-src/include/SFML/Graphics/BlendMode.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_unsigned_integer.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_integer.h:
@@ -2267,6 +2271,8 @@ _deps/sfml-src/include/SFML/Graphics/BlendMode.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/range_formatter.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/BlendMode.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/formatter_floating_point.h:
 
@@ -2303,6 +2309,8 @@ _deps/sfml-src/include/SFML/Graphics/BlendMode.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/mersenne_twister_engine.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/format_context.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Vertex.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/remove_extent.h:
 
@@ -2532,8 +2540,6 @@ _deps/sfml-src/include/SFML/Graphics/BlendMode.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/common_comparison_category.h:
 
-_deps/sfml-src/include/SFML/Graphics/Shader.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_blksize_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_wctype.h:
@@ -2547,8 +2553,6 @@ _deps/sfml-src/include/SFML/Graphics/Shader.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/replace_if.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit_reference:
-
-_deps/sfml-src/include/SFML/Graphics/Export.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/bit_ceil.h:
 
@@ -2600,6 +2604,8 @@ _deps/sfml-src/include/SFML/Graphics/Export.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_replace_copy_if.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window/Joystick.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__atomic/check_memory_order.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_types/_dev_t.h:
@@ -2649,8 +2655,6 @@ _deps/sfml-src/include/SFML/Graphics/Export.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/sample.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_find_if.h:
-
-_deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/count.h:
 
@@ -2712,8 +2716,6 @@ _deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/binder1st.h:
 
-_deps/sfml-src/include/SFML/Network/TcpSocket.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/remove.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/numeric:
@@ -2744,9 +2746,9 @@ _deps/sfml-src/include/SFML/Network/TcpSocket.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_set_intersection.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/fdim.h:
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Font.hpp:
 
-_deps/sfml-src/include/SFML/Network/Export.hpp:
+/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/fdim.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_set_difference.h:
 
@@ -2761,8 +2763,6 @@ _deps/sfml-src/include/SFML/Network/Export.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/modulo.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_sample.h:
-
-_deps/sfml-src/include/SFML/Graphics/RenderTarget.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_wchar.h:
 
@@ -2781,6 +2781,8 @@ _deps/sfml-src/include/SFML/Graphics/RenderTarget.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/concepts.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__debug_utils/randomize_range.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Config.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_replace_if.h:
 
@@ -2806,8 +2808,6 @@ _deps/sfml-src/include/SFML/Graphics/RenderTarget.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_remove_copy.h:
 
-_deps/sfml-src/include/SFML/Window/WindowBase.inl:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/bit_cast.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_prev_permutation.h:
@@ -2832,11 +2832,11 @@ _deps/sfml-src/include/SFML/Window/WindowBase.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_none_of.h:
 
-_deps/sfml-src/include/SFML/Graphics/Glsl.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/fisher_f_distribution.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_unique.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/TcpSocket.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/file_status.h:
 
@@ -2890,9 +2890,9 @@ _deps/sfml-src/include/SFML/Graphics/Glsl.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_max.h:
 
-_deps/sfml-src/include/SFML/Network.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_replace.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Err.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_equal.h:
 
@@ -2940,8 +2940,6 @@ _deps/sfml-src/include/SFML/Network.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_is_partitioned.h:
 
-_deps/sfml-src/include/SFML/Window/Event.inl:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cstddef:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__bit/rotate.h:
@@ -2966,8 +2964,6 @@ _deps/sfml-src/include/SFML/Window/Event.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__functional/mem_fn.h:
 
-_deps/sfml-src/include/SFML/Window/WindowBase.hpp:
-
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/__stddef_offsetof.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/__wctype.h:
@@ -2975,8 +2971,6 @@ _deps/sfml-src/include/SFML/Window/WindowBase.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_find_if_not.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/promote.h:
-
-_deps/sfml-src/include/SFML/Graphics/RenderTexture.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_partial_sort.h:
 
@@ -2990,11 +2984,11 @@ _deps/sfml-src/include/SFML/Graphics/RenderTexture.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_copy_n.h:
 
-_deps/sfml-src/include/SFML/System/Angle.inl:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/unique.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_equal_range.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Window.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h:
 
@@ -3062,6 +3056,8 @@ _deps/sfml-src/include/SFML/System/Angle.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_types/_intmax_t.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/UdpSocket.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/equal_range.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/transform.h:
@@ -3070,13 +3066,13 @@ _deps/sfml-src/include/SFML/System/Angle.inl:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/log2.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/RenderStates.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/set_intersection.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_transform.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/istreambuf_iterator.h:
-
-_deps/sfml-src/include/SFML/Network/Http.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__concepts/invocable.h:
 
@@ -3100,6 +3096,8 @@ _deps/sfml-src/include/SFML/Network/Http.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/gamma_distribution.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Exception.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/__xlocale.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__math/traits.h:
@@ -3107,6 +3105,8 @@ _deps/sfml-src/include/SFML/Network/Http.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_merge.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__format/concepts.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Glyph.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_copy_assignable.h:
 
@@ -3136,7 +3136,11 @@ _deps/sfml-src/include/SFML/Network/Http.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/assert.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/IpAddress.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/is_partitioned.h:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Graphics/Texture.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__random/chi_squared_distribution.h:
 
@@ -3194,8 +3198,6 @@ _deps/sfml-src/include/SFML/Network/Http.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__ranges/ref_view.h:
 
-_deps/sfml-src/include/SFML/Window/Context.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/in_out_result.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/nth_element.h:
@@ -3211,6 +3213,8 @@ _deps/sfml-src/include/SFML/Window/Context.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/qos.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert:
+
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/Network/SocketSelector.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__exception/operations.h:
 
@@ -3248,8 +3252,6 @@ _deps/sfml-src/include/SFML/Window/Context.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/u8path.h:
 
-_deps/sfml-src/include/SFML/Graphics/Sprite.hpp:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_find_first_of.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/errno.h:
@@ -3269,8 +3271,6 @@ _deps/sfml-src/include/SFML/Graphics/Sprite.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/find_if_not.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month.h:
-
-_deps/sfml-src/include/SFML/Graphics/Color.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/arm/limits.h:
 
@@ -3326,6 +3326,8 @@ _deps/sfml-src/include/SFML/Graphics/Color.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/iterator_operations.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Vector2.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__type_traits/is_member_object_pointer.h:
@@ -3340,13 +3342,13 @@ _deps/sfml-src/include/SFML/Graphics/Color.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/arm/signal.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/MemoryInputStream.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/monthday.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/in_fun_result.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__memory/shared_ptr.h:
-
-_deps/sfml-src/include/SFML/Graphics/View.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__iterator/segmented_iterator.h:
 
@@ -3366,6 +3368,8 @@ _deps/sfml-src/include/SFML/Graphics/View.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_fill_n.h:
 
+/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/include/SFML/System/Utf.inl:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__compare/synth_three_way.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternal.h:
@@ -3377,8 +3381,6 @@ _deps/sfml-src/include/SFML/Graphics/View.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__thread/id.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/_types/_uint16_t.h:
-
-_deps/sfml-src/include/SFML/Graphics/Glyph.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/pstl_backends/cpu_backends/any_of.h:
 
@@ -3409,7 +3411,5 @@ _deps/sfml-src/include/SFML/Graphics/Glyph.hpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/AvailabilityInternalLegacy.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_set_symmetric_difference.h:
-
-_deps/sfml-src/include/SFML/Window/Sensor.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/ranges_adjacent_find.h:

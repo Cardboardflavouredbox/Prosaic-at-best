@@ -1,0 +1,89 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 631,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 639,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 644,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/lib/libfreetyped.a"
+			],
+			"targetId" : "freetype::@0d12246142085d762a1b",
+			"targetIndex" : 2,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "headers",
+			"destination" : "lib/cmake/freetype",
+			"exportName" : "freetype-targets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "freetype::@0d12246142085d762a1b",
+					"index" : 2
+				},
+				{
+					"id" : "freetype-interface::@0d12246142085d762a1b",
+					"index" : 0
+				}
+			],
+			"paths" : 
+			[
+				"/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/CMakeFiles/Export/778b4f54a68e80ec034bf381f364ca2c/freetype-config.cmake"
+			],
+			"type" : "export"
+		},
+		{
+			"backtrace" : 3,
+			"component" : "headers",
+			"destination" : "lib/cmake/freetype",
+			"paths" : 
+			[
+				"/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build/freetype-config-version.cmake"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-build",
+		"source" : "/Users/greenbox/projects/Prosaic-at-best/build/_deps/freetype-src"
+	}
+}

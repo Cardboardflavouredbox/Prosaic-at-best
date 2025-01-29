@@ -1,0 +1,53 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install",
+			"sfml_add_library"
+		],
+		"files" : 
+		[
+			"/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/cmake/Macros.cmake",
+			"/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 43,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 232,
+				"parent" : 1
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 2,
+			"component" : "devel",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/lib/libsfml-network-s-d.a"
+			],
+			"targetId" : "sfml-network::@7e400a77b039aeab6af2",
+			"targetIndex" : 7,
+			"type" : "target"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-build/src/SFML/Network",
+		"source" : "/Users/greenbox/projects/Prosaic-at-best/build/_deps/sfml-src/src/SFML/Network"
+	}
+}

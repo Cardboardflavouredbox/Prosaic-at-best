@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/Users/greenbox/projects/Prosaic-at-best/Fighting game thing")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/Users/greenbox/projects/Prosaic-at-best/build")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/Users/greenbox/projects/Prosaic-at-best-1/build")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)
