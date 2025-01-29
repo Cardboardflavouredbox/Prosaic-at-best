@@ -3574,7 +3574,7 @@ int main()
                 lightkey2=sf::Keyboard::Key::Z,mediumkey2=sf::Keyboard::Key::X,heavykey2=sf::Keyboard::Key::C,
                 grabkey2=sf::Keyboard::Key::LControl,specialkey2=sf::Keyboard::Key::LAlt;
     sf::Texture titletexture;
-    if (!titletexture.loadFromFile("title.png"))window.close();
+    if (!titletexture.loadFromFile("assets/title.png"))window.close();
     sf::Sprite title(titletexture);
 	menu menus;
 	if (!menus.load("menu.png")){}
@@ -3583,7 +3583,7 @@ int main()
     sf::RenderTexture renderTexture;
     if (!renderTexture.resize({256, 240})){}
     sf::Font font;
-    if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
+    if(!font.openFromFile("assets/PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
     auto localip2=sf::IpAddress::getLocalAddress();
     sf::IpAddress localip(172,30,1,42);
@@ -3594,7 +3594,7 @@ int main()
     bool gamequit=false;
     std::string dialogue;
     sf::Shader shader;
-    if (!shader.loadFromFile("shader.frag",sf::Shader::Type::Fragment)){}
+    if (!shader.loadFromFile("assets/shader.frag",sf::Shader::Type::Fragment)){}
 
 
     while(window.isOpen()){
@@ -3623,7 +3623,7 @@ int main()
         else if(menuconfirm=='2'&&menuselect!=4){
 
         characterselect charselect;
-        if (!charselect.load("charactericon.png")){}
+        if (!charselect.load("assets/charactericon.png")){}
         charselect.setcharselect(4,2,32,144);
         short menux=0,menuy=0,menux2=3,menuy2=0;
         while (window.isOpen()&&!gamequit){
@@ -3672,7 +3672,7 @@ int main()
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
             sf::Texture bgtexture;
-            if (!bgtexture.loadFromFile("stage1.png")){}
+            if (!bgtexture.loadFromFile("assets/stage1.png")){}
             sf::Sprite bg(bgtexture);
             bg.setPosition({-125.f,0.f});
 
@@ -3704,10 +3704,10 @@ int main()
             comboui cui;
             inputlist p1ilist,p2ilist;
             sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture;
-            if(!p1ilist.load("inputicon.png")||!p2ilist.load("inputicon.png")){window.close();gamequit=true;}
-            if(!time.load("time_ui.png")||!cui.load("combo_ui.png")||!metertexture.loadFromFile("meter_ui.png")){window.close();gamequit=true;}
-            if(!bgtexture.loadFromFile("stage1.png")||!hutexture.loadFromFile("health_ui.png")){window.close();gamequit=true;}
-            if(!p1texture.loadFromFile("char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
+            if(!p1ilist.load("assets/inputicon.png")||!p2ilist.load("assets/inputicon.png")){window.close();gamequit=true;}
+            if(!time.load("assets/time_ui.png")||!cui.load("assets/combo_ui.png")||!metertexture.loadFromFile("assets/meter_ui.png")){window.close();gamequit=true;}
+            if(!bgtexture.loadFromFile("assets/stage1.png")||!hutexture.loadFromFile("assets/health_ui.png")){window.close();gamequit=true;}
+            if(!p1texture.loadFromFile("assets/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;
             textbox tbox;
 
