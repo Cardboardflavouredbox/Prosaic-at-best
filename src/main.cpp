@@ -1109,7 +1109,7 @@ unsigned char animlib[16][128][32][2]=
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
-                   {0,1,1,1,1,1,1,2,1,1},//char 2
+                   {0,1,1,1,1,1,1,2,1,1,1},//char 2
                    },
                    colorpalettes[16][3]={
                     {15,7,8},/*Francis*/
@@ -1202,8 +1202,8 @@ hurtbox[16][128][8][2][2]={
                     {-1},/*knockdown (74)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-16},{18,-3}}},/*jump light1 (75)*/{{{-18,-16},{4,32}},{{-8,-31},{8,-16}},{{4,-16},{27,-3}}},/*jump light2 (76)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*gimmick2 (77)*/
-                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC1 (78)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC2 (79)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC3 (80)*/
-                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC4 (81)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}},}/*specialC5 (82)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC1 (78)*/{{{-11,-16},{11,32}},{{-1,-28},{15,-13}}},/*specialC2 (79)*/{{{-11,-16},{11,32}},{{6,-25},{22,-10}}},/*specialC3 (80)*/
+                    {{{-11,-16},{11,32}},{{9,-22},{25,-7}}},/*specialC4 (81)*/{{{-11,-15},{16,32}},{{-1,-29},{15,-14}},}/*specialC5 (82)*/
                     },//char 2(Sinclair)
                     },
 hitbox[16][16][4][2][2]={
@@ -1231,6 +1231,7 @@ hitbox[16][16][4][2][2]={
                     {{{24,-9},{45,5}},{{4,-3},{26,12}}},//stand o(7)
                     {{{-64,-64},{64,0}}},//special B k(8)
                     {{{4,-18},{30,1}}},//jump u(9)
+                    {{{4,-27},{33,6}}},//special C(10)
                     }//char 2
                     };
 bool flash=true,screenfocused=true;
@@ -3122,15 +3123,25 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 28:{//special C (u)
-                P.col=0;P.hitcount=1;P.hitstop=12;P.kback=5;P.hitstun=7;P.blockstun=5;P.dmg=22;P.slide=true;P.movetype=2;P.mgain=7;
-                P.animq.insert(P.animq.begin(),{78,78,78,79,79,79,80,81,81,81,81,81,81,81,81,82,82,82});
-                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,1,1,1,1});
-                P.cancel[32]=true;
+                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=12;P.blockstun=7;P.dmg=28;P.slide=true;P.movetype=2;P.mgain=7;
+                P.animq.insert(P.animq.begin(),{78,78,78,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,10,10,10,10,10});
+                short temp[2]={15,32};boolfill(P.cancel,true,temp);
                 P.movewaitx=7;
                 if(P.right)P.jumpx=8;
                 else P.jumpx=-8;
                 break;
                 }
+            case 29:{//special C (i)
+                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=28;P.slide=true;P.movetype=2;P.mgain=7;
+                P.animq.insert(P.animq.begin(),{78,78,78,78,79,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,10,10,10,10,10});
+                short temp[2]={15,32};boolfill(P.cancel,true,temp);
+                P.movewaitx=9;
+                if(P.right)P.jumpx=10;
+                else P.jumpx=-10;
+                break;
+            }
             case 32:{//super
                 P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77,77});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,6});
@@ -3501,9 +3512,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     sf.setPosition({0,0});hb.setPosition({0,8});
     if(P2.comboed||P2.kdowned)combotext.setPosition({36.f/*-cui.slide*/,33.f});
     else combotext.setPosition({248.f/*+cui.slide*/,33.f});cui.setPosition({0,8});
-    p1graphics.setPosition({round(P1.x)-64+bgx,round(P1.y-64)});p1shadow.setPosition({round(P1.x)-64+bgx,184+(P1.y-176)/8});
-    p2graphics.setPosition({round(P2.x)-64+bgx,round(P2.y-64)});p2shadow.setPosition({round(P2.x)-64+bgx,184+(P2.y-176)/8});
-    background.setPosition({round(bgx)-125,0.f});frametext.setPosition({125.f,33.f});
+    p1graphics.setPosition({floor(P1.x)-64+bgx,floor(P1.y-64)});p1shadow.setPosition({floor(P1.x)-64+bgx,184+(P1.y-176)/8});
+    p2graphics.setPosition({floor(P2.x)-64+bgx,floor(P2.y-64)});p2shadow.setPosition({floor(P2.x)-64+bgx,184+(P2.y-176)/8});
+    background.setPosition({floor(bgx)-125,0.f});frametext.setPosition({125.f,33.f});
 
 
     sf::RectangleShape blackscreen({256.f, 240.f});blackscreen.setFillColor(sf::Color(0,0,0,170));
@@ -3638,7 +3649,7 @@ int main()
     if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
     auto localip2=sf::IpAddress::getLocalAddress();
-    sf::IpAddress localip(192,168,35,173);//(172,30,1,42);
+    sf::IpAddress localip(172,30,1,42);//(192,168,35,173);
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
