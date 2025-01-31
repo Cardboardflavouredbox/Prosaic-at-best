@@ -3755,7 +3755,7 @@ int main()
 
             menus.setmenu(6,92,72,0,16,1);
             player p1,p2;
-
+            p1.meter=100.0;p2.meter=100.0;
             p1.character=menux+menuy*4;
             p2.character=menux2+menuy2*4;
             superflash sf;
@@ -3790,7 +3790,7 @@ int main()
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
                     if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
                     if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
-                    p1.meter=100.0;p2.meter=100.0;
+                    
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;
@@ -3884,7 +3884,7 @@ int main()
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
                     if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
                     if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
-                    p1.meter=100.0;p2.meter=100.0;
+                    
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;p2.right=false;
@@ -4036,7 +4036,7 @@ int main()
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
                     if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
                     if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
-                    p1.meter=100.0;p2.meter=100.0;
+                    
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;
