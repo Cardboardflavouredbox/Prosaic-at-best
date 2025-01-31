@@ -1874,8 +1874,6 @@ private:
 };
 
 
-
-
 class inputlist : public sf::Drawable, public sf::Transformable
 {
 public:
