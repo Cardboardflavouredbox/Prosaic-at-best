@@ -2259,7 +2259,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
             else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
             P1.meter+=P2.mgain/10*11;
-            if(!projcheck)P2.meter+=P2.mgain;
+            if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
             P2.dmg/=5;
             P1.hitstopped=P2.hitstop*5/4;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
@@ -2272,7 +2272,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             if(P2.hitstop!=0||P2.dmg!=0)combo++;
             if(combo>3)comboscaling=comboscaling/10*9;
             P1.meter+=P2.mgain/7*8;
-            if(!projcheck)P2.meter+=P2.mgain;
+            if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
             P2.dmg=P2.dmg/100*comboscaling;
             P1.hitstopped=P2.hitstop;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
@@ -3134,13 +3134,23 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
                 }
             case 29:{//special C (i)
-                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=28;P.slide=true;P.movetype=2;P.mgain=7;
+                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=36;P.slide=true;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{78,78,78,78,79,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,10,10,10,10,10});
                 short temp[2]={15,32};boolfill(P.cancel,true,temp);
                 P.movewaitx=9;
                 if(P.right)P.jumpx=10;
                 else P.jumpx=-10;
+                break;
+            }
+            case 30:{//special C (o)
+                P.col=0;P.hitcount=2;P.hitstop=13;P.kback=6;P.hitstun=19;P.blockstun=12;P.dmg=24;P.slide=true;P.movetype=2;P.mgain=7;
+                P.animq.insert(P.animq.begin(),{78,78,78,78,78,78,79,79,79,79,79,79,80,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,10});
+                short temp[2]={15,32};boolfill(P.cancel,true,temp);
+                P.movewaitx=11;
+                if(P.right)P.jumpx=14;
+                else P.jumpx=-14;
                 break;
             }
             case 32:{//super
@@ -3652,7 +3662,7 @@ int main()
     if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
     auto localip2=sf::IpAddress::getLocalAddress();
-    sf::IpAddress localip(172,30,1,42);//(192,168,35,173);
+    sf::IpAddress localip(172,30,1,67);//(192,168,35,173);
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
