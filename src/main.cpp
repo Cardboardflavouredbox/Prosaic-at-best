@@ -2388,8 +2388,9 @@ int chooseaction(short character,int playercode, bool air, char keyinput[], floa
                     else if(keyinput[4]=='2'){
                         c623[0][4]='2';c323[0][4]='2';
                         if(cmdcheck(playercode,4,c623)||cmdcheck(playercode,4,c323))return 24;//special B gimmick
-                        else return 15;//gimmick
                         c623[0][4]='0';c323[0][4]='0';
+                        if(character==2&&meter>0)return 32;//super
+                        else return 15;//gimmick
                     }
                     else if(keyinput[0]=='1')return 20;//crouching block
                     else return 11;//crouch
@@ -2397,16 +2398,18 @@ int chooseaction(short character,int playercode, bool air, char keyinput[], floa
                 else{
                     //grounded actions
                     if((keyinput[1]=='2'&&keyinput[2]=='2')||(keyinput[2]=='2'&&keyinput[3]=='2')||(keyinput[1]=='2'&&keyinput[3]=='2')){
-                        c214[0][1]='2';c214[0][2]='2';c214[0][3]='2';
-                        if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
-                        c214[0][3]='0';
-                        if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
-                        c214[0][3]='2';c214[0][1]='0';
-                        if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
-                        c214[0][1]='0';c214[0][2]='0';
-                        if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
-                        else return 25;//grab
-                        c214[0][1]='0';c214[0][2]='0';c214[0][3]='0';
+                        if(character==0){
+                            c214[0][1]='2';c214[0][2]='2';c214[0][3]='2';
+                            if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
+                            c214[0][3]='0';
+                            if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
+                            c214[0][3]='2';c214[0][1]='0';
+                            if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
+                            c214[0][1]='0';c214[0][2]='0';
+                            if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
+                            c214[0][1]='0';c214[0][2]='0';c214[0][3]='0';
+                        }
+                        return 25;//grab
                     }
                     if(keyinput[3]=='2'){
                         c214[0][3]='2';c236[0][3]='2';c636[0][3]='2';c626[0][3]='2';c63236[0][3]='2';c6236[0][3]='2';
@@ -2597,7 +2600,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     //when you jump over your opponent while they are walking towards you sometimes a glitch happens fix it
     float walkspeed,jumprise,jumpfall;
     if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
-    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0)P.gimmick[1]--;}
+    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0)P.meter-=1.5;}
 
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&enemygimmick[0]>0){
@@ -3141,8 +3144,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 32:{//super
-                P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77,77});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,6});
+                P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77});
+                if(P.gimmick[1]==0)P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,6});
+                else P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,6});
                 break;
             }
             case 33:{//special B(u)2
@@ -3304,9 +3308,10 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     }
                 }
             }
-            else if(P.atkfx[0]==5){*superstop=20;P.super=true;P.meter-=100;}
+            else if(P.atkfx[0]==5){*superstop=20;P.super=true;}
             else if(P.atkfx[0]==6){
-                P.gimmick[1]=180;
+                if(P.gimmick[1]>0)P.gimmick[1]=0;
+                else P.gimmick[1]=1;
             }
         }
         P.atkfx.pop_front();
