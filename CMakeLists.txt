@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.3)
 project(Prosaic_at_best LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(BUILD_SHARED_LIBS OFF)
 
 include(FetchContent)
 FetchContent_Declare(SFML

@@ -13,7 +13,7 @@ std::random_device rd;
 std::mt19937 gen(rd());
 
 short combo=0,roundframecount=0;
-unsigned char animlib[16][128][32][2]=
+static unsigned char animlib[16][128][32][2]=
             {
                 {
                     {
@@ -1110,8 +1110,8 @@ unsigned char animlib[16][128][32][2]=
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
                    {0,1,1,1,1,1,1,2,1,1,1},//char 2
-                   },
-                   colorpalettes[16][3]={
+                   };
+unsigned char colorpalettes[16][3]={
                     {15,7,8},/*Francis*/
                     {15,3,1},/*Sinclair*/
                     {15,4,0},/*Sinclaircanon?*/
@@ -2389,7 +2389,7 @@ int chooseaction(short character,int playercode, bool air, char keyinput[], floa
                         c623[0][4]='2';c323[0][4]='2';
                         if(cmdcheck(playercode,4,c623)||cmdcheck(playercode,4,c323))return 24;//special B gimmick
                         c623[0][4]='0';c323[0][4]='0';
-                        if(character==2&&meter>0)return 32;//super
+                        if(character==2&&meter>50)return 32;//super
                         else return 15;//gimmick
                     }
                     else if(keyinput[0]=='1')return 20;//crouching block
@@ -3661,8 +3661,8 @@ int main()
     sf::Font font;
     if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
-    auto localip2=sf::IpAddress::getLocalAddress();
-    sf::IpAddress localip(172,30,1,67);//(192,168,35,173);
+    auto ipvalue2=sf::IpAddress::getLocalAddress();
+    sf::IpAddress ipvalue(172,30,1,67);
     unsigned short port=53333;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
@@ -3697,6 +3697,52 @@ int main()
 
         if(menuconfirm=='2'&&menuselect==5)window.close();
         else if(menuconfirm=='2'&&menuselect!=4){
+
+        if(menuselect==2){
+            sf::Text iptext(font);
+            iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
+            sf::RectangleShape rect({8.f, 4.f});rect.setFillColor(sf::Color::White);
+            short ipint[4]={0,0,0,0},ipx=0;
+            while (window.isOpen()&&!gamequit){
+                windowset(window,&gamequit);
+                keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+                if(menuright=='2'&&menuleft!='2'){ipx++;if(ipx>11)ipx=0;}
+                if(menuright!='2'&&menuleft=='2'){ipx--;if(ipx<0)ipx=11;}
+                if(menuup=='2'&&menudown!='2'){
+                    ipint[ipx/3]+=(ipx%3==0)?100:(ipx%3==1)?10:1;
+                    if(ipint[ipx/3]>999)ipint[ipx/3]-=1000;
+                }
+                if(menuup!='2'&&menudown=='2'){
+                    ipint[ipx/3]-=(ipx%3==0)?100:(ipx%3==1)?10:1;
+                    if(ipint[ipx/3]<0)ipint[ipx/3]+=1000;
+                }
+                if(menucancel=='2'){gamequit=true;break;}
+
+                std::string tempstr,ipstr;
+                for(short i=0;i<4;i++){
+                    tempstr = std::to_string(ipint[i]);
+                    if(ipint[i]>99)ipstr=ipstr+tempstr+'.';
+                    else if(ipint[i]>9)ipstr=ipstr+' '+tempstr+'.';
+                    else ipstr=ipstr+' '+' '+tempstr+'.';
+                    }
+                ipstr.pop_back();
+                iptext.setString(ipstr);
+                iptext.setPosition({32.f,120.f});
+                rect.setPosition({32.f+(ipx+ipx/3)*9.f,136.f});
+
+                window.clear();
+                renderTexture.clear();
+                renderTexture.draw(iptext);
+                renderTexture.draw(rect);
+                renderTexture.display();
+                const sf::Texture& texture = renderTexture.getTexture();
+                sf::Sprite rt(texture);
+                window.draw(rt);
+                window.display();
+            }
+        }
 
         characterselect charselect;
         if (!charselect.load("charactericon.png")){}
@@ -3979,8 +4025,8 @@ int main()
                     len=okey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=okey[i];packet<<temp;}
                     len=kkey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey[i];packet<<temp;}
 
-                    if(socket.send(packet,localip,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
-                    if(socket.receive(packet,localip2,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
+                    if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
+                    if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
 
                     player playertemp1,playertemp2=p2;
                     //float xtemp=0;
