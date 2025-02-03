@@ -3661,13 +3661,11 @@ int main()
     sf::Font font;
     if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
-    auto ipvalue2=sf::IpAddress::getLocalAddress();
-    sf::IpAddress ipvalue(172,30,1,67);
-    unsigned short port=53333;
+    unsigned short port=53924;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
-    short menuselect=0;
-    bool gamequit=false;
+    short menuselect=0,ipint[4]={0,0,0,0};
+    bool gamequit=false,p1control=true;
     std::string dialogue;
     sf::Shader shader;
     if (!shader.loadFromFile("shader.frag",sf::Shader::Type::Fragment)){}
@@ -3697,27 +3695,36 @@ int main()
 
         if(menuconfirm=='2'&&menuselect==5)window.close();
         else if(menuconfirm=='2'&&menuselect!=4){
-
+        
         if(menuselect==2){
             sf::Text iptext(font);
             iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
             sf::RectangleShape rect({8.f, 4.f});rect.setFillColor(sf::Color::White);
-            short ipint[4]={0,0,0,0},ipx=0;
+            short ipx=0;
+            char sideselect='0';
             while (window.isOpen()&&!gamequit){
                 windowset(window,&gamequit);
                 keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
                 keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
                 keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+                keypresscheck(heavykey1,&sideselect);
                 if(menuright=='2'&&menuleft!='2'){ipx++;if(ipx>11)ipx=0;}
                 if(menuright!='2'&&menuleft=='2'){ipx--;if(ipx<0)ipx=11;}
                 if(menuup=='2'&&menudown!='2'){
-                    ipint[ipx/3]+=(ipx%3==0)?100:(ipx%3==1)?10:1;
-                    if(ipint[ipx/3]>999)ipint[ipx/3]-=1000;
+                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==9)?-900:100;}
+                    if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==9)?-90:10;}
+                    if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==9)?-9:1;}
                 }
                 if(menuup!='2'&&menudown=='2'){
-                    ipint[ipx/3]-=(ipx%3==0)?100:(ipx%3==1)?10:1;
-                    if(ipint[ipx/3]<0)ipint[ipx/3]+=1000;
+                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==0)?900:-100;}
+                    if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==0)?90:-10;}
+                    if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==0)?9:-1;}
                 }
+                if(sideselect=='2'){
+                    if(p1control)p1control=false;
+                    else p1control=true;
+                }
+                if(menuconfirm=='2')break;
                 if(menucancel=='2'){gamequit=true;break;}
 
                 std::string tempstr,ipstr;
@@ -3728,6 +3735,9 @@ int main()
                     else ipstr=ipstr+' '+' '+tempstr+'.';
                     }
                 ipstr.pop_back();
+                if(p1control)ipstr=ipstr+' '+'P'+'1';
+                else ipstr=ipstr+' '+'P'+'2';
+                
                 iptext.setString(ipstr);
                 iptext.setPosition({32.f,120.f});
                 rect.setPosition({32.f+(ipx+ipx/3)*9.f,136.f});
@@ -3736,6 +3746,51 @@ int main()
                 renderTexture.clear();
                 renderTexture.draw(iptext);
                 renderTexture.draw(rect);
+                renderTexture.display();
+                const sf::Texture& texture = renderTexture.getTexture();
+                sf::Sprite rt(texture);
+                window.draw(rt);
+                window.display();
+            }
+        }
+        std::string tempstr,ipstr;
+        for(short i=0;i<4;i++){
+            tempstr = std::to_string(ipint[i]);
+            ipstr=ipstr+tempstr+'.';
+        }
+        ipstr.pop_back();
+        auto ipvalue2=sf::IpAddress::resolve(ipstr);
+        sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
+
+        if(menuselect==2&&!gamequit){
+            sf::Text iptext(font);
+            iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
+            short loadcnt=0; 
+            while(window.isOpen()&&!gamequit){
+                windowset(window,&gamequit);
+                keypresscheck(mediumkey1,&menucancel);if(menucancel=='2'){gamequit=true;break;}
+                bool temp=false;
+                sf::Packet packet;
+                std::uint8_t onlinecheck=p1control;
+                
+                packet<<onlinecheck;
+                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
+                //if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                packet>>onlinecheck;
+                temp=onlinecheck;
+                if(p1control==temp)break;
+
+                loadcnt++;
+                if(loadcnt>179)loadcnt=0;
+                string waitstr("waiting for player");
+                for(short i=0;i<(loadcnt/60)+1;i++)waitstr=waitstr+'.';
+                
+                iptext.setString(waitstr);
+                iptext.setPosition({32.f,120.f});
+
+                window.clear();
+                renderTexture.clear();
+                renderTexture.draw(iptext);
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
                 sf::Sprite rt(texture);
