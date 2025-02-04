@@ -13,6 +13,6 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp)
-target_compile_features(main PRIVATE cxx_std_17)
-target_link_libraries(main PRIVATE SFML::Graphics SFML::Network)
+add_executable(Prosaic_at_best src/main.cpp)
+target_compile_features(Prosaic_at_best PRIVATE cxx_std_17)
+target_link_libraries(Prosaic_at_best PRIVATE SFML::Graphics SFML::Network)

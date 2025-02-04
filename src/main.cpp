@@ -3661,6 +3661,7 @@ int main()
     sf::Font font;
     if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
+    socket.setBlocking(false);
     unsigned short port=53924;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
@@ -3769,16 +3770,16 @@ int main()
             while(window.isOpen()&&!gamequit){
                 windowset(window,&gamequit);
                 keypresscheck(mediumkey1,&menucancel);if(menucancel=='2'){gamequit=true;break;}
-                bool temp=false;
+                bool temp=p1control;
                 sf::Packet packet;
                 std::uint8_t onlinecheck=p1control;
                 
                 packet<<onlinecheck;
                 if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
-                //if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                packet>>onlinecheck;
-                temp=onlinecheck;
-                if(p1control==temp)break;
+                if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                packet>>temp;
+                
+                if(p1control!=temp)break;
 
                 loadcnt++;
                 if(loadcnt>179)loadcnt=0;
@@ -4013,8 +4014,8 @@ int main()
                     //if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
-                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
-                    //inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
+                    if(p1control)inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
+                    else inputcode(p2input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
 
                     //main match code stuff
                     dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
@@ -4037,8 +4038,6 @@ int main()
                     precord.push_front(p1);if(precord.size()>10)precord.pop_back();
 
                     for(short i=0;i<effectslist.size();i++){effectslist[i].create(bgx);if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
-
-
 
                     if(!dialogue.empty()){//dialogue stuff
                         char temp='$',temp1='1';
@@ -4080,56 +4079,57 @@ int main()
                     len=okey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=okey[i];packet<<temp;}
                     len=kkey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey[i];packet<<temp;}
 
-                    if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
-                    if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                    if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                    if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
 
-                    player playertemp1,playertemp2=p2;
-                    //float xtemp=0;
-                    packet>>playertemp2.x>>playertemp2.y>>onlineframe>>dir>>U>>I>>O>>K;
-                    playertemp2.x+=48;
-                    p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
-                    packet>>len;playertemp2.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.animq.push_back(temp);}
-                    packet>>len;playertemp2.idleanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.idleanim.push_back(temp);}
-                    packet>>len;playertemp2.atkfx.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.atkfx.push_back(temp);}
-                    packet>>len;playertemp2.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.hitboxanim.push_back(temp);}
-                    packet>>len;dironline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dironline2.push_back(temp);}
-                    packet>>len;uonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;uonline2.push_back(temp);}
-                    packet>>len;ionline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ionline2.push_back(temp);}
-                    packet>>len;oonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;oonline2.push_back(temp);}
-                    packet>>len;konline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;konline2.push_back(temp);}
-                    //xtemp+=75;
-                    //p2.x=xtemp;
-                    char onlineinput1[5]={},onlineinput2[5]={};
-                    onlineinput2[0]=char(dir);onlineinput2[1]=char(U);onlineinput2[2]=char(I);onlineinput2[3]=char(O);onlineinput2[4]=char(K);
+                        player playertemp1,playertemp2=p2;
+                        //float xtemp=0;
+                        packet>>playertemp2.x>>playertemp2.y>>onlineframe>>dir>>U>>I>>O>>K;
+                        playertemp2.x+=48;
+                        p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
+                        packet>>len;playertemp2.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.animq.push_back(temp);}
+                        packet>>len;playertemp2.idleanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.idleanim.push_back(temp);}
+                        packet>>len;playertemp2.atkfx.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.atkfx.push_back(temp);}
+                        packet>>len;playertemp2.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.hitboxanim.push_back(temp);}
+                        packet>>len;dironline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dironline2.push_back(temp);}
+                        packet>>len;uonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;uonline2.push_back(temp);}
+                        packet>>len;ionline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ionline2.push_back(temp);}
+                        packet>>len;oonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;oonline2.push_back(temp);}
+                        packet>>len;konline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;konline2.push_back(temp);}
+                        //xtemp+=75;
+                        //p2.x=xtemp;
+                        char onlineinput1[5]={},onlineinput2[5]={};
+                        onlineinput2[0]=char(dir);onlineinput2[1]=char(U);onlineinput2[2]=char(I);onlineinput2[3]=char(O);onlineinput2[4]=char(K);
 
-                    playertemp1=precord[roundframecount-onlineframe];
-                    for(short i=0;i<=roundframecount-onlineframe;i++){
-                        onlineinput1[0]=dirkeys[i];
-                        onlineinput1[1]=ukey[i];onlineinput1[2]=ikey[i];
-                        onlineinput1[3]=okey[i];onlineinput1[4]=kkey[i];
+                        playertemp1=precord[roundframecount-onlineframe];
+                        for(short i=0;i<=roundframecount-onlineframe;i++){
+                            onlineinput1[0]=dirkeys[i];
+                            onlineinput1[1]=ukey[i];onlineinput1[2]=ikey[i];
+                            onlineinput1[3]=okey[i];onlineinput1[4]=kkey[i];
 
-                        //main match code stuff
+                            //main match code stuff
 
-                        dirkeys.push_front(onlineinput1[0]);ukey.push_front(onlineinput1[1]);
-                        ikey.push_front(onlineinput1[2]);okey.push_front(onlineinput1[3]);kkey.push_front(onlineinput1[4]);
-                        if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
-                        if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
+                            dirkeys.push_front(onlineinput1[0]);ukey.push_front(onlineinput1[1]);
+                            ikey.push_front(onlineinput1[2]);okey.push_front(onlineinput1[3]);kkey.push_front(onlineinput1[4]);
+                            if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
+                            if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
 
-                        dironline2.push_front(onlineinput2[0]);uonline2.push_front(onlineinput2[1]);
-                        ionline2.push_front(onlineinput2[2]);oonline2.push_front(onlineinput2[3]);konline2.push_front(onlineinput2[4]);
-                        if(dironline2.size()>20)dironline2.pop_back();if(uonline2.size()>20)uonline2.pop_back();
-                        if(ionline2.size()>20)ionline2.pop_back();if(oonline2.size()>20)oonline2.pop_back();if(konline2.size()>20)konline2.pop_back();
+                            dironline2.push_front(onlineinput2[0]);uonline2.push_front(onlineinput2[1]);
+                            ionline2.push_front(onlineinput2[2]);oonline2.push_front(onlineinput2[3]);konline2.push_front(onlineinput2[4]);
+                            if(dironline2.size()>20)dironline2.pop_back();if(uonline2.size()>20)uonline2.pop_back();
+                            if(ionline2.size()>20)ionline2.pop_back();if(oonline2.size()>20)oonline2.pop_back();if(konline2.size()>20)konline2.pop_back();
 
 
-                        nextframe=false;
-                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
-                        matchcode(&playertemp1,&playertemp2,dialogue,onlineinput1,onlineinput2,&superstop,&bgx,&framedata,overlap,overlap2);
+                            nextframe=false;
+                            if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                            matchcode(&playertemp1,&playertemp2,dialogue,onlineinput1,onlineinput2,&superstop,&bgx,&framedata,overlap,overlap2);
 
-                        if(superstop>0)superstop--;
+                            if(superstop>0)superstop--;
+                        }
+
+                        p1=playertemp1;
+                        p2=playertemp2;
                     }
-
-                    p1=playertemp1;
-                    p2=playertemp2;
                 }
 
 
