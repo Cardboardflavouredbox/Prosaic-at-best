@@ -3762,6 +3762,7 @@ int main()
         ipstr.pop_back();
         auto ipvalue2=sf::IpAddress::resolve(ipstr);
         sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
+        if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
 
         if(menuselect==2&&!gamequit){
             sf::Text iptext(font);
@@ -3772,10 +3773,10 @@ int main()
                 keypresscheck(mediumkey1,&menucancel);if(menucancel=='2'){gamequit=true;break;}
                 bool temp=p1control;
                 sf::Packet packet;
-                std::uint8_t onlinecheck=p1control;
+                //std::uint8_t onlinecheck=p1control;
                 
-                packet<<onlinecheck;
-                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){window.close();gamequit=true;}
+                packet<<p1control;
+                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 packet>>temp;
                 
@@ -3995,7 +3996,6 @@ int main()
             }
             if(menuselect==2){//online
                 std::deque<player> precord;
-                if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2],bgx=0;
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
