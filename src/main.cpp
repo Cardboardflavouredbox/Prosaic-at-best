@@ -4015,7 +4015,7 @@ int main()
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
                     if(p1control)inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
-                    else inputcode(p2input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
+                    else inputcode(p2input,upkey1,rightkey1,downkey1,leftkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
 
                     //main match code stuff
                     dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
