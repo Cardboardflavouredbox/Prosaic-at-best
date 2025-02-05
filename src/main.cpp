@@ -3818,16 +3818,18 @@ int main()
             keypresscheck(heavykey1,&colorkey);
             keypresscheck(heavykey2,&colorkey2);
 
-
+            if(!p1check){
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
             if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
-
+            }
+            if(!p2check){
             if(menuright2=='2'&&menuleft2!='2'){menux2++;if(menux2>3)menux2=0;}if(menuright2!='2'&&menuleft2=='2'){menux2--;if(menux2<0)menux2=3;}
             if(menudown2=='2'&&menuup2!='2'){menuy2++;if(menuy2>1)menuy2=0;}if(menudown2!='2'&&menuup2=='2'){menuy2--;if(menuy2<0)menuy2=1;}
-
+            }
             if(menuconfirm=='2')p1check=true;if(menuconfirm2=='2')p2check=true;
             if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
             if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
+            if(p1check&&p2check)break;
             charselect.setselect(4,2,menux,menuy,menux2,menuy2);
 
             if(colorkey=='2'){
