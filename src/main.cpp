@@ -3809,14 +3809,28 @@ int main()
         while (window.isOpen()&&!gamequit){
             windowset(window,&gamequit);
 
+            if(menuselect==2&&p1control){
             keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
             keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
             keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+            keypresscheck(heavykey1,&colorkey);
+            }
+            else if(menuselect==2&&!p1control){
+            keypresscheck(lightkey1,&menuconfirm2);keypresscheck(mediumkey1,&menucancel2);
+            keypresscheck(upkey1,&menuup2);keypresscheck(downkey1,&menudown2);
+            keypresscheck(leftkey1,&menuleft2);keypresscheck(rightkey1,&menuright2);
+            keypresscheck(heavykey1,&colorkey2);
+            }
+            else{
+            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+            keypresscheck(heavykey1,&colorkey);
             keypresscheck(lightkey2,&menuconfirm2);keypresscheck(mediumkey2,&menucancel2);
             keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
             keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
-            keypresscheck(heavykey1,&colorkey);
             keypresscheck(heavykey2,&colorkey2);
+            }
 
             if(!p1check){
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
@@ -3854,6 +3868,20 @@ int main()
             rect2.setPosition({0,128});
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
+
+            if(menuselect==2){
+                sf::Packet packet;
+                std::uint8_t onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
+                if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
+                else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
+                packet<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
+                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
+                if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
+                else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
+            }
+
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("stage1.png")){}
             sf::Sprite bg(bgtexture);
