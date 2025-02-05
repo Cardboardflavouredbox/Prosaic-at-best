@@ -3780,7 +3780,7 @@ int main()
                 if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 packet>>temp;
                 
-                if(p1control!=temp)break;
+                if(p1control!=temp){if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}break;}
 
                 loadcnt++;
                 if(loadcnt>179)loadcnt=0;
