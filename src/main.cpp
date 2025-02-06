@@ -3952,8 +3952,10 @@ int main()
             std::deque<char>p1keylist,p2keylist;
             short dialoguecnt=0;
 
+            if(menuselect==0){
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
+            }
             if(menuselect==0){//vsmode
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2],bgx=0;
@@ -4115,51 +4117,146 @@ int main()
 
 
                     sf::Packet packet;
-                    std::uint8_t onlinecode=4,dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
-                    std::int16_t onlineframe=roundframecount;
+                    std::uint8_t onlinecode=4,dir,U,I,O,K,len;
+                    std::int16_t onlineframe=roundframecount,temp;
                     std::deque<char>dironline,uonline,ionline,oonline,konline,
                                     dironline2,uonline2,ionline2,oonline2,konline2;
+                    packet<<onlinecode;
+                    //std::deque<projectile> proj;
+                    //attackdata attack;
+                    //unsigned char anim[64][2]={}; maybe I don't need to do this one??
+                    if(p1control){
+                        dir=p1input[0];U=p1input[1];I=p1input[2];O=p1input[3];K=p1input[4];
+                        packet<<p1.x<<p1.y<<p1.jumpx<<p1.jumpy<<p1.kback<<p1.launch<<p1.hp<<p1.maxhp<<p1.dmg<<
+                        p1.pushaway<<p1.grab[0]<<p1.grab[1]<<p1.meter<<p1.mgain<<onlineframe<<dir<<U<<I<<O<<K;
 
-                    packet<<onlinecode<<p1.x<<p1.y<<onlineframe<<dir<<U<<I<<O<<K;
-                    len=p1.animq.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
-                    len=p1.idleanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.idleanim[i];packet<<temp;}
-                    len=p1.atkfx.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.atkfx[i];packet<<temp;}
-                    len=p1.hitboxanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.hitboxanim[i];packet<<temp;}
-                    len=dirkeys.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=dirkeys[i];packet<<temp;}
-                    len=ukey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ukey[i];packet<<temp;}
-                    len=ikey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ikey[i];packet<<temp;}
-                    len=okey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=okey[i];packet<<temp;}
-                    len=kkey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey[i];packet<<temp;}
+                        len=p1.animq.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
+                        len=p1.idleanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.idleanim[i];packet<<temp;}
+                        len=p1.atkfx.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.atkfx[i];packet<<temp;}
+                        len=p1.hitboxanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.hitboxanim[i];packet<<temp;}
+                        len=dirkeys.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=dirkeys[i];packet<<temp;}
+                        len=ukey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ukey[i];packet<<temp;}
+                        len=ikey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ikey[i];packet<<temp;}
+                        len=okey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=okey[i];packet<<temp;}
+                        len=kkey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey[i];packet<<temp;}
 
+                        for(unsigned char i=0;i<8;i++){temp=p1.gimmick[i];packet<<temp;}
+                        for(unsigned char i=0;i<5;i++){temp=p1.hurtframes[i];packet<<temp;}
+                        temp=p1.hbframe;packet<<temp;temp=p1.act;packet<<temp;temp=p1.col;packet<<temp;temp=p1.frame;packet<<temp;
+                        temp=p1.block;packet<<temp;temp=p1.hitstop;packet<<temp;temp=p1.hitstun;packet<<temp;temp=p1.blockstun;packet<<temp;
+                        temp=p1.wins;packet<<temp;temp=p1.character;packet<<temp;temp=p1.buffer;packet<<temp;temp=p1.kdown;packet<<temp;
+                        temp=p1.kdowned;packet<<temp;temp=p1.movewaitx;packet<<temp;temp=p1.movewaity;packet<<temp;temp=p1.movetype;packet<<temp;
+                        temp=p1.landdelay;packet<<temp;temp=p1.hitstopped;packet<<temp;temp=p1.grabstate;packet<<temp;temp=p1.iframes;packet<<temp;
+                        temp=p1.grabiframes;packet<<temp;temp=p1.hitcount;packet<<temp;
+
+                        for(unsigned char i=0;i<64;i++){packet<<p1.cancel[i];}
+                        packet<<p1.air<<p1.whiff<<p1.right<<p1.hit<<p1.slide<<p1.neutural<<p1.comboed<<p1.hitbefore<<p1.super;
+                    }
+                    else{
+                        dir=p2input[0];U=p2input[1];I=p2input[2];O=p2input[3];K=p2input[4];
+                        packet<<p2.x<<p2.y<<p2.jumpx<<p2.jumpy<<p2.kback<<p2.launch<<p2.hp<<p2.maxhp<<p2.dmg<<
+                        p2.pushaway<<p2.grab[0]<<p2.grab[1]<<p2.meter<<p2.mgain<<onlineframe<<dir<<U<<I<<O<<K;
+
+                        len=p2.animq.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.animq[i];packet<<temp;}
+                        len=p2.idleanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.idleanim[i];packet<<temp;}
+                        len=p2.atkfx.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.atkfx[i];packet<<temp;}
+                        len=p2.hitboxanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.hitboxanim[i];packet<<temp;}
+                        len=dirkeys.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=dirkeys2[i];packet<<temp;}
+                        len=ukey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ukey2[i];packet<<temp;}
+                        len=ikey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ikey2[i];packet<<temp;}
+                        len=okey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=okey2[i];packet<<temp;}
+                        len=kkey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey2[i];packet<<temp;}
+
+                        for(unsigned char i=0;i<8;i++){temp=p2.gimmick[i];packet<<temp;}
+                        for(unsigned char i=0;i<5;i++){temp=p2.hurtframes[i];packet<<temp;}
+                        temp=p2.hbframe;packet<<temp;temp=p2.act;packet<<temp;temp=p2.col;packet<<temp;temp=p2.frame;packet<<temp;
+                        temp=p2.block;packet<<temp;temp=p2.hitstop;packet<<temp;temp=p2.hitstun;packet<<temp;temp=p2.blockstun;packet<<temp;
+                        temp=p2.wins;packet<<temp;temp=p2.character;packet<<temp;temp=p2.buffer;packet<<temp;temp=p2.kdown;packet<<temp;
+                        temp=p2.kdowned;packet<<temp;temp=p2.movewaitx;packet<<temp;temp=p2.movewaity;packet<<temp;temp=p2.movetype;packet<<temp;
+                        temp=p2.landdelay;packet<<temp;temp=p2.hitstopped;packet<<temp;temp=p2.grabstate;packet<<temp;temp=p2.iframes;packet<<temp;
+                        temp=p2.grabiframes;packet<<temp;temp=p2.hitcount;packet<<temp;
+
+                        for(unsigned char i=0;i<64;i++){packet<<p2.cancel[i];}
+                        packet<<p2.air<<p2.whiff<<p2.right<<p2.hit<<p2.slide<<p2.neutural<<p2.comboed<<p2.hitbefore<<p2.super;
+                    }
                     if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                     if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
 
-                        player playertemp1,playertemp2=p2;
+                        player playertemp1=p1,playertemp2=p2;
                         //float xtemp=0;
-                        packet>>onlinecode>>playertemp2.x>>playertemp2.y>>onlineframe>>dir>>U>>I>>O>>K;
-                        playertemp2.x+=48;
-                        p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
-                        packet>>len;playertemp2.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.animq.push_back(temp);}
-                        packet>>len;playertemp2.idleanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.idleanim.push_back(temp);}
-                        packet>>len;playertemp2.atkfx.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.atkfx.push_back(temp);}
-                        packet>>len;playertemp2.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.hitboxanim.push_back(temp);}
-                        packet>>len;dironline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dironline2.push_back(temp);}
-                        packet>>len;uonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;uonline2.push_back(temp);}
-                        packet>>len;ionline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ionline2.push_back(temp);}
-                        packet>>len;oonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;oonline2.push_back(temp);}
-                        packet>>len;konline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;konline2.push_back(temp);}
-                        //xtemp+=75;
-                        //p2.x=xtemp;
+                        if(p1control){
+                            packet>>onlinecode>>playertemp2.x>>playertemp2.y>>playertemp2.jumpx>>playertemp2.jumpy>>
+                            playertemp2.kback>>playertemp2.launch>>playertemp2.hp>>playertemp2.maxhp>>playertemp2.dmg>>
+                            playertemp2.pushaway>>playertemp2.grab[0]>>playertemp2.grab[1]>>playertemp2.meter>>playertemp2.mgain>>
+                            onlineframe>>dir>>U>>I>>O>>K;
+                            p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
+
+                            packet>>len;playertemp2.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.animq.push_back(temp);}
+                            packet>>len;playertemp2.idleanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.idleanim.push_back(temp);}
+                            packet>>len;playertemp2.atkfx.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.atkfx.push_back(temp);}
+                            packet>>len;playertemp2.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.hitboxanim.push_back(temp);}
+                            packet>>len;dironline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dironline2.push_back(temp);}
+                            packet>>len;uonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;uonline2.push_back(temp);}
+                            packet>>len;ionline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ionline2.push_back(temp);}
+                            packet>>len;oonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;oonline2.push_back(temp);}
+                            packet>>len;konline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;konline2.push_back(temp);}
+
+                            for(unsigned char i=0;i<8;i++){packet>>temp;playertemp2.gimmick[i]=temp;}
+                            for(unsigned char i=0;i<5;i++){packet>>temp;playertemp2.hurtframes[i]=temp;}
+                            packet>>temp;playertemp2.hbframe=temp;packet>>temp;playertemp2.act=temp;
+                            packet>>temp;playertemp2.col=temp;packet>>temp;playertemp2.frame=temp;
+                            packet>>temp;playertemp2.block=temp;packet>>temp;playertemp2.hitstop=temp;
+                            packet>>temp;playertemp2.hitstun=temp;packet>>temp;playertemp2.blockstun=temp;
+                            packet>>temp;playertemp2.wins=temp;packet>>temp;playertemp2.character=temp;
+                            packet>>temp;playertemp2.buffer=temp;packet>>temp;playertemp2.kdown=temp;
+                            packet>>temp;playertemp2.kdowned=temp;packet>>temp;playertemp2.movewaitx=temp;
+                            packet>>temp;playertemp2.movewaity=temp;packet>>temp;playertemp2.movetype=temp;
+                            packet>>temp;playertemp2.landdelay=temp;packet>>temp;playertemp2.hitstopped=temp;
+                            packet>>temp;playertemp2.grabstate=temp;packet>>temp;playertemp2.iframes=temp;
+                            packet>>temp;playertemp2.grabiframes=temp;packet>>temp;playertemp2.hitcount=temp;
+
+                        for(unsigned char i=0;i<64;i++){packet<<p2.cancel[i];}
+                        packet<<p2.air<<p2.whiff<<p2.right<<p2.hit<<p2.slide<<p2.neutural<<p2.comboed<<p2.hitbefore<<p2.super;
+                        }
+                        else{
+                            packet>>onlinecode>>playertemp1.x>>playertemp1.y>>playertemp1.jumpx>>playertemp1.jumpy>>
+                            playertemp1.kback>>playertemp1.launch>>playertemp1.hp>>playertemp1.maxhp>>playertemp1.dmg>>
+                            playertemp1.pushaway>>playertemp1.grab[0]>>playertemp1.grab[1]>>playertemp1.meter>>playertemp1.mgain>>
+                            onlineframe>>dir>>U>>I>>O>>K;
+                            p1input[0]=dir;p1input[1]=U;p1input[2]=I;p1input[3]=O;p1input[4]=K;
+
+                            packet>>len;playertemp1.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.animq.push_back(temp);}
+                            packet>>len;playertemp1.idleanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.idleanim.push_back(temp);}
+                            packet>>len;playertemp1.atkfx.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.atkfx.push_back(temp);}
+                            packet>>len;playertemp1.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.hitboxanim.push_back(temp);}
+                            packet>>len;dironline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dironline.push_back(temp);}
+                            packet>>len;uonline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;uonline.push_back(temp);}
+                            packet>>len;ionline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ionline.push_back(temp);}
+                            packet>>len;oonline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;oonline.push_back(temp);}
+                            packet>>len;konline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;konline.push_back(temp);}
+
+                            for(unsigned char i=0;i<8;i++){packet>>temp;playertemp1.gimmick[i]=temp;}
+                            for(unsigned char i=0;i<5;i++){packet>>temp;playertemp1.hurtframes[i]=temp;}
+                            packet>>temp;playertemp1.hbframe=temp;packet>>temp;playertemp1.act=temp;
+                            packet>>temp;playertemp1.col=temp;packet>>temp;playertemp1.frame=temp;
+                            packet>>temp;playertemp1.block=temp;packet>>temp;playertemp1.hitstop=temp;
+                            packet>>temp;playertemp1.hitstun=temp;packet>>temp;playertemp1.blockstun=temp;
+                            packet>>temp;playertemp1.wins=temp;packet>>temp;playertemp1.character=temp;
+                            packet>>temp;playertemp1.buffer=temp;packet>>temp;playertemp1.kdown=temp;
+                            packet>>temp;playertemp1.kdowned=temp;packet>>temp;playertemp1.movewaitx=temp;
+                            packet>>temp;playertemp1.movewaity=temp;packet>>temp;playertemp1.movetype=temp;
+                            packet>>temp;playertemp1.landdelay=temp;packet>>temp;playertemp1.hitstopped=temp;
+                            packet>>temp;playertemp1.grabstate=temp;packet>>temp;playertemp1.iframes=temp;
+                            packet>>temp;playertemp1.grabiframes=temp;packet>>temp;playertemp1.hitcount=temp;
+                        }
                         char onlineinput1[5]={},onlineinput2[5]={};
                         onlineinput2[0]=char(dir);onlineinput2[1]=char(U);onlineinput2[2]=char(I);onlineinput2[3]=char(O);onlineinput2[4]=char(K);
-
+                        /*
                         playertemp1=precord[roundframecount-onlineframe];
                         for(short i=0;i<=roundframecount-onlineframe;i++){
                             onlineinput1[0]=dirkeys[i];
                             onlineinput1[1]=ukey[i];onlineinput1[2]=ikey[i];
                             onlineinput1[3]=okey[i];onlineinput1[4]=kkey[i];
-
-                            //main match code stuff
 
                             dirkeys.push_front(onlineinput1[0]);ukey.push_front(onlineinput1[1]);
                             ikey.push_front(onlineinput1[2]);okey.push_front(onlineinput1[3]);kkey.push_front(onlineinput1[4]);
@@ -4178,7 +4275,7 @@ int main()
 
                             if(superstop>0)superstop--;
                         }
-
+                        */
                         p1=playertemp1;
                         p2=playertemp2;
                     }
@@ -4346,6 +4443,7 @@ int main()
         }
         gamequit=false;
         menus.setmenu(6,144,120,0,16,0);
+        socket.unbind();
         }
 
 
