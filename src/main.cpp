@@ -3894,11 +3894,12 @@ int main()
                 else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
                 packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
                 if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                packet>>onlinecode>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
-                if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
-                else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
-                if(onlinecode==4){p1check=true;p2check=true;}
+                if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
+                    packet>>onlinecode>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
+                    if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
+                    else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
+                    if(onlinecode==4){p1check=true;p2check=true;break;}
+                }
             }
 
             sf::Texture bgtexture;
