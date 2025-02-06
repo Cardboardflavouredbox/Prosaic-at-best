@@ -3729,6 +3729,21 @@ int main()
                 if(menucancel=='2'){gamequit=true;break;}
 
                 std::string tempstr,ipstr;
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P)){
+                    std::string cbstr=sf::Clipboard::getString();
+                    short temp=0,iptemp[4]={0,0,0,0};
+                    bool check=true;
+                    for(short i=0;i<cbstr.length();i++){
+                        if((cbstr[i]>47&&cbstr[i]<58)){
+                            iptemp[temp]*=10;
+                            iptemp[temp]+=cbstr[i]-48;
+                            if(iptemp[temp]>=1000){check=false;break;}
+                            }
+                        else if(cbstr[i]=='.')temp++;
+                        else {check=false;break;}
+                    }
+                    if(check&&temp==3)memcpy(ipint,iptemp,sizeof(iptemp));
+                }
                 for(short i=0;i<4;i++){
                     tempstr = std::to_string(ipint[i]);
                     if(ipint[i]>99)ipstr=ipstr+tempstr+'.';
@@ -3771,16 +3786,17 @@ int main()
             while(window.isOpen()&&!gamequit){
                 windowset(window,&gamequit);
                 keypresscheck(mediumkey1,&menucancel);if(menucancel=='2'){gamequit=true;break;}
-                bool temp=p1control;
                 sf::Packet packet;
-                //std::uint8_t onlinecheck=p1control;
+                std::uint8_t onlinecheck;
+                if(p1control)onlinecheck=1;
+                else onlinecheck=2;
                 
-                packet<<p1control;
+                packet<<onlinecheck;
                 if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                packet>>temp;
+                packet>>onlinecheck;
                 
-                if(p1control!=temp){if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}break;}
+                if((p1control&&onlinecheck==2)||(!p1control&&onlinecheck==1)||onlinecheck==3)break;
 
                 loadcnt++;
                 if(loadcnt>179)loadcnt=0;
@@ -3857,6 +3873,8 @@ int main()
                     if(p1color==p2color){p2color++;if(p2color>8)p2color=0;}
             }
 
+            if(p1color==p2color&&menux==menux2&&menuy==menuy2){p2color++;if(p2color>8)p2color=0;}
+
             sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f}),crect4({32.f, 32.f}),crect5({32.f, 32.f}),crect6({32.f, 32.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
             crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
@@ -3871,15 +3889,16 @@ int main()
 
             if(menuselect==2){
                 sf::Packet packet;
-                std::uint8_t onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
+                std::uint8_t onlinecode=3,onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
                 if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
                 else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
-                packet<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
+                packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
                 if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
+                packet>>onlinecode>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
                 if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
                 else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
+                if(onlinecode==4){p1check=true;p2check=true;}
             }
 
             sf::Texture bgtexture;
@@ -4095,12 +4114,12 @@ int main()
 
 
                     sf::Packet packet;
-                    std::uint8_t dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
+                    std::uint8_t onlinecode=4,dir=p1input[0],U=p1input[1],I=p1input[2],O=p1input[3],K=p1input[4],len,temp;
                     std::int16_t onlineframe=roundframecount;
                     std::deque<char>dironline,uonline,ionline,oonline,konline,
                                     dironline2,uonline2,ionline2,oonline2,konline2;
 
-                    packet<<p1.x<<p1.y<<onlineframe<<dir<<U<<I<<O<<K;
+                    packet<<onlinecode<<p1.x<<p1.y<<onlineframe<<dir<<U<<I<<O<<K;
                     len=p1.animq.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
                     len=p1.idleanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.idleanim[i];packet<<temp;}
                     len=p1.atkfx.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.atkfx[i];packet<<temp;}
@@ -4116,7 +4135,7 @@ int main()
 
                         player playertemp1,playertemp2=p2;
                         //float xtemp=0;
-                        packet>>playertemp2.x>>playertemp2.y>>onlineframe>>dir>>U>>I>>O>>K;
+                        packet>>onlinecode>>playertemp2.x>>playertemp2.y>>onlineframe>>dir>>U>>I>>O>>K;
                         playertemp2.x+=48;
                         p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
                         packet>>len;playertemp2.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.animq.push_back(temp);}
