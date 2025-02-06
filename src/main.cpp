@@ -2599,7 +2599,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     //when you jump over your opponent while they are walking towards you sometimes a glitch happens fix it
     float walkspeed,jumprise,jumpfall;
     if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
-    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0)P.meter-=1.5;}
+    else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}}
 
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&enemygimmick[0]>0){
@@ -3177,13 +3177,13 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
         }
     }
-    if(P.movewaitx>0&&(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0))P.movewaitx-=1;
+    if(P.movewaitx>0&&(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0)))P.movewaitx-=1;
     else{
         if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0))P.x+=P.jumpx/2;
         else P.x+=P.jumpx;
         P.movewaitx=-1;
     }
-    if(P.movewaity>0&&(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0))P.movewaity-=1;
+    if(P.movewaity>0&&(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0)))P.movewaity-=1;
     else{
         if(P.jumpy<0)P.air=true;
         if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0))P.y+=P.jumpy/2;
@@ -3225,12 +3225,12 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         P.idleanim.clear();
         P.neutural=false;P.frame=P.animq[0];
         memcpy(P.anim,animlib[P.character][P.animq[0]],sizeof(animlib[P.character][P.animq[0]]));
-        if(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0)if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
+        if(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0))if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
     }
     else if(!P.idleanim.empty()){
         P.frame=P.idleanim[0];
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
-        if(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0)P.idleanim.pop_front();
+        if(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0))P.idleanim.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
@@ -3320,7 +3320,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             else if(P.atkfx[0]==5){*superstop=20;P.super=true;}
             else if(P.atkfx[0]==6){
                 if(P.gimmick[1]>0)P.gimmick[1]=0;
-                else P.gimmick[1]=1;
+                else P.gimmick[1]=32767;
             }
         }
         P.atkfx.pop_front();
