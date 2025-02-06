@@ -2530,11 +2530,10 @@ void projectiledata(player *p,short superstop){
     for(short i=0;i<P.proj.size();i++){
         if(superstop==0){
             if(P.proj[i].hit){P.proj[i].hit=false;P.proj[i].hitcount--;}
-            if(P.proj[i].x<-128||P.proj[i].x>384||P.proj[i].y<0||P.proj[i].y>240)P.proj.erase(P.proj.begin()+i);
+            if(P.proj[i].x<-128||P.proj[i].x>384||P.proj[i].y<0||P.proj[i].y>240){P.proj.erase(P.proj.begin()+i);return;}
             if(P.proj[i].hitcount<=0){
-                if(P.proj[i].endanim.empty())P.proj.erase(P.proj.begin()+i);
+                if(P.proj[i].endanim.empty()){P.proj.erase(P.proj.begin()+i);return;}
                 else{
-
                     if(P.character==0){
                         std::uniform_int_distribution<int> dis(-150,-30),dis2(-4,4);
                         effects temp;
@@ -3895,10 +3894,11 @@ int main()
                 packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
                 if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
-                    packet>>onlinecode>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
+                    packet>>onlinecode;
+                    if(onlinecode==4){p1check=true;p2check=true;break;}
+                    packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
                     if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
                     else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
-                    if(onlinecode==4){p1check=true;p2check=true;break;}
                 }
             }
 
