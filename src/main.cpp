@@ -4050,6 +4050,7 @@ int main()
             }
             if(menuselect==2){//online
                 std::deque<player> precord;
+                std::deque<std::deque<char>> dirrecord,urecord,irecord,orecord,krecord;
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2],bgx=0;
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
@@ -4074,13 +4075,13 @@ int main()
                     //main match code stuff
                     dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
                     ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
-                    if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
-                    if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
+                    if(dirkeys.size()>30)dirkeys.pop_back();if(ukey.size()>30)ukey.pop_back();
+                    if(ikey.size()>30)ikey.pop_back();if(okey.size()>30)okey.pop_back();if(kkey.size()>30)kkey.pop_back();
 
                     dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);
                     ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
-                    if(dirkeys2.size()>20)dirkeys2.pop_back();if(ukey2.size()>20)ukey2.pop_back();
-                    if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
+                    if(dirkeys2.size()>30)dirkeys2.pop_back();if(ukey2.size()>30)ukey2.pop_back();
+                    if(ikey2.size()>30)ikey2.pop_back();if(okey2.size()>30)okey2.pop_back();if(kkey2.size()>30)kkey2.pop_back();
 
                     nextframe=false;
                     if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
@@ -4089,7 +4090,23 @@ int main()
                     if(superstop>0)superstop--;
 
                     roundframecount++;
-                    precord.push_front(p1);if(precord.size()>10)precord.pop_back();
+                    if(p1control){
+                        precord.push_front(p1);
+                        dirrecord.push_front(dirkeys);
+                        urecord.push_front(ukey);irecord.push_front(ikey);
+                        orecord.push_front(okey);krecord.push_front(kkey);
+                        }
+                    else{
+                        precord.push_front(p2);
+                        dirrecord.push_front(dirkeys2);
+                        urecord.push_front(ukey2);irecord.push_front(ikey2);
+                        orecord.push_front(okey2);krecord.push_front(kkey2);
+                        }
+                    if(precord.size()>30)precord.pop_back();
+                    if(urecord.size()>30)urecord.pop_back();
+                    if(irecord.size()>30)irecord.pop_back();
+                    if(orecord.size()>30)orecord.pop_back();
+                    if(krecord.size()>30)krecord.pop_back();
 
                     for(short i=0;i<effectslist.size();i++){effectslist[i].create(bgx);if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
 
@@ -4339,32 +4356,50 @@ int main()
                             }
                         }
                         char onlineinput1[5]={},onlineinput2[5]={};
-                        onlineinput2[0]=char(dir);onlineinput2[1]=char(U);onlineinput2[2]=char(I);onlineinput2[3]=char(O);onlineinput2[4]=char(K);
-                        /*
-                        playertemp1=precord[roundframecount-onlineframe];
+                        
+                        if(p1control){
+                            playertemp1=precord[roundframecount-onlineframe];
+                            onlineinput2[0]=char(dir);onlineinput2[1]=char(U);onlineinput2[2]=char(I);onlineinput2[3]=char(O);onlineinput2[4]=char(K);
+                            dironline=dirrecord[roundframecount-onlineframe];
+                            uonline=urecord[roundframecount-onlineframe];
+                            ionline=irecord[roundframecount-onlineframe];
+                            oonline=orecord[roundframecount-onlineframe];
+                            konline=krecord[roundframecount-onlineframe];
+                        }
+                        else{
+                            playertemp2=precord[roundframecount-onlineframe];
+                            onlineinput1[0]=char(dir);onlineinput1[1]=char(U);onlineinput1[2]=char(I);onlineinput1[3]=char(O);onlineinput1[4]=char(K);
+                            dironline2=dirrecord[roundframecount-onlineframe];
+                            uonline2=urecord[roundframecount-onlineframe];
+                            ionline2=irecord[roundframecount-onlineframe];
+                            oonline2=orecord[roundframecount-onlineframe];
+                            konline2=krecord[roundframecount-onlineframe];
+                        }
                         for(short i=0;i<=roundframecount-onlineframe;i++){
-                            onlineinput1[0]=dirkeys[i];
-                            onlineinput1[1]=ukey[i];onlineinput1[2]=ikey[i];
-                            onlineinput1[3]=okey[i];onlineinput1[4]=kkey[i];
+                            if(p1control){
+                                onlineinput1[0]=dirkeys[i];
+                                onlineinput1[1]=ukey[i];onlineinput1[2]=ikey[i];
+                                onlineinput1[3]=okey[i];onlineinput1[4]=kkey[i];
+                            }
+                            else{
+                                onlineinput2[0]=dirkeys2[i];
+                                onlineinput2[1]=ukey2[i];onlineinput2[2]=ikey2[i];
+                                onlineinput2[3]=okey2[i];onlineinput2[4]=kkey2[i];
+                            }
 
-                            dirkeys.push_front(onlineinput1[0]);ukey.push_front(onlineinput1[1]);
-                            ikey.push_front(onlineinput1[2]);okey.push_front(onlineinput1[3]);kkey.push_front(onlineinput1[4]);
-                            if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
-                            if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
+                            dironline.push_front(onlineinput1[0]);uonline.push_front(onlineinput1[1]);
+                            ionline.push_front(onlineinput1[2]);oonline.push_front(onlineinput1[3]);konline.push_front(onlineinput1[4]);
+                            if(dironline.size()>20)dironline.pop_back();if(uonline.size()>20)uonline.pop_back();
+                            if(ionline.size()>20)ionline.pop_back();if(oonline.size()>20)oonline.pop_back();if(konline.size()>20)konline.pop_back();
 
                             dironline2.push_front(onlineinput2[0]);uonline2.push_front(onlineinput2[1]);
                             ionline2.push_front(onlineinput2[2]);oonline2.push_front(onlineinput2[3]);konline2.push_front(onlineinput2[4]);
                             if(dironline2.size()>20)dironline2.pop_back();if(uonline2.size()>20)uonline2.pop_back();
                             if(ionline2.size()>20)ionline2.pop_back();if(oonline2.size()>20)oonline2.pop_back();if(konline2.size()>20)konline2.pop_back();
-
-
-                            nextframe=false;
-                            if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
-                            matchcode(&playertemp1,&playertemp2,dialogue,onlineinput1,onlineinput2,&superstop,&bgx,&framedata,overlap,overlap2);
-
-                            if(superstop>0)superstop--;
+                            
+                            //if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                            matchcode(&playertemp1,&playertemp2,dialogue,onlineinput1,onlineinput2,0,&bgx,&framedata,overlap,overlap2);
                         }
-                        */
                         p1=playertemp1;
                         p2=playertemp2;
                     }
