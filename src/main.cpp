@@ -4283,19 +4283,21 @@ int main()
                             playertemp2.proj.clear();
                             packet>>len;
                             for(unsigned char i=0;i<len;i++){
-                            packet>>playertemp2.proj[i].x>>playertemp2.proj[i].y>>playertemp2.proj[i].movex>>playertemp2.proj[i].movey>>
-                            playertemp2.proj[i].dmg>>playertemp2.proj[i].kback>>playertemp2.proj[i].mgain>>playertemp2.proj[i].launch>>playertemp2.proj[i].right>>playertemp2.proj[i].hit;
-                            packet>>temp;playertemp2.proj[i].movetype=temp;packet>>temp;playertemp2.proj[i].animloop=temp;
-                            packet>>temp;playertemp2.proj[i].looplen=temp;
-                            for(unsigned char j=0;j<playertemp2.proj[i].looplen;j++){packet>>temp;playertemp2.proj[i].loopanim[j]=temp;}
-                            packet>>temp;playertemp2.proj[i].frame=temp;packet>>temp;playertemp2.proj[i].hitstop=temp;
-                            packet>>temp;playertemp2.proj[i].hitstun=temp;packet>>temp;playertemp2.proj[i].blockstun=temp;
-                            packet>>temp;playertemp2.proj[i].hitcount=temp;packet>>temp;playertemp2.proj[i].hitstopped=temp;
-                            packet>>temp;playertemp2.proj[i].knockdown=temp;packet>>temp;playertemp2.proj[i].code=temp;
-                            packet>>temp;playertemp2.proj[i].existed=temp;
+                            projectile tempproj;
+                            packet>>tempproj.x>>tempproj.y>>tempproj.movex>>tempproj.movey>>
+                            tempproj.dmg>>tempproj.kback>>tempproj.mgain>>tempproj.launch>>tempproj.right>>tempproj.hit;
+                            packet>>temp;tempproj.movetype=temp;packet>>temp;tempproj.animloop=temp;
+                            packet>>temp;tempproj.looplen=temp;
+                            for(unsigned char j=0;j<tempproj.looplen;j++){packet>>temp;tempproj.loopanim[j]=temp;}
+                            packet>>temp;tempproj.frame=temp;packet>>temp;tempproj.hitstop=temp;
+                            packet>>temp;tempproj.hitstun=temp;packet>>temp;tempproj.blockstun=temp;
+                            packet>>temp;tempproj.hitcount=temp;packet>>temp;tempproj.hitstopped=temp;
+                            packet>>temp;tempproj.knockdown=temp;packet>>temp;tempproj.code=temp;
+                            packet>>temp;tempproj.existed=temp;
                             std::int16_t templen;
                             packet>>templen;
-                            for(unsigned char j=0;j<templen;j++){packet>>temp;playertemp2.proj[i].endanim[j]=temp;}
+                            for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
+                            playertemp2.proj.push_back(tempproj);
                             }
                         }
                         else{
@@ -4340,19 +4342,21 @@ int main()
                             playertemp1.proj.clear();
                             packet>>len;
                             for(unsigned char i=0;i<len;i++){
-                            packet>>playertemp1.proj[i].x>>playertemp1.proj[i].y>>playertemp1.proj[i].movex>>playertemp1.proj[i].movey>>
-                            playertemp1.proj[i].dmg>>playertemp1.proj[i].kback>>playertemp1.proj[i].mgain>>playertemp1.proj[i].launch>>playertemp1.proj[i].right>>playertemp1.proj[i].hit;
-                            packet>>temp;playertemp1.proj[i].movetype=temp;packet>>temp;playertemp1.proj[i].animloop=temp;
-                            packet>>temp;playertemp1.proj[i].looplen=temp;
-                            for(unsigned char j=0;j<playertemp1.proj[i].looplen;j++){packet>>temp;playertemp1.proj[i].loopanim[j]=temp;}
-                            packet>>temp;playertemp1.proj[i].frame=temp;packet>>temp;playertemp1.proj[i].hitstop=temp;
-                            packet>>temp;playertemp1.proj[i].hitstun=temp;packet>>temp;playertemp1.proj[i].blockstun=temp;
-                            packet>>temp;playertemp1.proj[i].hitcount=temp;packet>>temp;playertemp1.proj[i].hitstopped=temp;
-                            packet>>temp;playertemp1.proj[i].knockdown=temp;packet>>temp;playertemp1.proj[i].code=temp;
-                            packet>>temp;playertemp1.proj[i].existed=temp;
+                            projectile tempproj;
+                            packet>>tempproj.x>>tempproj.y>>tempproj.movex>>tempproj.movey>>
+                            tempproj.dmg>>tempproj.kback>>tempproj.mgain>>tempproj.launch>>tempproj.right>>tempproj.hit;
+                            packet>>temp;tempproj.movetype=temp;packet>>temp;tempproj.animloop=temp;
+                            packet>>temp;tempproj.looplen=temp;
+                            for(unsigned char j=0;j<tempproj.looplen;j++){packet>>temp;tempproj.loopanim[j]=temp;}
+                            packet>>temp;tempproj.frame=temp;packet>>temp;tempproj.hitstop=temp;
+                            packet>>temp;tempproj.hitstun=temp;packet>>temp;tempproj.blockstun=temp;
+                            packet>>temp;tempproj.hitcount=temp;packet>>temp;tempproj.hitstopped=temp;
+                            packet>>temp;tempproj.knockdown=temp;packet>>temp;tempproj.code=temp;
+                            packet>>temp;tempproj.existed=temp;
                             std::int16_t templen;
                             packet>>templen;
-                            for(unsigned char j=0;j<templen;j++){packet>>temp;playertemp1.proj[i].endanim[j]=temp;}
+                            for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
+                            playertemp1.proj.push_back(tempproj);
                             }
                         }
                         char onlineinput1[5]={},onlineinput2[5]={};
