@@ -3794,8 +3794,7 @@ int main()
                 if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 packet>>onlinecheck;
-                
-                if((p1control&&onlinecheck==2)||(!p1control&&onlinecheck==1)||onlinecheck==3)break;
+                if((p1control&&onlinecheck==2)||(!p1control&&onlinecheck==1)||onlinecheck==3){packet<<onlinecheck;while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}break;}
 
                 loadcnt++;
                 if(loadcnt>179)loadcnt=0;
@@ -3899,6 +3898,12 @@ int main()
                     packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
                     if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
                     else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
+                    if(p1check&&p2check){
+                        if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
+                        else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
+                        packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
+                        while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
+                    }
                 }
             }
 
