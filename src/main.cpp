@@ -2725,12 +2725,22 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     if(P.grabstate==4){
             if(P.animq.size()<P.blockstun)for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}
     }
-    if(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4)))){
-        if(P.cancel[P.act]==true){
+    if((P.comboed&&P.act==15&&P.meter>=100)||(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4))))){
+        if(P.cancel[P.act]==true||(P.comboed&&P.act==15)){
             P.buffer=0;P.slide=false;P.hitstun=0;P.blockstun=0;P.kback=0;P.dmg=0;P.launch=0;P.kdown=0;P.movewaitx=-1;P.movewaity=-1;
             P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.landdelay=0;if(!P.air){P.jumpx=0;P.jumpy=0;}P.mgain=0;P.super=false;
             short temp[0]={};boolfill(P.cancel,true,temp);P.cancel[0]=false;P.iframes=0;
             P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
+        }
+
+        if(P.comboed&&P.act==15){
+            effects temp;
+            temp.color1=sf::Color (255, 85, 255);
+            temp.code=2;
+            temp.len=16;
+            temp.x=P.x;
+            temp.y=P.y;
+            effectslist.push_back(temp);
         }
 
         if(P.act==1)P.block=0;
@@ -2848,7 +2858,17 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
                 break;
                 }
-            case 15:break;//k (gimmick)
+            case 15:{//k (gimmick)
+                if(P.comboed){
+                P.comboed=false;combo=0;P.iframes=3;P.meter-=100;
+                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=20;P.launch=10;P.kdown=2;P.movetype=2;
+                P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
+                if(P.right)P.jumpx=4;else P.jumpx=-4;
+                }
+                break;
+                }
+            
             case 16:{//special A (u)
                 P.col=0;P.hitcount=1;P.hitstop=12;P.kback=7;P.hitstun=13;P.blockstun=9;P.slide=true;P.movewaitx=6;P.dmg=22;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{20,21,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,22,21,20,20});
@@ -3009,7 +3029,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;break;}//right jump
             case 8:{//u (light normal)
                 if(P.air){
-                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=8;P.blockstun=1;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=11;P.blockstun=5;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{75,75,75,75,76,76,76});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,9,9,9,9,9,9,9,9});
                 }
@@ -3023,7 +3043,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 9:{//i (middle normal)
                 if(P.air){
-                    P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=14;P.blockstun=7;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
+                    P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=16;P.blockstun=8;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
                     P.animq.insert(P.animq.begin(),{19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,3,3,3,3,3});
                 }
@@ -3086,8 +3106,17 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 15:{//k (gimmick)
+                if(P.comboed){
+                P.comboed=false;combo=0;P.iframes=3;P.meter-=100;
+                P.gimmick[0]=30;
+                P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;
+                P.animq.insert(P.animq.begin(),{51,47,47,47,47,47,47,47,47,48,48,49,49,50,50,50,50,50,51});
+                P.atkfx.insert(P.atkfx.begin(),{4});
+                }
+                else{
                 P.animq.insert(P.animq.begin(),{25,25,25,25,26,77,77,77,77,77,77,77});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,4});
+                }
                 break;
             }
             case 16:{//special A (u)
@@ -3349,7 +3378,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
             if(temp!=P1.act)P1.idleanim.clear();
             P1.act=temp;
         }
-        else if(!P1.animq.empty()&&!P1.whiff)P1.act=P1.buffer;
+        else if(!P1.animq.empty()&&(!P1.whiff||P1.movetype==0||(P1.comboed&&P1.buffer==15)))P1.act=P1.buffer;
         if(P1.animq.empty()){if(!P1.whiff){P1.act=P1.buffer;}P1.buffer=0;}
 
         if(P2.buffer==0){
@@ -3357,7 +3386,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
             if(temp!=P2.act)P2.idleanim.clear();
             P2.act=temp;
         }
-        else if(!P2.animq.empty()&&!P2.whiff)P2.act=P2.buffer;
+        else if(!P2.animq.empty()&&(!P2.whiff||P2.movetype==0||(P2.comboed&&P2.buffer==15)))P2.act=P2.buffer;
         if(P2.animq.empty()){if(!P2.whiff){P2.act=P2.buffer;}P2.buffer=0;}
 
 
