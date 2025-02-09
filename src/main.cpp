@@ -4242,7 +4242,7 @@ int main()
                             for(unsigned char j=0;j<p2.proj[i].endanim.size();j++){temp=p2.proj[i].endanim[j];packet<<temp;}
                         }
                     }
-                    while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
+                    if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
                     if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
                         player playertemp1=p1,playertemp2=p2;
                         //float xtemp=0;
