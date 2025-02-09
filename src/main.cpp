@@ -4242,7 +4242,7 @@ int main()
                             for(unsigned char j=0;j<p2.proj[i].endanim.size();j++){temp=p2.proj[i].endanim[j];packet<<temp;}
                         }
                     }
-                    for(unsigned char i=0;i<30;i++)if(socket.send(packet,ipvalue,port)==sf::Socket::Status::Done)break;
+                    if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
                     if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
                         player playertemp1=p1,playertemp2=p2;
                         //float xtemp=0;
@@ -4284,7 +4284,8 @@ int main()
                             packet>>temp;playertemp2.attack.kdown=temp;
                             packet>>temp;playertemp2.attack.hitwait=temp;
                             packet>>playertemp2.attack.kback>>playertemp2.attack.launch>>playertemp2.attack.grab[0]>>playertemp2.attack.grab[1]>>playertemp2.attack.pushaway;
-                             //projdata
+                            //projdata
+                            /*
                             playertemp2.proj.clear();
                             packet>>len;
                             for(unsigned char i=0;i<len;i++){
@@ -4304,6 +4305,7 @@ int main()
                             for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
                             playertemp2.proj.push_back(tempproj);
                             }
+                            */
                         }
                         else{
                             packet>>onlinecode>>playertemp1.x>>playertemp1.y>>playertemp1.jumpx>>playertemp1.jumpy>>
@@ -4343,7 +4345,8 @@ int main()
                             packet>>temp;playertemp1.attack.kdown=temp;
                             packet>>temp;playertemp1.attack.hitwait=temp;
                             packet>>playertemp1.attack.kback>>playertemp1.attack.launch>>playertemp1.attack.grab[0]>>playertemp1.attack.grab[1]>>playertemp1.attack.pushaway;
-                             //projdata
+                            //projdata
+                            /*
                             playertemp1.proj.clear();
                             packet>>len;
                             for(unsigned char i=0;i<len;i++){
@@ -4363,6 +4366,7 @@ int main()
                             for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
                             playertemp1.proj.push_back(tempproj);
                             }
+                            */
                         }
                         char onlineinput1[5]={},onlineinput2[5]={};
                         
