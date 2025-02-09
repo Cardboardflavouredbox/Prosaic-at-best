@@ -4369,6 +4369,7 @@ int main()
                         }
                         char onlineinput1[5]={},onlineinput2[5]={};
                         
+                        /*
                         if(p1control){
                             playertemp1=precord[roundframecount-onlineframe];
                             onlineinput2[0]=char(dir);onlineinput2[1]=char(U);onlineinput2[2]=char(I);onlineinput2[3]=char(O);onlineinput2[4]=char(K);
@@ -4412,6 +4413,7 @@ int main()
                             //if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                             matchcode(&playertemp1,&playertemp2,dialogue,onlineinput1,onlineinput2,0,&bgx,&framedata,overlap,overlap2);
                         }
+                        */
                         p1=playertemp1;
                         p2=playertemp2;
                     }
