@@ -3023,7 +3023,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 9:{//i (middle normal)
                 if(P.air){
-                    P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=11;P.blockstun=6;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
+                    P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=14;P.blockstun=7;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
                     P.animq.insert(P.animq.begin(),{19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,3,3,3,3,3});
                 }
@@ -3695,7 +3695,7 @@ int main()
 
         if(menuconfirm=='2'&&menuselect==5)window.close();
         else if(menuconfirm=='2'&&menuselect!=4){
-        
+        //ipselect
         if(menuselect==2){
             sf::Text iptext(font);
             iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
@@ -3777,7 +3777,7 @@ int main()
         auto ipvalue2=sf::IpAddress::resolve(ipstr);
         sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
         if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
-
+        //ipwaitscreen
         if(menuselect==2&&!gamequit){
             sf::Text iptext(font);
             iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
@@ -3820,6 +3820,7 @@ int main()
         charselect.setcharselect(4,2,32,144);
         short menux=0,menuy=0,menux2=3,menuy2=0;
         bool p1check=false,p2check=false;
+        //characterselect
         while (window.isOpen()&&!gamequit){
             windowset(window,&gamequit);
 
@@ -4276,7 +4277,6 @@ int main()
                             packet>>temp;playertemp2.grabstate=temp;packet>>temp;playertemp2.iframes=temp;
                             packet>>temp;playertemp2.grabiframes=temp;packet>>temp;playertemp2.hitcount=temp;
 
-                            /*
                             //attackdata
                             packet>>temp;playertemp2.attack.movetype=temp;
                             packet>>temp;playertemp2.attack.hitstun=temp;
@@ -4304,7 +4304,6 @@ int main()
                             for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
                             playertemp2.proj.push_back(tempproj);
                             }
-                            */
                         }
                         else{
                             packet>>onlinecode>>playertemp1.x>>playertemp1.y>>playertemp1.jumpx>>playertemp1.jumpy>>
@@ -4337,7 +4336,6 @@ int main()
                             packet>>temp;playertemp1.grabstate=temp;packet>>temp;playertemp1.iframes=temp;
                             packet>>temp;playertemp1.grabiframes=temp;packet>>temp;playertemp1.hitcount=temp;
 
-                            /*
                             //attackdata
                             packet>>temp;playertemp1.attack.movetype=temp;
                             packet>>temp;playertemp1.attack.hitstun=temp;
@@ -4365,7 +4363,6 @@ int main()
                             for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
                             playertemp1.proj.push_back(tempproj);
                             }
-                            */
                         }
                         char onlineinput1[5]={},onlineinput2[5]={};
                         
@@ -4581,7 +4578,6 @@ int main()
         }
         gamequit=false;
         menus.setmenu(6,144,120,0,16,0);
-        socket.unbind();
         }
 
 
