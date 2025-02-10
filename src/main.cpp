@@ -2614,7 +2614,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}}
 
     if(P.iframes>0)P.iframes--;
-    if(enemycharacter==2&&enemygimmick[0]>0){
+    if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0)){
             walkspeed/=2;jumpfall/=2;
     }
 
@@ -2682,6 +2682,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     else if(P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1){
         if(P.comboed&&P.kdowned>0&&!P.air){
             P.col=2;P.comboed=false;
+            if(P.x<enemyx)P.right=true;
+            else P.right=false;
             if(P.character==0)for(short i=0;i<32;i++){P.animq.push_back(19);}
             else for(short i=0;i<32;i++){P.animq.push_back(74);}
         }
@@ -2726,7 +2728,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     if(P.grabstate==4){
             if(P.animq.size()<P.blockstun)for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}
     }
-    if((P.comboed&&P.act==15&&P.meter>=100)||(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4))))){
+    if((P.comboed&&P.act==15&&P.meter>=200)||(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4))))){
         if(P.cancel[P.act]==true||(P.comboed&&P.act==15)){
             P.buffer=0;P.slide=false;P.hitstun=0;P.blockstun=0;P.kback=0;P.dmg=0;P.launch=0;P.kdown=0;P.movewaitx=-1;P.movewaity=-1;
             P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.landdelay=0;if(!P.air){P.jumpx=0;P.jumpy=0;}P.mgain=0;P.super=false;
@@ -2872,8 +2874,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
             case 15:{//k (gimmick)
                 if(P.comboed){
-                P.comboed=false;combo=0;P.iframes=3;P.meter-=100;
-                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=20;P.launch=10;P.kdown=2;P.movetype=2;
+                P.comboed=false;combo=0;P.iframes=3;P.meter-=200;
+                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=1;P.slide=true;P.movewaitx=3;P.dmg=20;P.launch=10;P.kdown=1;P.movetype=2;
                 P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
                 if(P.right)P.jumpx=6;else P.jumpx=-6;
@@ -3119,7 +3121,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 15:{//k (gimmick)
                 if(P.comboed){
-                P.comboed=false;combo=0;P.iframes=3;P.meter-=100;
+                P.comboed=false;combo=0;P.iframes=3;P.meter-=200;
                 P.gimmick[0]=30;
                 P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;
                 P.animq.insert(P.animq.begin(),{51,47,47,47,47,47,47,47,47,48,48,49,49,50,50,50,50,50,51});
@@ -3355,13 +3357,43 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                         P.proj[i].loopanim[0]=42;
                         P.proj[i].loopanim[1]=43;
                         P.proj[i].hitstun=10;P.proj[i].blockstun=2;
+                        effects temp;
+                        temp.color1=sf::Color (85, 255, 255);
+                        temp.len=4;
+                        temp.x=P.proj[i].x;temp.y=P.proj[i].y-5;
+                        if(P.proj[i].right)temp.x+=8;
+                        else temp.x-=8;
+                        temp.code=2;temp.speed=0.7;
+                        effectslist.push_back(temp);
+                        temp.speed=2;
+                        effectslist.push_back(temp);
                     }
                 }
+                effects temp;
+                temp.color1=sf::Color (85, 255, 255);
+                temp.len=4;
+                temp.x=P.x;temp.y=P.y-12;
+                if(P.right)temp.x-=15;
+                else temp.x+=15;
+                temp.code=2;temp.speed=1;
+                effectslist.push_back(temp);
+                temp.speed=3;
+                effectslist.push_back(temp);
             }
             else if(P.atkfx[0]==5){*superstop=20;P.super=true;}
             else if(P.atkfx[0]==6){
                 if(P.gimmick[1]>0)P.gimmick[1]=0;
                 else P.gimmick[1]=32767;
+                effects temp;
+                temp.color1=sf::Color (85, 255, 255);
+                temp.len=7;
+                temp.x=P.x;temp.y=P.y-12;
+                if(P.right)temp.x-=15;
+                else temp.x+=15;
+                temp.code=2;temp.speed=3;
+                effectslist.push_back(temp);
+                temp.speed=9;
+                effectslist.push_back(temp);
             }
         }
         P.atkfx.pop_front();
@@ -3580,7 +3612,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
 void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player *p1,player *p2,superflash sf,healthbar hb,meterbar mb,timeui time,comboui cui,inputlist p1ilist,inputlist p2ilist,
             charactergraphics p1graphics,charactergraphics p2graphics,charactergraphics p1shadow,charactergraphics p2shadow,menu menus,sf::Shader &shader,textbox tbox,
             sf::Text combotext,sf::Text dtext,sf::Text frametext,std::deque<char>p1keylist,std::deque<char>p2keylist,short framedata,std::string dialogue,float bgx,short superstop,
-            bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture){
+            bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool *playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture){
     #define P1 (*p1)
     #define P2 (*p2)
 
@@ -3639,12 +3671,12 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     if(superstop>0){renderTexture.draw(blackscreen);renderTexture.draw(sf);}
 
-    if(P1.hit)playertop=true;else if(P2.hit) playertop=false;
+    if(P1.hit)*playertop=true;else if(P2.hit)*playertop=false;
 
     shader.setUniform("texture", sf::Shader::CurrentTexture);
 
 
-    if(playertop){
+    if(*playertop){
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
         shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
@@ -3678,7 +3710,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         }
     }
 
-    if(!playertop){
+    if(!*playertop){
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
         shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
@@ -4136,7 +4168,7 @@ int main()
                     }
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
-                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
+                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
                               background,healthui,meterui,p1texture,p2texture);
                     window.display();
                 }
@@ -4234,7 +4266,7 @@ int main()
                     }
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
-                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
+                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
                               background,healthui,meterui,p1texture,p2texture);
                     window.display();
 
@@ -4572,6 +4604,8 @@ int main()
                         if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                         matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&bgx,&framedata,overlap,overlap2);
                         if(combo==0&&p1.hp<p1.maxhp)p1.hp+=10;if(combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
+                        //if(combo==0&&p1.meter<1000)p1.meter+=10;
+                        //if(combo==0&&p2.meter<1000)p2.meter+=10;
 
                         if(superstop>0)superstop--;
 
@@ -4658,7 +4692,7 @@ int main()
                     }
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
-                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,playertop,
+                              dtext,frametext,p1keylist,p2keylist,framedata,dialogue,bgx,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
                               background,healthui,meterui,p1texture,p2texture);
                     window.display();
 
