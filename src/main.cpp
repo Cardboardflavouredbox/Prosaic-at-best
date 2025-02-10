@@ -1110,8 +1110,8 @@ static unsigned char animlib[16][128][32][2]=
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
                    {0,1,1,1,1,1,1,2,1,1,1},//char 2
-                   };
-unsigned char colorpalettes[16][3]={
+                   },
+                    colorpalettes[16][3]={
                     {15,7,8},/*Francis*/
                     {15,3,1},/*Sinclair*/
                     {15,4,0},/*Sinclaircanon?*/
@@ -1122,8 +1122,9 @@ unsigned char colorpalettes[16][3]={
                     {14,12,4},/*Charlie*/
                     {15,11,13},/*CGA*/
                     {11,13,0},/*CGA2*/
-                    },
-                    p1color=0,p2color=0;
+                    {9,3,1},/*Sinclairsuper'd*/
+                    };
+unsigned char p1color=0,p2color=0;
 float comboscaling=100.0,
 colbox[16][8][1][2][2]={
                     {{{{-7,-10},{9,32}}},//standing
@@ -1508,7 +1509,7 @@ public:
             m_vertices.setPrimitiveType(sf::PrimitiveType::Points);
             m_vertices.resize(3);
             sf::Vertex* point = &m_vertices[1];
-            point[0].position = sf::Vector2f(x+bgx+std::cos(dir*3.14/180)*frame,y+std::sin(dir*3.14/180)*frame);
+            point[0].position = sf::Vector2f(x+bgx+std::cos(dir*3.14/180)*frame*speed,y+std::sin(dir*3.14/180)*frame*speed);
             point[0].color = color1;
         }
         else if(code==1){//hit lines
@@ -1535,8 +1536,8 @@ public:
             sf::Vertex* circle = &m_vertices[32];
             for(unsigned int i=0;i<12;i++){
                 float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;
-                circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)+x+bgx,(std::sin(angle))*(4+frame)+y);
-                circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)+x+bgx,(std::sin(angle2))*(4+frame)+y);
+                circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)*speed+x+bgx,(std::sin(angle))*(4+frame)*speed+y);
+                circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)*speed+x+bgx,(std::sin(angle2))*(4+frame)*speed+y);
                 if(frame>3&&frame%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
                 else {circle[i*2].color=color1;circle[i*2+1].color=color1;}
             }
@@ -1551,11 +1552,22 @@ public:
             if(frame%2==0&&frame>3&&flash){tri[0].color = sf::Color::Transparent;tri[1].color = sf::Color::Transparent;tri[+2].color = sf::Color::Transparent;}
             else{tri[0].color = color1;tri[1].color = color1;tri[2].color = color1;}
         }
+        else if(code==4){//lines
+            m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
+            m_vertices.resize(8);
+            float angle=speed * dir * 3.14f / 4.f;
+            float xtemp=std::cos(angle),ytemp=std::sin(angle);
+            sf::Vertex* line = &m_vertices[2];
+            line[0].position = sf::Vector2f(bgx+x,y);
+            line[1].position = sf::Vector2f(xtemp*fxsize+bgx+x,ytemp*fxsize+y);
+            if(frame>3&&frame%2==1&&flash){line[0].color=sf::Color::Transparent;line[1].color=sf::Color::Transparent;}
+            else {line[0].color=color1;line[1].color=color1;}
+        }
         frame++;
     }
 
     short frame=0,code=0,len=0;
-    float dir=0,x,y,fxsize=1;
+    float dir=0,x,y,fxsize=1,speed=1;
     sf::Color color1=sf::Color(255, 255, 255);
 
 private:
@@ -2604,17 +2616,6 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&enemygimmick[0]>0){
             walkspeed/=2;jumpfall/=2;
-            effects temp;//actually make this effect look good
-            temp.color1=sf::Color (85, 255, 255);
-            std::uniform_int_distribution<int> dis(-8,8),dis2(0,360);
-            temp.code=0;
-            temp.len=16;
-            for(short i=0;i<8;i++){
-                temp.dir=dis2(gen);
-                temp.x=P.x+dis(gen);
-                temp.y=P.y+dis(gen);
-                effectslist.push_back(temp);
-            }
     }
 
     if(P.kdowned==1&&P.animq.size()<28&&!P.comboed&&P.act==1&&P.hp>0){
@@ -2737,10 +2738,21 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             effects temp;
             temp.color1=sf::Color (255, 85, 255);
             temp.code=2;
-            temp.len=16;
+            temp.len=4;
             temp.x=P.x;
             temp.y=P.y;
+            temp.speed=3;
             effectslist.push_back(temp);
+            temp.speed=6;
+            effectslist.push_back(temp);
+            std::uniform_int_distribution<int> dis(0,360),dis2(3,5);
+            temp.code=0;
+            temp.len=16;
+            for(short i=0;i<32;i++){
+                temp.dir=dis(gen);
+                temp.speed=dis2(gen);
+                effectslist.push_back(temp);
+            }
         }
 
         if(P.act==1)P.block=0;
@@ -2765,7 +2777,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
                 break;
                 }
-            case 2:{P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=-7;else P.jumpx=7;P.landdelay=7;}//left dash
+            case 2:{P.col=0;P.iframes=3;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=-7;else P.jumpx=7;P.landdelay=7;}//left dash
             case 3:{//right walk
                 P.col=0;
                 memcpy(P.anim,animlib[P.character][17],sizeof(animlib[P.character][0]));
@@ -2864,7 +2876,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 P.col=1;P.hitcount=1;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=20;P.launch=10;P.kdown=2;P.movetype=2;
                 P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
-                if(P.right)P.jumpx=4;else P.jumpx=-4;
+                if(P.right)P.jumpx=6;else P.jumpx=-6;
                 }
                 break;
                 }
@@ -2943,14 +2955,14 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
                 }
             case 26:{//grab attack forward
-                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;
+                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=1;P.movetype=4;P.grabstate=-1;P.mgain=12;
                 P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
                 break;
                 }
             case 27:{//grab attack backward
-                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=-3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;
+                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=-3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=1;P.movetype=4;P.grabstate=-1;P.mgain=12;
                 P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
@@ -3012,7 +3024,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 2:{//left dash
-                P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;
+                P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;P.iframes=3;
                 P.animq.insert(P.animq.begin(),{51,47,47,47,47,47,47,47,47,48,48,49,49,50,50,50,50,50,51});
                 break;
             }
@@ -3362,6 +3374,61 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
     #define P1 (*p1)
     #define P2 (*p2)
 
+    if(P1.character==2&&P1.gimmick[0]>0){
+            effects temp;
+            temp.color1=sf::Color (0, 170, 170);
+            temp.code=4;temp.len=1;
+            temp.dir=P1.gimmick[0]/8.f;
+            temp.fxsize=28;
+            temp.x=P2.x;temp.y=P2.y;
+            effectslist.push_back(temp);
+            temp.dir=P1.gimmick[0]/32.f;temp.fxsize=16;
+            effectslist.push_back(temp);
+            temp.code=2;temp.speed=8;
+            effectslist.push_back(temp);
+    }
+    if(P1.character==2&&P1.gimmick[1]>0){
+            effects temp;
+            temp.color1=sf::Color (85, 255, 255);
+            temp.code=4;temp.len=1;
+            temp.dir=P1.gimmick[1]/4.f;
+            temp.fxsize=28;
+            temp.x=P1.x;temp.y=P1.y;
+            effectslist.push_back(temp);
+            temp.dir=P1.gimmick[1]/16.f;
+            temp.fxsize=16;
+            effectslist.push_back(temp);
+            temp.code=2;temp.speed=8;
+            effectslist.push_back(temp);
+    }
+    if(P2.character==2&&P2.gimmick[0]>0){
+            effects temp;
+            temp.color1=sf::Color (0, 170, 170);
+            temp.code=4;temp.len=1;
+            temp.dir=P2.gimmick[0]/8.f;
+            temp.fxsize=28;
+            temp.x=P1.x;temp.y=P1.y;
+            effectslist.push_back(temp);
+            temp.dir=P2.gimmick[0]/32.f;temp.fxsize=16;
+            effectslist.push_back(temp);
+            temp.code=2;temp.speed=8;
+            effectslist.push_back(temp);
+    }
+    if(P2.character==2&&P2.gimmick[1]>0){
+            effects temp;
+            temp.color1=sf::Color (85, 255, 255);
+            temp.code=4;temp.len=1;
+            temp.dir=P2.gimmick[1]/4.f;
+            temp.fxsize=28;
+            temp.x=P2.x;temp.y=P2.y;
+            effectslist.push_back(temp);
+            temp.dir=P2.gimmick[1]/16.f;
+            temp.fxsize=16;
+            effectslist.push_back(temp);
+            temp.code=2;temp.speed=8;
+            effectslist.push_back(temp);
+    }
+
     if(P1.hp>0&&P2.hp>0&&roundframecount/60<99&&dialogue.empty()){//input to action code and roundframe counter
         if(P1.buffer==0&&!P1.animq.empty()){
             P1.buffer=chooseaction(P1.character,1,P1.air,p1input,P1.meter);
@@ -3564,7 +3631,11 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
 
     window.clear();renderTexture.clear();
-    renderTexture.draw(background);renderTexture.draw(p1shadow);renderTexture.draw(p2shadow);
+
+    if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0))||(P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))background.setColor(sf::Color (0, 170, 170));
+    else background.setColor(sf::Color (255, 255, 255));
+    renderTexture.draw(background);
+    renderTexture.draw(p1shadow);renderTexture.draw(p2shadow);
 
     if(superstop>0){renderTexture.draw(blackscreen);renderTexture.draw(sf);}
 
