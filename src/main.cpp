@@ -3632,7 +3632,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     window.clear();renderTexture.clear();
 
-    if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0))||(P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))background.setColor(sf::Color (0, 170, 170));
+    if((P2.character==2&&(P2.gimmick[1]>0))||(P1.character==2&&(P1.gimmick[1]>0)))background.setColor(sf::Color (0, 170, 170));
     else background.setColor(sf::Color (255, 255, 255));
     renderTexture.draw(background);
     renderTexture.draw(p1shadow);renderTexture.draw(p2shadow);
