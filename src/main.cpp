@@ -1263,7 +1263,7 @@ public:
     std::deque<short> animq,idleanim,hitboxanim,atkfx;
     std::deque<projectile> proj;
     attackdata attack;
-    unsigned char anim[64][2]={};
+    unsigned char anim[64][2]={},color=0;
     short gimmick[8]={},hbframe=0,act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
     hitstun=0,blockstun=0,hitstop=0,wins=0,character=0,hurtframes[5]={56,56,57,32,33},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block
     buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
@@ -2552,7 +2552,7 @@ void projectiledata(player *p,short superstop){
                         temp.code=0;
                         temp.frame=0;
                         temp.len=16;
-                        temp.color1=(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
+                        temp.color1=(sf::Color(170*((colorpalettes[P.color][0]/4)%2) + 85*(colorpalettes[P.color][0]/8), (1-(colorpalettes[P.color][0]==6)/3.0)*170*((colorpalettes[P.color][0]/2)%2) + 85*(colorpalettes[P.color][0]/8), 170*(colorpalettes[P.color][0]%2) + 85*(colorpalettes[P.color][0]/8)));
                         for(short j=0;j<8;j++){
                             if(P.proj[i].right){temp.dir=270+dis(gen);temp.x=P.proj[i].x+8+dis2(gen);}
                             else{temp.dir=270-dis(gen);temp.x=P.proj[i].x-8+dis2(gen);}
@@ -2579,7 +2579,7 @@ void projectiledata(player *p,short superstop){
                     effects temp;
                     temp.code=0;
                     temp.len=8;
-                    temp.color1=(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
+                    temp.color1=(sf::Color(170*((colorpalettes[P.color][0]/4)%2) + 85*(colorpalettes[P.color][0]/8), (1-(colorpalettes[P.color][0]==6)/3.0)*170*((colorpalettes[P.color][0]/2)%2) + 85*(colorpalettes[P.color][0]/8), 170*(colorpalettes[P.color][0]%2) + 85*(colorpalettes[P.color][0]/8)));
                     for(short j=0;j<8;j++){
                         if(P.proj[i].right)temp.dir=270+dis(gen);
                         else temp.dir=270-dis(gen);
@@ -3157,7 +3157,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 24:{//special B(k)
                 P.col=0;P.hitcount=1;P.hitstop=0;P.kback=5;P.hitstun=17;P.blockstun=7;P.slide=true;P.dmg=12;P.movetype=2;P.mgain=8;P.landdelay=15;P.grab[0]=12;P.grab[1]=18;P.grabstate=2;P.iframes=3;
-                P.animq.insert(P.animq.begin(),{53,53,53,53,53,53,53,54,55,55,55,55,55,55,55,55,55,55,55,55,54,53,53,53,53});
+                P.animq.insert(P.animq.begin(),{53,53,53,53,53,53,53,54,55,55,55,55,55,55,55,55,55,55,55,55,54,53,53,53,53,53});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,5,5});
                 short temp[1]={36};boolfill(P.cancel,true,temp);
                 P.movewaitx=5;
@@ -3174,7 +3174,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 if(P.right)P.jumpx=8;
                 else P.jumpx=-8;
                 break;
-                }
+            }
             case 29:{//special C (i)
                 P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=36;P.slide=true;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{78,78,78,78,79,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
@@ -3195,6 +3195,17 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else P.jumpx=-14;
                 break;
             }
+            case 31:{//special C (k)
+                P.col=0;P.hitcount=1;P.hitstop=14;P.kback=5;P.hitstun=16;P.blockstun=7;P.dmg=36;P.slide=true;P.movetype=2;P.mgain=7;
+                P.animq.insert(P.animq.begin(),{78,78,78,78,78,78,78,78,78,79,79,79,79,79,79,79,80,80,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7});
+                short temp[2]={15,32};boolfill(P.cancel,true,temp);
+                P.movewaitx=18;
+                if(P.right)P.jumpx=10;
+                else P.jumpx=-10;
+                break;
+            }
             case 32:{//super
                 P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77});
                 if(P.gimmick[1]==0)P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,6});
@@ -3210,7 +3221,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 36:{//special B(k)2
                 P.col=3;P.hitcount=3;P.hitstop=3;P.kback=3;P.hitstun=10;P.blockstun=0;P.slide=true;P.dmg=25;P.launch=4;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick[0]=30;
-                P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
+                P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{8,8,8,8,8});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
                 break;
@@ -3394,6 +3405,36 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 effectslist.push_back(temp);
                 temp.speed=9;
                 effectslist.push_back(temp);
+            }
+            else if(P.atkfx[0]==7){
+                std::uniform_int_distribution<int> dis(1,3),dis2(-16,14),dis3(0,1);
+                effects temp;
+                temp.code=0;
+                temp.frame=0;
+                temp.len=2;
+                temp.color1=(sf::Color(170*((colorpalettes[P.color][1]/4)%2) + 85*(colorpalettes[P.color][1]/8), (1-(colorpalettes[P.color][1]==6)/3.0)*170*((colorpalettes[P.color][1]/2)%2) + 85*(colorpalettes[P.color][1]/8), 170*(colorpalettes[P.color][1]%2) + 85*(colorpalettes[P.color][1]/8)));
+                for(short j=0;j<128;j++){
+                    if(dis3(gen)==0)temp.speed=-dis(gen);
+                    else temp.speed=dis(gen);
+                    temp.x=P.x+dis2(gen)/2.f;
+                    temp.y=P.y+4+dis2(gen)*2;
+                    effectslist.push_back(temp);
+                }
+                if(P.y==enemyy){
+                    if(P.right)P.x=enemyx-48;
+                    else P.x=enemyx+48;
+                }
+                else{
+                    if(P.right)P.x+=64;
+                    else P.x-=64;
+                }
+                for(short j=0;j<128;j++){
+                    if(dis3(gen)==0)temp.speed=-dis(gen);
+                    else temp.speed=dis(gen);
+                    temp.x=P.x+dis2(gen)/2.f;
+                    temp.y=P.y+4+dis2(gen)*2;
+                    effectslist.push_back(temp);
+                }
             }
         }
         P.atkfx.pop_front();
@@ -3643,18 +3684,15 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     frametext.setOrigin({32,0});
     if (combo>1)cui.create(P2.comboed||P2.kdowned);
 
-
-
     p1ilist.create(p1keylist,true);p2ilist.create(p2keylist,false);hb.create(P1.hp,P2.hp);mb.create(P1.meter,P2.meter);
-
 
     healthui.setPosition({0.f,8.f});
     sf.setPosition({0,0});hb.setPosition({0,8});
     if(P2.comboed||P2.kdowned)combotext.setPosition({36.f/*-cui.slide*/,33.f});
     else combotext.setPosition({248.f/*+cui.slide*/,33.f});cui.setPosition({0,8});
-    p1graphics.setPosition({floor(P1.x)-64+bgx,floor(P1.y-64)});p1shadow.setPosition({floor(P1.x)-64+bgx,184+(P1.y-176)/8});
-    p2graphics.setPosition({floor(P2.x)-64+bgx,floor(P2.y-64)});p2shadow.setPosition({floor(P2.x)-64+bgx,184+(P2.y-176)/8});
-    background.setPosition({floor(bgx)-125,0.f});frametext.setPosition({125.f,33.f});
+    p1graphics.setPosition({floor(P1.x-64+bgx),floor(P1.y-64)});p1shadow.setPosition({floor(P1.x-64+bgx),floor(184+(P1.y-176)/8)});
+    p2graphics.setPosition({floor(P2.x-64+bgx),floor(P2.y-64)});p2shadow.setPosition({floor(P2.x-64+bgx),floor(184+(P2.y-176)/8)});
+    background.setPosition({floor(bgx-125),0.f});frametext.setPosition({125.f,33.f});
 
 
     sf::RectangleShape blackscreen({256.f, 240.f});blackscreen.setFillColor(sf::Color(0,0,0,170));
@@ -4063,6 +4101,7 @@ int main()
 
             menus.setmenu(6,92,72,0,16,1);
             player p1,p2;
+            p1.color=p1color;p2.color=p2color;
             p1.meter=100.0;p2.meter=100.0;
             p1.character=menux+menuy*4;
             p2.character=menux2+menuy2*4;
