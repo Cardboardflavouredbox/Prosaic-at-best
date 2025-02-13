@@ -2614,7 +2614,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}}
 
     if(P.iframes>0)P.iframes--;
-    if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0)){
+    if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
             walkspeed/=2;jumpfall/=2;
     }
 
@@ -2726,7 +2726,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
     }
     if(P.grabstate==4){
-            if(P.animq.size()<P.blockstun)for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}
+        if(P.animq.size()<P.blockstun)for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}
     }
     if((P.comboed&&P.act==15&&P.meter>=200)||(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4))))){
         if(P.cancel[P.act]==true||(P.comboed&&P.act==15)){
@@ -3231,16 +3231,16 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
         }
     }
-    if(P.movewaitx>0&&(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0)))P.movewaitx-=1;
+    if(P.movewaitx>0&&(enemycharacter!=2||(enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0)))))P.movewaitx-=1;
     else{
-        if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0))P.x+=P.jumpx/2;
+        if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0))))P.x+=P.jumpx/2;
         else P.x+=P.jumpx;
         P.movewaitx=-1;
     }
-    if(P.movewaity>0&&(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0)))P.movewaity-=1;
+    if(P.movewaity>0&&(enemycharacter!=2||(enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0)))))P.movewaity-=1;
     else{
         if(P.jumpy<0)P.air=true;
-        if(enemycharacter==2&&(enemygimmick[0]>0||enemygimmick[1]>0))P.y+=P.jumpy/2;
+        if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0))))P.y+=P.jumpy/2;
         else P.y+=P.jumpy;
         P.movewaity=-1;
     }
@@ -3272,19 +3272,19 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
     if(!P.hitboxanim.empty()){
         P.hbframe=P.hitboxanim[0];
-        if(enemycharacter!=2||enemygimmick[0]%2==0&&enemygimmick[1]%2==0)P.hitboxanim.pop_front();
+        if(enemycharacter!=2||enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0)))P.hitboxanim.pop_front();
     }
     else P.hbframe=0;
     if(!P.animq.empty()){
         P.idleanim.clear();
         P.neutural=false;P.frame=P.animq[0];
         memcpy(P.anim,animlib[P.character][P.animq[0]],sizeof(animlib[P.character][P.animq[0]]));
-        if(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0))if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
+        if(enemycharacter!=2||(enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0))))if(!(P.animq[0]==19&&P.hp<=0)&&!((P.comboed||P.movetype!=-1)&&P.air&&P.animq.size()==1))P.animq.pop_front();
     }
     else if(!P.idleanim.empty()){
         P.frame=P.idleanim[0];
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
-        if(enemycharacter!=2||(enemygimmick[0]%2==0&&enemygimmick[1]%2==0))P.idleanim.pop_front();
+        if(enemycharacter!=2||(enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0))))P.idleanim.pop_front();
     }
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
@@ -3438,7 +3438,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
         }
         P.atkfx.pop_front();
-        if(enemycharacter==2&&(enemygimmick[0]%2==1||enemygimmick[1]%2==1))P.atkfx.push_front(0);
+        if(enemycharacter==2&&(enemygimmick[0]%2==1||(enemygimmick[1]%2==1&&(P.character!=2||P.gimmick[1]==0))))P.atkfx.push_front(0);
     }
     #undef P
 }
@@ -4132,11 +4132,13 @@ int main()
             if(menuselect==0){
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
+            else if(p1.character==0&&p2.character==2)dialogue="1Wow you're depressing$2...Excuse me?$1You look depressing$2...I see??$";
             }
             if(menuselect==0){//vsmode
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2],bgx=0;
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
+                    for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
                     if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
                     
@@ -4233,6 +4235,7 @@ int main()
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
                     if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
                     if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
+                    for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
@@ -4609,6 +4612,7 @@ int main()
                     p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
                     if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
                     if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
+                    for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
