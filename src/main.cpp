@@ -2475,9 +2475,30 @@ int chooseaction(short character,int playercode, bool air, char keyinput[], floa
             }
             else{
                 //jump actions
-                if(keyinput[1]=='2')return 8;//weak normal
-                else if(keyinput[2]=='2')return 9;//middle normal
-                else if(keyinput[3]=='2')return 10;//strong normal
+                if(keyinput[1]=='2'){
+                    c236[0][1]='2';
+                    if(cmdcheck(playercode,4,c236)&&character==2)return 16;//special A weak
+                    else return 8;//weak normal
+                    c236[0][1]='0';
+                }
+                else if(keyinput[2]=='2'){
+                    c236[0][2]='2';
+                    if(cmdcheck(playercode,4,c236))return 17;//special A middle
+                    else return 9;//middle normal
+                    c236[0][2]='0';
+                }
+                else if(keyinput[3]=='2'){
+                    c236[0][3]='2';
+                    if(cmdcheck(playercode,4,c236))return 18;//special A heavy
+                    else return 10;//strong normal
+                    c236[0][3]='0';
+                }
+                else if(keyinput[4]=='2'){
+                    c236[0][3]='2';
+                    if(cmdcheck(playercode,4,c236))return 19;//special A gimmick
+                    else return 15;//gimmick
+                    c236[0][3]='0';
+                }
                 return 0;
                 }
 }
@@ -2591,6 +2612,7 @@ void projectiledata(player *p,short superstop){
                 else if(P.character==2){
                     if(P.proj[i].code==2&&P.proj[i].existed>90){
                         P.proj[i].movex+=0.5;
+                        if(P.proj[i].movey!=0)P.proj[i].movey+=0.25;
                     }
                     if(P.proj[i].code==2&&P.proj[i].existed==90){
                         P.proj[i].dmg=28;
@@ -3134,17 +3156,31 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 16:{//special A (u)
-                P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
-                P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,1});
-                P.cancel[32]=true;
+                if(P.air){
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,8});
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,1});
+                    P.cancel[32]=true;
+                }
                 break;
             }
             case 18:{//special A (o)
-                P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=6;P.blockstun=2;P.movetype=2;P.mgain=7;
-                P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,3});
-                P.cancel[32]=true;
+                if(P.air){
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=6;P.blockstun=2;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,10});
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=6;P.blockstun=2;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,3});
+                    P.cancel[32]=true;
+                }
                 break;
             }
             case 21:{//special B(u)
@@ -3322,7 +3358,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     }
         }
         else if(P.character==2){
-            if(P.atkfx[0]==1||P.atkfx[0]==3){//projectile
+            if(P.atkfx[0]==1||P.atkfx[0]==3||P.atkfx[0]==8||P.atkfx[0]==10){//projectile
                 P.meter+=P.mgain;
                 projectile temp;
                 temp.movetype=P.movetype;
@@ -3330,7 +3366,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else temp.x=P.x-32;
                 temp.y=P.y;
                 temp.movex=0.5;
-                temp.movey=0;
+                if(P.atkfx[0]==8||P.atkfx[0]==10){temp.movey=0.25;P.jumpy=-3;}
+                else temp.movey=0;
                 temp.hitcount=1;
                 temp.hitstop=P.hitstop;
                 temp.hitstun=P.hitstun;temp.blockstun=P.blockstun;
@@ -3352,17 +3389,18 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.loopanim[9]=43;
                 temp.loopanim[10]=43;
                 temp.loopanim[11]=43;
-                if(P.atkfx[0]==1)temp.code=0;
-                else if(P.atkfx[0]==3)temp.code=2;
+                if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
+                else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
                 temp.launch=P.launch;
                 //temp.endanim.insert(temp.endanim.begin(),{42});
                 if(P.proj.size()<8)P.proj.push_back(temp);
-                    }
+            }
             else if(P.atkfx[0]==4){//gimmick
                 P.cancel[24]=true;P.movetype=0;
                 for(short i=0;i<P.proj.size();i++){
                     if(P.proj[i].movex<5&&P.proj[i].code==0){
-                        P.proj[i].movex=10;
+                        P.proj[i].movex*=20;
+                        P.proj[i].movey*=20;
                         P.proj[i].dmg=28;
                         P.proj[i].looplen=2;
                         P.proj[i].loopanim[0]=42;
