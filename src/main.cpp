@@ -2504,7 +2504,7 @@ int chooseaction(short character,int playercode, bool air, char keyinput[], floa
 }
 
 void inputcode(char pinput[],sf::Keyboard::Key upkey,sf::Keyboard::Key leftkey,sf::Keyboard::Key downkey,sf::Keyboard::Key rightkey,sf::Keyboard::Key lightkey,
-               sf::Keyboard::Key mediumkey,sf::Keyboard::Key heavykey,sf::Keyboard::Key specialkey,sf::Keyboard::Key grabkey,bool right){
+               sf::Keyboard::Key mediumkey,sf::Keyboard::Key heavykey,sf::Keyboard::Key specialkey,sf::Keyboard::Key grabkey,short px,short enemyx){
     bool w=false,a=false,s=false,d=false;
     if(screenfocused&&sf::Keyboard::isKeyPressed(upkey))w=true;
     if(screenfocused&&sf::Keyboard::isKeyPressed(leftkey))a=true;
@@ -2526,7 +2526,7 @@ void inputcode(char pinput[],sf::Keyboard::Key upkey,sf::Keyboard::Key leftkey,s
     else if(!w&&!a&&s&&d)pinput[0]='3';
     else if(w&&!a&&!s&&d)pinput[0]='9';
     else pinput[0]='5';
-    if(!right){
+    if(px>enemyx){
         if(pinput[0]=='7')pinput[0]='9';
         else if(pinput[0]=='9')pinput[0]='7';
         else if(pinput[0]=='4')pinput[0]='6';
@@ -2567,6 +2567,7 @@ void projectiledata(player *p,short superstop){
             if(P.proj[i].hitcount<=0){
                 if(P.proj[i].endanim.empty()){P.proj.erase(P.proj.begin()+i);return;}
                 else{
+                    P.proj[i].dmg=0;P.proj[i].hitstop=0;P.proj[i].hitstun=0;P.proj[i].blockstun=0;
                     if(P.character==0){
                         std::uniform_int_distribution<int> dis(-150,-30),dis2(-4,4);
                         effects temp;
@@ -2581,9 +2582,29 @@ void projectiledata(player *p,short superstop){
                             temp.y=P.proj[i].y+4+dis2(gen);
                             effectslist.push_back(temp);
                         }
+                        P.proj[i].frame=P.proj[i].endanim[0];
+                        P.proj[i].endanim.pop_front();
                     }
-                    P.proj[i].frame=P.proj[i].endanim[0];
-                    P.proj[i].endanim.pop_front();
+                    else if(P.character==2){
+                        if(P.proj[i].hitcount==0){
+                            if(P.proj[i].right)P.proj[i].movex=-2;
+                            else P.proj[i].movex=2;
+                            P.proj[i].code=2;
+                            if(P.proj[i].y>210)P.proj[i].y=210;
+                            P.proj[i].movey=-3;
+                            P.proj[i].hitcount=-1;
+                            P.proj[i].animloop=0;
+                        }
+                        else{
+                            P.proj[i].movey+=0.5;
+                            P.proj[i].x+=P.proj[i].movex;
+                            P.proj[i].y+=P.proj[i].movey;
+                            P.proj[i].frame=P.proj[i].endanim[P.proj[i].animloop];
+                            if(P.proj[i].animloop==0)P.proj[i].animloop=1;
+                            else P.proj[i].animloop=0;
+                            if(P.proj[i].y>210)P.proj[i].endanim.erase(P.proj[i].endanim.begin(),P.proj[i].endanim.end());
+                        }
+                    }
                 }
             }
             else if(P.proj[i].hitstopped>0&&superstop==0)P.proj[i].hitstopped-=1;
@@ -2610,6 +2631,7 @@ void projectiledata(player *p,short superstop){
                     }
                 }
                 else if(P.character==2){
+                    if(P.proj[i].y>210)P.proj[i].hitcount=0;
                     if(P.proj[i].code==2&&P.proj[i].existed>90){
                         P.proj[i].movex+=0.5;
                         if(P.proj[i].movey!=0)P.proj[i].movey+=0.25;
@@ -3250,7 +3272,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 33:{//special B(u)2
                 P.col=3;P.hitcount=1;P.hitstop=15;P.kback=-12;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=1;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=12;P.gimmick[0]=180;
-                P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
+                P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{5});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
                 break;
@@ -3389,6 +3411,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.loopanim[9]=43;
                 temp.loopanim[10]=43;
                 temp.loopanim[11]=43;
+                temp.endanim.push_back(42);
+                temp.endanim.push_back(43);
                 if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
                 else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
                 temp.launch=P.launch;
@@ -3544,12 +3568,12 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
         if(P1.buffer==0&&!P1.animq.empty()){
             P1.buffer=chooseaction(P1.character,1,P1.air,p1input,P1.meter);
             if(P1.cancel[P1.buffer]==false&&P1.animq.size()>10)P1.buffer=0;
-            else if((P1.buffer>0&&P1.buffer<8)||P1.buffer==11||P1.buffer==20||(P1.air&&P1.jumpy<5))P1.buffer=0;
+            else if(P1.buffer<8||P1.buffer==11||P1.buffer==20||(P1.air&&P1.jumpy<5))P1.buffer=0;
         }
         if(P2.buffer==0&&!P2.animq.empty()){
                 P2.buffer=chooseaction(P2.character,2,P2.air,p2input,P2.meter);
                 if(P2.cancel[P2.buffer]==false&&P2.animq.size()>10)P2.buffer=0;
-                else if((P2.buffer>0&&P2.buffer<8)||P2.buffer==11||P2.buffer==20||(P2.air&&P2.jumpy<5))P2.buffer=0;
+                else if(P2.buffer<8||P2.buffer==11||P2.buffer==20||(P2.air&&P2.jumpy<5))P2.buffer=0;
         }
         if(P1.buffer==0){
             short temp=chooseaction(P1.character,1,P1.air,p1input,P1.meter);
@@ -3744,6 +3768,24 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     else background.setColor(sf::Color (255, 255, 255));
     renderTexture.draw(background);
     renderTexture.draw(p1shadow);renderTexture.draw(p2shadow);
+    if(!P1.proj.empty()){
+        charactergraphics p_graphics[P1.proj.size()];
+        for(short i=0;i<P1.proj.size();i++){
+            p_graphics[i].load(p1texture,true);
+            p_graphics[i].setanim(animlib[P1.character][P1.proj[i].frame],P1.proj[i].right);
+            p_graphics[i].setPosition({floor(P1.proj[i].x-64+bgx),floor(184+(P1.proj[i].y-176)/8)});
+            renderTexture.draw(p_graphics[i]);
+        }
+    }
+    if(!P2.proj.empty()){
+        charactergraphics p_graphics[P2.proj.size()];
+        for(short i=0;i<P2.proj.size();i++){
+            p_graphics[i].load(p2texture,true);
+            p_graphics[i].setanim(animlib[P2.character][P2.proj[i].frame],P2.proj[i].right);
+            p_graphics[i].setPosition({floor(P2.proj[i].x-64+bgx),floor(184+(P2.proj[i].y-176)/8)});
+            renderTexture.draw(p_graphics[i]);
+        }
+    }
 
     if(superstop>0){renderTexture.draw(blackscreen);renderTexture.draw(sf);}
 
@@ -4195,8 +4237,8 @@ int main()
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
-                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
-                    inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
+                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
+                    inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
 
                     if((!pause||(pause&&nextframe))){//main match code stuff
                         dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
@@ -4287,8 +4329,8 @@ int main()
                     //if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
-                    if(p1control)inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
-                    else inputcode(p2input,upkey1,rightkey1,downkey1,leftkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
+                    if(p1control)inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
+                    else inputcode(p2input,upkey1,rightkey1,downkey1,leftkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
 
                     //main match code stuff
                     dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
@@ -4667,8 +4709,8 @@ int main()
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
-                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.right);
-                    inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.right);
+                    inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
+                    inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
 
                     if((!pause||(pause&&nextframe))){//main match code stuff
                         dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
