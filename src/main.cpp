@@ -1425,7 +1425,7 @@ public:
         for (unsigned int i = 0; i < 6; ++i)
             for (unsigned int j = 0; j < 8; ++j){
             short temp=j-4+basex+sizex*(i-6+basey)+2;
-            if(j<4-basex||4+sizex-basex<=j||i<6-basey||6+sizey-basey<=i||(anim[temp][0]==255&&anim[temp][1]==256)){
+            if(j<4-basex||4+sizex-basex<=j||i<6-basey||6+sizey-basey<=i||(anim[temp][0]==255&&anim[temp][1]==255)){
                 if(right){sf::Vertex* tri = &m_vertices[(j + i * 8) * 6];for(short k=0;k<6;k++)tri[k].texCoords= sf::Vector2f(0,0);}
                 else{sf::Vertex* tri = &m_vertices[(7-j + i * 8) * 6];for(short k=0;k<6;k++)tri[k].texCoords= sf::Vector2f(0,0);}
             }
@@ -3943,8 +3943,104 @@ int main()
         window.draw(rt);
         window.display();
 
-        if(menuconfirm=='2'&&menuselect==5)window.close();
-        else if(menuconfirm=='2'&&menuselect!=4){
+        if(menuconfirm=='2'){
+        if(menuselect==5)window.close();
+        //key mapping
+        else if(menuselect==4){
+            sf::Text keytext(font);
+            keytext.setCharacterSize(16);keytext.setFillColor(sf::Color::White);
+            unsigned char keyselect=0;
+            bool replacemode=false;
+            while (window.isOpen()&&!gamequit){
+                windowset(window,&gamequit);
+                keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+                if(!replacemode){
+                if(menuright=='2'&&menuleft!='2')keyselect++;
+                if(menuright!='2'&&menuleft=='2')keyselect--;
+                if(keyselect==255)keyselect=17;
+                else if(keyselect>17)keyselect=0;
+                if(menucancel=='2')break;
+                if(menuconfirm=='2'){replacemode=true;menuconfirm='1';}
+                }
+                std::string keystring("P"),keydescription;
+                if(keyselect<9)keystring+='1';
+                else keystring+='2';
+                switch(keyselect){
+                    case 0:case 9:{std::string tempstr(" Up");keystring+=tempstr;break;}
+                    case 1:case 10:{std::string tempstr(" Down");keystring+=tempstr;break;}
+                    case 2:case 11:{std::string tempstr(" Left");keystring+=tempstr;break;}
+                    case 3:case 12:{std::string tempstr(" Right");keystring+=tempstr;break;}
+                    case 4:case 13:{std::string tempstr(" Light");keystring+=tempstr;break;}
+                    case 5:case 14:{std::string tempstr(" Medium");keystring+=tempstr;break;}
+                    case 6:case 15:{std::string tempstr(" Heavy");keystring+=tempstr;break;}
+                    case 7:case 16:{std::string tempstr(" Special");keystring+=tempstr;break;}
+                    case 8:case 17:{std::string tempstr(" Grab");keystring+=tempstr;break;}
+                }
+                switch(keyselect){
+                    case 0:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(upkey1));break;}
+                    case 1:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(downkey1));break;}
+                    case 2:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(leftkey1));break;}
+                    case 3:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(rightkey1));break;}
+                    case 4:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(lightkey1));break;}
+                    case 5:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(mediumkey1));break;}
+                    case 6:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(heavykey1));break;}
+                    case 7:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(specialkey1));break;}
+                    case 8:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(grabkey1));break;}
+                    case 9:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(upkey2));break;}
+                    case 10:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(downkey2));break;}
+                    case 11:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(leftkey2));break;}
+                    case 12:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(rightkey2));break;}
+                    case 13:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(lightkey2));break;}
+                    case 14:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(mediumkey2));break;}
+                    case 15:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(heavykey2));break;}
+                    case 16:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(specialkey2));break;}
+                    case 17:{keydescription=sf::Keyboard::getDescription(sf::Keyboard::delocalize(grabkey2));break;}
+                }
+                keystring+=' ';keystring+=keydescription;
+                if(replacemode){
+                    std::string temp("press new key");
+                    keytext.setString(temp);
+                    if(menuconfirm!='1')
+                        for(unsigned char i=0;i<=100;i++)
+                            if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key(i))){
+                                switch(keyselect){
+                                case 0:{upkey1=sf::Keyboard::Key(i);break;}
+                                case 1:{downkey1=sf::Keyboard::Key(i);break;}
+                                case 2:{leftkey1=sf::Keyboard::Key(i);break;}
+                                case 3:{rightkey1=sf::Keyboard::Key(i);break;}
+                                case 4:{lightkey1=sf::Keyboard::Key(i);break;}
+                                case 5:{mediumkey1=sf::Keyboard::Key(i);break;}
+                                case 6:{heavykey1=sf::Keyboard::Key(i);break;}
+                                case 7:{specialkey1=sf::Keyboard::Key(i);break;}
+                                case 8:{grabkey1=sf::Keyboard::Key(i);break;}
+                                case 9:{upkey2=sf::Keyboard::Key(i);break;}
+                                case 10:{downkey2=sf::Keyboard::Key(i);break;}
+                                case 11:{leftkey2=sf::Keyboard::Key(i);break;}
+                                case 12:{rightkey2=sf::Keyboard::Key(i);break;}
+                                case 13:{lightkey2=sf::Keyboard::Key(i);break;}
+                                case 14:{mediumkey2=sf::Keyboard::Key(i);break;}
+                                case 15:{heavykey2=sf::Keyboard::Key(i);break;}
+                                case 16:{specialkey2=sf::Keyboard::Key(i);break;}
+                                case 17:{grabkey2=sf::Keyboard::Key(i);break;}
+                                }
+                                replacemode=false;
+                                }
+                }
+                else keytext.setString(keystring);
+
+                window.clear();
+                renderTexture.clear();
+                renderTexture.draw(keytext);
+                renderTexture.display();
+                const sf::Texture& texture = renderTexture.getTexture();
+                sf::Sprite rt(texture);
+                window.draw(rt);
+                window.display();
+            }
+        }
+        else if(menuselect!=1){
         //ipselect
         if(menuselect==2){
             sf::Text iptext(font);
@@ -4839,7 +4935,7 @@ int main()
         menus.setmenu(6,144,120,0,16,0);
         }
 
-
+        }
     }
 	return 0;
 }
