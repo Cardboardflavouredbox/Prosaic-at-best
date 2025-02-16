@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.31.5)
 project(Prosaic_at_best LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
