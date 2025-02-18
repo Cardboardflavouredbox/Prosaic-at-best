@@ -2650,13 +2650,12 @@ void projectiledata(player *p,short superstop){
     #undef P
 }
 
-void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick[]){
+void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick[],bool preblock){
     #define P (*p)
     //when you jump over your opponent while they are walking towards you sometimes a glitch happens fix it
     float walkspeed,jumprise,jumpfall;
     if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
     else if(P.character==2){walkspeed=2.2;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}}
-
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
             walkspeed/=2;jumpfall/=2;
@@ -2818,9 +2817,15 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
             case 1:{//left walk
                 P.col=0;
-                memcpy(P.anim,animlib[P.character][15],sizeof(animlib[P.character][0]));
-                if(P.x<enemyx)P.right=true;else P.right=false;
-                if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
+                if(preblock){
+                    P.animq.push_back(32);
+                    }
+                else{
+                    memcpy(P.anim,animlib[P.character][15],sizeof(animlib[P.character][0]));
+                    if(P.x<enemyx)P.right=true;else P.right=false;
+                    if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
+                    }
+                
                 break;
                 }
             case 2:{P.col=0;P.iframes=3;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=-7;else P.jumpx=7;P.landdelay=7;}//left dash
@@ -2883,12 +2888,21 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
                 break;
                 }
-            case 11:
-            case 20:{//crouch & crouch block
-                if(P.x<enemyx)P.right=true;
-                else P.right=false;
-                P.col=1;P.frame=8;
+            case 11:{//crouch
+                P.col=1;
+                if(P.x<enemyx)P.right=true;else P.right=false;
                 memcpy(P.anim,animlib[P.character][8],sizeof(animlib[P.character][8]));
+                break;
+            }
+            case 20:{//crouch block
+                P.col=1;
+                if(preblock){
+                    P.animq.push_back(33);
+                    }
+                else{
+                    if(P.x<enemyx)P.right=true;else P.right=false;
+                    memcpy(P.anim,animlib[P.character][8],sizeof(animlib[P.character][8]));
+                    }
                 break;
                 }
             case 12:{//crouch u
@@ -3064,9 +3078,14 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 1:{//left walk
                 P.col=0;
-                if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{14,14,14,14,13,13,13,13,12,12,12,12,11,11,11,11,10,10,10,10,9,9,9,9,8,8,8,8,7,7,7,7,6,6,6,6});
-                if(P.x<enemyx)P.right=true;else P.right=false;
-                if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
+                if(preblock){
+                    P.animq.push_back(18);
+                    }
+                else{
+                    if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{14,14,14,14,13,13,13,13,12,12,12,12,11,11,11,11,10,10,10,10,9,9,9,9,8,8,8,8,7,7,7,7,6,6,6,6});
+                    if(P.x<enemyx)P.right=true;else P.right=false;
+                    if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
+                    }
                 break;
             }
             case 2:{//left dash
@@ -3133,12 +3152,22 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
                 break;
             }
-            case 11:
-            case 20:{//crouch & crouch block
+            case 11:{//crouch
                 if(P.x<enemyx)P.right=true;
                 else P.right=false;
-                P.col=1;P.frame=1;
+                P.col=1;
                 if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{1});
+                break;
+            }
+            case 20:{//crouch block
+                P.col=1;
+                if(preblock){
+                    P.animq.push_back(33);
+                    }
+                else{
+                    if(P.x<enemyx)P.right=true;else P.right=false;
+                    if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{1});
+                    }
                 break;
             }
             case 12:{//crouch u
@@ -3595,14 +3624,22 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
     }
     else{P1.act=0;P2.act=0;}
 
+    bool p1preblock=false,p2preblock=false;
+    if(P2.movetype>0&&(abs(int(P1.x-P2.x))<64))p1preblock=true;
+    if(P1.movetype>0&&(abs(int(P1.x-P2.x))<64))p2preblock=true;
+    if(!p1preblock)for(short i=0;i<P2.proj.size();i++)
+            if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){p1preblock=true;break;}
+    if(!p2preblock)for(short i=0;i<P1.proj.size();i++)
+            if(abs(int(P1.proj[i].x-P2.x))<64&&abs(int(P1.proj[i].y-P2.y))<64&&P1.proj[i].hitcount>0){p2preblock=true;break;}
+
     //make an attack clashing system at some point
     if(P1.hit){
-        if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick);
-        if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick);
+        if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick,p1preblock);
+        if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick,p2preblock);
                         }
     else{
-        if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick);
-        if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick);
+        if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick,p2preblock);
+        if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick,p1preblock);
                         }
     if(!P1.proj.empty())projectiledata(&P1,*superstop);
     if(!P2.proj.empty())projectiledata(&P2,*superstop);
@@ -3945,8 +3982,7 @@ int main()
 
         if(menuconfirm=='2'){
         if(menuselect==5)window.close();
-        //key mapping
-        else if(menuselect==4){
+        else if(menuselect==4){//key mapping
             sf::Text keytext(font);
             keytext.setCharacterSize(16);keytext.setFillColor(sf::Color::White);
             unsigned char keyselect=0;
@@ -4040,9 +4076,33 @@ int main()
                 window.display();
             }
         }
-        else if(menuselect!=1){
-        //ipselect
-        if(menuselect==2){
+        else if(menuselect==1){//story mode
+            sf::Text choicetext(font);
+            unsigned char choice=0,maxchoice=2;
+            choicetext.setCharacterSize(16);choicetext.setFillColor(sf::Color::White);
+            while (window.isOpen()&&!gamequit){
+                windowset(window,&gamequit);
+                keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+                if(menudown=='2'&&menuup!='2')choice++;
+                if(menudown!='2'&&menuup=='2')choice--;
+                if(maxchoice==choice)choice=0;
+                if(choice==255)choice=maxchoice-1;
+
+
+                window.clear();
+                renderTexture.clear();
+                renderTexture.draw(choicetext);
+                renderTexture.display();
+                const sf::Texture& texture = renderTexture.getTexture();
+                sf::Sprite rt(texture);
+                window.draw(rt);
+                window.display();
+            }
+        }
+        else{
+        if(menuselect==2){//ipselect
             sf::Text iptext(font);
             iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
             sf::RectangleShape rect({8.f, 4.f});rect.setFillColor(sf::Color::White);
@@ -4123,8 +4183,7 @@ int main()
         auto ipvalue2=sf::IpAddress::resolve(ipstr);
         sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
         if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
-        //ipwaitscreen
-        if(menuselect==2&&!gamequit){
+        if(menuselect==2&&!gamequit){//ipwaitscreen
             sf::Text iptext(font);
             iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
             short loadcnt=0; 
@@ -4166,8 +4225,7 @@ int main()
         charselect.setcharselect(4,2,32,144);
         short menux=0,menuy=0,menux2=3,menuy2=0;
         bool p1check=false,p2check=false;
-        //characterselect
-        while (window.isOpen()&&!gamequit){
+        while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
 
             if(menuselect==2&&p1control){
@@ -4271,7 +4329,6 @@ int main()
             window.draw(rt);
             window.display();
         }
-
         if(!gamequit){
             short rounds=2;
 
