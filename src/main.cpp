@@ -3988,7 +3988,7 @@ int main()
     for(int j=0;j<4;j++){
         std::vector<std::int16_t> samples;
         for(int i=0;i<soundfx[j].getSampleCount();i++){
-            samples.push_back((soundfx[j].getSamples()[i]/16)*16);
+            samples.push_back((soundfx[j].getSamples()[i]/256)*256);
         }
         soundfx[j].loadFromSamples(samples.data(),samples.size(),1,7576,channelMap);
     }
