@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <random>
 #include <deque>
@@ -2313,7 +2314,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
         P1.attack.grab[0]=P2.grab[0];
         P1.attack.grab[1]=P2.grab[1];
         P1.attack.kdown=P2.kdown;
-        P1.attack.pushaway=!(projcheck||P1.attack.wallcrash);
+        P1.attack.pushaway=!(projcheck||P2.wallcrash);
         P1.attack.wallcrash=P2.wallcrash;
         P1.hp-=P2.dmg;
         P1.hit=true;
@@ -4381,6 +4382,18 @@ int main()
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;
             textbox tbox;
 
+            auto channelMap = std::vector<sf::SoundChannel>{
+                sf::SoundChannel::FrontLeft,
+                sf::SoundChannel::FrontCenter,
+                sf::SoundChannel::FrontRight,
+                sf::SoundChannel::BackRight,
+                sf::SoundChannel::BackLeft,
+                sf::SoundChannel::LowFrequencyEffects
+            };
+            sf::SoundBuffer soundfx;if(!soundfx.loadFromFile("hit1.wav")){window.close();gamequit=true;}
+            //soundfx.loadFromSamples((soundfx.getSamples()),sizeof(soundfx.getSamples()),2,44100,channelMap);
+            sf::Sound sound(soundfx);
+
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
             sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture);
@@ -4908,6 +4921,7 @@ int main()
                         nextframe=false;
                         if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                         matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&bgx,&framedata,overlap,overlap2);
+                        if((p1.hit&&!p1.hitbefore)||(p2.hit&&!p2.hitbefore))sound.play();
                         if(combo==0&&p1.hp<p1.maxhp)p1.hp+=10;if(combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
                         //if(combo==0&&p1.meter<1000)p1.meter+=10;
                         //if(combo==0&&p2.meter<1000)p2.meter+=10;

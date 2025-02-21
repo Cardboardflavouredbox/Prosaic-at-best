@@ -15,4 +15,4 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(Prosaic_at_best src/main.cpp)
 target_compile_features(Prosaic_at_best PRIVATE cxx_std_17)
-target_link_libraries(Prosaic_at_best PRIVATE SFML::Graphics SFML::Network)
+target_link_libraries(Prosaic_at_best PRIVATE SFML::Graphics SFML::Network SFML::Audio)
