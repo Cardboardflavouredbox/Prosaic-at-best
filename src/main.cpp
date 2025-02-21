@@ -3972,14 +3972,7 @@ int main()
     if (!titletexture.loadFromFile("title.png"))window.close();
     sf::Sprite title(titletexture);
 
-    auto channelMap = std::vector<sf::SoundChannel>{
-                sf::SoundChannel::FrontLeft,
-                sf::SoundChannel::FrontCenter,
-                sf::SoundChannel::FrontRight,
-                sf::SoundChannel::BackRight,
-                sf::SoundChannel::BackLeft,
-                sf::SoundChannel::LowFrequencyEffects
-            };
+    std::vector<sf::SoundChannel>channelMap{sf::SoundChannel::FrontLeft,sf::SoundChannel::FrontRight};
     sf::SoundBuffer soundfx[256];
     if(!soundfx[0].loadFromFile("hit1.wav"))window.close();
     if(!soundfx[1].loadFromFile("hit2.wav"))window.close();
@@ -3988,12 +3981,12 @@ int main()
     for(int j=0;j<4;j++){
         std::vector<std::int16_t> samples;
         for(int i=0;i<soundfx[j].getSampleCount();i++){
-            samples.push_back((soundfx[j].getSamples()[i]/256)*256);
+            samples.push_back((soundfx[j].getSamples()[i]/16)*16);
         }
-        soundfx[j].loadFromSamples(samples.data(),samples.size(),1,7576,channelMap);
+        if(!soundfx[j].loadFromSamples(samples.data(),samples.size(),2,7576,channelMap))window.close();
     }
     sf::Sound sound(soundfx[0]);
-
+    sound.setPitch(12.0f);
 	menu menus;
 	if (!menus.load("menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
