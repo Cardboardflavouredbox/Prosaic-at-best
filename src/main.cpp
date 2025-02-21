@@ -10,7 +10,7 @@
 using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
 
-std::deque<unsigned char> soundfxlist;
+std::deque<unsigned char> soundfxlist,hitsfxlist,voicesfxlist;
 std::random_device rd;
 std::mt19937 gen(rd());
 
@@ -2300,7 +2300,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             }
             *framedata=P2.hitstun-P2.animq.size();
             std::uniform_int_distribution<int> dis3(1,4);
-            soundfxlist.push_back(dis3(gen));
+            hitsfxlist.push_back(dis3(gen));
         }
         fxtemp.code=1;
         effectslist.push_back(fxtemp);
@@ -3173,6 +3173,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2,2,2,2,2});
                 }
                 else{
+                    voicesfxlist.insert(voicesfxlist.begin(),{0,0,0,0,0,0,0,0,0,5});
+                    soundfxlist.insert(soundfxlist.begin(),{0,0,0,0,0,0,0,0,0,6});
                     P.col=0;P.hitcount=1;P.hitstop=14;P.kback=5;P.hitstun=17;P.blockstun=12;P.slide=true;P.dmg=36;P.movetype=2;P.mgain=8;
                     P.animq.insert(P.animq.begin(),{60,60,60,61,61,61,62,62,62,63,64,64,64,65,65,65,66,66,66,67,67,67,68,68,68,69,69,69,70,70,70});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,7,7});
@@ -3974,19 +3976,17 @@ int main()
 
     std::vector<sf::SoundChannel>channelMap{sf::SoundChannel::FrontLeft,sf::SoundChannel::FrontRight};
     sf::SoundBuffer soundfx[256];
-    if(!soundfx[0].loadFromFile("hit1.wav"))window.close();
-    if(!soundfx[1].loadFromFile("hit2.wav"))window.close();
-    if(!soundfx[2].loadFromFile("hit3.wav"))window.close();
-    if(!soundfx[3].loadFromFile("hit4.wav"))window.close();
-    for(int j=0;j<4;j++){
+    if(!soundfx[0].loadFromFile("hit1.wav"))window.close();if(!soundfx[1].loadFromFile("hit2.wav"))window.close();
+    if(!soundfx[2].loadFromFile("hit3.wav"))window.close();if(!soundfx[3].loadFromFile("hit4.wav"))window.close();
+    if(!soundfx[4].loadFromFile("Sinclair1.wav"))window.close();if(!soundfx[5].loadFromFile("swing1.wav"))window.close();
+    for(int j=0;j<6;j++){
         std::vector<std::int16_t> samples;
         for(int i=0;i<soundfx[j].getSampleCount();i++){
             samples.push_back((soundfx[j].getSamples()[i]/16)*16);
         }
-        if(!soundfx[j].loadFromSamples(samples.data(),samples.size(),2,7576,channelMap))window.close();
+        if(!soundfx[j].loadFromSamples(samples.data(),samples.size(),2,8000,channelMap))window.close();
     }
-    sf::Sound sound(soundfx[0]);
-    sound.setPitch(12.0f);
+    sf::Sound sound(soundfx[0]),hitsound(soundfx[0]),voice(soundfx[0]);;
 	menu menus;
 	if (!menus.load("menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
@@ -4935,6 +4935,20 @@ int main()
                                 sound.play();
                             }
                             soundfxlist.pop_front();
+                        }
+                        if(!hitsfxlist.empty()){//hit sound effects
+                            if(hitsfxlist[0]>0){
+                                hitsound.setBuffer(soundfx[hitsfxlist[0]-1]);
+                                hitsound.play();
+                            }
+                            hitsfxlist.pop_front();
+                        }
+                        if(!voicesfxlist.empty()){//voice effects
+                            if(voicesfxlist[0]>0){
+                                voice.setBuffer(soundfx[voicesfxlist[0]-1]);
+                                voice.play();
+                            }
+                            voicesfxlist.pop_front();
                         }
 
                         if(combo==0&&p1.hp<p1.maxhp)p1.hp+=10;if(combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
