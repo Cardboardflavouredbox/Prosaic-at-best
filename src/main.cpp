@@ -2299,7 +2299,8 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
                 effectslist.push_back(fxtemp);
             }
             *framedata=P2.hitstun-P2.animq.size();
-            soundfxlist.push_back(1);
+            std::uniform_int_distribution<int> dis3(1,4);
+            soundfxlist.push_back(dis3(gen));
         }
         fxtemp.code=1;
         effectslist.push_back(fxtemp);
@@ -3979,13 +3980,19 @@ int main()
                 sf::SoundChannel::BackLeft,
                 sf::SoundChannel::LowFrequencyEffects
             };
-    sf::SoundBuffer soundfx;if(!soundfx.loadFromFile("hit1.wav"))window.close();
-    std::vector<std::int16_t> samples;
-    for(int i=0;i<soundfx.getSampleCount();i++){
-        samples.push_back((soundfx.getSamples()[i]/16)*16);
+    sf::SoundBuffer soundfx[256];
+    if(!soundfx[0].loadFromFile("hit1.wav"))window.close();
+    if(!soundfx[1].loadFromFile("hit2.wav"))window.close();
+    if(!soundfx[2].loadFromFile("hit3.wav"))window.close();
+    if(!soundfx[3].loadFromFile("hit4.wav"))window.close();
+    for(int j=0;j<4;j++){
+        std::vector<std::int16_t> samples;
+        for(int i=0;i<soundfx[j].getSampleCount();i++){
+            samples.push_back((soundfx[j].getSamples()[i]/16)*16);
+        }
+        soundfx[j].loadFromSamples(samples.data(),samples.size(),1,7576,channelMap);
     }
-    soundfx.loadFromSamples(samples.data(),samples.size(),2,7576,channelMap);
-    sf::Sound sound(soundfx);
+    sf::Sound sound(soundfx[0]);
 
 	menu menus;
 	if (!menus.load("menu.png")){}
@@ -4931,7 +4938,7 @@ int main()
 
                         if(!soundfxlist.empty()){//sound effects
                             if(soundfxlist[0]>0){
-                                if(soundfxlist[0]==1)sound.setBuffer(soundfx);
+                                sound.setBuffer(soundfx[soundfxlist[0]-1]);
                                 sound.play();
                             }
                             soundfxlist.pop_front();
