@@ -10,6 +10,7 @@
 using namespace std;
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
 
+std::deque<unsigned char> soundfxlist;
 std::random_device rd;
 std::mt19937 gen(rd());
 
@@ -2298,6 +2299,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
                 effectslist.push_back(fxtemp);
             }
             *framedata=P2.hitstun-P2.animq.size();
+            soundfxlist.push_back(1);
         }
         fxtemp.code=1;
         effectslist.push_back(fxtemp);
@@ -3968,6 +3970,23 @@ int main()
     sf::Texture titletexture;
     if (!titletexture.loadFromFile("title.png"))window.close();
     sf::Sprite title(titletexture);
+
+    auto channelMap = std::vector<sf::SoundChannel>{
+                sf::SoundChannel::FrontLeft,
+                sf::SoundChannel::FrontCenter,
+                sf::SoundChannel::FrontRight,
+                sf::SoundChannel::BackRight,
+                sf::SoundChannel::BackLeft,
+                sf::SoundChannel::LowFrequencyEffects
+            };
+    sf::SoundBuffer soundfx;if(!soundfx.loadFromFile("hit1.wav"))window.close();
+    std::vector<std::int16_t> samples;
+    for(int i=0;i<soundfx.getSampleCount();i++){
+        samples.push_back((soundfx.getSamples()[i]/16)*16);
+    }
+    soundfx.loadFromSamples(samples.data(),samples.size(),2,7576,channelMap);
+    sf::Sound sound(soundfx);
+
 	menu menus;
 	if (!menus.load("menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
@@ -4381,18 +4400,6 @@ int main()
             if(!p1texture.loadFromFile("char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;
             textbox tbox;
-
-            auto channelMap = std::vector<sf::SoundChannel>{
-                sf::SoundChannel::FrontLeft,
-                sf::SoundChannel::FrontCenter,
-                sf::SoundChannel::FrontRight,
-                sf::SoundChannel::BackRight,
-                sf::SoundChannel::BackLeft,
-                sf::SoundChannel::LowFrequencyEffects
-            };
-            sf::SoundBuffer soundfx;if(!soundfx.loadFromFile("hit1.wav")){window.close();gamequit=true;}
-            //soundfx.loadFromSamples((soundfx.getSamples()),sizeof(soundfx.getSamples()),2,44100,channelMap);
-            sf::Sound sound(soundfx);
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
@@ -4921,7 +4928,15 @@ int main()
                         nextframe=false;
                         if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                         matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&bgx,&framedata,overlap,overlap2);
-                        if((p1.hit&&!p1.hitbefore)||(p2.hit&&!p2.hitbefore))sound.play();
+
+                        if(!soundfxlist.empty()){//sound effects
+                            if(soundfxlist[0]>0){
+                                if(soundfxlist[0]==1)sound.setBuffer(soundfx);
+                                sound.play();
+                            }
+                            soundfxlist.pop_front();
+                        }
+
                         if(combo==0&&p1.hp<p1.maxhp)p1.hp+=10;if(combo==0&&p2.hp<p2.maxhp)p2.hp+=10;
                         //if(combo==0&&p1.meter<1000)p1.meter+=10;
                         //if(combo==0&&p2.meter<1000)p2.meter+=10;
