@@ -4467,22 +4467,28 @@ int main()
                         if(!soundfxlist.empty()){//sound effects
                             if(soundfxlist[0]>0){
                                 sound.setBuffer(soundfx[soundfxlist[0]-1]);
+                                sound.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
                                 sound.play();
                             }
+                            sfxx.pop_front();
                             soundfxlist.pop_front();
                         }
                         if(!hitsfxlist.empty()){//hit sound effects
                             if(hitsfxlist[0]>0){
                                 hitsound.setBuffer(soundfx[hitsfxlist[0]-1]);
+                                hitsound.setPosition({hsfxx[0],0.f,hsfxx[0]<0.f?-hsfxx[0]-1.f:hsfxx[0]-1.f});
                                 hitsound.play();
                             }
+                            hsfxx.pop_front();
                             hitsfxlist.pop_front();
                         }
                         if(!voicesfxlist.empty()){//voice effects
                             if(voicesfxlist[0]>0){
                                 voice.setBuffer(soundfx[voicesfxlist[0]-1]);
+                                voice.setPosition({vsfxx[0],0.f,vsfxx[0]<0.f?-vsfxx[0]-1.f:vsfxx[0]-1.f});
                                 voice.play();
                             }
+                            vsfxx.pop_front();
                             voicesfxlist.pop_front();
                         }
 
@@ -4581,22 +4587,28 @@ int main()
                     if(!soundfxlist.empty()){//sound effects
                             if(soundfxlist[0]>0){
                                 sound.setBuffer(soundfx[soundfxlist[0]-1]);
+                                sound.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
                                 sound.play();
                             }
+                            sfxx.pop_front();
                             soundfxlist.pop_front();
                         }
                         if(!hitsfxlist.empty()){//hit sound effects
                             if(hitsfxlist[0]>0){
                                 hitsound.setBuffer(soundfx[hitsfxlist[0]-1]);
+                                hitsound.setPosition({hsfxx[0],0.f,hsfxx[0]<0.f?-hsfxx[0]-1.f:hsfxx[0]-1.f});
                                 hitsound.play();
                             }
+                            hsfxx.pop_front();
                             hitsfxlist.pop_front();
                         }
                         if(!voicesfxlist.empty()){//voice effects
                             if(voicesfxlist[0]>0){
                                 voice.setBuffer(soundfx[voicesfxlist[0]-1]);
+                                voice.setPosition({vsfxx[0],0.f,vsfxx[0]<0.f?-vsfxx[0]-1.f:vsfxx[0]-1.f});
                                 voice.play();
                             }
+                            vsfxx.pop_front();
                             voicesfxlist.pop_front();
                         }
 
@@ -4984,7 +4996,7 @@ int main()
                         if(!soundfxlist.empty()){//sound effects
                             if(soundfxlist[0]>0){
                                 sound.setBuffer(soundfx[soundfxlist[0]-1]);
-                                sound.setPosition({sfxx[0],0.f,0.f});
+                                sound.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
                                 sound.play();
                             }
                             sfxx.pop_front();
@@ -4993,7 +5005,7 @@ int main()
                         if(!hitsfxlist.empty()){//hit sound effects
                             if(hitsfxlist[0]>0){
                                 hitsound.setBuffer(soundfx[hitsfxlist[0]-1]);
-                                hitsound.setPosition({hsfxx[0],0.f,0.f});
+                                hitsound.setPosition({hsfxx[0],0.f,hsfxx[0]<0.f?-hsfxx[0]-1.f:hsfxx[0]-1.f});
                                 hitsound.play();
                             }
                             hsfxx.pop_front();
@@ -5002,7 +5014,7 @@ int main()
                         if(!voicesfxlist.empty()){//voice effects
                             if(voicesfxlist[0]>0){
                                 voice.setBuffer(soundfx[voicesfxlist[0]-1]);
-                                voice.setPosition({vsfxx[0],0.f,0.f});
+                                voice.setPosition({vsfxx[0],0.f,vsfxx[0]<0.f?-vsfxx[0]-1.f:vsfxx[0]-1.f});
                                 voice.play();
                             }
                             vsfxx.pop_front();
