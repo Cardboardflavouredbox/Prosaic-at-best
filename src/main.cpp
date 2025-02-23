@@ -1664,7 +1664,7 @@ private:
 class healthbar : public sf::Drawable, public sf::Transformable
 {
 public:
-    void create(float hp,float hp2){
+    void create(float hp,float hp2,float maxhp,float maxhp2){
         m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices2.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices3.setPrimitiveType(sf::PrimitiveType::Triangles);
@@ -1687,7 +1687,7 @@ public:
         triangles[11].position = sf::Vector2f(238,10);
         sf::Vertex* tri = &m_vertices2[12];
         sf::Vertex* tri2 = &m_vertices3[12];
-        float temp=hp/1000*88;
+        float temp=hp/maxhp*88;
         tri[0].position = sf::Vector2f(106-temp,10);
         tri[1].position = sf::Vector2f(106,10);
         tri[2].position = sf::Vector2f(110-temp,18);
@@ -1700,7 +1700,7 @@ public:
         tri2[3].position = sf::Vector2f(110-temp,18);
         tri2[4].position = sf::Vector2f(109,16);
         tri2[5].position = sf::Vector2f(110,18);
-        temp=hp2*88/1000;
+        temp=hp2/maxhp2*88;
         tri[6].position = sf::Vector2f(146,18);
         tri[7].position = sf::Vector2f(146+temp,18);
         tri[8].position = sf::Vector2f(150,10);
@@ -2869,9 +2869,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
                 }
             case 4:{P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=7;else P.jumpx=-7;P.landdelay=7;break;}//right dash
-            case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=5;break;}//up jump
-            case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;break;}//left jump
-            case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;break;}//right jump
+            case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=5;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//up jump
+            case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//left jump
+            case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//right jump
             case 8:{//u (light normal)
                 if(P.air){
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=9;P.blockstun=3;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
@@ -3135,9 +3135,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 4:{P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=8;else P.jumpx=-8;P.landdelay=7;break;}//right dash
-            case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{1,1,1,44});P.landdelay=5;break;}//up jump
-            case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;break;}//left jump
-            case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;break;}//right jump
+            case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{1,1,1,44});P.landdelay=5;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//up jump
+            case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//left jump
+            case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//right jump
             case 8:{//u (light normal)
                 if(P.air){
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=11;P.blockstun=5;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
@@ -3145,6 +3145,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,9,9,9,9,9,9,9,9});
                 }
                 else{
+                    soundfxlist.insert(soundfxlist.begin(),{0,0,0,9});
+                    sfxx.insert(sfxx.begin(),{0,0,0,(bgx+P.x-128.f)/256.f});
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=4;P.hitstun=12;P.blockstun=9;P.dmg=14;P.movetype=2;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{2,2,2,3,73,73,73,73,3,2,2,2,2});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,1,1});
@@ -3394,6 +3396,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 if(!P.comboed){P.col=1;P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();if(P.x<enemyx)P.right=true;else P.right=false;for(short i=0;i<P.landdelay;i++)P.animq.push_back(8);}
                 P.landdelay=0;
                 P.movetype=0;
+                soundfxlist.push_back(8);sfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.jumpx=0;P.jumpy=0;P.y=176;P.air=false;
             }
         }
@@ -3421,7 +3424,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     }
     if(!P.atkfx.empty()){
         if(P.character==0){
-            if(P.atkfx[0]==5){*superstop=20;P.super=true;P.meter-=100;}
+            if(P.atkfx[0]==5){*superstop=20;P.super=true;P.meter-=100;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);}
             if(P.atkfx[0]==1||P.atkfx[0]==2||P.atkfx[0]==3||P.atkfx[0]==4){//projectile
                 P.meter+=P.mgain;
                 projectile temp;
@@ -3450,6 +3453,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
         else if(P.character==2){
             if(P.atkfx[0]==1||P.atkfx[0]==3||P.atkfx[0]==8||P.atkfx[0]==10){//projectile
+                soundfxlist.push_back(10);
+                sfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.meter+=P.mgain;
                 projectile temp;
                 temp.movetype=P.movetype;
@@ -3522,10 +3527,11 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.speed=3;
                 effectslist.push_back(temp);
             }
-            else if(P.atkfx[0]==5){*superstop=20;P.super=true;}
+            else if(P.atkfx[0]==5){*superstop=20;P.super=true;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);}
             else if(P.atkfx[0]==6){
                 if(P.gimmick[1]>0)P.gimmick[1]=0;
                 else P.gimmick[1]=32767;
+                soundfxlist.push_back(12);sfxx.push_back((bgx+P.x-128.f)/256.f);
                 effects temp;
                 temp.color1=sf::Color (85, 255, 255);
                 temp.len=7;
@@ -3823,7 +3829,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     frametext.setOrigin({32,0});
     if (combo>1)cui.create(P2.comboed||P2.kdowned);
 
-    p1ilist.create(p1keylist,true);p2ilist.create(p2keylist,false);hb.create(P1.hp,P2.hp);mb.create(P1.meter,P2.meter);
+    p1ilist.create(p1keylist,true);p2ilist.create(p2keylist,false);hb.create(P1.hp,P2.hp,P1.maxhp,P2.maxhp);mb.create(P1.meter,P2.meter);
 
     healthui.setPosition({0.f,8.f});
     sf.setPosition({0,0});hb.setPosition({0,8});
@@ -3984,15 +3990,18 @@ int main()
     if(!soundfx[0].loadFromFile("hit1.wav"))window.close();if(!soundfx[1].loadFromFile("hit2.wav"))window.close();
     if(!soundfx[2].loadFromFile("hit3.wav"))window.close();if(!soundfx[3].loadFromFile("hit4.wav"))window.close();
     if(!soundfx[4].loadFromFile("Sinclair1.wav"))window.close();if(!soundfx[5].loadFromFile("swing1.wav"))window.close();
-    if(!soundfx[6].loadFromFile("coinclatter.wav"))window.close();
-    for(int j=0;j<7;j++){
+    if(!soundfx[6].loadFromFile("jump.wav"))window.close();if(!soundfx[7].loadFromFile("land.wav"))window.close();
+    if(!soundfx[8].loadFromFile("swing2.wav"))window.close();if(!soundfx[9].loadFromFile("toss.wav"))window.close();
+    if(!soundfx[10].loadFromFile("super.wav"))window.close();if(!soundfx[11].loadFromFile("Sinclairsuper.wav"))window.close();
+    for(int j=0;j<12;j++){
         std::vector<std::int16_t> samples;
         for(int i=0;i<soundfx[j].getSampleCount();i++){
             samples.push_back((soundfx[j].getSamples()[i]/16)*16);
         }
         if(!soundfx[j].loadFromSamples(samples.data(),samples.size(),2,8000,channelMap))window.close();
     }
-    sf::Sound sound(soundfx[0]),hitsound(soundfx[0]),voice(soundfx[0]);;
+    sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);
+    std::deque<sf::Sound> sound;
 	menu menus;
 	if (!menus.load("menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
@@ -4426,11 +4435,10 @@ int main()
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
-                    p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
+                    p1.x=100.0;p1.y=176.0;p1.maxhp=950.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=950.0;p2.hp=p2.maxhp;
+                    if(p1.character==2){p1.maxhp=900.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
+                    if(p2.character==2){p2.maxhp=900.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
-                    if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
-                    if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
-                    
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;
@@ -4464,11 +4472,16 @@ int main()
                         if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                         matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2);
 
+                        if(!sound.empty()){
+                            for(int i=0;i<sound.size();i++)if(sound[i].getStatus()==sf::SoundSource::Status::Stopped)sound.erase(sound.begin()+i);  
+                        }
                         if(!soundfxlist.empty()){//sound effects
                             if(soundfxlist[0]>0){
-                                sound.setBuffer(soundfx[soundfxlist[0]-1]);
-                                sound.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
-                                sound.play();
+                                sf::Sound temp(soundfx[soundfxlist[0]-1]);
+                                //sound.setBuffer(soundfx[soundfxlist[0]-1]);
+                                temp.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
+                                sound.push_front(temp);
+                                sound[0].play();
                             }
                             sfxx.pop_front();
                             soundfxlist.pop_front();
@@ -4549,9 +4562,9 @@ int main()
                 std::deque<std::deque<char>> dirrecord,urecord,irecord,orecord,krecord;
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2],bgx=0;
-                    p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
-                    if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
-                    if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
+                    p1.x=100.0;p1.y=176.0;p1.maxhp=950.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=950.0;p2.hp=p2.maxhp;
+                    if(p1.character==2){p1.maxhp=900.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
+                    if(p2.character==2){p2.maxhp=900.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
                 short superstop=0,roundwait=90,framedata=0;
@@ -4584,33 +4597,38 @@ int main()
                     if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                     matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2);
 
+                    if(!sound.empty()){
+                            for(int i=0;i<sound.size();i++)if(sound[i].getStatus()==sf::SoundSource::Status::Stopped)sound.erase(sound.begin()+i);  
+                        }
                     if(!soundfxlist.empty()){//sound effects
                             if(soundfxlist[0]>0){
-                                sound.setBuffer(soundfx[soundfxlist[0]-1]);
-                                sound.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
-                                sound.play();
+                                sf::Sound temp(soundfx[soundfxlist[0]-1]);
+                                //sound.setBuffer(soundfx[soundfxlist[0]-1]);
+                                temp.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
+                                sound.push_front(temp);
+                                sound[0].play();
                             }
                             sfxx.pop_front();
                             soundfxlist.pop_front();
                         }
-                        if(!hitsfxlist.empty()){//hit sound effects
-                            if(hitsfxlist[0]>0){
-                                hitsound.setBuffer(soundfx[hitsfxlist[0]-1]);
-                                hitsound.setPosition({hsfxx[0],0.f,hsfxx[0]<0.f?-hsfxx[0]-1.f:hsfxx[0]-1.f});
-                                hitsound.play();
-                            }
-                            hsfxx.pop_front();
-                            hitsfxlist.pop_front();
+                    if(!hitsfxlist.empty()){//hit sound effects
+                        if(hitsfxlist[0]>0){
+                            hitsound.setBuffer(soundfx[hitsfxlist[0]-1]);
+                            hitsound.setPosition({hsfxx[0],0.f,hsfxx[0]<0.f?-hsfxx[0]-1.f:hsfxx[0]-1.f});
+                            hitsound.play();
                         }
-                        if(!voicesfxlist.empty()){//voice effects
-                            if(voicesfxlist[0]>0){
-                                voice.setBuffer(soundfx[voicesfxlist[0]-1]);
-                                voice.setPosition({vsfxx[0],0.f,vsfxx[0]<0.f?-vsfxx[0]-1.f:vsfxx[0]-1.f});
-                                voice.play();
-                            }
-                            vsfxx.pop_front();
-                            voicesfxlist.pop_front();
+                        hsfxx.pop_front();
+                        hitsfxlist.pop_front();
+                    }
+                    if(!voicesfxlist.empty()){//voice effects
+                        if(voicesfxlist[0]>0){
+                            voice.setBuffer(soundfx[voicesfxlist[0]-1]);
+                            voice.setPosition({vsfxx[0],0.f,vsfxx[0]<0.f?-vsfxx[0]-1.f:vsfxx[0]-1.f});
+                            voice.play();
                         }
+                        vsfxx.pop_front();
+                        voicesfxlist.pop_front();
+                    }
 
                     if(superstop>0)superstop--;
 
@@ -4955,9 +4973,9 @@ int main()
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
-                    p1.x=100.0;p1.y=176.0;p1.maxhp=1000.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=1000.0;p2.hp=p2.maxhp;
-                    if(p1.character==2){p1.maxhp=1000.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
-                    if(p2.character==2){p2.maxhp=1000.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
+                    p1.x=100.0;p1.y=176.0;p1.maxhp=950.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=950.0;p2.hp=p2.maxhp;
+                    if(p1.character==2){p1.maxhp=900.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
+                    if(p2.character==2){p2.maxhp=900.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
                 short superstop=0,roundwait=90,framedata=0;
@@ -4993,11 +5011,16 @@ int main()
                         if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
                         matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2);
 
+                        if(!sound.empty()){
+                            for(int i=0;i<sound.size();i++)if(sound[i].getStatus()==sf::SoundSource::Status::Stopped)sound.erase(sound.begin()+i);  
+                        }
                         if(!soundfxlist.empty()){//sound effects
                             if(soundfxlist[0]>0){
-                                sound.setBuffer(soundfx[soundfxlist[0]-1]);
-                                sound.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
-                                sound.play();
+                                sf::Sound temp(soundfx[soundfxlist[0]-1]);
+                                //sound.setBuffer(soundfx[soundfxlist[0]-1]);
+                                temp.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
+                                sound.push_front(temp);
+                                sound[0].play();
                             }
                             sfxx.pop_front();
                             soundfxlist.pop_front();
