@@ -3143,13 +3143,13 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=11;P.blockstun=5;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{75,75,75,75,76,76,76});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,9,9,9,9,9,9,9,9});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,11});
                 }
                 else{
-                    soundfxlist.insert(soundfxlist.begin(),{0,0,0,9});
-                    sfxx.insert(sfxx.begin(),{0,0,0,(bgx+P.x-128.f)/256.f});
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=4;P.hitstun=12;P.blockstun=9;P.dmg=14;P.movetype=2;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{2,2,2,3,73,73,73,73,3,2,2,2,2});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,1,1});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,11});
                     short temp[17]={8,9,10,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
                 }
                 break;
@@ -3178,10 +3178,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,2,2,2,2,2,2});
                 }
                 else{
-                    voicesfxlist.insert(voicesfxlist.begin(),{0,0,0,0,0,0,0,0,0,5});
-                    soundfxlist.insert(soundfxlist.begin(),{0,0,0,0,0,0,0,0,0,6});
-                    vsfxx.insert(vsfxx.begin(),{0,0,0,0,0,0,0,0,0,(bgx+P.x-128.f)/256.f});
-                    sfxx.insert(sfxx.begin(),{0,0,0,0,0,0,0,0,0,(bgx+P.x-128.f)/256.f});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,12});
                     P.col=0;P.hitcount=1;P.hitstop=14;P.kback=5;P.hitstun=17;P.blockstun=12;P.slide=true;P.dmg=36;P.movetype=2;P.mgain=8;
                     P.animq.insert(P.animq.begin(),{60,60,60,61,61,61,62,62,62,63,64,64,64,65,65,65,66,66,66,67,67,67,68,68,68,69,69,69,70,70,70});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,7,7});
@@ -3452,7 +3449,11 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     }
         }
         else if(P.character==2){
-            if(P.atkfx[0]==1||P.atkfx[0]==3||P.atkfx[0]==8||P.atkfx[0]==10){//projectile
+        switch (P.atkfx[0]){
+            case 1:
+            case 3:
+            case 8:
+            case 10:{//projectile
                 soundfxlist.push_back(10);
                 sfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.meter+=P.mgain;
@@ -3492,8 +3493,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.launch=P.launch;
                 //temp.endanim.insert(temp.endanim.begin(),{42});
                 if(P.proj.size()<8)P.proj.push_back(temp);
+                break;
             }
-            else if(P.atkfx[0]==4){//gimmick
+            case 4:{//gimmick
                 P.cancel[24]=true;P.movetype=0;
                 for(short i=0;i<P.proj.size();i++){
                     if(P.proj[i].movex<5&&P.proj[i].code==0){
@@ -3526,9 +3528,10 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 effectslist.push_back(temp);
                 temp.speed=3;
                 effectslist.push_back(temp);
+                break;
             }
-            else if(P.atkfx[0]==5){*superstop=20;P.super=true;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);}
-            else if(P.atkfx[0]==6){
+            case 5:{*superstop=20;P.super=true;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}
+            case 6:{
                 if(P.gimmick[1]>0)P.gimmick[1]=0;
                 else P.gimmick[1]=32767;
                 soundfxlist.push_back(12);sfxx.push_back((bgx+P.x-128.f)/256.f);
@@ -3542,8 +3545,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 effectslist.push_back(temp);
                 temp.speed=9;
                 effectslist.push_back(temp);
+                break;
             }
-            else if(P.atkfx[0]==7){
+            case 7:{
                 std::uniform_int_distribution<int> dis(1,3),dis2(-16,14),dis3(0,1);
                 effects temp;
                 temp.code=0;
@@ -3572,7 +3576,15 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     temp.y=P.y+4+dis2(gen)*2;
                     effectslist.push_back(temp);
                 }
+                break;
             }
+            case 11:{soundfxlist.push_back(9);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}
+            case 12:{
+                voicesfxlist.push_back(5);vsfxx.push_back((bgx+P.x-128.f)/256.f);
+                soundfxlist.push_back(6);sfxx.push_back((bgx+P.x-128.f)/256.f);
+                break;
+            }
+        }
         }
         P.atkfx.pop_front();
         if(enemycharacter==2&&(enemygimmick[0]%2==1||(enemygimmick[1]%2==1&&(P.character!=2||P.gimmick[1]==0))))P.atkfx.push_front(0);
@@ -4141,23 +4153,50 @@ int main()
             }
         }
         else if(menuselect==1){//story mode
-            sf::Text choicetext(font);
-            unsigned char choice=0,maxchoice=2;
-            choicetext.setCharacterSize(16);choicetext.setFillColor(sf::Color::White);
+            unsigned char currentmap=0,dir=0,//0=up,1=right,2=down,3=left
+            map[64][8][8]{
+                {{0,0,0,0,0,0,0,0},
+                {0,1,1,1,1,1,1,0},
+                {0,1,0,0,0,0,1,0},
+                {0,1,0,0,0,0,0,0},
+                {0,0,0,0,0,0,1,0},
+                {0,1,0,0,0,0,1,0},
+                {0,1,1,1,1,1,1,0},
+                {0,0,0,0,0,0,0,0}}},
+                mapx=0,mapy=0;
             while (window.isOpen()&&!gamequit){
                 windowset(window,&gamequit);
                 keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
                 keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
                 keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
-                if(menudown=='2'&&menuup!='2')choice++;
-                if(menudown!='2'&&menuup=='2')choice--;
-                if(maxchoice==choice)choice=0;
-                if(choice==255)choice=maxchoice-1;
-
+                if(menuright=='2'&&menuleft!='2')dir++;
+                if(menuleft=='2'&&menuright!='2')dir--;
+                if(dir==255)dir=3;if(dir==4)dir=0;
+                if(menuup=='2'&&menudown!='2'){
+                    if(dir==0&&map[currentmap][mapx][mapy-1]==0)mapy--;else if(dir==1&&map[currentmap][mapx+1][mapy]==0)mapx++;
+                    else if(dir==2&&map[currentmap][mapx][mapy+1]==0)mapy++;else if(dir==3&&map[currentmap][mapx-1][mapy]==0)mapx--;
+                }
+                if(menuup!='2'&&menudown=='2'){
+                    if(dir==0&&map[currentmap][mapx][mapy+1]==0)mapy++;else if(dir==1&&map[currentmap][mapx-1][mapy]==0)mapx--;
+                    else if(dir==2&&map[currentmap][mapx][mapy-1]==0)mapy--;else if(dir==3&&map[currentmap][mapx+1][mapy]==0)mapx++;
+                }
+                if(mapx==255)mapx=0;if(mapx==8)mapx=7;
+                if(mapy==255)mapy=0;if(mapy==8)mapy=7;
+                if(menucancel=='2')break;
 
                 window.clear();
                 renderTexture.clear();
-                renderTexture.draw(choicetext);
+                sf::RectangleShape rectangle({16.f, 16.f});
+                for(unsigned char i=0;i<8;i++){
+                    for(unsigned char j=0;j<8;j++){
+                        rectangle.setPosition({16.f*i,16.f*j});
+                        if(i==mapx&&j==mapy)rectangle.setFillColor(sf::Color::Blue);
+                        else if(map[currentmap][i][j]==0)rectangle.setFillColor(sf::Color::Black);
+                        else if(map[currentmap][i][j]==1)rectangle.setFillColor(sf::Color::Magenta);
+                        renderTexture.draw(rectangle);
+                    }
+                }
+                
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
                 sf::Sprite rt(texture);
@@ -4165,7 +4204,7 @@ int main()
                 window.display();
             }
         }
-        else{
+        else{//the ones where you fight a lot
         if(menuselect==2){//ipselect
             sf::Text iptext(font);
             iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
