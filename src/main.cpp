@@ -1239,7 +1239,11 @@ hitbox[16][16][4][2][2]={
                     }//char 2
                     };
 bool flash=true,screenfocused=true;
-
+class mapnpc{
+public:
+    unsigned char x=0,y=0,spriteset=0,interaction=0,dir=0;//0=up,1=right,2=down,3=left
+    bool interactable=true;
+};
 class attackdata{
 public:
     short movetype,hitstun,blockstun,kdown,hitwait;
@@ -4304,67 +4308,95 @@ int main()
             }
         }
         else if(menuselect==1){//story mode
-            unsigned char currentmap=0,dir=0,//0=up,1=right,2=down,3=left
-            map[64][8][8]{
-                {{1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1},
-                {1,1,0,0,0,0,1,1},
-                {1,1,0,0,0,0,0,1},
-                {1,0,0,0,0,0,1,1},
-                {1,1,0,0,0,0,1,1},
-                {1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1}}},
-                mapx=4,mapy=4;
+            unsigned char currentmap=0,mapxsize=8,mapysize=8,mapx=3,mapy=3,dir=0;//0=up,1=right,2=down,3=left
+            short dialoguecnt=0;
+            bool map[64][256]
+                {{
+                1,1,1,1,1,1,1,1,
+                1,1,1,0,0,0,1,1,
+                1,1,1,0,1,1,1,1,
+                1,0,0,0,0,0,0,1,
+                1,0,1,1,1,1,0,1,
+                1,0,1,1,1,1,0,1,
+                1,0,0,0,0,1,1,1,
+                1,1,1,1,1,1,1,1}};
             storymapui mapui;
+            sf::Text dtext(font);dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
+            mapnpc testnpc;testnpc.dir=3;testnpc.x=5;testnpc.y=1;
             bool checkwall[8]={false};
             while (window.isOpen()&&!gamequit){
                 windowset(window,&gamequit);
                 keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
                 keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
                 keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
-                if(menuright=='2'&&menuleft!='2')dir++;
-                if(menuleft=='2'&&menuright!='2')dir--;
-                if(dir==255)dir=3;if(dir==4)dir=0;
-                if(menuup=='2'&&menudown!='2'){
-                    if(dir==0&&map[currentmap][mapx][mapy-1]==0)mapy--;else if(dir==1&&map[currentmap][mapx+1][mapy]==0)mapx++;
-                    else if(dir==2&&map[currentmap][mapx][mapy+1]==0)mapy++;else if(dir==3&&map[currentmap][mapx-1][mapy]==0)mapx--;
+
+                if(!dialogue.empty()){//dialogue stuff
+                        char temp='$';
+                        dtext.setString(dialogue.substr(0,dialoguecnt));
+                            if(dialogue[dialoguecnt]==temp){
+                                if(menuconfirm=='2'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                            }
+                            else{
+                                if(menucancel=='2')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
+                                else dialoguecnt++;
+                            }
+                        dtext.setPosition({16,192});
+                    }
+                else{
+                    if(menuright=='2'&&menuleft!='2')dir++;
+                    if(menuleft=='2'&&menuright!='2')dir--;
+                    if(dir==255)dir=3;if(dir==4)dir=0;
+                    if(menuup=='2'&&menudown!='2'){
+                        if(dir==0&&!map[currentmap][mapx+(mapy-1)*mapxsize])mapy--;else if(dir==1&&!map[currentmap][mapx+1+(mapy)*mapxsize])mapx++;
+                        else if(dir==2&&!map[currentmap][mapx+(mapy+1)*mapxsize])mapy++;else if(dir==3&&!map[currentmap][mapx-1+(mapy)*mapxsize])mapx--;
+                    }
+                    if(menuup!='2'&&menudown=='2'){
+                        if(dir==0&&!map[currentmap][mapx+(mapy+1)*mapxsize])mapy++;else if(dir==1&&!map[currentmap][mapx-1+(mapy)*mapxsize])mapx--;
+                        else if(dir==2&&!map[currentmap][mapx+(mapy-1)*mapxsize])mapy--;else if(dir==3&&!map[currentmap][mapx+1+(mapy)*mapxsize])mapx++;
+                    }
+                    if(mapx==255)mapx=0;if(mapx==mapxsize)mapx--;
+                    if(mapy==255)mapy=0;if(mapy==mapysize)mapy--;
+
+                    if(menucancel=='2')break;
+
+                    if(menuconfirm=='2')
+                    switch(testnpc.interaction){
+                        case 0:{
+                            dialogue="Hello this one is\na test$";
+                            break;
+                        }
+                    }
                 }
-                if(menuup!='2'&&menudown=='2'){
-                    if(dir==0&&map[currentmap][mapx][mapy+1]==0)mapy++;else if(dir==1&&map[currentmap][mapx-1][mapy]==0)mapx--;
-                    else if(dir==2&&map[currentmap][mapx][mapy-1]==0)mapy--;else if(dir==3&&map[currentmap][mapx+1][mapy]==0)mapx++;
-                }
-                if(mapx==255)mapx=0;if(mapx==8)mapx=7;
-                if(mapy==255)mapy=0;if(mapy==8)mapy=7;
-                if(menucancel=='2')break;
+
 
                 for(unsigned char i=0;i<8;i++)checkwall[i]=false;
                 switch(dir){
                     case 0:{
-                        if(map[currentmap][mapx-1][mapy-1]!=0)checkwall[0]=true;if(map[currentmap][mapx][mapy-1]!=0)checkwall[1]=true;
-                        if(map[currentmap][mapx+1][mapy-1]!=0)checkwall[2]=true;if(map[currentmap][mapx-1][mapy]!=0)checkwall[3]=true;
-                        if(map[currentmap][mapx+1][mapy]!=0)checkwall[4]=true;if(map[currentmap][mapx-1][mapy-2]!=0)checkwall[5]=true;
-                        if(map[currentmap][mapx][mapy-2]!=0)checkwall[6]=true;if(map[currentmap][mapx+1][mapy-2]!=0)checkwall[7]=true;
+                        if(map[currentmap][mapx+1+(mapy-1)*mapxsize]!=0)checkwall[2]=true;if(map[currentmap][mapx-1+(mapy)*mapxsize]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx-1+(mapy-1)*mapxsize]!=0)checkwall[0]=true;if(map[currentmap][mapx+(mapy-1)*mapxsize]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx+1+(mapy)*mapxsize]!=0)checkwall[4]=true;if(map[currentmap][mapx-1+(mapy-2)*mapxsize]!=0)checkwall[5]=true;
+                        if(map[currentmap][mapx+(mapy-2)*mapxsize]!=0)checkwall[6]=true;if(map[currentmap][mapx+1+(mapy-2)*mapxsize]!=0)checkwall[7]=true;
                         break;
                     }
                     case 1:{
-                        if(map[currentmap][mapx+1][mapy-1]!=0)checkwall[0]=true;if(map[currentmap][mapx+1][mapy]!=0)checkwall[1]=true;
-                        if(map[currentmap][mapx+1][mapy+1]!=0)checkwall[2]=true;if(map[currentmap][mapx][mapy-1]!=0)checkwall[3]=true;
-                        if(map[currentmap][mapx][mapy+1]!=0)checkwall[4]=true;if(map[currentmap][mapx+2][mapy-1]!=0)checkwall[5]=true;
-                        if(map[currentmap][mapx+2][mapy]!=0)checkwall[6]=true;if(map[currentmap][mapx+2][mapy+1]!=0)checkwall[7]=true;
+                        if(map[currentmap][mapx+1+(mapy-1)*mapxsize]!=0)checkwall[0]=true;if(map[currentmap][mapx+1+(mapy)*mapxsize]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx+1+(mapy+1)*mapxsize]!=0)checkwall[2]=true;if(map[currentmap][mapx+(mapy-1)*mapxsize]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx+(mapy+1)*mapxsize]!=0)checkwall[4]=true;if(map[currentmap][mapx+2+(mapy-1)*mapxsize]!=0)checkwall[5]=true;
+                        if(map[currentmap][mapx+2+(mapy)*mapxsize]!=0)checkwall[6]=true;if(map[currentmap][mapx+2+(mapy+1)*mapxsize]!=0)checkwall[7]=true;
                         break;
                     }
                     case 2:{
-                        if(map[currentmap][mapx+1][mapy+1]!=0)checkwall[0]=true;if(map[currentmap][mapx][mapy+1]!=0)checkwall[1]=true;
-                        if(map[currentmap][mapx-1][mapy+1]!=0)checkwall[2]=true;if(map[currentmap][mapx+1][mapy]!=0)checkwall[3]=true;
-                        if(map[currentmap][mapx-1][mapy]!=0)checkwall[4]=true;if(map[currentmap][mapx+1][mapy+2]!=0)checkwall[5]=true;
-                        if(map[currentmap][mapx][mapy+2]!=0)checkwall[6]=true;if(map[currentmap][mapx-1][mapy+2]!=0)checkwall[7]=true;
+                        if(map[currentmap][mapx+1+(mapy+1)*mapxsize]!=0)checkwall[0]=true;if(map[currentmap][mapx+(mapy+1)*mapxsize]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx-1+(mapy+1)*mapxsize]!=0)checkwall[2]=true;if(map[currentmap][mapx+1+(mapy)*mapxsize]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx-1+(mapy)*mapxsize]!=0)checkwall[4]=true;if(map[currentmap][mapx+1+(mapy+2)*mapxsize]!=0)checkwall[5]=true;
+                        if(map[currentmap][mapx+(mapy+2)*mapxsize]!=0)checkwall[6]=true;if(map[currentmap][mapx-1+(mapy+2)*mapxsize]!=0)checkwall[7]=true;
                         break;
                     }
                     case 3:{
-                        if(map[currentmap][mapx-1][mapy+1]!=0)checkwall[0]=true;if(map[currentmap][mapx-1][mapy]!=0)checkwall[1]=true;
-                        if(map[currentmap][mapx-1][mapy-1]!=0)checkwall[2]=true;if(map[currentmap][mapx][mapy+1]!=0)checkwall[3]=true;
-                        if(map[currentmap][mapx][mapy-1]!=0)checkwall[4]=true;if(map[currentmap][mapx-2][mapy+1]!=0)checkwall[5]=true;
-                        if(map[currentmap][mapx-2][mapy]!=0)checkwall[6]=true;if(map[currentmap][mapx-2][mapy-1]!=0)checkwall[7]=true;
+                        if(map[currentmap][mapx-1+(mapy+1)*mapxsize]!=0)checkwall[0]=true;if(map[currentmap][mapx-1+(mapy)*mapxsize]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx-1+(mapy-1)*mapxsize]!=0)checkwall[2]=true;if(map[currentmap][mapx+(mapy+1)*mapxsize]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx+(mapy-1)*mapxsize]!=0)checkwall[4]=true;if(map[currentmap][mapx-2+(mapy+1)*mapxsize]!=0)checkwall[5]=true;
+                        if(map[currentmap][mapx-2+(mapy)*mapxsize]!=0)checkwall[6]=true;if(map[currentmap][mapx-2+(mapy-1)*mapxsize]!=0)checkwall[7]=true;
                         break;
                     }
                 }
@@ -4372,17 +4404,31 @@ int main()
                 window.clear();
                 renderTexture.clear();
                 renderTexture.draw(mapui);
-                sf::RectangleShape rectangle({16.f, 16.f});
+                sf::RectangleShape rectangle({4.f, 4.f}),npc({32.f,64.f}),border({256.f,48.f});
+
+                border.setFillColor(sf::Color::Black);
+                if(testnpc.dir-dir==2||int(testnpc.dir)-dir==-2)npc.setPosition({112.f,136.f});
+                else if(testnpc.dir-dir==1||int(testnpc.dir)-dir==-1)npc.setPosition({48.f,136.f});
+                else npc.setPosition({176.f,136.f});
+                if((testnpc.dir!=dir)&&(testnpc.x==mapx&&testnpc.y==mapy))renderTexture.draw(npc);
+
+                renderTexture.draw(border);
+                border.setPosition({0.f,192.f});
+                renderTexture.draw(border);
+
                 for(unsigned char i=0;i<8;i++){
                     for(unsigned char j=0;j<8;j++){
-                        rectangle.setPosition({16.f*i,16.f*j});
-                        if(i==mapx&&j==mapy)rectangle.setFillColor(sf::Color::Blue);
-                        else if(map[currentmap][i][j]==0)rectangle.setFillColor(sf::Color::Transparent);
-                        else if(map[currentmap][i][j]==1)rectangle.setFillColor(sf::Color::Magenta);
+                        rectangle.setPosition({4.f*i+160.f,4.f*j});
+                        if(i==mapx&&j==mapy)rectangle.setFillColor(sf::Color::Cyan);
+                        else if(i==testnpc.x&&j==testnpc.y)rectangle.setFillColor(sf::Color::Yellow);
+                        else if(!map[currentmap][i+j*mapxsize])rectangle.setFillColor(sf::Color::Transparent);
+                        else if(map[currentmap][i+j*mapxsize])rectangle.setFillColor(sf::Color::Blue);
                         renderTexture.draw(rectangle);
                     }
                 }
                 
+                if(!dialogue.empty())renderTexture.draw(dtext);
+
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
                 sf::Sprite rt(texture);
