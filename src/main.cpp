@@ -1259,7 +1259,6 @@ public:
 };
 
 
-
 class player
 {
 public:
@@ -1888,6 +1887,60 @@ private:
 
 };
 
+class storymapui : public sf::Drawable, public sf::Transformable
+{
+public:
+    bool load(const std::string& tileset)
+    {
+        if (!m_tileset.loadFromFile(tileset))return false;
+        return true;
+    }
+    void create(bool check[]){
+        m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+        m_vertices.resize(32);
+        m_tileset.setRepeated(true);
+        sf::Vertex* tri = &m_vertices[12];
+        tri[0].position = sf::Vector2f(0,32);
+        tri[1].position = sf::Vector2f(64,64);
+        tri[2].position = sf::Vector2f(0,208);
+        tri[3].position = sf::Vector2f(0,208);
+        tri[4].position = sf::Vector2f(64,176);
+        tri[5].position = sf::Vector2f(64,64);
+
+        tri[6].position = sf::Vector2f(256,32);
+        tri[7].position = sf::Vector2f(192,64);
+        tri[8].position = sf::Vector2f(256,208);
+        tri[9].position = sf::Vector2f(256,208);
+        tri[10].position = sf::Vector2f(192,176);
+        tri[11].position = sf::Vector2f(192,64);
+
+        tri[12].position = sf::Vector2f(64,64);
+        tri[13].position = sf::Vector2f(192,64);
+        tri[14].position = sf::Vector2f(64,176);
+        tri[15].position = sf::Vector2f(192,64);
+        tri[16].position = sf::Vector2f(64,176);
+        tri[17].position = sf::Vector2f(192,176);
+        
+        if(check[3])for(short i=0;i<6;i++)tri[i].color=sf::Color (170, 170, 170, 255);
+        else for(short i=0;i<6;i++)tri[i].color=sf::Color::Transparent;
+        if(check[4])for(short i=0;i<6;i++)tri[i+6].color=sf::Color (170, 170, 170, 255);
+        else  for(short i=0;i<6;i++)tri[i+6].color=sf::Color::Transparent;
+        if(check[1])for(short i=0;i<6;i++)tri[i+12].color=sf::Color (85, 85, 85, 255);
+        else  for(short i=0;i<6;i++)tri[i+12].color=sf::Color::Transparent;
+    }
+
+private:
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+
+        //states.texture = &m_tileset;
+        target.draw(m_vertices,states);
+    }
+   sf::VertexArray m_vertices;
+   sf::Texture m_tileset;
+};
 
 class inputlist : public sf::Drawable, public sf::Transformable
 {
@@ -4164,6 +4217,8 @@ int main()
                 {0,1,1,1,1,1,1,0},
                 {0,0,0,0,0,0,0,0}}},
                 mapx=0,mapy=0;
+            storymapui mapui;
+            bool checkwall[5]={false};
             while (window.isOpen()&&!gamequit){
                 windowset(window,&gamequit);
                 keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
@@ -4184,14 +4239,43 @@ int main()
                 if(mapy==255)mapy=0;if(mapy==8)mapy=7;
                 if(menucancel=='2')break;
 
+                for(unsigned char i=0;i<8;i++)checkwall[i]=false;
+                switch(dir){
+                    case 0:{
+                        if(map[currentmap][mapx-1][mapy-1]!=0)checkwall[0]=true;if(map[currentmap][mapx][mapy-1]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx+1][mapy-1]!=0)checkwall[2]=true;if(map[currentmap][mapx-1][mapy]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx+1][mapy]!=0)checkwall[4]=true;
+                        break;
+                    }
+                    case 1:{
+                        if(map[currentmap][mapx+1][mapy-1]!=0)checkwall[0]=true;if(map[currentmap][mapx+1][mapy]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx+1][mapy+1]!=0)checkwall[2]=true;if(map[currentmap][mapx][mapy-1]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx][mapy+1]!=0)checkwall[4]=true;
+                        break;
+                    }
+                    case 2:{
+                        if(map[currentmap][mapx+1][mapy+1]!=0)checkwall[0]=true;if(map[currentmap][mapx][mapy+1]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx-1][mapy+1]!=0)checkwall[2]=true;if(map[currentmap][mapx+1][mapy]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx-1][mapy]!=0)checkwall[4]=true;
+                        break;
+                    }
+                    case 3:{
+                        if(map[currentmap][mapx-1][mapy+1]!=0)checkwall[0]=true;if(map[currentmap][mapx-1][mapy]!=0)checkwall[1]=true;
+                        if(map[currentmap][mapx-1][mapy-1]!=0)checkwall[2]=true;if(map[currentmap][mapx][mapy+1]!=0)checkwall[3]=true;
+                        if(map[currentmap][mapx][mapy-1]!=0)checkwall[4]=true;
+                        break;
+                    }
+                }
+                mapui.create(checkwall);
                 window.clear();
                 renderTexture.clear();
+                renderTexture.draw(mapui);
                 sf::RectangleShape rectangle({16.f, 16.f});
                 for(unsigned char i=0;i<8;i++){
                     for(unsigned char j=0;j<8;j++){
                         rectangle.setPosition({16.f*i,16.f*j});
                         if(i==mapx&&j==mapy)rectangle.setFillColor(sf::Color::Blue);
-                        else if(map[currentmap][i][j]==0)rectangle.setFillColor(sf::Color::Black);
+                        else if(map[currentmap][i][j]==0)rectangle.setFillColor(sf::Color::Transparent);
                         else if(map[currentmap][i][j]==1)rectangle.setFillColor(sf::Color::Magenta);
                         renderTexture.draw(rectangle);
                     }
