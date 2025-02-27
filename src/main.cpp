@@ -1905,130 +1905,110 @@ public:
         m_tileset.setRepeated(true);
         sf::Vertex* tri = &m_vertices[48];
         if(check[3]){
-            tri[0].position = sf::Vector2f(0,32);
-            tri[1].position = sf::Vector2f(64,64);
-            tri[2].position = sf::Vector2f(0,208);
-            tri[3].position = sf::Vector2f(0,208);
-            tri[4].position = sf::Vector2f(64,176);
-            tri[5].position = sf::Vector2f(64,64);
-            for(short i=0;i<6;i++)tri[i].color=sf::Color (170, 170, 170, 255);
+            tri[42].position = sf::Vector2f(0,32);
+            tri[43].position = sf::Vector2f(64,64);
+            tri[44].position = sf::Vector2f(0,208);
+            tri[45].position = sf::Vector2f(0,208);
+            tri[46].position = sf::Vector2f(64,176);
+            tri[47].position = sf::Vector2f(64,64);
+            for(short i=0;i<6;i++)tri[i+42].color=sf::Color (170, 170, 170, 255);
         }
         else if(check[0]){
-            tri[0].position = sf::Vector2f(0,64);
-            tri[1].position = sf::Vector2f(64,64);
-            tri[2].position = sf::Vector2f(0,176);
-            tri[3].position = sf::Vector2f(64,64);
-            tri[4].position = sf::Vector2f(0,176);
-            tri[5].position = sf::Vector2f(64,176);
-            for(short i=0;i<6;i++)tri[i].color=sf::Color (85, 85, 85, 255);
+            tri[42].position = sf::Vector2f(0,64);
+            tri[43].position = sf::Vector2f(64,64);
+            tri[44].position = sf::Vector2f(0,176);
+            tri[45].position = sf::Vector2f(64,64);
+            tri[46].position = sf::Vector2f(0,176);
+            tri[47].position = sf::Vector2f(64,176);
+            for(short i=0;i<6;i++)tri[i+42].color=sf::Color (85, 85, 85, 255);
         }
-        else for(short i=0;i<6;i++)tri[i].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+42].color=sf::Color::Transparent;
 
         if(check[4]){
-            tri[6].position = sf::Vector2f(256,32);
-            tri[7].position = sf::Vector2f(192,64);
-            tri[8].position = sf::Vector2f(256,208);
-            tri[9].position = sf::Vector2f(256,208);
-            tri[10].position = sf::Vector2f(192,176);
-            tri[11].position = sf::Vector2f(192,64);
-            for(short i=0;i<6;i++)tri[i+6].color=sf::Color (170, 170, 170, 255);
+            tri[36].position = sf::Vector2f(256,32);
+            tri[37].position = sf::Vector2f(192,64);
+            tri[38].position = sf::Vector2f(256,208);
+            tri[39].position = sf::Vector2f(256,208);
+            tri[40].position = sf::Vector2f(192,176);
+            tri[41].position = sf::Vector2f(192,64);
+            for(short i=0;i<6;i++)tri[i+36].color=sf::Color (170, 170, 170, 255);
         }
         else if(check[2]){
-            tri[6].position = sf::Vector2f(256,64);
-            tri[7].position = sf::Vector2f(192,64);
-            tri[8].position = sf::Vector2f(256,176);
-            tri[9].position = sf::Vector2f(192,64);
-            tri[10].position = sf::Vector2f(256,176);
-            tri[11].position = sf::Vector2f(192,176);
-            for(short i=0;i<6;i++)tri[i+6].color=sf::Color (85, 85, 85, 255);
-        }
-        else for(short i=0;i<6;i++)tri[i+6].color=sf::Color::Transparent;
-
-        if(check[1]){
-            tri[12].position = sf::Vector2f(64,64);
-            tri[13].position = sf::Vector2f(192,64);
-            tri[14].position = sf::Vector2f(64,176);
-            tri[15].position = sf::Vector2f(192,64);
-            tri[16].position = sf::Vector2f(64,176);
-            tri[17].position = sf::Vector2f(192,176);
-            for(short i=0;i<6;i++)tri[i+12].color=sf::Color (85, 85, 85, 255);
-        }
-        else for(short i=0;i<6;i++)tri[i+12].color=sf::Color::Transparent;
-
-        if(!check[1]&&check[0]){
-            tri[18].position = sf::Vector2f(64,64);
-            tri[19].position = sf::Vector2f(96,80);
-            tri[20].position = sf::Vector2f(64,176);
-            tri[21].position = sf::Vector2f(96,80);
-            tri[22].position = sf::Vector2f(64,176);
-            tri[23].position = sf::Vector2f(96,160);
-            for(short i=0;i<6;i++)tri[i+18].color=sf::Color (170, 170, 170, 255);
-        }
-        else for(short i=0;i<6;i++)tri[i+18].color=sf::Color::Transparent;
-
-        if(!check[1]&&check[2]){
-            tri[24].position = sf::Vector2f(192,64);
-            tri[25].position = sf::Vector2f(160,80);
-            tri[26].position = sf::Vector2f(192,176);
-            tri[27].position = sf::Vector2f(160,80);
-            tri[28].position = sf::Vector2f(192,176);
-            tri[29].position = sf::Vector2f(160,160);
-            for(short i=0;i<6;i++)tri[i+24].color=sf::Color (170, 170, 170, 255);
-        }
-        else for(short i=0;i<6;i++)tri[i+24].color=sf::Color::Transparent;
-
-        if(check[6]&&!check[1]){
-            tri[30].position = sf::Vector2f(96,80);
-            tri[31].position = sf::Vector2f(160,80);
-            tri[32].position = sf::Vector2f(96,160);
-            tri[33].position = sf::Vector2f(160,80);
-            tri[34].position = sf::Vector2f(96,160);
-            tri[35].position = sf::Vector2f(160,160);
-            for(short i=0;i<6;i++)tri[i+30].color=sf::Color (85, 85, 85, 255);
-        }
-        else for(short i=0;i<6;i++)tri[i+30].color=sf::Color::Transparent;
-
-        if(check[5]&&!check[0]){
-            if(check[3]){
-                tri[36].position = sf::Vector2f(64,80);
-                tri[37].position = sf::Vector2f(96,80);
-                tri[38].position = sf::Vector2f(64,160);
-                tri[39].position = sf::Vector2f(96,80);
-                tri[40].position = sf::Vector2f(64,160);
-                tri[41].position = sf::Vector2f(96,160);
-            }
-            else{
-                tri[36].position = sf::Vector2f(32,80);
-                tri[37].position = sf::Vector2f(96,80);
-                tri[38].position = sf::Vector2f(32,160);
-                tri[39].position = sf::Vector2f(96,80);
-                tri[40].position = sf::Vector2f(32,160);
-                tri[41].position = sf::Vector2f(96,160);
-            }
+            tri[36].position = sf::Vector2f(256,64);
+            tri[37].position = sf::Vector2f(192,64);
+            tri[38].position = sf::Vector2f(256,176);
+            tri[39].position = sf::Vector2f(192,64);
+            tri[40].position = sf::Vector2f(256,176);
+            tri[41].position = sf::Vector2f(192,176);
             for(short i=0;i<6;i++)tri[i+36].color=sf::Color (85, 85, 85, 255);
         }
         else for(short i=0;i<6;i++)tri[i+36].color=sf::Color::Transparent;
 
-        if(check[7]&&!check[2]){
-            if(check[4]){
-                tri[42].position = sf::Vector2f(160,80);
-                tri[43].position = sf::Vector2f(192,80);
-                tri[44].position = sf::Vector2f(160,160);
-                tri[45].position = sf::Vector2f(192,80);
-                tri[46].position = sf::Vector2f(160,160);
-                tri[47].position = sf::Vector2f(192,160);
-            }
-            else{
-                tri[42].position = sf::Vector2f(160,80);
-                tri[43].position = sf::Vector2f(224,80);
-                tri[44].position = sf::Vector2f(160,160);
-                tri[45].position = sf::Vector2f(224,80);
-                tri[46].position = sf::Vector2f(160,160);
-                tri[47].position = sf::Vector2f(224,160);
-            }
-            for(short i=0;i<6;i++)tri[i+42].color=sf::Color (85, 85, 85, 255);
+        if(check[1]){
+            tri[30].position = sf::Vector2f(64,64);
+            tri[31].position = sf::Vector2f(192,64);
+            tri[32].position = sf::Vector2f(64,176);
+            tri[33].position = sf::Vector2f(192,64);
+            tri[34].position = sf::Vector2f(64,176);
+            tri[35].position = sf::Vector2f(192,176);
+            for(short i=0;i<6;i++)tri[i+30].color=sf::Color (85, 85, 85, 255);
         }
-        else for(short i=0;i<6;i++)tri[i+42].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+30].color=sf::Color::Transparent;
+
+        if(!check[1]&&check[0]){
+            tri[24].position = sf::Vector2f(64,64);
+            tri[25].position = sf::Vector2f(96,80);
+            tri[26].position = sf::Vector2f(64,176);
+            tri[27].position = sf::Vector2f(96,80);
+            tri[28].position = sf::Vector2f(64,176);
+            tri[29].position = sf::Vector2f(96,160);
+            for(short i=0;i<6;i++)tri[i+24].color=sf::Color (170, 170, 170, 255);
+        }
+        else for(short i=0;i<6;i++)tri[i+24].color=sf::Color::Transparent;
+
+        if(!check[1]&&check[2]){
+            tri[18].position = sf::Vector2f(192,64);
+            tri[19].position = sf::Vector2f(160,80);
+            tri[20].position = sf::Vector2f(192,176);
+            tri[21].position = sf::Vector2f(160,80);
+            tri[22].position = sf::Vector2f(192,176);
+            tri[23].position = sf::Vector2f(160,160);
+            for(short i=0;i<6;i++)tri[i+18].color=sf::Color (170, 170, 170, 255);
+        }
+        else for(short i=0;i<6;i++)tri[i+18].color=sf::Color::Transparent;
+
+        if(check[6]&&!check[1]){
+            tri[12].position = sf::Vector2f(96,80);
+            tri[13].position = sf::Vector2f(160,80);
+            tri[14].position = sf::Vector2f(96,160);
+            tri[15].position = sf::Vector2f(160,80);
+            tri[16].position = sf::Vector2f(96,160);
+            tri[17].position = sf::Vector2f(160,160);
+            for(short i=0;i<6;i++)tri[i+12].color=sf::Color (85, 85, 85, 255);
+        }
+        else for(short i=0;i<6;i++)tri[i+12].color=sf::Color::Transparent;
+
+        if(check[5]&&!check[0]){
+            tri[6].position = sf::Vector2f(32,80);
+            tri[7].position = sf::Vector2f(96,80);
+            tri[8].position = sf::Vector2f(32,160);
+            tri[9].position = sf::Vector2f(96,80);
+            tri[10].position = sf::Vector2f(32,160);
+            tri[11].position = sf::Vector2f(96,160);
+            for(short i=0;i<6;i++)tri[i+6].color=sf::Color (85, 85, 85, 255);
+        }
+        else for(short i=0;i<6;i++)tri[i+6].color=sf::Color::Transparent;
+
+        if(check[7]&&!check[2]){
+            tri[0].position = sf::Vector2f(160,80);
+            tri[1].position = sf::Vector2f(224,80);
+            tri[2].position = sf::Vector2f(160,160);
+            tri[3].position = sf::Vector2f(224,80);
+            tri[4].position = sf::Vector2f(160,160);
+            tri[5].position = sf::Vector2f(224,160);
+            for(short i=0;i<6;i++)tri[i].color=sf::Color (85, 85, 85, 255);
+        }
+        else for(short i=0;i<6;i++)tri[i].color=sf::Color::Transparent;
     }
 
 private:
@@ -4308,6 +4288,7 @@ int main()
             }
         }
         else if(menuselect==1){//story mode
+            menus.setmenu(6,92,72,0,16,1);
             unsigned char currentmap=0,mapxsize=8,mapysize=8,mapx=3,mapy=3,dir=0;//0=up,1=right,2=down,3=left
             short dialoguecnt=0;
             bool map[64][256]
@@ -4319,7 +4300,7 @@ int main()
                 1,0,1,1,1,1,0,1,
                 1,0,1,1,1,1,0,1,
                 1,0,0,0,0,1,1,1,
-                1,1,1,1,1,1,1,1}};
+                1,1,1,1,1,1,1,1}},pause=false,Enterkey=false;
             storymapui mapui;
             sf::Text dtext(font);dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
             mapnpc testnpc;testnpc.dir=3;testnpc.x=5;testnpc.y=1;
@@ -4334,7 +4315,7 @@ int main()
                         char temp='$';
                         dtext.setString(dialogue.substr(0,dialoguecnt));
                             if(dialogue[dialoguecnt]==temp){
-                                if(menuconfirm=='2'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                                if(menuconfirm=='2'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;dtext.setString(dialogue);}
                             }
                             else{
                                 if(menucancel=='2')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
@@ -4342,7 +4323,7 @@ int main()
                             }
                         dtext.setPosition({16,192});
                     }
-                else{
+                else if(!pause){
                     if(menuright=='2'&&menuleft!='2')dir++;
                     if(menuleft=='2'&&menuright!='2')dir--;
                     if(dir==255)dir=3;if(dir==4)dir=0;
@@ -4357,17 +4338,26 @@ int main()
                     if(mapx==255)mapx=0;if(mapx==mapxsize)mapx--;
                     if(mapy==255)mapy=0;if(mapy==mapysize)mapy--;
 
-                    if(menucancel=='2')break;
-
                     if(menuconfirm=='2')
-                    switch(testnpc.interaction){
-                        case 0:{
-                            dialogue="Hello this one is\na test$";
-                            break;
+                    if(testnpc.x==mapx&&testnpc.y==mapy)
+                        switch(testnpc.interaction){
+                            case 0:{
+                                dialogue="Hello this one is\na test$";
+                                break;
+                            }
                         }
-                    }
                 }
 
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                menus.setcolor(6,!pause,menuselect);
+                if(pause){//pause menu
+                    if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
+                    else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
+                    if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
+                    //else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
+                    //else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
+                    else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
+                }
 
                 for(unsigned char i=0;i<8;i++)checkwall[i]=false;
                 switch(dir){
@@ -4403,10 +4393,19 @@ int main()
                 mapui.create(checkwall);
                 window.clear();
                 renderTexture.clear();
-                renderTexture.draw(mapui);
-                sf::RectangleShape rectangle({4.f, 4.f}),npc({32.f,64.f}),border({256.f,48.f});
+
+                sf::RectangleShape rectangle({4.f, 4.f}),npc({32.f,64.f}),border({256.f,48.f}),floor({256.f,36.f});
 
                 border.setFillColor(sf::Color::Black);
+
+                floor.setPosition({0.f,160.f});
+                floor.setFillColor(sf::Color(0,0,170));
+                renderTexture.draw(floor);
+                floor.setPosition({0.f,44.f});
+                floor.setFillColor(sf::Color(85,85,255));
+                renderTexture.draw(floor);
+
+                renderTexture.draw(mapui);
                 if(testnpc.dir-dir==2||int(testnpc.dir)-dir==-2)npc.setPosition({112.f,136.f});
                 else if(testnpc.dir-dir==1||int(testnpc.dir)-dir==-1)npc.setPosition({48.f,136.f});
                 else npc.setPosition({176.f,136.f});
@@ -4418,7 +4417,7 @@ int main()
 
                 for(unsigned char i=0;i<8;i++){
                     for(unsigned char j=0;j<8;j++){
-                        rectangle.setPosition({4.f*i+160.f,4.f*j});
+                        rectangle.setPosition({4.f*i+160.f,4.f*j+8.f});
                         if(i==mapx&&j==mapy)rectangle.setFillColor(sf::Color::Cyan);
                         else if(i==testnpc.x&&j==testnpc.y)rectangle.setFillColor(sf::Color::Yellow);
                         else if(!map[currentmap][i+j*mapxsize])rectangle.setFillColor(sf::Color::Transparent);
@@ -4429,12 +4428,18 @@ int main()
                 
                 if(!dialogue.empty())renderTexture.draw(dtext);
 
+                if(pause){border.setSize({256.f,240.f});border.setPosition({0.f,0.f});border.setFillColor(sf::Color(0,0,0,170));
+                renderTexture.draw(border);renderTexture.draw(menus);}
+
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
                 sf::Sprite rt(texture);
                 window.draw(rt);
                 window.display();
             }
+            gamequit=false;
+            menus.setmenu(6,144,120,0,16,0);
+            menuselect=0;
         }
         else{//the ones where you fight a lot
         if(menuselect==2){//ipselect
@@ -4712,18 +4717,11 @@ int main()
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
-                    p1.right=true;
-                    p2.right=false;
-
-
-
+                    p1.right=true;p2.right=false;
                 while (window.isOpen()&&!gamequit){
                     windowset(window,&gamequit);
-
-                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F2)){if(!F2key){F2key=true;if(framedatashow)framedatashow=false;else framedatashow=true;}}else F2key=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
-                    if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
                     inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
                     inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
