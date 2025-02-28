@@ -1369,20 +1369,37 @@ public:
             tri[4].texCoords = sf::Vector2f(64+tcode*64,i*16);
             tri[5].texCoords = sf::Vector2f(64+tcode*64,i*16+16);
         }
-
+        textcoordinates=tcode;
     }
 
-    void setcolor(short cnt,bool invisible,short placeinput){
+    void setcolor(short cnt,bool invisible,bool shading,short placeinput){
         for(short i=0;i<cnt;i++){
             sf::Vertex* tri = &m_vertices[6*i];
             for(short j=0;j<6;j++){
                 if(invisible)tri[j].color=sf::Color::Transparent;
                 else if(placeinput==i)tri[j].color=sf::Color(85,85,85,255);
                 else tri[j].color=sf::Color(255,255,255,255);
+                if(shading&&placeinput==i){
+                    tri[j].color=sf::Color(255,255,255,255);
+                    tri[0].texCoords = sf::Vector2f(64+textcoordinates*64,i*16);
+                    tri[1].texCoords = sf::Vector2f(128+textcoordinates*64,i*16);
+                    tri[2].texCoords = sf::Vector2f(64+textcoordinates*64,i*16+16);
+                    tri[3].texCoords = sf::Vector2f(64+textcoordinates*64,i*16+16);
+                    tri[4].texCoords = sf::Vector2f(128+textcoordinates*64,i*16);
+                    tri[5].texCoords = sf::Vector2f(128+textcoordinates*64,i*16+16);
+                }
+                else{
+                    tri[0].texCoords = sf::Vector2f(textcoordinates*64,i*16);
+                    tri[1].texCoords = sf::Vector2f(64+textcoordinates*64,i*16);
+                    tri[2].texCoords = sf::Vector2f(textcoordinates*64,i*16+16);
+                    tri[3].texCoords = sf::Vector2f(textcoordinates*64,i*16+16);
+                    tri[4].texCoords = sf::Vector2f(64+textcoordinates*64,i*16);
+                    tri[5].texCoords = sf::Vector2f(64+textcoordinates*64,i*16+16);
+                }
             }
         }
     }
-
+    short textcoordinates;
 private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -1544,10 +1561,10 @@ public:
         }
         else if(code==2){//hit circle
             m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
-            m_vertices.resize(64);
-            sf::Vertex* circle = &m_vertices[32];
-            for(unsigned int i=0;i<12;i++){
-                float angle=i * 3.14f / 6.f,angle2=(i+1) * 3.14f / 6.f;
+            m_vertices.resize(192);
+            sf::Vertex* circle = &m_vertices[96];
+            for(unsigned int i=0;i<36;i++){
+                float angle=i * 3.14f / 18.f,angle2=(i+1) * 3.14f / 18.f;
                 circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)*speed+x+bgx,(std::sin(angle))*(4+frame)*speed+y);
                 circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)*speed+x+bgx,(std::sin(angle2))*(4+frame)*speed+y);
                 if(frame>3&&frame%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
@@ -4018,7 +4035,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
 void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player *p1,player *p2,superflash sf,healthbar hb,meterbar mb,timeui time,comboui cui,inputlist p1ilist,inputlist p2ilist,
             charactergraphics p1graphics,charactergraphics p2graphics,charactergraphics p1shadow,charactergraphics p2shadow,menu menus,sf::Shader &shader,textbox tbox,
             sf::Text combotext,sf::Text dtext,sf::Text frametext,std::deque<char>p1keylist,std::deque<char>p2keylist,short framedata,std::string dialogue,short superstop,
-            bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool *playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture){
+            bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool *playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture,sf::Sprite pixelshadowthing){
     #define P1 (*p1)
     #define P2 (*p2)
 
@@ -4059,9 +4076,6 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     p2graphics.setPosition({floor(P2.x-64+bgx),floor(P2.y-64)});p2shadow.setPosition({floor(P2.x-64+bgx),floor(184+(P2.y-176)/8)});
     background.setPosition({floor(bgx-125),0.f});frametext.setPosition({125.f,33.f});
 
-
-    sf::RectangleShape blackscreen({256.f, 240.f});blackscreen.setFillColor(sf::Color(0,0,0,170));
-
     p1graphics.setanim(P1.anim,P1.right);p2graphics.setanim(P2.anim,P2.right);p1shadow.setanim(P1.anim,P1.right);p2shadow.setanim(P2.anim,P2.right);
 
 
@@ -4090,7 +4104,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         }
     }
 
-    if(superstop>0){renderTexture.draw(blackscreen);renderTexture.draw(sf);}
+    if(superstop>0){renderTexture.draw(pixelshadowthing);renderTexture.draw(sf);}
 
     if(P1.hit)*playertop=true;else if(P2.hit)*playertop=false;
 
@@ -4099,9 +4113,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     if(*playertop){
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
-        shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-        shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-        shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         renderTexture.draw(p1graphics,&shader);
         if(!P1.proj.empty()){
@@ -4116,9 +4130,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     }
 
     if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
-    shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
-    shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
-    shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));
+    shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
+    shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
+    shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));
     if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
     renderTexture.draw(p2graphics,&shader);
     if(!P2.proj.empty()){
@@ -4133,9 +4147,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     if(!*playertop){
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
-        shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-        shader.setUniform("r6",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g6",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b6",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-        shader.setUniform("r5",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g5",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b5",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         renderTexture.draw(p1graphics,&shader);
         if(!P1.proj.empty()){
@@ -4175,7 +4189,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     if(framedatashow)renderTexture.draw(frametext);
 
-    if(pause){renderTexture.draw(blackscreen);renderTexture.draw(menus);}renderTexture.display();
+    if(pause){renderTexture.draw(pixelshadowthing);renderTexture.draw(menus);}renderTexture.display();
     const sf::Texture& texture = renderTexture.getTexture();sf::Sprite rt(texture);
 
     window.draw(rt);
@@ -4201,8 +4215,10 @@ int main()
                 upkey2=sf::Keyboard::Key::Up,downkey2=sf::Keyboard::Key::Down,leftkey2=sf::Keyboard::Key::Left,rightkey2=sf::Keyboard::Key::Right,
                 lightkey2=sf::Keyboard::Key::Z,mediumkey2=sf::Keyboard::Key::X,heavykey2=sf::Keyboard::Key::C,
                 grabkey2=sf::Keyboard::Key::LControl,specialkey2=sf::Keyboard::Key::LAlt;
-    sf::Texture titletexture;
+    sf::Texture titletexture,pixelshadowthing;
     if (!titletexture.loadFromFile("title.png"))window.close();
+    if(!pixelshadowthing.loadFromFile("darkfilter.png"))window.close();
+    sf::Sprite pausedark(pixelshadowthing);
     sf::Sprite title(titletexture);
 
     std::vector<sf::SoundChannel>channelMap{sf::SoundChannel::FrontLeft,sf::SoundChannel::FrontRight};
@@ -4251,7 +4267,7 @@ int main()
 
         if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
         else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
-        menus.setcolor(6,false,menuselect);
+        menus.setcolor(6,false,false,menuselect);
 
         window.clear();
         renderTexture.clear();
@@ -4361,7 +4377,7 @@ int main()
             }
         }
         else if(menuselect==1){//story mode
-            menus.setmenu(6,92,72,0,16,1);
+            menus.setmenu(6,176,48,0,24,2);
             unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,dir=0;//0=up,1=right,2=down,3=left
             short dialoguecnt=0;
             bool map[64][256]
@@ -4434,8 +4450,8 @@ int main()
                             }
                 }
 
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
-                menus.setcolor(6,!pause,menuselect);
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)&&dialogue.empty()){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                menus.setcolor(6,!pause,true,menuselect);
                 if(pause){//pause menu
                     if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
                     else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
@@ -4524,8 +4540,13 @@ int main()
                 
                 if(!dialogue.empty())renderTexture.draw(dtext);
 
-                if(pause){border.setSize({256.f,240.f});border.setPosition({0.f,0.f});border.setFillColor(sf::Color(0,0,0,170));
-                renderTexture.draw(border);renderTexture.draw(menus);}
+                
+                if(pause){
+                    shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
+                    shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
+                    shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
+                    renderTexture.draw(pausedark);renderTexture.draw(menus,&shader);
+                    }
 
                 renderTexture.display();
                 const sf::Texture& texture = renderTexture.getTexture();
@@ -4867,7 +4888,7 @@ int main()
                         for(short i=0;i<effectslist.size();i++){effectslist[i].create();if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
                     }
 
-                    menus.setcolor(6,!pause,menuselect);
+                    menus.setcolor(6,!pause,false,menuselect);
                     if(pause){//pause menu
                         keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
                         keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
@@ -4897,7 +4918,7 @@ int main()
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
-                              background,healthui,meterui,p1texture,p2texture);
+                              background,healthui,meterui,p1texture,p2texture,pausedark);
                     window.display();
                 }
 
@@ -5029,7 +5050,7 @@ int main()
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
-                              background,healthui,meterui,p1texture,p2texture);
+                              background,healthui,meterui,p1texture,p2texture,pausedark);
                     window.display();
 
 
@@ -5461,7 +5482,7 @@ int main()
                         if(p2keylist.size()>40)for(short i=0;i<5;i++)p2keylist.pop_back();
                     }
 
-                    menus.setcolor(6,!pause,menuselect);
+                    menus.setcolor(6,!pause,false,menuselect);
                     if(pause){//pause menu
                         keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
                         keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
@@ -5491,7 +5512,7 @@ int main()
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
-                              background,healthui,meterui,p1texture,p2texture);
+                              background,healthui,meterui,p1texture,p2texture,pausedark);
                     window.display();
 
                 }
