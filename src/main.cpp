@@ -1126,6 +1126,14 @@ static unsigned char animlib[16][128][32][2]=
                     {15,11,13},/*CGA*/
                     {11,13,0},/*CGA2*/
                     {9,3,1},/*Sinclairsuper'd*/
+                    },
+                    cgapalettes[6][4]={
+                    {0,2,4,6},
+                    {0,10,12,14},
+                    {0,3,5,7},
+                    {0,11,13,15},
+                    {0,3,4,7},
+                    {0,11,12,15},
                     };
 unsigned char p1color=0,p2color=0;
 float comboscaling=100.0,bgx=0,
@@ -1895,7 +1903,7 @@ public:
         if (!m_tileset.loadFromFile(tileset))return false;
         return true;
     }
-    void create(bool check[]){
+    void create(bool check[],sf::Color wallcolor){
         m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(180);
         m_tileset.setRepeated(true);
@@ -1907,7 +1915,7 @@ public:
             tri[57].position = sf::Vector2f(0,208);
             tri[58].position = sf::Vector2f(64,176);
             tri[59].position = sf::Vector2f(64,64);
-            for(short i=0;i<6;i++)tri[i+54].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+54].color=wallcolor;
         }
         else if(check[0]){
             tri[54].position = sf::Vector2f(0,64);
@@ -1916,7 +1924,7 @@ public:
             tri[57].position = sf::Vector2f(64,64);
             tri[58].position = sf::Vector2f(0,176);
             tri[59].position = sf::Vector2f(64,176);
-            for(short i=0;i<6;i++)tri[i+54].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+54].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+54].color=sf::Color::Transparent;
 
@@ -1927,7 +1935,7 @@ public:
             tri[51].position = sf::Vector2f(256,208);
             tri[52].position = sf::Vector2f(192,176);
             tri[53].position = sf::Vector2f(192,64);
-            for(short i=0;i<6;i++)tri[i+48].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+48].color=wallcolor;
         }
         else if(check[2]){
             tri[48].position = sf::Vector2f(256,64);
@@ -1936,7 +1944,7 @@ public:
             tri[51].position = sf::Vector2f(192,64);
             tri[52].position = sf::Vector2f(256,176);
             tri[53].position = sf::Vector2f(192,176);
-            for(short i=0;i<6;i++)tri[i+48].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+48].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+48].color=sf::Color::Transparent;
 
@@ -1947,7 +1955,7 @@ public:
             tri[45].position = sf::Vector2f(192,64);
             tri[46].position = sf::Vector2f(64,176);
             tri[47].position = sf::Vector2f(192,176);
-            for(short i=0;i<6;i++)tri[i+42].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+42].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+42].color=sf::Color::Transparent;
 
@@ -1958,7 +1966,7 @@ public:
             tri[39].position = sf::Vector2f(96,80);
             tri[40].position = sf::Vector2f(64,176);
             tri[41].position = sf::Vector2f(96,160);
-            for(short i=0;i<6;i++)tri[i+36].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+36].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+36].color=sf::Color::Transparent;
 
@@ -1969,7 +1977,7 @@ public:
             tri[33].position = sf::Vector2f(160,80);
             tri[34].position = sf::Vector2f(192,176);
             tri[35].position = sf::Vector2f(160,160);
-            for(short i=0;i<6;i++)tri[i+30].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+30].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+30].color=sf::Color::Transparent;
 
@@ -1980,7 +1988,7 @@ public:
             tri[27].position = sf::Vector2f(160,80);
             tri[28].position = sf::Vector2f(96,160);
             tri[29].position = sf::Vector2f(160,160);
-            for(short i=0;i<6;i++)tri[i+24].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+24].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+24].color=sf::Color::Transparent;
 
@@ -1991,7 +1999,7 @@ public:
             tri[21].position = sf::Vector2f(96,80);
             tri[22].position = sf::Vector2f(32,160);
             tri[23].position = sf::Vector2f(96,160);
-            for(short i=0;i<6;i++)tri[i+18].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+18].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+18].color=sf::Color::Transparent;
 
@@ -2002,7 +2010,7 @@ public:
             tri[15].position = sf::Vector2f(224,80);
             tri[16].position = sf::Vector2f(160,160);
             tri[17].position = sf::Vector2f(224,160);
-            for(short i=0;i<6;i++)tri[i+12].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+12].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+12].color=sf::Color::Transparent;
 
@@ -2013,7 +2021,7 @@ public:
             tri[9].position = sf::Vector2f(32,80);
             tri[10].position = sf::Vector2f(0,176);
             tri[11].position = sf::Vector2f(32,160);
-            for(short i=0;i<6;i++)tri[i+6].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i+6].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+6].color=sf::Color::Transparent;
         if(check[9]&&!check[2]){
@@ -2023,7 +2031,7 @@ public:
             tri[3].position = sf::Vector2f(256,64);
             tri[4].position = sf::Vector2f(224,160);
             tri[5].position = sf::Vector2f(256,176);
-            for(short i=0;i<6;i++)tri[i].color=sf::Color::White;
+            for(short i=0;i<6;i++)tri[i].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i].color=sf::Color::Transparent;
 
@@ -2053,7 +2061,7 @@ private:
 class mapcompass : public sf::Drawable, public sf::Transformable
 {
 public:
-    void create(unsigned char dir){
+    void create(unsigned char dir,sf::Color color1,sf::Color color2){
         m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(16);
         sf::Vertex* tri = &m_vertices[6];
@@ -2074,8 +2082,8 @@ public:
             tri[3].position = sf::Vector2f(0,4);tri[4].position = sf::Vector2f(16,0);tri[5].position = sf::Vector2f(0,-4);
         }
 
-        for(unsigned char i=0;i<3;i++)tri[i].color=sf::Color::Magenta;
-        for(unsigned char i=0;i<3;i++)tri[i+3].color=sf::Color::White;
+        for(unsigned char i=0;i<3;i++)tri[i].color=color1;
+        for(unsigned char i=0;i<3;i++)tri[i+3].color=color2;
     }
 
 private:
@@ -4354,7 +4362,7 @@ int main()
         }
         else if(menuselect==1){//story mode
             menus.setmenu(6,92,72,0,16,1);
-            unsigned char currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,dir=0;//0=up,1=right,2=down,3=left
+            unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,dir=0;//0=up,1=right,2=down,3=left
             short dialoguecnt=0;
             bool map[64][256]
                 {{
@@ -4367,18 +4375,27 @@ int main()
                 1,0,0,1,0,0,0,1,1,1,0,0,0,1,
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1}},pause=false,Enterkey=false;
             storymapui mapui;
-            if(!mapui.load("walltexture.png")){window.close();gamequit=true;}
+            //if(!mapui.load("walltexture.png")){window.close();gamequit=true;}
             mapcompass compass;
-            sf::Text dtext(font);dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
+            sf::Text dtext(font);dtext.setCharacterSize(16);
             mapnpc npcs[64][16];
             npcs[0][0].dir=3;npcs[0][0].x=5;npcs[0][0].y=1;
             bool checkwall[10]={false};
+            sf::Color storycolors[4];
             while (window.isOpen()&&!gamequit){
                 windowset(window,&gamequit);
                 keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                keypresscheck(heavykey1,&colorkey);
                 keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
                 keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
 
+                if(colorkey=='2'){
+                    currentcolor++;
+                    if(currentcolor==6)currentcolor=0;
+                }
+                for(unsigned char i=0;i<4;i++)storycolors[i]=sf::Color(170*((cgapalettes[currentcolor][i]/4)%2) + 85*(cgapalettes[currentcolor][i]/8), (1-(cgapalettes[currentcolor][i]==6)/3.0)*170*((cgapalettes[currentcolor][i]/2)%2) + 85*(cgapalettes[currentcolor][i]/8), 170*(cgapalettes[currentcolor][i]%2) + 85*(cgapalettes[currentcolor][i]/8));
+                dtext.setFillColor(storycolors[3]);
+                
                 if(!dialogue.empty()){//dialogue stuff
                         char temp='$';
                         dtext.setString(dialogue.substr(0,dialoguecnt));
@@ -4463,20 +4480,20 @@ int main()
                         break;
                     }
                 }
-                mapui.create(checkwall);
-                compass.create(dir);
+                mapui.create(checkwall,storycolors[1]);
+                compass.create(dir,storycolors[2],storycolors[3]);
                 window.clear();
                 renderTexture.clear();
 
                 sf::RectangleShape rectangle({4.f, 4.f}),npc({32.f,64.f}),border({256.f,48.f}),floor({256.f,36.f});
 
-                border.setFillColor(sf::Color::Black);
+                border.setFillColor(storycolors[0]);
 
                 floor.setPosition({0.f,160.f});
-                floor.setFillColor(sf::Color::Magenta);
+                floor.setFillColor(storycolors[2]);
                 renderTexture.draw(floor);
                 floor.setPosition({0.f,44.f});
-                floor.setFillColor(sf::Color::White);
+                floor.setFillColor(storycolors[3]);
                 renderTexture.draw(floor);
 
                 renderTexture.draw(mapui);
@@ -4484,6 +4501,7 @@ int main()
                     if(npcs[currentmap][i].dir-dir==2||int(npcs[currentmap][i].dir)-dir==-2)npc.setPosition({112.f,136.f});
                     else if(npcs[currentmap][i].dir-dir==1||int(npcs[currentmap][i].dir)-dir==-1)npc.setPosition({48.f,136.f});
                     else npc.setPosition({176.f,136.f});
+                    npc.setFillColor(storycolors[3]);
                     if((npcs[currentmap][i].dir!=dir)&&(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy))renderTexture.draw(npc);
                     }
 
@@ -4494,10 +4512,10 @@ int main()
                 for(unsigned char i=0;i<mapxsize;i++){
                     for(unsigned char j=0;j<mapysize;j++){
                         rectangle.setPosition({4.f*i+160.f,4.f*j+8.f});
-                        if(i==mapx&&j==mapy)rectangle.setFillColor(sf::Color::Cyan);
+                        if(i==mapx&&j==mapy)rectangle.setFillColor(storycolors[1]);
                         else if(!map[currentmap][i+j*mapxsize])rectangle.setFillColor(sf::Color::Transparent);
-                        else if(map[currentmap][i+j*mapxsize])rectangle.setFillColor(sf::Color::Magenta);
-                        for(unsigned char k=0;k<npccount;k++)if(i==npcs[currentmap][k].x&&j==npcs[currentmap][k].y)rectangle.setFillColor(sf::Color::White);
+                        else if(map[currentmap][i+j*mapxsize])rectangle.setFillColor(storycolors[2]);
+                        for(unsigned char k=0;k<npccount;k++)if(i==npcs[currentmap][k].x&&j==npcs[currentmap][k].y)rectangle.setFillColor(storycolors[3]);
                         renderTexture.draw(rectangle);
                     }
                 }
