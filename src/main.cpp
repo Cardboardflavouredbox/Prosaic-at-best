@@ -1372,12 +1372,11 @@ public:
         textcoordinates=tcode;
     }
 
-    void setcolor(short cnt,bool invisible,bool shading,short placeinput){
+    void setcolor(short cnt,bool shading,short placeinput){
         for(short i=0;i<cnt;i++){
             sf::Vertex* tri = &m_vertices[6*i];
             for(short j=0;j<6;j++){
-                if(invisible)tri[j].color=sf::Color::Transparent;
-                else if(placeinput==i)tri[j].color=sf::Color(85,85,85,255);
+                if(placeinput==i)tri[j].color=sf::Color(85,85,85,255);
                 else tri[j].color=sf::Color(255,255,255,255);
                 if(shading&&placeinput==i){
                     tri[j].color=sf::Color(255,255,255,255);
@@ -4267,7 +4266,7 @@ int main()
 
         if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
         else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
-        menus.setcolor(6,false,false,menuselect);
+        menus.setcolor(6,false,menuselect);
 
         window.clear();
         renderTexture.clear();
@@ -4378,9 +4377,11 @@ int main()
         }
         else if(menuselect==1){//story mode
             menus.setmenu(6,176,48,0,24,2);
-            unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,dir=0;//0=up,1=right,2=down,3=left
+            unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,currentleader=0,dir=0;//0=up,1=right,2=down,3=left
             short dialoguecnt=0;
-            bool map[64][256]
+            float partyhp[16]={500.f,0.f,800.f},partymaxhp[16]={450.f,0.f,800.f};
+            bool partylist[16]={1,0,1},partylockedmoves[16][64]={},//true==lockedmove
+            map[64][256]
                 {{
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1,
                 1,0,1,1,0,0,1,0,0,0,0,0,0,1,
@@ -4389,11 +4390,14 @@ int main()
                 1,0,1,1,1,1,0,1,0,1,0,0,0,1,
                 1,0,1,1,0,1,0,0,0,1,0,1,1,1,
                 1,0,0,1,0,0,0,1,1,1,0,0,0,1,
-                1,1,1,1,1,1,1,1,1,1,1,1,1,1}},pause=false,Enterkey=false;
+                1,1,1,1,1,1,1,1,1,1,1,1,1,1}},pause=false,statscreen=false,Enterkey=false;
             storymapui mapui;
             //if(!mapui.load("assets/images/walltexture.png")){window.close();gamequit=true;}
             mapcompass compass;
             sf::Text dtext(font);dtext.setCharacterSize(16);
+            sf::Texture stattexture,icontexture;
+            if(!stattexture.loadFromFile("assets/images/characterstatart.png")){window.close();gamequit=true;}
+            if(!icontexture.loadFromFile("assets/images/charactericon.png")){window.close();gamequit=true;}
             mapnpc npcs[64][16];
             npcs[0][0].dir=3;npcs[0][0].x=5;npcs[0][0].y=1;
             bool checkwall[10]={false};
@@ -4450,13 +4454,25 @@ int main()
                             }
                 }
 
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)&&dialogue.empty()){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
-                menus.setcolor(6,!pause,true,menuselect);
-                if(pause){//pause menu
-                    if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
-                    else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
-                    if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
-                    //else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)&&dialogue.empty()){if(!Enterkey){menuselect=0;Enterkey=true;if(pause&&statscreen){pause=false;statscreen=false;}else if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                menus.setcolor(6,true,menuselect);
+                if(statscreen&&pause){//stats menu
+                    if(menuright=='2'&&menuleft!='2'){
+                        menuselect++;
+                        while(!partylist[menuselect]||menuselect>15){menuselect++;if(menuselect>15)menuselect=0;}
+                    }
+                    else if(menuleft=='2'&&menuright!='2'){
+                        menuselect--;
+                        while(!partylist[menuselect]||menuselect<0){menuselect--;if(menuselect<0)menuselect=15;}
+                    }
+                    if(menuconfirm=='2')currentleader=menuselect;
+                    if(menucancel=='2')statscreen=false;
+                }
+                else if(pause){//pause menu
+                    if(menuup=='2'&&menudown!='2'){menuselect--;if(menuselect<0)menuselect=5;}
+                    else if(menudown=='2'&&menuup!='2'){menuselect++;if(menuselect>5)menuselect=0;}
+                    if(menucancel=='2')pause=false;
+                    if(menuconfirm=='2'&&menuselect==0)statscreen=true;
                     //else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
                     else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
                 }
@@ -4537,16 +4553,61 @@ int main()
                 }
                 compass.setPosition({140.f,24.f});
                 renderTexture.draw(compass);
+
+                sf::VertexArray m_vertices;
+                sf::RenderStates tempstates;
+                shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
+                shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
+                shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][3]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][3]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][3]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][3]%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));
+                shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
+                tempstates.texture=&icontexture;tempstates.shader=&shader;
+                m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+                m_vertices.resize(16);
+                sf::Vertex* tri = &m_vertices[6];
+                tri[0].position = sf::Vector2f(0,0);
+                tri[1].position = sf::Vector2f(32,0);
+                tri[2].position = sf::Vector2f(32,32);
+                tri[3].position = sf::Vector2f(0,32);
+                tri[4].position = sf::Vector2f(0,0);
+                tri[5].position = sf::Vector2f(32,32);
+
+                tri[0].texCoords = sf::Vector2f(currentleader*32,0);
+                tri[1].texCoords = sf::Vector2f(currentleader*32+32,0);
+                tri[2].texCoords = sf::Vector2f(currentleader*32+32,32);
+                tri[3].texCoords = sf::Vector2f(currentleader*32,32);
+                tri[4].texCoords = sf::Vector2f(currentleader*32,0);
+                tri[5].texCoords = sf::Vector2f(currentleader*32+32,32);
+                renderTexture.draw(m_vertices,tempstates);
                 
                 if(!dialogue.empty())renderTexture.draw(dtext);
 
-                
-                if(pause){
+                if(pause||statscreen)renderTexture.draw(pausedark);
+                if(statscreen&&pause){
+                    tempstates.texture=&stattexture;tempstates.shader=&shader;
+                    m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+                    m_vertices.resize(16);
+                    sf::Vertex* tri = &m_vertices[6];
+                    tri[0].position = sf::Vector2f(0,0);
+                    tri[1].position = sf::Vector2f(256,0);
+                    tri[2].position = sf::Vector2f(256,240);
+                    tri[3].position = sf::Vector2f(0,240);
+                    tri[4].position = sf::Vector2f(0,0);
+                    tri[5].position = sf::Vector2f(256,240);
+
+                    tri[0].texCoords = sf::Vector2f(menuselect*256,0);
+                    tri[1].texCoords = sf::Vector2f(menuselect*256+256,0);
+                    tri[2].texCoords = sf::Vector2f(menuselect*256+256,240);
+                    tri[3].texCoords = sf::Vector2f(menuselect*256,240);
+                    tri[4].texCoords = sf::Vector2f(menuselect*256,0);
+                    tri[5].texCoords = sf::Vector2f(menuselect*256+256,240);
+                    renderTexture.draw(m_vertices,tempstates);
+                }
+                else if(pause){
                     shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
                     shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
                     shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
                     shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
-                    renderTexture.draw(pausedark);renderTexture.draw(menus,&shader);
+                    renderTexture.draw(menus,&shader);
                     }
 
                 renderTexture.display();
@@ -4889,7 +4950,7 @@ int main()
                         for(short i=0;i<effectslist.size();i++){effectslist[i].create();if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
                     }
 
-                    menus.setcolor(6,!pause,false,menuselect);
+                    menus.setcolor(6,false,menuselect);
                     if(pause){//pause menu
                         keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
                         keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
@@ -5483,7 +5544,7 @@ int main()
                         if(p2keylist.size()>40)for(short i=0;i<5;i++)p2keylist.pop_back();
                     }
 
-                    menus.setcolor(6,!pause,false,menuselect);
+                    menus.setcolor(6,false,menuselect);
                     if(pause){//pause menu
                         keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
                         keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
