@@ -4379,7 +4379,7 @@ int main()
             menus.setmenu(6,176,48,0,24,2);
             unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,currentleader=0,dir=0;//0=up,1=right,2=down,3=left
             short dialoguecnt=0;
-            float partyhp[16]={500.f,0.f,800.f},partymaxhp[16]={450.f,0.f,800.f};
+            float partyhp[16]={450.f,0.f,800.f},partymaxhp[16]={500.f,0.f,800.f};
             bool partylist[16]={1,0,1},partylockedmoves[16][64]={},//true==lockedmove
             map[64][256]
                 {{
@@ -4420,7 +4420,7 @@ int main()
                         char temp='$';
                         dtext.setString(dialogue.substr(0,dialoguecnt));
                             if(dialogue[dialoguecnt]==temp){
-                                if(menuconfirm=='2'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;dtext.setString(dialogue);}
+                                if(menuconfirm=='2'){dialogue.erase(0,dialoguecnt+1);dialoguecnt=0;dtext.setString(dialogue.substr(0,dialoguecnt));}
                             }
                             else{
                                 if(menucancel=='2')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
@@ -4448,13 +4448,14 @@ int main()
                         if(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy)
                             switch(npcs[currentmap][i].interaction){
                                 case 0:{
-                                    dialogue="Hello this one is\na test$";
+                                    if(currentleader==0)dialogue="Hello this one is\na test$Haha I'm a test character\ntoo good talk sir$";
+                                    else if(currentleader==2)dialogue="Hello this one is\na test$...What's a test?$";
                                     break;
                                 }
                             }
                 }
 
-                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)&&dialogue.empty()){if(!Enterkey){menuselect=0;Enterkey=true;if(pause&&statscreen){pause=false;statscreen=false;}else if(pause)pause=false;else pause=true;}}else Enterkey=false;
+                if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)&&dialogue.empty()){if(!Enterkey){menuselect=0;Enterkey=true;if(pause&&statscreen){pause=false;statscreen=false;menuselect=0;}else if(pause)pause=false;else pause=true;}}else Enterkey=false;
                 menus.setcolor(6,true,menuselect);
                 if(statscreen&&pause){//stats menu
                     if(menuright=='2'&&menuleft!='2'){
@@ -4466,13 +4467,13 @@ int main()
                         while(!partylist[menuselect]||menuselect<0){menuselect--;if(menuselect<0)menuselect=15;}
                     }
                     if(menuconfirm=='2')currentleader=menuselect;
-                    if(menucancel=='2')statscreen=false;
+                    if(menucancel=='2'){statscreen=false;menuselect=0;}
                 }
                 else if(pause){//pause menu
                     if(menuup=='2'&&menudown!='2'){menuselect--;if(menuselect<0)menuselect=5;}
                     else if(menudown=='2'&&menuup!='2'){menuselect++;if(menuselect>5)menuselect=0;}
                     if(menucancel=='2')pause=false;
-                    if(menuconfirm=='2'&&menuselect==0)statscreen=true;
+                    if(menuconfirm=='2'&&menuselect==0){menuselect=currentleader;statscreen=true;}
                     //else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
                     else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
                 }
@@ -4517,7 +4518,8 @@ int main()
                 window.clear();
                 renderTexture.clear();
 
-                sf::RectangleShape rectangle({4.f, 4.f}),npc({32.f,64.f}),border({256.f,48.f}),floor({256.f,36.f});
+                sf::RectangleShape rectangle({4.f, 4.f}),npc({32.f,64.f}),border({256.f,48.f}),
+                                    hp({64.f, 16.f}),floor({256.f,36.f});
 
                 border.setFillColor(storycolors[0]);
 
@@ -4541,6 +4543,7 @@ int main()
                 border.setPosition({0.f,192.f});
                 renderTexture.draw(border);
 
+                if(!statscreen){
                 for(unsigned char i=0;i<mapxsize;i++){
                     for(unsigned char j=0;j<mapysize;j++){
                         rectangle.setPosition({4.f*i+160.f,4.f*j+8.f});
@@ -4553,6 +4556,7 @@ int main()
                 }
                 compass.setPosition({140.f,24.f});
                 renderTexture.draw(compass);
+                }
 
                 sf::VertexArray m_vertices;
                 sf::RenderStates tempstates;
@@ -4561,15 +4565,16 @@ int main()
                 shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][3]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][3]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][3]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][3]%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));
                 shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
                 tempstates.texture=&icontexture;tempstates.shader=&shader;
+                if(!statscreen){
                 m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
                 m_vertices.resize(16);
                 sf::Vertex* tri = &m_vertices[6];
-                tri[0].position = sf::Vector2f(0,0);
-                tri[1].position = sf::Vector2f(32,0);
-                tri[2].position = sf::Vector2f(32,32);
-                tri[3].position = sf::Vector2f(0,32);
-                tri[4].position = sf::Vector2f(0,0);
-                tri[5].position = sf::Vector2f(32,32);
+                tri[0].position = sf::Vector2f(8,8);
+                tri[1].position = sf::Vector2f(40,8);
+                tri[2].position = sf::Vector2f(40,40);
+                tri[3].position = sf::Vector2f(8,40);
+                tri[4].position = sf::Vector2f(8,8);
+                tri[5].position = sf::Vector2f(40,40);
 
                 tri[0].texCoords = sf::Vector2f(currentleader*32,0);
                 tri[1].texCoords = sf::Vector2f(currentleader*32+32,0);
@@ -4578,7 +4583,13 @@ int main()
                 tri[4].texCoords = sf::Vector2f(currentleader*32,0);
                 tri[5].texCoords = sf::Vector2f(currentleader*32+32,32);
                 renderTexture.draw(m_vertices,tempstates);
-                
+                hp.setFillColor(storycolors[2]);
+                hp.setPosition({56.f,24.f});
+                renderTexture.draw(hp);
+                hp.setFillColor(storycolors[3]);
+                hp.setSize({roundf(64.f*(partyhp[currentleader]/partymaxhp[currentleader])),16.f});
+                renderTexture.draw(hp);
+                }
                 if(!dialogue.empty())renderTexture.draw(dtext);
 
                 if(pause||statscreen)renderTexture.draw(pausedark);
