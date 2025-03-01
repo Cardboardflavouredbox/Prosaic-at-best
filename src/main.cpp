@@ -7,7 +7,7 @@
 #include <string.h>
 #include <math.h>
 
-using namespace std;
+
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
 
 std::deque<unsigned char> soundfxlist,hitsfxlist,voicesfxlist;
@@ -4216,19 +4216,19 @@ int main()
                 lightkey2=sf::Keyboard::Key::Z,mediumkey2=sf::Keyboard::Key::X,heavykey2=sf::Keyboard::Key::C,
                 grabkey2=sf::Keyboard::Key::LControl,specialkey2=sf::Keyboard::Key::LAlt;
     sf::Texture titletexture,pixelshadowthing;
-    if (!titletexture.loadFromFile("title.png"))window.close();
-    if(!pixelshadowthing.loadFromFile("darkfilter.png"))window.close();
+    if (!titletexture.loadFromFile("assets/images/title.png"))window.close();
+    if(!pixelshadowthing.loadFromFile("assets/images/darkfilter.png"))window.close();
     sf::Sprite pausedark(pixelshadowthing);
     sf::Sprite title(titletexture);
 
     std::vector<sf::SoundChannel>channelMap{sf::SoundChannel::FrontLeft,sf::SoundChannel::FrontRight};
     sf::SoundBuffer soundfx[256];
-    if(!soundfx[0].loadFromFile("hit1.wav"))window.close();if(!soundfx[1].loadFromFile("hit2.wav"))window.close();
-    if(!soundfx[2].loadFromFile("hit3.wav"))window.close();if(!soundfx[3].loadFromFile("hit4.wav"))window.close();
-    if(!soundfx[4].loadFromFile("Sinclair1.wav"))window.close();if(!soundfx[5].loadFromFile("swing1.wav"))window.close();
-    if(!soundfx[6].loadFromFile("jump.wav"))window.close();if(!soundfx[7].loadFromFile("land.wav"))window.close();
-    if(!soundfx[8].loadFromFile("swing2.wav"))window.close();if(!soundfx[9].loadFromFile("toss.wav"))window.close();
-    if(!soundfx[10].loadFromFile("super.wav"))window.close();if(!soundfx[11].loadFromFile("Sinclairsuper.wav"))window.close();
+    if(!soundfx[0].loadFromFile("assets/sounds/hit1.wav"))window.close();if(!soundfx[1].loadFromFile("assets/sounds/hit2.wav"))window.close();
+    if(!soundfx[2].loadFromFile("assets/sounds/hit3.wav"))window.close();if(!soundfx[3].loadFromFile("assets/sounds/hit4.wav"))window.close();
+    if(!soundfx[4].loadFromFile("assets/sounds/Sinclair1.wav"))window.close();if(!soundfx[5].loadFromFile("assets/sounds/swing1.wav"))window.close();
+    if(!soundfx[6].loadFromFile("assets/sounds/jump.wav"))window.close();if(!soundfx[7].loadFromFile("assets/sounds/land.wav"))window.close();
+    if(!soundfx[8].loadFromFile("assets/sounds/swing2.wav"))window.close();if(!soundfx[9].loadFromFile("assets/sounds/toss.wav"))window.close();
+    if(!soundfx[10].loadFromFile("assets/sounds/super.wav"))window.close();if(!soundfx[11].loadFromFile("assets/sounds/Sinclairsuper.wav"))window.close();
     for(int j=0;j<12;j++){
         std::vector<std::int16_t> samples;
         for(int i=0;i<soundfx[j].getSampleCount();i++){
@@ -4239,13 +4239,13 @@ int main()
     sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);
     std::deque<sf::Sound> sound;
 	menu menus;
-	if (!menus.load("menu.png")){}
+	if (!menus.load("assets/images/menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
     window.setFramerateLimit(60);
     sf::RenderTexture renderTexture;
     if (!renderTexture.resize({256, 240})){}
     sf::Font font;
-    if(!font.openFromFile("PerfectDOSVGA437.ttf"))window.close();
+    if(!font.openFromFile("assets/fonts/PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
     socket.setBlocking(false);
     unsigned short port=53924;
@@ -4255,7 +4255,7 @@ int main()
     bool gamequit=false,p1control=true;
     std::string dialogue;
     sf::Shader shader;
-    if (!shader.loadFromFile("shader.frag",sf::Shader::Type::Fragment)){}
+    if (!shader.loadFromFile("assets/shaders/shader.frag",sf::Shader::Type::Fragment)){}
 
 
     while(window.isOpen()){
@@ -4391,7 +4391,7 @@ int main()
                 1,0,0,1,0,0,0,1,1,1,0,0,0,1,
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1}},pause=false,Enterkey=false;
             storymapui mapui;
-            //if(!mapui.load("walltexture.png")){window.close();gamequit=true;}
+            //if(!mapui.load("assets/images/walltexture.png")){window.close();gamequit=true;}
             mapcompass compass;
             sf::Text dtext(font);dtext.setCharacterSize(16);
             mapnpc npcs[64][16];
@@ -4660,7 +4660,7 @@ int main()
 
                 loadcnt++;
                 if(loadcnt>179)loadcnt=0;
-                string waitstr("waiting for player");
+                std::string waitstr("waiting for player");
                 for(short i=0;i<(loadcnt/60)+1;i++)waitstr=waitstr+'.';
                 
                 iptext.setString(waitstr);
@@ -4678,7 +4678,7 @@ int main()
         }
 
         characterselect charselect;
-        if (!charselect.load("charactericon.png")){}
+        if (!charselect.load("assets/images/charactericon.png")){}
         charselect.setcharselect(4,2,32,144);
         short menux=0,menuy=0,menux2=3,menuy2=0;
         bool p1check=false,p2check=false;
@@ -4770,7 +4770,7 @@ int main()
             }
 
             sf::Texture bgtexture;
-            if (!bgtexture.loadFromFile("stage1.png")){}
+            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             sf::Sprite bg(bgtexture);
             bg.setPosition({-125.f,0.f});
 
@@ -4796,10 +4796,10 @@ int main()
             superflash sf;healthbar hb;meterbar mb;
             timeui time;time.create();comboui cui;inputlist p1ilist,p2ilist;
             sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture;
-            if(!p1ilist.load("inputicon.png")||!p2ilist.load("inputicon.png")){window.close();gamequit=true;}
-            if(!time.load("time_ui.png")||!cui.load("combo_ui.png")||!metertexture.loadFromFile("meter_ui.png")){window.close();gamequit=true;}
-            if(!bgtexture.loadFromFile("stage1.png")||!hutexture.loadFromFile("health_ui.png")){window.close();gamequit=true;}
-            if(!p1texture.loadFromFile("char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
+            if(!p1ilist.load("assets/images/inputicon.png")||!p2ilist.load("assets/images/inputicon.png")){window.close();gamequit=true;}
+            if(!time.load("assets/images/time_ui.png")||!cui.load("assets/images/combo_ui.png")||!metertexture.loadFromFile("assets/images/meter_ui.png")){window.close();gamequit=true;}
+            if(!bgtexture.loadFromFile("assets/images/stage1.png")||!hutexture.loadFromFile("assets/images/health_ui.png")){window.close();gamequit=true;}
+            if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
