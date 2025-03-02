@@ -2505,6 +2505,9 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             fxtemp.len=P1.hitstopped;
             fxtemp.color1=sf::Color (85, 255, 255);
             *framedata=P2.blockstun-P2.animq.size();
+            if(P2.grabstate==1||P2.grabstate==2)P2.whiff=true;
+            hitsfxlist.push_back(13);
+            hsfxx.push_back((bgx+overlap[0]-128.f)/256.f);
         }
         else{
             if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
@@ -2893,14 +2896,15 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             walkspeed/=2;jumpfall/=2;
     }
 
-    if(P.kdowned==1&&P.animq.size()<28&&!P.comboed&&P.act==1&&P.hp>0){
+    if(P.kdowned==1&&P.animq.size()<28&&!P.comboed&&P.act==1&&P.hp>0){//quick rise
         P.slide=true;
         if(P.right)P.jumpx=-5;else P.jumpx=5;
         P.animq.clear();
         for(short i=0;i<10;i++){P.animq.push_back(8);}
-        P.kdowned=0;combo=0;
+        P.kdowned=0;combo=0;P.iframes=10;
+        P.col=1;
     }
-    if(P.hit){
+    if(P.hit){//hit code
         P.hit=false;P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
         P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.grabstate=-1;P.landdelay=0;P.movewaitx=-1;P.movewaity=-1;
         P.mgain=0;P.super=false;P.wallcrash=false;
@@ -2910,9 +2914,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
         else P.jumpy=0;
         if(P.hp<=0)P.block=-1;
-        if(((P.attack.movetype==1||P.attack.movetype==2)&&P.block==1)||((P.attack.movetype==3||P.attack.movetype==2)&&P.block==0)||P.block==2){
+        if(((P.attack.movetype==1||P.attack.movetype==2)&&P.block==1)||((P.attack.movetype==3||P.attack.movetype==2)&&P.block==0)||P.block==2){//blocked
             P.slide=true;
-            //P.attack.kback=P.attack.kback*5/6;
+            P.attack.kback=roundf(P.attack.kback*4/5);
             if(P.block==2){
                 if(P.attack.movetype==1)P.block=1;
                 else P.block=0;
@@ -2924,13 +2928,14 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             if(P.block==1)for(short i=0;i<+P.attack.blockstun;i++)P.animq.push_back(33);
             P.block=2;
         }
-        else{
+        else{//not blocked
             if(P.attack.launch>0){P.jumpy=-P.attack.launch*(comboscaling+100)/200;P.air=true;}
             if(P.air||(P.attack.grab[0]!=0||P.attack.grab[1]!=0))P.slide=false;
             else P.slide=true;
             if(P.attack.wallcrash){P.wallcrashed=true;P.slide=false;}
             P.comboed=true;
             if(P.attack.grab[0]!=0||P.attack.grab[1]!=0)P.col=3;
+            else if(P.col==3)P.col=0;
             if(P.col==1)for(short i=0;i<+P.attack.hitstun;i++)P.animq.push_back(53);
             else for(short i=0;i<+P.attack.hitstun;i++){
                 if(P.character==2){if(i<2)P.animq.push_back(16);else P.animq.push_back(57);}
@@ -2940,12 +2945,12 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             else if(P.attack.kdown==1||P.attack.launch>0/*||P.air*/)P.kdowned=1;
             else P.kdowned=0;
         }
-        if(((P.x<-110&&P.attack.kback>0)||(P.x>360&&P.attack.kback<0))&&(P.attack.grab[0]==0&&P.attack.grab[1]==0)&&P.attack.pushaway){
+        if(((P.x<-110&&P.attack.kback>0)||(P.x>360&&P.attack.kback<0))&&(P.attack.grab[0]==0&&P.attack.grab[1]==0)&&P.attack.pushaway){//wall pushaway code
                 if(P.attack.kback>0)P.pushaway=P.attack.kback;
                 else P.pushaway=-P.attack.kback;
                 P.pushaway+=int(P.attack.launch/2);
         }
-        else if(P.attack.grab[0]==0&&P.attack.grab[1]==0){
+        else if(P.attack.grab[0]==0&&P.attack.grab[1]==0){//knockback code
                 if(P.air&&P.attack.launch==0){
                     P.jumpx=-int(P.attack.kback/3);
                 }
@@ -3669,7 +3674,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.loopanim[1]=55;
                 temp.launch=P.launch;
                 temp.endanim.insert(temp.endanim.begin(),{58,59,60});
-                if(P.proj.size()<8)P.proj.push_back(temp);
+                if(P.proj.size()<32)P.proj.push_back(temp);
                     }
         }
         else if(P.character==2){
@@ -3716,7 +3721,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
                 temp.launch=P.launch;
                 //temp.endanim.insert(temp.endanim.begin(),{42});
-                if(P.proj.size()<8)P.proj.push_back(temp);
+                if(P.proj.size()<32)P.proj.push_back(temp);
                 break;
             }
             case 4:{//gimmick
@@ -4038,7 +4043,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     #define P1 (*p1)
     #define P2 (*p2)
 
-    box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2,P_Hitbox1[8],P_Hitbox2[8];
+    box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2,P_Hitbox1[32],P_Hitbox2[32];
     collisionbox1.create(P1.x+bgx,int(P1.y),colbox[P1.character][P1.col],P1.right,1,sf::Color::White);
     collisionbox2.create(P2.x+bgx,int(P2.y),colbox[P2.character][P2.col],P2.right,1,sf::Color::White);
     Hurtbox1.create(P1.x+bgx,int(P1.y),hurtbox[P1.character][P1.frame],P1.right,hurtboxcount[P1.character][P1.frame],sf::Color::Blue);
@@ -4228,7 +4233,8 @@ int main()
     if(!soundfx[6].loadFromFile("assets/sounds/jump.wav"))window.close();if(!soundfx[7].loadFromFile("assets/sounds/land.wav"))window.close();
     if(!soundfx[8].loadFromFile("assets/sounds/swing2.wav"))window.close();if(!soundfx[9].loadFromFile("assets/sounds/toss.wav"))window.close();
     if(!soundfx[10].loadFromFile("assets/sounds/super.wav"))window.close();if(!soundfx[11].loadFromFile("assets/sounds/Sinclairsuper.wav"))window.close();
-    for(int j=0;j<12;j++){
+    if(!soundfx[12].loadFromFile("assets/sounds/block.wav"))window.close();
+    for(int j=0;j<13;j++){
         std::vector<std::int16_t> samples;
         for(int i=0;i<soundfx[j].getSampleCount();i++){
             samples.push_back((soundfx[j].getSamples()[i]/16)*16);
