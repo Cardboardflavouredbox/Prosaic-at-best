@@ -4619,6 +4619,13 @@ int main()
                     tri[4].texCoords = sf::Vector2f(menuselect*256,0);
                     tri[5].texCoords = sf::Vector2f(menuselect*256+256,240);
                     renderTexture.draw(m_vertices,tempstates);
+                    hp.setSize({100.f,16.f});
+                    hp.setFillColor(storycolors[2]);
+                    hp.setPosition({144.f,208.f});
+                    renderTexture.draw(hp);
+                    hp.setFillColor(storycolors[3]);
+                    hp.setSize({roundf(100.f*(partyhp[menuselect]/partymaxhp[menuselect])),16.f});
+                    renderTexture.draw(hp);
                 }
                 else if(pause){
                     shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
