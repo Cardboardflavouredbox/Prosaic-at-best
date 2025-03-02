@@ -4237,7 +4237,7 @@ int main()
     }
     sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);
     std::deque<sf::Sound> sound;
-    sf::Music music("assets/music/practice mode.wav");
+    sf::Music music("assets/music/practice mode.wav");music.setLooping(true);music.setVolume(75.f);
 	menu menus;
 	if (!menus.load("assets/images/menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
@@ -5422,7 +5422,6 @@ int main()
                 }
                 }
             if(menuselect==3){//training
-                music.setLooping(true);
                 music.play();
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
@@ -5524,7 +5523,7 @@ int main()
                             else if(keytemp2=='1')keytemp2='3';
                         }
 
-                        if(keytemp2!=keytemp)p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
+                        if(keytemp2!=keytemp&&keytemp2!='5')p1keylist.push_front(keytemp2);else p1keylist.push_front('0');
                         if(p1input[1]=='2')p1keylist.push_front('u');else p1keylist.push_front('0');
                         if(p1input[2]=='2')p1keylist.push_front('i');else p1keylist.push_front('0');
                         if(p1input[3]=='2')p1keylist.push_front('o');else p1keylist.push_front('0');
@@ -5549,7 +5548,7 @@ int main()
                             else if(keytemp2=='1')keytemp2='3';
                         }
 
-                        if(keytemp2!=keytemp)p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
+                        if(keytemp2!=keytemp&&keytemp2!='5')p2keylist.push_front(keytemp2);else p2keylist.push_front('0');
                         if(p2input[1]=='2')p2keylist.push_front('u');else p2keylist.push_front('0');
                         if(p2input[2]=='2')p2keylist.push_front('i');else p2keylist.push_front('0');
                         if(p2input[3]=='2')p2keylist.push_front('o');else p2keylist.push_front('0');
@@ -5601,10 +5600,8 @@ int main()
                 p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
                 dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
                 dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
+                music.stop();
                 }
-            }
-            else{
-
             }
         }
         gamequit=false;
