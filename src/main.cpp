@@ -4237,6 +4237,7 @@ int main()
     }
     sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);
     std::deque<sf::Sound> sound;
+    sf::Music music("assets/music/practice mode.wav");
 	menu menus;
 	if (!menus.load("assets/images/menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
@@ -5421,6 +5422,8 @@ int main()
                 }
                 }
             if(menuselect==3){//training
+                music.setLooping(true);
+                music.play();
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
