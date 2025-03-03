@@ -2638,8 +2638,8 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
                 }
             if(combo==0)for(unsigned i=0;i<64;i++){P1.movescaling[i]=0;P2.movescaling[i]=0;}
             if(P2.hitstop!=0||P2.dmg!=0)combo++;
-            P2.movescaling[P2.moveact]++;
-            if(P2.movescaling[P2.moveact]>2)comboscaling=comboscaling/10.f*9.f;
+            if(P2.hitcount==1)P2.movescaling[P2.moveact]++;
+            if(P2.movescaling[P2.moveact]>2)comboscaling=comboscaling/20.f*18.f;
             if(combo>3)comboscaling=comboscaling/20.f*19.f;
             P1.meter+=P2.mgain/7*8;
             if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
@@ -4398,7 +4398,7 @@ int main()
         }
         if(!soundfx[j].loadFromSamples(samples.data(),samples.size(),2,8000,channelMap))window.close();
     }
-    sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);hitsound.setVolume(75.f);voice.setVolume(125.f);
+    sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);hitsound.setVolume(75.f);voice.setVolume(150.f);
     std::deque<sf::Sound> sound;
     sf::Music music("assets/music/practice mode.wav");music.setLooping(true);music.setVolume(50.f);
 	menu menus;
