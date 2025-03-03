@@ -1135,12 +1135,44 @@ static unsigned char animlib[16][128][32][2]=
                     {30,2},{31,2},
                     {30,3},{31,3}
                     },//taunt4 (86)
+                    {
+                    {4,4},{3,4},
+
+                    {30,10},{31,10},{30,6},{255,255},
+                    {255,255},{31,11},{30,7},{31,7},
+                    {255,255},{30,11},{30,8},{31,8},
+                    {255,255},{255,255},{30,9},{31,9}
+                    },//overheadhit1 (87)
+                    {
+                    {3,4},{2,4},
+
+                    {32,6},{33,6},{34,6},
+                    {32,7},{33,7},{34,7},
+                    {32,8},{33,8},{34,8},
+                    {255,255},{33,9},{34,9}
+                    },//overheadhit2 (88)
+                    {
+                    {3,4},{2,4},
+
+                    {255,255},{26,0},{27,0},
+                    {255,255},{26,1},{27,1},
+                    {255,255},{26,2},{27,2},
+                    {28,0},{26,3},{27,3}
+                    },//lowhit1 (89)
+                    {
+                    {4,4},{2,4},
+
+                    {255,255},{255,255},{27,5},{28,2},
+                    {255,255},{26,6},{27,6},{28,3},
+                    {255,255},{26,7},{27,7},{29,2},
+                    {26,5},{26,8},{27,8},{255,255}
+                    },//lowhit2 (90)
                    }//char2(Sinclair)
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
-                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2,2,2,2,2},//char2(Sinclair)
+                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2,2,2,2,2,2,2},//char2(Sinclair)
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
@@ -1250,6 +1282,7 @@ hurtbox[16][128][8][2][2]={
                     {{{-11,-16},{11,32}},{{9,-22},{25,-7}}},/*specialC4 (81)*/{{{-11,-15},{16,32}},{{-1,-29},{15,-14}}},/*specialC5 (82)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt1 (83)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt2 (84)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt1 (85)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt1 (86)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*overheadhit1 (87)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*overheadhit2 (88)*/
                     },//char 2(Sinclair)
                     },
 hitbox[16][16][4][2][2]={
@@ -1312,7 +1345,7 @@ public:
     attackdata attack;
     unsigned char anim[64][2]={},color=0;
     short gimmick[8]={},hbframe=0,act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
-    hitstun=0,blockstun=0,hitstop=0,wins=0,character=0,hurtframes[5]={56,56,57,32,33},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block
+    hitstun=0,blockstun=0,hitstop=0,wins=0,character=0,hurtframes[9]={56,56,57,32,33,56,56,56,56},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block,5=overhead1,6=overhead2,7=low,8=low
     buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
     landdelay=0,hitstopped=0,grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
     iframes=0,grabiframes=0,hitcount=0;
@@ -2544,7 +2577,12 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             hsfxx.push_back((bgx+overlap[0]-128.f)/256.f);
         }
         else{
-            if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
+            if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));
+            else {
+                if(overlap[1]<P1.y-10){P1.frame=P1.hurtframes[5];memcpy(P1.anim,animlib[P1.character][P1.hurtframes[5]],sizeof(animlib[P1.character][P1.hurtframes[5]]));}
+                else if(P2.movetype==1){P1.frame=P1.hurtframes[7];memcpy(P1.anim,animlib[P1.character][P1.hurtframes[7]],sizeof(animlib[P1.character][P1.hurtframes[7]]));}
+                else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
+                }
             if(P2.hitstop!=0||P2.dmg!=0)combo++;
             if(combo>3)comboscaling=comboscaling/10*9;
             P1.meter+=P2.mgain/7*8;
@@ -2972,8 +3010,16 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             if(P.attack.grab[0]!=0||P.attack.grab[1]!=0)P.col=3;
             else if(P.col==3)P.col=0;
             if(P.col==1)for(short i=0;i<+P.attack.hitstun;i++)P.animq.push_back(53);
+            else if(P.frame==P.hurtframes[5]){
+                for(short i=0;i<+P.attack.hitstun;i++)P.animq.push_back(P.hurtframes[6]);
+            }
+            else if(P.frame==P.hurtframes[7]){
+                for(short i=0;i<+P.attack.hitstun;i++)P.animq.push_back(P.hurtframes[8]);
+            }
             else for(short i=0;i<+P.attack.hitstun;i++){
-                if(P.character==2){if(i<2)P.animq.push_back(16);else P.animq.push_back(57);}
+                if(P.character==2){
+                    if(i<2)P.animq.push_back(16);
+                    else P.animq.push_back(57);}
                 else P.animq.push_back(9);
             }
             if(P.attack.kdown==2||P.hp<=0)P.kdowned=2;
@@ -4939,6 +4985,10 @@ int main()
             frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
+            p1.maxhp=950.0;p2.maxhp=950.0;
+            if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
+            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+
             if(menuselect==0){
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
@@ -4948,9 +4998,7 @@ int main()
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
-                    p1.x=100.0;p1.y=176.0;p1.maxhp=950.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=950.0;p2.hp=p2.maxhp;
-                    if(p1.character==2){p1.maxhp=900.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
-                    if(p2.character==2){p2.maxhp=900.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
+                    p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                 short superstop=0,roundwait=90,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
@@ -5068,9 +5116,7 @@ int main()
                 std::deque<std::deque<char>> dirrecord,urecord,irecord,orecord,krecord;
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2],bgx=0;
-                    p1.x=100.0;p1.y=176.0;p1.maxhp=950.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=950.0;p2.hp=p2.maxhp;
-                    if(p1.character==2){p1.maxhp=900.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
-                    if(p2.character==2){p2.maxhp=900.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
+                    p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
                 short superstop=0,roundwait=90,framedata=0;
@@ -5480,9 +5526,8 @@ int main()
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
-                    p1.x=100.0;p1.y=176.0;p1.maxhp=950.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.maxhp=950.0;p2.hp=p2.maxhp;
-                    if(p1.character==2){p1.maxhp=900.0;p1.hp=p1.maxhp;p1.hurtframes[0]=15;p1.hurtframes[3]=17;}
-                    if(p2.character==2){p2.maxhp=900.0;p2.hp=p2.maxhp;p2.hurtframes[0]=15;p2.hurtframes[3]=17;}
+                    p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
+
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
                 short superstop=0,roundwait=90,framedata=0;
