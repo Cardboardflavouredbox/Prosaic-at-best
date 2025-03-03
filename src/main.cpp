@@ -1103,12 +1103,44 @@ static unsigned char animlib[16][128][32][2]=
                     {31,16},{30,15},{31,15},
                     {31,21},{30,16},{255,255}
                     },//specialC5 (82)
+                    {
+                    {2,4},{1,4},
+
+                    {30,0},{31,0},
+                    {30,1},{31,1},
+                    {30,2},{31,2},
+                    {0,3},{1,3}
+                    },//taunt1 (83)
+                    {
+                    {2,4},{1,4},
+
+                    {30,0},{31,0},
+                    {30,1},{31,1},
+                    {30,2},{31,2},
+                    {30,3},{31,3}
+                    },//taunt2 (84)
+                    {
+                    {2,4},{1,4},
+
+                    {30,4},{31,4},
+                    {30,5},{31,5},
+                    {30,2},{31,2},
+                    {0,3},{1,3}
+                    },//taunt3 (85)
+                    {
+                    {2,4},{1,4},
+
+                    {30,4},{31,4},
+                    {30,5},{31,5},
+                    {30,2},{31,2},
+                    {30,3},{31,3}
+                    },//taunt4 (86)
                    }//char2(Sinclair)
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
                     {0},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
-                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2},//char2(Sinclair)
+                    2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2,2,2,2,2},//char2(Sinclair)
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
                    {0},//char 1
@@ -1215,7 +1247,9 @@ hurtbox[16][128][8][2][2]={
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-16},{18,-3}}},/*jump light1 (75)*/{{{-18,-16},{4,32}},{{-8,-31},{8,-16}},{{4,-16},{27,-3}}},/*jump light2 (76)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*gimmick2 (77)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*specialC1 (78)*/{{{-11,-16},{11,32}},{{-1,-28},{15,-13}}},/*specialC2 (79)*/{{{-11,-16},{11,32}},{{6,-25},{22,-10}}},/*specialC3 (80)*/
-                    {{{-11,-16},{11,32}},{{9,-22},{25,-7}}},/*specialC4 (81)*/{{{-11,-15},{16,32}},{{-1,-29},{15,-14}},}/*specialC5 (82)*/
+                    {{{-11,-16},{11,32}},{{9,-22},{25,-7}}},/*specialC4 (81)*/{{{-11,-15},{16,32}},{{-1,-29},{15,-14}}},/*specialC5 (82)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt1 (83)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt2 (84)*/
+                    {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt1 (85)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*taunt1 (86)*/
                     },//char 2(Sinclair)
                     },
 hitbox[16][16][4][2][2]={
@@ -2644,6 +2678,7 @@ int chooseaction(short character,int playercode, bool air, char keyinput[], floa
                 }
                 else{
                     //grounded actions
+                    if(keyinput[1]=='2'&&keyinput[2]=='2'&&keyinput[3]=='2'&&keyinput[4]=='2')return 37;//taunt
                     if((keyinput[1]=='2'&&keyinput[2]=='2')||(keyinput[2]=='2'&&keyinput[3]=='2')||(keyinput[1]=='2'&&keyinput[3]=='2')){
                         if(character==0){
                             c214[0][1]='2';c214[0][2]='2';c214[0][3]='2';
@@ -3581,6 +3616,12 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
                 break;
             }
+            case 37:{//taunt
+                P.col=0;
+                voicesfxlist.push_back(14);vsfxx.push_back((bgx+P.x-128.f)/256.f);
+                P.animq.insert(P.animq.begin(),{83,83,83,83,83,83,83,83,83,83,84,84,84,84,84,84,84,84,84,84,83,83,83,83,83,83,83,83,83,83,84,84,84,84,84,84,84,84,84,84,83,83,83,83,83,83,83,83,83,83,84,84,84,84,84,84,84,84,84,84,
+                    85,85,85,85,85,85,85,85,85,85,86,86,86,86,86,86,86,86,86,86,85,85,85,85,85,85,85,85,85,85,86,86,86,86,86,86,86,86,86,86,85,85,85,85,85,85,85,85,85,85,86,86,86,86,86,86,86,86,86,86});
+            }
             }
             break;
         }
@@ -4233,17 +4274,17 @@ int main()
     if(!soundfx[6].loadFromFile("assets/sounds/jump.wav"))window.close();if(!soundfx[7].loadFromFile("assets/sounds/land.wav"))window.close();
     if(!soundfx[8].loadFromFile("assets/sounds/swing2.wav"))window.close();if(!soundfx[9].loadFromFile("assets/sounds/toss.wav"))window.close();
     if(!soundfx[10].loadFromFile("assets/sounds/super.wav"))window.close();if(!soundfx[11].loadFromFile("assets/sounds/Sinclairsuper.wav"))window.close();
-    if(!soundfx[12].loadFromFile("assets/sounds/block.wav"))window.close();
-    for(int j=0;j<13;j++){
+    if(!soundfx[12].loadFromFile("assets/sounds/block.wav"))window.close();if(!soundfx[13].loadFromFile("assets/sounds/Sinclairtaunt.wav"))window.close();
+    for(int j=0;j<14;j++){
         std::vector<std::int16_t> samples;
         for(int i=0;i<soundfx[j].getSampleCount();i++){
             samples.push_back((soundfx[j].getSamples()[i]/16)*16);
         }
         if(!soundfx[j].loadFromSamples(samples.data(),samples.size(),2,8000,channelMap))window.close();
     }
-    sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);
+    sf::Sound hitsound(soundfx[0]),voice(soundfx[0]);hitsound.setVolume(75.f);voice.setVolume(125.f);
     std::deque<sf::Sound> sound;
-    sf::Music music("assets/music/practice mode.wav");music.setLooping(true);music.setVolume(75.f);
+    sf::Music music("assets/music/practice mode.wav");music.setLooping(true);music.setVolume(50.f);
 	menu menus;
 	if (!menus.load("assets/images/menu.png")){}
 	menus.setmenu(6,144,120,0,16,0);
