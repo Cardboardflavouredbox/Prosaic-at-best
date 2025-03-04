@@ -1192,12 +1192,12 @@ static unsigned char animlib[16][128][32][2]=
                     {35,9},{32,13},{33,13}
                     },//run3 (93)
                     {
-                    {3,4},{2,4},
+                    {4,4},{2,4},
 
-                    {255,255},{34,10},{35,10},
-                    {255,255},{34,11},{35,11},
-                    {255,255},{34,12},{35,12},
-                    {35,8},{34,13},{35,13}
+                    {255,255},{34,10},{35,10},{255,255},
+                    {32,4},{34,11},{35,11},{35,7},
+                    {32,5},{34,12},{35,12},{35,8},
+                    {32,9},{34,13},{35,13},{255,255}
                     },//run4 (94)
                     {
                     {3,4},{2,4},
@@ -3113,8 +3113,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             if(!P.neutural&&!P.air){P.jumpx=0;P.jumpy=0;}
             P.neutural=true;P.hitstun=0;P.blockstun=0;P.kback=0;P.hit=false;
             P.slide=false;P.hitcount=0;P.dmg=0;P.launch=0;P.kdown=0;P.mgain=0;P.super=false;
-            P.wallcrash=false;
-            P.movetype=-1;P.block=-1;P.grab[0]=0;P.grab[1]=0;P.grabstate=-1;
+            P.wallcrash=false;P.movetype=-1;
+            P.block=-1;P.grab[0]=0;P.grab[1]=0;P.grabstate=-1;
             if(P.comboed){combo=0;P.comboed=false;}
             if(!P.air){if(P.x<enemyx)P.right=true;else P.right=false;}
         }
@@ -3243,6 +3243,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=9;P.blockstun=3;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
                     P.animq.insert(P.animq.begin(),{43,43,45,45,46,46,46});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,10,10,10,10,10,10,10,10});
+                    short temp[3]={8,9,10};boolfill(P.cancel,true,temp);
                 }
                 else{
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=4;P.hitstun=9;P.blockstun=6;P.dmg=12;P.movetype=2;P.mgain=4;
@@ -3257,6 +3258,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=10;P.blockstun=4;P.dmg=25;P.movetype=3;P.landdelay=3;P.mgain=6;
                     P.animq.insert(P.animq.begin(),{3,4,5,5,5,6,7,7,7,7});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,2,2,2,2});
+                    short temp[1]={10};boolfill(P.cancel,true,temp);
                 }
                 else{
                     P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=12;P.blockstun=5;P.slide=true;P.dmg=27;P.movetype=2;P.mgain=6;
@@ -3325,7 +3327,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 P.animq.insert(P.animq.begin(),{12,12,12,12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,4,4,4,4,4});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
-                short temp[13]={16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+                short temp[16]={5,6,7,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
                 break;
                 }
             case 15:{//k (gimmick)
@@ -3361,7 +3363,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 P.col=0;P.hitcount=1;P.hitstop=14;P.kback=0;P.hitstun=1;P.blockstun=12;P.slide=true;P.movewaitx=10;P.dmg=36;P.kdown=1;P.launch=11;P.movetype=2;P.mgain=9;
                 P.animq.insert(P.animq.begin(),{20,20,20,21,21,22,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,23,22,22,22,21,21,20,20,20});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,5,5});
-                P.cancel[32]=true;
+                short temp[4]={5,6,7,32};boolfill(P.cancel,true,temp);
                 if(P.right)P.jumpx=7;else P.jumpx=-7;
                 break;
                 }
@@ -3522,6 +3524,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.animq.insert(P.animq.begin(),{75,75,75,75,76,76,76});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,9,9,9,9,9,9,9,9});
                     P.atkfx.insert(P.atkfx.begin(),{0,0,0,11});
+                    short temp[3]={8,9,10};boolfill(P.cancel,true,temp);
                 }
                 else{
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=4;P.hitstun=12;P.blockstun=9;P.dmg=14;P.movetype=2;P.mgain=4;
@@ -3537,6 +3540,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=16;P.blockstun=8;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
                     P.animq.insert(P.animq.begin(),{19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
                     P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,3,3,3,3,3});
+                    short temp[1]={10};boolfill(P.cancel,true,temp);
                 }
                 else{
                     P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=16;P.blockstun=10;P.slide=true;P.dmg=28;P.movetype=2;P.mgain=6;
@@ -4041,12 +4045,12 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
         if(P1.buffer==0&&!P1.animq.empty()){
             P1.buffer=chooseaction(P1.character,P1.act,1,P1.air,p1input,P1.meter);
             if(P1.cancel[P1.buffer]==false&&P1.animq.size()>10)P1.buffer=0;
-            else if(P1.buffer<8||P1.buffer==11||P1.buffer==20||(P1.air&&P1.jumpy<5))P1.buffer=0;
+            else if(P1.buffer<8||P1.buffer==11||P1.buffer==20||(!P1.cancel[P1.buffer]&&P1.air&&P1.jumpy<5))P1.buffer=0;
         }
         if(P2.buffer==0&&!P2.animq.empty()){
                 P2.buffer=chooseaction(P2.character,P2.act,2,P2.air,p2input,P2.meter);
                 if(P2.cancel[P2.buffer]==false&&P2.animq.size()>10)P2.buffer=0;
-                else if(P2.buffer<8||P2.buffer==11||P2.buffer==20||(P2.air&&P2.jumpy<5))P2.buffer=0;
+                else if(P2.buffer<8||P2.buffer==11||P2.buffer==20||(!P2.cancel[P2.buffer]&&P2.air&&P2.jumpy<5))P2.buffer=0;
         }
         if(P1.buffer==0){
             short temp=chooseaction(P1.character,P1.act,1,P1.air,p1input,P1.meter);
