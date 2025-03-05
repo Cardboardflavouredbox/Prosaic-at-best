@@ -2485,10 +2485,10 @@ private:
 };
 
 void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
-    bool projcheck=false,hitcheck=false;
+    bool projcheck=false,hitcheck=false,clashed=false;
     #define P1 (*p1)
     #define P2 (*p2)
-    float temp[2],temp2[2],temp3[2],temp4[2];
+    float temp[2],temp2[2],temp3[2],temp4[2],temp5[2],temp6[2];
     if(P1.iframes==0)
     for(int i=hurtboxcount[P1.character][P1.frame]-1;i>=0;i--){
     if(P1.right==true){
@@ -2564,6 +2564,36 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             temp4[0]=-hitbox[P2.character][P2.hbframe][j][0][0]+int(P2.x);
             temp4[1]=hitbox[P2.character][P2.hbframe][j][1][1]+int(P2.y);
         }
+        if(P1.hitcount>0)
+        for(short k=0;k<hitboxcount[P1.character][P1.hbframe];k++){
+            if(P1.right==true){
+                temp5[0]=hitbox[P1.character][P1.hbframe][k][0][0]+int(P1.x);
+                temp5[1]=hitbox[P1.character][P1.hbframe][k][0][1]+int(P1.y);
+                temp6[0]=hitbox[P1.character][P1.hbframe][k][1][0]+int(P1.x);
+                temp6[1]=hitbox[P1.character][P1.hbframe][k][1][1]+int(P1.y);
+            }
+            else{
+                temp5[0]=-hitbox[P1.character][P1.hbframe][k][1][0]+int(P1.x);
+                temp5[1]=hitbox[P1.character][P1.hbframe][k][0][1]+int(P1.y);
+                temp6[0]=-hitbox[P1.character][P1.hbframe][k][0][0]+int(P1.x);
+                temp6[1]=hitbox[P1.character][P1.hbframe][k][1][1]+int(P1.y);
+            }
+            if(!(temp5[0]>=temp4[0]||temp6[0]<=temp3[0]||temp5[1]>=temp4[1]||temp6[1]<=temp3[1])){
+                hitcheck=true;clashed=true;
+                if(temp6[0]<temp4[0])overlap[0]=temp6[0];
+                else overlap[0]=temp4[0];
+                if(temp5[0]<temp3[0])overlap[0]+=temp3[0];
+                else overlap[0]+=temp5[0];
+                overlap[0]/=2;
+                if(temp6[1]<temp4[1])overlap[1]=temp6[1];
+                else overlap[1]=temp4[1];
+                if(temp5[1]<temp3[1])overlap[1]+=temp3[1];
+                else overlap[1]+=temp5[1];
+                overlap[1]/=2;
+                break;
+                }
+        }
+        if(clashed)break;
         if(!(temp[0]>=temp4[0]||temp2[0]<=temp3[0]||temp[1]>=temp4[1]||temp2[1]<=temp3[1])){
             hitcheck=true;
             if(temp2[0]<temp4[0])overlap[0]=temp2[0];
@@ -2611,7 +2641,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
                 break;
             }
         }
-    if(((P2.hitstopped==0&&hitcheck)||projcheck)&&!P1.counter){
+    if(((P2.hitstopped==0&&hitcheck)||projcheck)&&!(P1.counter||clashed)){
         effects fxtemp;
         fxtemp.code=1;fxtemp.x=overlap[0];fxtemp.y=overlap[1];
         if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
@@ -2681,7 +2711,36 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
         P1.hit=true;
         P1.comboed=true;
         }
-    if(((P2.hitstopped==0&&hitcheck)||projcheck)&&P1.counter)P1.hit=true;
+    if(((P2.hitstopped==0&&hitcheck)||projcheck)&&P1.counter){//countered
+        P1.hitstopped=P1.hitstop;P2.hitstopped=P1.hitstop;P1.hit=true;
+        effects fxtemp;
+        fxtemp.x=overlap[0];fxtemp.y=overlap[1];
+        fxtemp.len=P1.hitstopped;
+        fxtemp.color1=sf::Color (85, 255, 255);
+        fxtemp.code=1;
+        effectslist.push_back(fxtemp);
+        fxtemp.code=2;
+        effectslist.push_back(fxtemp);
+
+        P2.hitcount--;
+        hitsfxlist.push_back(13);
+        hsfxx.push_back((bgx+overlap[0]-128.f)/256.f);
+        }
+    if(((P2.hitstopped==0&&hitcheck)||projcheck)&&clashed){//clashed
+        P1.hitstopped=15;P2.hitstopped=15;
+        effects fxtemp;
+        fxtemp.x=overlap[0];fxtemp.y=overlap[1];
+        fxtemp.len=P1.hitstopped;
+        fxtemp.color1=sf::Color (255, 255, 255);
+        fxtemp.code=1;
+        effectslist.push_back(fxtemp);
+        fxtemp.code=2;
+        effectslist.push_back(fxtemp);
+
+        P2.hitcount--;
+        hitsfxlist.push_back(13);
+        hsfxx.push_back((bgx+overlap[0]-128.f)/256.f);
+        }
     if(projcheck)
         for(short i=0;i<P2.proj.size();i++){
             if(P2.proj[i].hit){
@@ -3033,7 +3092,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     else if(P.character==2){walkspeed=2.2;runspeed=5;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}}
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
-            walkspeed/=2;jumpfall/=2;
+            walkspeed/=2;runspeed/=2;jumpfall/=2;
     }
 
     if(P.kdowned==1&&P.animq.size()<28&&!P.comboed&&P.act==1&&P.hp>0){//quick rise
@@ -3783,14 +3842,14 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     break;
             }
             case 38:{//super2
-                P.col=0;P.movetype=0;
+                P.col=0;P.movetype=0;P.hitstop=15;
                 P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14});
                 P.cancel[39]=true;
                 break;
             }
             case 39:{//super2 2
-                P.col=3;P.hitcount=3;P.hitstop=3;P.kback=3;P.hitstun=10;P.blockstun=0;P.slide=true;P.dmg=25;P.launch=4;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick[0]=270;P.iframes=10;
+                P.col=3;P.hitcount=3;P.hitstop=3;P.kback=3;P.hitstun=10;P.blockstun=0;P.slide=true;P.dmg=50;P.launch=4;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick[0]=270;P.iframes=10;
                 P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{8,8,8,8,8});
                 if(P.right)P.jumpx=4;else P.jumpx=-4;
@@ -4263,14 +4322,14 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     #define P2 (*p2)
 
     box collisionbox1,collisionbox2,Hitbox1,Hurtbox1,Hitbox2,Hurtbox2,P_Hitbox1[32],P_Hitbox2[32];
-    collisionbox1.create(P1.x+bgx,int(P1.y),colbox[P1.character][P1.col],P1.right,1,sf::Color::White);
-    collisionbox2.create(P2.x+bgx,int(P2.y),colbox[P2.character][P2.col],P2.right,1,sf::Color::White);
-    Hurtbox1.create(P1.x+bgx,int(P1.y),hurtbox[P1.character][P1.frame],P1.right,hurtboxcount[P1.character][P1.frame],sf::Color::Blue);
-    Hitbox1.create(P1.x+bgx,int(P1.y),hitbox[P1.character][P1.hbframe],P1.right,hitboxcount[P1.character][P1.hbframe],sf::Color::Red);
-    Hurtbox2.create(P2.x+bgx,int(P2.y),hurtbox[P2.character][P2.frame],P2.right,hurtboxcount[P2.character][P2.frame],sf::Color::Blue);
-    Hitbox2.create(P2.x+bgx,int(P2.y),hitbox[P2.character][P2.hbframe],P2.right,hitboxcount[P2.character][P2.hbframe],sf::Color::Red);
-    for(short i=0;i<P1.proj.size();i++)P_Hitbox1[i].create(P1.proj[i].x+bgx,int(P1.proj[i].y),hurtbox[P1.character][P1.proj[i].frame],P1.proj[i].right,hurtboxcount[P1.character][P1.proj[i].frame],sf::Color::Red);
-    for(short i=0;i<P2.proj.size();i++)P_Hitbox2[i].create(P2.proj[i].x+bgx,int(P2.proj[i].y),hurtbox[P2.character][P2.proj[i].frame],P2.proj[i].right,hurtboxcount[P2.character][P2.proj[i].frame],sf::Color::Red);
+    collisionbox1.create(floor(P1.x+bgx),int(P1.y),colbox[P1.character][P1.col],P1.right,1,sf::Color::White);
+    collisionbox2.create(floor(P2.x+bgx),int(P2.y),colbox[P2.character][P2.col],P2.right,1,sf::Color::White);
+    Hurtbox1.create(floor(P1.x+bgx),int(P1.y),hurtbox[P1.character][P1.frame],P1.right,hurtboxcount[P1.character][P1.frame],sf::Color::Blue);
+    Hitbox1.create(floor(P1.x+bgx),int(P1.y),hitbox[P1.character][P1.hbframe],P1.right,hitboxcount[P1.character][P1.hbframe],sf::Color::Red);
+    Hurtbox2.create(floor(P2.x+bgx),int(P2.y),hurtbox[P2.character][P2.frame],P2.right,hurtboxcount[P2.character][P2.frame],sf::Color::Blue);
+    Hitbox2.create(floor(P2.x+bgx),int(P2.y),hitbox[P2.character][P2.hbframe],P2.right,hitboxcount[P2.character][P2.hbframe],sf::Color::Red);
+    for(short i=0;i<P1.proj.size();i++)P_Hitbox1[i].create(floor(P1.proj[i].x+bgx),int(P1.proj[i].y),hurtbox[P1.character][P1.proj[i].frame],P1.proj[i].right,hurtboxcount[P1.character][P1.proj[i].frame],sf::Color::Red);
+    for(short i=0;i<P2.proj.size();i++)P_Hitbox2[i].create(floor(P2.proj[i].x+bgx),int(P2.proj[i].y),hurtbox[P2.character][P2.proj[i].frame],P2.proj[i].right,hurtboxcount[P2.character][P2.proj[i].frame],sf::Color::Red);
 
     if(superstop>0){if(P1.super)sf.create(superstop,P1.y-8);else if(P2.super)sf.create(superstop,P2.y-8);}
     /*
