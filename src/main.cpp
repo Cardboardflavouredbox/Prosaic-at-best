@@ -1402,7 +1402,7 @@ public:
     landdelay=0,hitstopped=0,grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
     iframes=0,grabiframes=0,hitcount=0,
     moveact=0,movescaling[64]={};
-    bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,neutural=true,comboed=false,hitbefore=false,super=false,wallcrash=false,wallcrashed=false,running=false;
+    bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,neutural=true,comboed=false,hitbefore=false,super=false,wallcrash=false,wallcrashed=false,running=false,counter=false;
     float x=0,y=176.0,jumpx=0,jumpy=0,kback=0,launch=0,hp=1000.0,maxhp=1000.0,dmg=0,pushaway=0,grab[2]={},meter=100,mgain=0;
 };
 
@@ -2611,7 +2611,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
                 break;
             }
         }
-    if((P2.hitstopped==0&&hitcheck)||projcheck){
+    if(((P2.hitstopped==0&&hitcheck)||projcheck)&&!P1.counter){
         effects fxtemp;
         fxtemp.code=1;fxtemp.x=overlap[0];fxtemp.y=overlap[1];
         if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
@@ -2681,6 +2681,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
         P1.hit=true;
         P1.comboed=true;
         }
+    if(((P2.hitstopped==0&&hitcheck)||projcheck)&&P1.counter)P1.hit=true;
     if(projcheck)
         for(short i=0;i<P2.proj.size();i++){
             if(P2.proj[i].hit){
@@ -3044,7 +3045,10 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         P.col=1;
     }
     if(P.hit){//hit code
-        P.hit=false;P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
+        P.hit=false;
+        if(P.counter){for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}}
+        else{
+        P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
         P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.grabstate=-1;P.landdelay=0;P.movewaitx=-1;P.movewaity=-1;
         P.mgain=0;P.super=false;P.wallcrash=false;
         if(P.air&&P.attack.launch==0){
@@ -3106,6 +3110,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
         }
         short temp[1]={-1};boolfill(P.cancel,true,temp);
+        }
     }
     else if(P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1){
         if(P.comboed&&P.kdowned>0&&!P.air){
@@ -3124,7 +3129,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             if(!P.neutural&&!P.air){P.jumpx=0;P.jumpy=0;}
             P.neutural=true;P.hitstun=0;P.blockstun=0;P.kback=0;P.hit=false;
             P.slide=false;P.hitcount=0;P.dmg=0;P.launch=0;P.kdown=0;P.mgain=0;P.super=false;
-            P.wallcrash=false;P.movetype=-1;
+            P.wallcrash=false;P.movetype=-1;P.counter=false;
             P.block=-1;P.grab[0]=0;P.grab[1]=0;P.grabstate=-1;
             if(P.comboed){combo=0;P.comboed=false;}
             if(!P.air){if(P.x<enemyx)P.right=true;else P.right=false;}
@@ -3184,7 +3189,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             P.buffer=0;P.slide=false;P.hitstun=0;P.blockstun=0;P.kback=0;P.dmg=0;P.launch=0;P.kdown=0;P.movewaitx=-1;P.movewaity=-1;
             P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.landdelay=0;if(!P.air){P.jumpx=0;P.jumpy=0;}P.mgain=0;P.super=false;
             short temp[0]={};boolfill(P.cancel,true,temp);P.cancel[0]=false;P.iframes=0;P.wallcrash=false;
-            P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
+            P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();P.counter=false;
         }
 
         if(P.comboed&&P.act==15){
@@ -3778,8 +3783,17 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     break;
             }
             case 38:{//super2
-                P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77});
-                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,13});
+                P.col=0;P.movetype=0;
+                P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77,77});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14});
+                P.cancel[39]=true;
+                break;
+            }
+            case 39:{//super2 2
+                P.col=3;P.hitcount=3;P.hitstop=3;P.kback=3;P.hitstun=10;P.blockstun=0;P.slide=true;P.dmg=25;P.launch=4;P.kdown=2;P.movetype=4;P.grabstate=-1;P.mgain=1;P.gimmick[0]=270;P.iframes=10;
+                P.animq.insert(P.animq.begin(),{56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{8,8,8,8,8});
+                if(P.right)P.jumpx=4;else P.jumpx=-4;
                 break;
             }
             }
@@ -3884,8 +3898,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             case 1:
             case 3:
             case 8:
-            case 10:
-            case 13:{//projectile
+            case 10:{//projectile
                 soundfxlist.push_back(10);
                 sfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.meter+=P.mgain;
@@ -3922,20 +3935,10 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.endanim.push_back(42);
                 temp.endanim.push_back(43);
                 if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
-                else if(P.atkfx[0]==3||P.atkfx[0]==10||P.atkfx[0]==13)temp.code=2;
+                else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
                 temp.launch=P.launch;
                 //temp.endanim.insert(temp.endanim.begin(),{42});
-                if(P.atkfx[0]==13){
-                    std::uniform_int_distribution<int> dis(-8,8);
-                    for(unsigned char i=0;i<6;i++)
-                        if(P.proj.size()<32){
-                            temp.movex=3;
-                            temp.x=P.x-32+dis(gen);
-                            temp.y=P.y+dis(gen);
-                            P.proj.push_back(temp);
-                            }
-                }
-                else if(P.proj.size()<32)P.proj.push_back(temp);
+                if(P.proj.size()<32)P.proj.push_back(temp);
                 break;
             }
             case 4:{//gimmick
@@ -4027,6 +4030,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 soundfxlist.push_back(6);sfxx.push_back((bgx+P.x-128.f)/256.f);
                 break;
             }
+            case 13:{P.counter=true;break;}
+            case 14:{P.counter=false;break;}
         }
         }
         P.atkfx.pop_front();
