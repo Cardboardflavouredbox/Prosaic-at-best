@@ -1402,7 +1402,7 @@ public:
     landdelay=0,hitstopped=0,grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
     iframes=0,grabiframes=0,hitcount=0,
     moveact=0,movescaling[64]={};
-    bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,neutural=true,comboed=false,hitbefore=false,super=false,wallcrash=false,wallcrashed=false;
+    bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,neutural=true,comboed=false,hitbefore=false,super=false,wallcrash=false,wallcrashed=false,running=false;
     float x=0,y=176.0,jumpx=0,jumpy=0,kback=0,launch=0,hp=1000.0,maxhp=1000.0,dmg=0,pushaway=0,grab[2]={},meter=100,mgain=0;
 };
 
@@ -3017,7 +3017,7 @@ void projectiledata(player *p,short superstop){
 void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick[],bool preblock){
     #define P (*p)
     float walkspeed,runspeed,jumprise,jumpfall;
-    if(P.character==0){walkspeed=3;jumprise=-12;jumpfall=0.8;}
+    if(P.character==0){walkspeed=3;runspeed=6;jumprise=-12;jumpfall=0.8;}
     else if(P.character==2){walkspeed=2.2;runspeed=5;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}}
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
@@ -3084,11 +3084,11 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         if(((P.x<-110&&P.attack.kback>0)||(P.x>360&&P.attack.kback<0))&&(P.attack.grab[0]==0&&P.attack.grab[1]==0)&&P.attack.pushaway){//wall pushaway code
                 if(P.attack.kback>0)P.pushaway=P.attack.kback;
                 else P.pushaway=-P.attack.kback;
-                P.pushaway+=int(P.attack.launch/2);
+                P.pushaway+=roundf(P.attack.launch/2);
         }
         else if(P.attack.grab[0]==0&&P.attack.grab[1]==0){//knockback code
                 if(P.air&&P.attack.launch==0){
-                    P.jumpx=-int(P.attack.kback/3);
+                    P.jumpx=-roundf(P.attack.kback/3);
                 }
                 else{
                     P.jumpx=-P.attack.kback;
@@ -3234,10 +3234,23 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 if(P.right)P.x+=walkspeed;else P.x-=walkspeed;
                 break;
                 }
-            case 4:{P.col=0;P.air=true;P.jumpy=-2.0;if(P.right)P.jumpx=7;else P.jumpx=-7;P.landdelay=7;break;}//right dash
+            case 4:{//right dash
+                P.col=0;P.running=true;
+                if(P.idleanim.empty()){P.idleanim.push_back(17);P.idleanim.push_back(17);}
+                if(P.x<enemyx)P.right=true;else P.right=false;
+                if(P.right)P.x+=runspeed;else P.x-=runspeed;
+                break;
+            }
             case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=5;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//up jump
             case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//left jump
-            case 7:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=3;else P.jumpx=-3;P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//right jump
+            case 7:{//right jump
+                    P.col=0;P.movewaitx=4;P.movewaity=4;
+                    if(P.running){if(P.right)P.jumpx=6;else P.jumpx=-6;P.jumpy=jumprise*2.f/3.f;}
+                    else{if(P.right)P.jumpx=3;else P.jumpx=-3;P.jumpy=jumprise;}
+                    P.animq.insert(P.animq.begin(),{8,8,8,43});P.landdelay=3;
+                    soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);
+                    break;
+                    }
             case 8:{//u (light normal)
                 if(P.air){
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=9;P.blockstun=3;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
@@ -3342,7 +3355,6 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
                 break;
                 }
-            
             case 16:{//special A (u)
                 P.col=0;P.hitcount=1;P.hitstop=12;P.kback=7;P.hitstun=13;P.blockstun=9;P.slide=true;P.movewaitx=6;P.dmg=22;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{20,21,22,22,22,22,23,24,25,25,25,25,25,25,24,24,23,22,21,20,20});
@@ -3471,6 +3483,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             switch (P.act){
             case 0:{//neutural
                 if(!P.air){
+                    P.running=false;
                     if(P.x<enemyx)P.right=true;else P.right=false;
                     if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,71,71,71,71,
                                                             72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,71,71,71,71,71});
@@ -3485,37 +3498,50 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     }
                 else{
                     if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{14,14,14,14,13,13,13,13,12,12,12,12,11,11,11,11,10,10,10,10,9,9,9,9,8,8,8,8,7,7,7,7,6,6,6,6});
-                    if(P.x<enemyx)P.right=true;else P.right=false;
+                    if(P.x<enemyx)P.right=true;else P.right=false;P.running=false;
                     if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
                     }
                 break;
             }
             case 2:{//left dash
-                P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;P.iframes=3;
+                P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;P.iframes=3;P.running=false;
                 P.animq.insert(P.animq.begin(),{51,47,47,47,47,47,47,47,47,48,48,49,49,50,50,50,50,50,51});
                 break;
             }
             case 3:{//right walk
-                P.col=0;
+                P.col=0;P.running=false;
                 if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13,14,14,14,14});
                 if(P.x<enemyx)P.right=true;else P.right=false;
                 if(P.right)P.x+=walkspeed;else P.x-=walkspeed;
                 break;
             }
             case 4:{//right dash
-                P.col=0;
+                P.col=0;P.running=true;
                 if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{91,91,91,91,92,92,92,92,93,93,93,93,94,94,94,94,95,95,95,95,96,96,96,96});
                 if(P.x<enemyx)P.right=true;else P.right=false;
                 if(P.right)P.x+=runspeed;else P.x-=runspeed;
                 break;
             }
-            case 5:{P.col=0;P.jumpy=jumprise;P.movewaity=4;P.animq.insert(P.animq.begin(),{1,1,1,44});P.landdelay=5;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//up jump
-            case 6:{P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;if(P.right)P.jumpx=-3;else P.jumpx=3;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}//left jump
+            case 5:{//up jump
+                P.col=0;P.jumpy=jumprise;P.movewaity=4;
+                P.animq.insert(P.animq.begin(),{8,8,8,44});
+                P.landdelay=5;
+                soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);
+                break;
+            }
+            case 6:{//left jump
+                P.col=0;P.jumpy=jumprise;P.movewaitx=4;P.movewaity=4;
+                if(P.right)P.jumpx=-3;else P.jumpx=3;
+                P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;
+                soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);
+                break;
+            }
             case 7:{//right jump
-                if(P.frame>90&&P.frame<97){if(P.right)P.jumpx=6;else P.jumpx=-6;P.jumpy=jumprise*2.f/3.f;}
+                if(P.running){if(P.right)P.jumpx=6;else P.jumpx=-6;P.jumpy=jumprise*2.f/3.f;}
                 else{if(P.right)P.jumpx=3;else P.jumpx=-3;P.jumpy=jumprise;}
                 P.movetype=0;
-                P.col=0;P.movewaitx=4;P.movewaity=4;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);
+                P.col=0;P.movewaitx=4;P.movewaity=4;P.animq.insert(P.animq.begin(),{8,8,8,44});P.landdelay=3;
+                soundfxlist.push_back(7);sfxx.push_back((bgx+P.x-128.f)/256.f);
                 break;
             }
             case 8:{//u (light normal)
@@ -3801,6 +3827,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
         if(enemycharacter!=2||(enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0))))P.idleanim.pop_front();
     }
+    if(P.idleanim.empty()||!P.animq.empty())P.running=false;
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
         else P.x=enemyx+P.attack.grab[0];
