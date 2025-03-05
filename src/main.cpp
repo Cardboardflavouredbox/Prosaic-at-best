@@ -3236,7 +3236,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
             case 4:{//right dash
                 P.col=0;P.running=true;
-                if(P.idleanim.empty()){P.idleanim.push_back(17);P.idleanim.push_back(17);}
+                memcpy(P.anim,animlib[P.character][17],sizeof(animlib[P.character][0]));
                 if(P.x<enemyx)P.right=true;else P.right=false;
                 if(P.right)P.x+=runspeed;else P.x-=runspeed;
                 break;
@@ -3483,7 +3483,6 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             switch (P.act){
             case 0:{//neutural
                 if(!P.air){
-                    P.running=false;
                     if(P.x<enemyx)P.right=true;else P.right=false;
                     if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,71,71,71,71,
                                                             72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,71,71,71,71,71});
@@ -3498,18 +3497,18 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     }
                 else{
                     if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{14,14,14,14,13,13,13,13,12,12,12,12,11,11,11,11,10,10,10,10,9,9,9,9,8,8,8,8,7,7,7,7,6,6,6,6});
-                    if(P.x<enemyx)P.right=true;else P.right=false;P.running=false;
+                    if(P.x<enemyx)P.right=true;else P.right=false;
                     if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
                     }
                 break;
             }
             case 2:{//left dash
-                P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;P.iframes=3;P.running=false;
+                P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;P.iframes=3;
                 P.animq.insert(P.animq.begin(),{51,47,47,47,47,47,47,47,47,48,48,49,49,50,50,50,50,50,51});
                 break;
             }
             case 3:{//right walk
-                P.col=0;P.running=false;
+                P.col=0;
                 if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13,14,14,14,14});
                 if(P.x<enemyx)P.right=true;else P.right=false;
                 if(P.right)P.x+=walkspeed;else P.x-=walkspeed;
@@ -3827,7 +3826,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         memcpy(P.anim,animlib[P.character][P.idleanim[0]],sizeof(animlib[P.character][P.idleanim[0]]));
         if(enemycharacter!=2||(enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0))))P.idleanim.pop_front();
     }
-    if(P.idleanim.empty()||!P.animq.empty())P.running=false;
+    if(P.act!=4)P.running=false;
     if(enemygstate==3||enemygstate==4){
         if(P.x<enemyx)P.x=enemyx-P.attack.grab[0];
         else P.x=enemyx+P.attack.grab[0];
