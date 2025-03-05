@@ -2785,6 +2785,17 @@ int chooseaction(short character,short previousact,int playercode, bool air, cha
                             if(cmdcheck(playercode,4,c214)&&meter>=100)return 32;//super
                             c214[0][1]='0';c214[0][2]='0';c214[0][3]='0';
                         }
+                        else if(character==2){
+                            c236[0][1]='2';c236[0][2]='2';c236[0][3]='2';
+                            if(cmdcheck(playercode,4,c236)&&meter>=100)return 38;//super2
+                            c236[0][3]='0';
+                            if(cmdcheck(playercode,4,c236)&&meter>=100)return 38;//super2
+                            c236[0][3]='2';c236[0][1]='0';
+                            if(cmdcheck(playercode,4,c236)&&meter>=100)return 38;//super2
+                            c236[0][1]='0';c236[0][2]='0';
+                            if(cmdcheck(playercode,4,c236)&&meter>=100)return 38;//super2
+                            c236[0][1]='0';c236[0][2]='0';c236[0][3]='0';
+                        }
                         return 25;//grab
                     }
                     if(keyinput[3]=='2'){
@@ -3764,9 +3775,14 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 voicesfxlist.push_back(14);vsfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.animq.insert(P.animq.begin(),{83,83,83,83,83,83,83,83,83,83,84,84,84,84,84,84,84,84,84,84,83,83,83,83,83,83,83,83,83,83,84,84,84,84,84,84,84,84,84,84,83,83,83,83,83,83,83,83,83,83,84,84,84,84,84,84,84,84,84,84,
                     85,85,85,85,85,85,85,85,85,85,86,86,86,86,86,86,86,86,86,86,85,85,85,85,85,85,85,85,85,85,86,86,86,86,86,86,86,86,86,86,85,85,85,85,85,85,85,85,85,85,86,86,86,86,86,86,86,86,86,86});
+                    break;
+            }
+            case 38:{//super2
+                P.animq.insert(P.animq.begin(),{25,25,25,25,25,25,25,25,25,26,77,77,77,77,77,77});
+                P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,5,0,13});
+                break;
             }
             }
-            break;
         }
         }
     }
@@ -3868,7 +3884,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             case 1:
             case 3:
             case 8:
-            case 10:{//projectile
+            case 10:
+            case 13:{//projectile
                 soundfxlist.push_back(10);
                 sfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.meter+=P.mgain;
@@ -3905,10 +3922,20 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.endanim.push_back(42);
                 temp.endanim.push_back(43);
                 if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
-                else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
+                else if(P.atkfx[0]==3||P.atkfx[0]==10||P.atkfx[0]==13)temp.code=2;
                 temp.launch=P.launch;
                 //temp.endanim.insert(temp.endanim.begin(),{42});
-                if(P.proj.size()<32)P.proj.push_back(temp);
+                if(P.atkfx[0]==13){
+                    std::uniform_int_distribution<int> dis(-8,8);
+                    for(unsigned char i=0;i<6;i++)
+                        if(P.proj.size()<32){
+                            temp.movex=3;
+                            temp.x=P.x-32+dis(gen);
+                            temp.y=P.y+dis(gen);
+                            P.proj.push_back(temp);
+                            }
+                }
+                else if(P.proj.size()<32)P.proj.push_back(temp);
                 break;
             }
             case 4:{//gimmick
