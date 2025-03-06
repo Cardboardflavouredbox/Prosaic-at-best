@@ -2736,8 +2736,10 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
         effectslist.push_back(fxtemp);
         fxtemp.code=2;
         effectslist.push_back(fxtemp);
-
+        P1.hitcount--;
         P2.hitcount--;
+        P1.movetype=0;P2.movetype=0;
+        for(unsigned char i=1;i<64;i++){P1.cancel[i]=true;P2.cancel[i]=true;}
         hitsfxlist.push_back(13);
         hsfxx.push_back((bgx+overlap[0]-128.f)/256.f);
         }
