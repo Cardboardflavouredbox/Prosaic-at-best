@@ -3794,7 +3794,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 28:{//special C (u)
-                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=12;P.blockstun=7;P.dmg=28;P.slide=true;P.movetype=2;P.mgain=7;
+                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=12;P.blockstun=7;P.dmg=34;P.slide=true;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{78,78,78,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,10,10,10,10,10});
                 short temp[2]={15,32};boolfill(P.cancel,true,temp);
@@ -3804,7 +3804,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 29:{//special C (i)
-                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=36;P.slide=true;P.movetype=2;P.mgain=7;
+                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=43;P.slide=true;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{78,78,78,78,79,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,10,10,10,10,10});
                 short temp[2]={15,32};boolfill(P.cancel,true,temp);
@@ -3814,7 +3814,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 30:{//special C (o)
-                P.col=0;P.hitcount=2;P.hitstop=13;P.kback=6;P.hitstun=19;P.blockstun=12;P.dmg=24;P.slide=true;P.movetype=2;P.mgain=7;
+                P.col=0;P.hitcount=2;P.hitstop=13;P.kback=6;P.hitstun=19;P.blockstun=12;P.dmg=30;P.slide=true;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{78,78,78,78,78,78,79,79,79,79,79,79,80,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,10});
                 short temp[2]={15,32};boolfill(P.cancel,true,temp);
@@ -3824,7 +3824,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 31:{//special C (k)
-                P.col=0;P.hitcount=1;P.hitstop=14;P.kback=16;P.hitstun=24;P.blockstun=7;P.dmg=36;P.slide=true;P.movetype=2;P.mgain=7;P.wallcrash=true;P.launch=7;
+                P.col=0;P.hitcount=1;P.hitstop=14;P.kback=16;P.hitstun=24;P.blockstun=7;P.dmg=50;P.slide=true;P.movetype=2;P.mgain=7;P.wallcrash=true;P.launch=7;
                 P.animq.insert(P.animq.begin(),{78,78,78,78,78,78,78,78,78,79,79,79,79,79,79,79,80,80,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10});
                 P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7});
@@ -4182,12 +4182,12 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
         if(P1.buffer==0&&!P1.animq.empty()){
             P1.buffer=chooseaction(P1.character,P1.act,1,P1.air,p1input,P1.meter);
             if(P1.cancel[P1.buffer]==false&&P1.animq.size()>10)P1.buffer=0;
-            else if(P1.buffer<8||P1.buffer==11||P1.buffer==20||(!P1.cancel[P1.buffer]&&P1.air&&P1.jumpy<5))P1.buffer=0;
+            else if(P1.buffer<8||P1.buffer==11||P1.buffer==20||(!(P1.cancel[P1.buffer]&&!P1.whiff)&&P1.air&&P1.jumpy<5))P1.buffer=0;
         }
         if(P2.buffer==0&&!P2.animq.empty()){
                 P2.buffer=chooseaction(P2.character,P2.act,2,P2.air,p2input,P2.meter);
                 if(P2.cancel[P2.buffer]==false&&P2.animq.size()>10)P2.buffer=0;
-                else if(P2.buffer<8||P2.buffer==11||P2.buffer==20||(!P2.cancel[P2.buffer]&&P2.air&&P2.jumpy<5))P2.buffer=0;
+                else if(P2.buffer<8||P2.buffer==11||P2.buffer==20||(!(P2.cancel[P2.buffer]&&!P2.whiff)&&P2.air&&P2.jumpy<5))P2.buffer=0;
         }
         if(P1.buffer==0){
             short temp=chooseaction(P1.character,P1.act,1,P1.air,p1input,P1.meter);
@@ -5223,13 +5223,11 @@ int main()
                     inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
 
                     if((!pause||(pause&&nextframe))){//main match code stuff
-                        dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
-                        ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
+                        dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
                         if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
                         if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
 
-                        dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);
-                        ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
+                        dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
                         if(dirkeys2.size()>20)dirkeys2.pop_back();if(ukey2.size()>20)ukey2.pop_back();
                         if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
 
