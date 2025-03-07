@@ -1389,6 +1389,7 @@ public:
     unsigned char x=0,y=0,spriteset=0,interaction=0,dir=0;//0=up,1=right,2=down,3=left
     bool interactable=true;
 };
+
 class attackdata{
 public:
     short movetype,hitstun,blockstun,kdown,hitwait;
@@ -2250,7 +2251,6 @@ private:
    sf::VertexArray m_vertices;
 };
 
-
 class inputlist : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -2668,9 +2668,11 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             P1.meter+=P2.mgain/10*11;
             if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
             P2.dmg/=5;
-            P1.hitstopped=P2.hitstop*5/4;
+            if(P2.hitstop==0)P1.hitstopped=14;
+            else P1.hitstopped=P2.hitstop*5/4;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
             fxtemp.len=P1.hitstopped;
+            if(fxtemp.len<10)fxtemp.len=12;
             fxtemp.color1=sf::Color (85, 255, 255);
             *framedata=P2.blockstun-P2.animq.size();
             if(P2.grabstate==1||P2.grabstate==2)P2.whiff=true;
@@ -2695,7 +2697,8 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             P1.hitstopped=P2.hitstop;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
             fxtemp.color1=sf::Color (255, 255, 255);
-            std::uniform_int_distribution<int> dis(0,360),dis2(1,5);fxtemp.len=P1.hitstopped;
+            std::uniform_int_distribution<int> dis(0,360),dis2(1,5);
+            fxtemp.len=P1.hitstopped;if(fxtemp.len<10&&fxtemp.len>0)fxtemp.len=10;
             if(P2.hitstop>13)
             for(short i=0;i<3;i++){
                 fxtemp.code=3;fxtemp.dir=dis(gen);
@@ -3262,39 +3265,18 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     if(P.grabstate==4){
         if(P.animq.size()<P.blockstun)for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}
     }
-    if((P.comboed&&P.act==15&&(P.meter>=200||(P.meter>=100&&P.block==2)))||(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4))))){
+    if((P.comboed&&P.act==15&&(P.meter>=200||(P.meter>=100&&P.block==2)))||(P.block==2&&P.act==25)||(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4))))){
         P.moveact=P.act;
-        if(P.cancel[P.act]==true||(P.comboed&&P.act==15)){
+        if(P.cancel[P.act]==true||(P.comboed&&P.act==15)||(P.block==2&&P.act==25)){
             P.buffer=0;P.slide=false;P.hitstun=0;P.blockstun=0;P.kback=0;P.dmg=0;P.launch=0;P.kdown=0;P.movewaitx=-1;P.movewaity=-1;
             P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.landdelay=0;if(!P.air){P.jumpx=0;P.jumpy=0;}P.mgain=0;P.super=false;
             short temp[0]={};boolfill(P.cancel,true,temp);P.cancel[0]=false;P.iframes=0;P.wallcrash=false;
             P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();P.counter=false;
         }
 
-        if(P.comboed&&P.act==15){
-            effects temp;
-            temp.color1=sf::Color (255, 85, 255);
-            temp.code=2;
-            temp.len=4;
-            temp.x=P.x;
-            temp.y=P.y;
-            temp.speed=3;
-            effectslist.push_back(temp);
-            temp.speed=6;
-            effectslist.push_back(temp);
-            std::uniform_int_distribution<int> dis(0,360),dis2(3,5);
-            temp.code=0;
-            temp.len=16;
-            for(short i=0;i<32;i++){
-                temp.dir=dis(gen);
-                temp.speed=dis2(gen);
-                effectslist.push_back(temp);
-            }
-        }
-
         if(P.act==1)P.block=0;
         else if(P.act==20)P.block=1;
-        else if(P.comboed&&P.act==15&&P.block==2)P.block=2;
+        else if((P.comboed&&P.act==15&&P.block==2)||(P.block==2&&P.act==25))P.block=2;
         else P.block=-1;
         switch (P.character){
         case 0:{
@@ -3733,6 +3715,24 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 15:{//k (gimmick)
                 if(P.comboed){
+                effects temp;
+                temp.color1=sf::Color (255, 85, 255);
+                temp.code=2;
+                temp.len=4;
+                temp.x=P.x;
+                temp.y=P.y;
+                temp.speed=3;
+                effectslist.push_back(temp);
+                temp.speed=6;
+                effectslist.push_back(temp);
+                std::uniform_int_distribution<int> dis(0,360),dis2(3,5);
+                temp.code=0;
+                temp.len=16;
+                for(short i=0;i<32;i++){
+                    temp.dir=dis(gen);
+                    temp.speed=dis2(gen);
+                    effectslist.push_back(temp);
+                }
                 P.comboed=false;combo=0;P.iframes=3;
                 if(P.block==2){P.block=-1;P.meter-=100;}
                 else P.meter-=200;
@@ -3793,6 +3793,40 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else P.jumpx=-7;
                 break;
             }
+            case 25:{//grab&pushblock
+                if(P.block==2){
+                    if(P.attack.movetype==1)P.block=1;
+                    else P.block=0;
+                    if(P.block==0)for(short i=0;i<16;i++){
+                        if(P.character==2)P.animq.push_back(18);
+                        else P.animq.push_back(32);
+                    }
+                    if(P.block==1)for(short i=0;i<+16;i++)P.animq.push_back(33);
+                    P.pushaway=7;
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=0;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=21;P.grab[1]=0;P.grabstate=1;
+                    P.animq.insert(P.animq.begin(),{53,53,53,53,54,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,54,54,53,53,53,53,53,53,53,53});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,5});
+                    if(P.right)P.jumpx=2;else P.jumpx=-2;
+                    short temp[2]={26,27};boolfill(P.cancel,true,temp);
+                }
+                break;
+                }
+            case 26:{//grab attack forward
+                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=1;P.movetype=4;P.grabstate=-1;P.mgain=12;
+                P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
+                if(P.right)P.jumpx=4;else P.jumpx=-4;
+                break;
+                }
+            case 27:{//grab attack backward
+                P.col=1;P.hitcount=1;P.hitstop=15;P.kback=-3;P.hitstun=1;P.blockstun=0;P.slide=true;P.movewaitx=3;P.dmg=100;P.launch=10;P.kdown=1;P.movetype=4;P.grabstate=-1;P.mgain=12;
+                P.animq.insert(P.animq.begin(),{12,12,12,13,14,14,14,14,14,14,13,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12});
+                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,4});
+                if(P.right)P.jumpx=4;else P.jumpx=-4;
+                break;
+                }
             case 28:{//special C (u)
                 P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=12;P.blockstun=7;P.dmg=34;P.slide=true;P.movetype=2;P.mgain=7;
                 P.animq.insert(P.animq.begin(),{78,78,78,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
@@ -4109,7 +4143,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 soundfxlist.push_back(6);sfxx.push_back((bgx+P.x-128.f)/256.f);
                 break;
             }
-            case 13:{P.counter=true;break;}
+            case 13:{P.counter=true;P.meter-=100;break;}
             case 14:{P.counter=false;break;}
         }
         }
@@ -4194,7 +4228,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
             if(temp!=P1.act)P1.idleanim.clear();
             P1.act=temp;
         }
-        else if(!P1.animq.empty()&&(!P1.whiff||P1.movetype==0||(P1.comboed&&P1.buffer==15)))P1.act=P1.buffer;
+        else if(!P1.animq.empty()&&(!P1.whiff||P1.movetype==0||(P1.comboed&&P1.buffer==15&&(P1.meter>=200||(P1.meter>=100&&P1.block==2)))||(P1.block!=-1&&P1.buffer==25)))P1.act=P1.buffer;
         if(P1.animq.empty()){if(!P1.whiff){P1.act=P1.buffer;}P1.buffer=0;}
 
         if(P2.buffer==0){
@@ -4202,7 +4236,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
             if(temp!=P2.act)P2.idleanim.clear();
             P2.act=temp;
         }
-        else if(!P2.animq.empty()&&(!P2.whiff||P2.movetype==0||(P2.comboed&&P2.buffer==15)))P2.act=P2.buffer;
+        else if(!P2.animq.empty()&&(!P2.whiff||P2.movetype==0||(P2.comboed&&P2.buffer==15&&(P2.meter>=200||(P2.meter>=100&&P2.block==2)))||(P2.block!=-1&&P2.buffer==25)))P2.act=P2.buffer;
         if(P2.animq.empty()){if(!P2.whiff){P2.act=P2.buffer;}P2.buffer=0;}
 
 
@@ -4510,6 +4544,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({256,240}), "Prosaic at Best");
+    
     std::optional event=window.pollEvent();
     sf::Keyboard::Key upkey1=sf::Keyboard::Key::W,downkey1=sf::Keyboard::Key::S,leftkey1=sf::Keyboard::Key::A,rightkey1=sf::Keyboard::Key::D,
                 lightkey1=sf::Keyboard::Key::U,mediumkey1=sf::Keyboard::Key::I,heavykey1=sf::Keyboard::Key::O,
