@@ -2669,7 +2669,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
             P2.dmg/=5;
             if(P2.hitstop==0)P1.hitstopped=14;
-            else P1.hitstopped=P2.hitstop*5/4;
+            else P1.hitstopped=P2.hitstop*10/9;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
             fxtemp.len=P1.hitstopped;
             if(fxtemp.len<10)fxtemp.len=12;
@@ -3508,11 +3508,42 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
                 }
             case 25:{//grab
-                P.col=0;P.hitcount=1;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=0;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=21;P.grab[1]=0;P.grabstate=1;
-                P.animq.insert(P.animq.begin(),{20,21,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
-                P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,11});
-                if(P.right)P.jumpx=2;else P.jumpx=-2;
-                short temp[2]={26,27};boolfill(P.cancel,true,temp);
+                if(P.block==2){
+                    if(P.attack.movetype==1)P.block=1;
+                    else P.block=0;
+                    if(P.block==0)for(short i=0;i<16;i++){
+                        if(P.character==2)P.animq.push_back(18);
+                        else P.animq.push_back(32);
+                    }
+                    if(P.block==1)for(short i=0;i<+16;i++)P.animq.push_back(33);
+                    P.pushaway=8;
+
+                    effects temp;
+                    temp.color1=sf::Color (85, 255, 255);
+                    temp.code=2;
+                    temp.len=4;
+                    temp.x=P.x;
+                    temp.y=P.y;
+                    temp.speed=3;
+                    effectslist.push_back(temp);
+                    temp.speed=6;
+                    effectslist.push_back(temp);
+                    std::uniform_int_distribution<int> dis(0,360),dis2(3,5);
+                    temp.code=0;
+                    temp.len=16;
+                    for(short i=0;i<32;i++){
+                        temp.dir=dis(gen);
+                        temp.speed=dis2(gen);
+                        effectslist.push_back(temp);
+                    }
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=0;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=21;P.grab[1]=0;P.grabstate=1;
+                    P.animq.insert(P.animq.begin(),{20,21,22,23,24,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,24,24,23,23,22,22,21,21,20,20});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,11});
+                    if(P.right)P.jumpx=2;else P.jumpx=-2;
+                    short temp[2]={26,27};boolfill(P.cancel,true,temp);
+                }
                 break;
                 }
             case 26:{//grab attack forward
@@ -3812,7 +3843,26 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                         else P.animq.push_back(32);
                     }
                     if(P.block==1)for(short i=0;i<+16;i++)P.animq.push_back(33);
-                    P.pushaway=7;
+                    P.pushaway=8;
+
+                    effects temp;
+                    temp.color1=sf::Color (85, 255, 255);
+                    temp.code=2;
+                    temp.len=4;
+                    temp.x=P.x;
+                    temp.y=P.y;
+                    temp.speed=3;
+                    effectslist.push_back(temp);
+                    temp.speed=6;
+                    effectslist.push_back(temp);
+                    std::uniform_int_distribution<int> dis(0,360),dis2(3,5);
+                    temp.code=0;
+                    temp.len=16;
+                    for(short i=0;i<32;i++){
+                        temp.dir=dis(gen);
+                        temp.speed=dis2(gen);
+                        effectslist.push_back(temp);
+                    }
                 }
                 else{
                     P.col=0;P.hitcount=1;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=0;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=21;P.grab[1]=0;P.grabstate=1;
