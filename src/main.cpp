@@ -2995,15 +2995,25 @@ void inputcode(char pinput[],sf::Keyboard::Key upkey,sf::Keyboard::Key leftkey,s
 }
 
 void windowset(sf::RenderWindow& window,bool *gamequit){
-    sf::Vector2u size = window.getSize();
-    float  heightRatio = 240.f / 256.f,widthRatio = 256.f / 240.f;
-    if (size.y * widthRatio <= size.x)size.x = size.y * widthRatio;
-    else if (size.x * heightRatio <= size.y)size.y = size.x * heightRatio;
-    window.setSize(size);
     while (std::optional event = window.pollEvent()){
             if (event->is<sf::Event::Closed>()){window.close();*gamequit=true;}
             if(event->is<sf::Event::FocusGained>())screenfocused=true;
             else if(event->is<sf::Event::FocusLost>())screenfocused=false;
+
+            if (auto resized = event->getIf<sf::Event::Resized>()){
+                float x,y;
+                if((resized->size.x)>(resized->size.y)){
+                    y=240;
+                    x=(float(resized->size.x)/float(resized->size.y)*240.f);
+                }
+                else{
+                    x=256;
+                    y=(float(resized->size.y)/float(resized->size.x)*256.f);
+                }
+                sf::FloatRect visibleArea({(-x+256.f)/2,(-y+240.f)/2},{x,y});
+
+                window.setView(sf::View(visibleArea));
+            }
     }
 }
 
