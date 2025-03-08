@@ -2063,42 +2063,42 @@ public:
         m_vertices.resize(180);
         m_tileset.setRepeated(true);
         sf::Vertex* tri = &m_vertices[60];
-        if(check[3]){
+        if(check[3]){//left
             tri[54].position = sf::Vector2f(0,32);
             tri[55].position = sf::Vector2f(64,64);
             tri[56].position = sf::Vector2f(0,208);
-            tri[57].position = sf::Vector2f(0,208);
-            tri[58].position = sf::Vector2f(64,176);
-            tri[59].position = sf::Vector2f(64,64);
+            tri[57].position = sf::Vector2f(64,64);
+            tri[58].position = sf::Vector2f(0,208);
+            tri[59].position = sf::Vector2f(64,176);
             for(short i=0;i<6;i++)tri[i+54].color=wallcolor;
         }
-        else if(check[0]){
-            tri[54].position = sf::Vector2f(0,64);
+        else if(check[0]){//left front
+            tri[54].position = sf::Vector2f(-48,64);
             tri[55].position = sf::Vector2f(64,64);
-            tri[56].position = sf::Vector2f(0,176);
+            tri[56].position = sf::Vector2f(-48,176);
             tri[57].position = sf::Vector2f(64,64);
-            tri[58].position = sf::Vector2f(0,176);
+            tri[58].position = sf::Vector2f(-48,176);
             tri[59].position = sf::Vector2f(64,176);
             for(short i=0;i<6;i++)tri[i+54].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+54].color=sf::Color::Transparent;
 
-        if(check[4]){
-            tri[48].position = sf::Vector2f(256,32);
-            tri[49].position = sf::Vector2f(192,64);
-            tri[50].position = sf::Vector2f(256,208);
-            tri[51].position = sf::Vector2f(256,208);
+        if(check[4]){//right
+            tri[48].position = sf::Vector2f(192,64);
+            tri[49].position = sf::Vector2f(256,32);
+            tri[50].position = sf::Vector2f(192,176);
+            tri[51].position = sf::Vector2f(256,32);
             tri[52].position = sf::Vector2f(192,176);
-            tri[53].position = sf::Vector2f(192,64);
+            tri[53].position = sf::Vector2f(256,208);
             for(short i=0;i<6;i++)tri[i+48].color=wallcolor;
         }
-        else if(check[2]){
-            tri[48].position = sf::Vector2f(256,64);
-            tri[49].position = sf::Vector2f(192,64);
-            tri[50].position = sf::Vector2f(256,176);
-            tri[51].position = sf::Vector2f(192,64);
-            tri[52].position = sf::Vector2f(256,176);
-            tri[53].position = sf::Vector2f(192,176);
+        else if(check[2]){//right front
+            tri[48].position = sf::Vector2f(192,64);
+            tri[49].position = sf::Vector2f(304,64);
+            tri[50].position = sf::Vector2f(192,176);
+            tri[51].position = sf::Vector2f(304,64);
+            tri[52].position = sf::Vector2f(192,176);
+            tri[53].position = sf::Vector2f(304,176);
             for(short i=0;i<6;i++)tri[i+48].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+48].color=sf::Color::Transparent;
@@ -2126,12 +2126,12 @@ public:
         else for(short i=0;i<6;i++)tri[i+36].color=sf::Color::Transparent;
 
         if(!check[1]&&check[2]){
-            tri[30].position = sf::Vector2f(192,64);
-            tri[31].position = sf::Vector2f(160,80);
-            tri[32].position = sf::Vector2f(192,176);
-            tri[33].position = sf::Vector2f(160,80);
-            tri[34].position = sf::Vector2f(192,176);
-            tri[35].position = sf::Vector2f(160,160);
+            tri[30].position = sf::Vector2f(160,80);
+            tri[31].position = sf::Vector2f(192,64);
+            tri[32].position = sf::Vector2f(160,160);
+            tri[33].position = sf::Vector2f(192,64);
+            tri[34].position = sf::Vector2f(160,160);
+            tri[35].position = sf::Vector2f(192,176);
             for(short i=0;i<6;i++)tri[i+30].color=wallcolor;
         }
         else for(short i=0;i<6;i++)tri[i+30].color=sf::Color::Transparent;
@@ -2190,7 +2190,7 @@ public:
         }
         else for(short i=0;i<6;i++)tri[i].color=sf::Color::Transparent;
 
-        for(short i=0;i<9;i++){
+        for(short i=0;i<10;i++){
             tri[i*6].texCoords=sf::Vector2f(0,0);
             tri[i*6+1].texCoords=sf::Vector2f(32,0);
             tri[i*6+2].texCoords=sf::Vector2f(0,32);
@@ -4792,7 +4792,7 @@ int main()
                 1,0,0,1,0,0,0,1,1,1,0,0,0,1,
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1}},pause=false,statscreen=false,Enterkey=false;
             storymapui mapui;
-            //if(!mapui.load("assets/images/walltexture.png")){window.close();gamequit=true;}
+            if(!mapui.load("assets/images/walltexture.png")){window.close();gamequit=true;}
             mapcompass compass;
             sf::Text dtext(font);dtext.setCharacterSize(16);
             sf::Texture stattexture,icontexture;
