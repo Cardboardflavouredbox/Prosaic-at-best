@@ -2040,8 +2040,8 @@ private:
         states.transform *= getTransform();
 
 
-        target.draw(m_vertices3,states);
-        target.draw(m_vertices2,states);
+        target.draw(m_vertices3);
+        target.draw(m_vertices2);
         states.texture = &m_tileset;
         target.draw(m_vertices,states);
     }
@@ -4466,8 +4466,6 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     healthui.setPosition({0.f,8.f});
     sf.setPosition({0,0});hb.setPosition({0,8});
-    if(P2.comboed||P2.kdowned)combotext.setPosition({36.f/*-cui.slide*/,33.f});
-    else combotext.setPosition({248.f/*+cui.slide*/,33.f});cui.setPosition({0,8});
     p1graphics.setPosition({floor(P1.x-64+bgx),floor(P1.y-64)});p1shadow.setPosition({floor(P1.x-64+bgx),floor(184+(P1.y-176)/8)});
     p2graphics.setPosition({floor(P2.x-64+bgx),floor(P2.y-64)});p2shadow.setPosition({floor(P2.x-64+bgx),floor(184+(P2.y-176)/8)});
     background.setPosition({floor(bgx-125),0.f});frametext.setPosition({125.f,33.f});
@@ -4592,7 +4590,22 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
 
-    if(combo>1){renderTexture.draw(cui);renderTexture.draw(combotext);}
+    if(combo>1){
+        if(P2.comboed||P2.kdowned){shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+            shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+            shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));}
+        else{shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
+            shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
+            shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));}
+        renderTexture.draw(cui,&shader);
+        if(P2.comboed||P2.kdowned){combotext.setPosition({36.f/*-cui.slide*/,26.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));}
+        else {combotext.setPosition({248.f/*+cui.slide*/,26.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));}
+        renderTexture.draw(combotext);
+
+        if(P2.comboed||P2.kdowned){combotext.setPosition({35.f/*-cui.slide*/,27.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));}
+        else{combotext.setPosition({247.f/*+cui.slide*/,27.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));}
+        renderTexture.draw(combotext);
+    }
 
     if(!dialogue.empty()){renderTexture.draw(tbox);renderTexture.draw(dtext);}
 
