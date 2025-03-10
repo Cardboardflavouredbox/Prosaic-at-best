@@ -4617,6 +4617,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         square.setSize({256.f,8.f});
         square.setFillColor(sf::Color::White);
         if(*matchintro>30){engage.setPosition({0,float(*matchintro-30)*24.f});square.setPosition({0,float(*matchintro-30)*-16.f+144.f});}
+        else if(*matchintro>15) {engage.setPosition({0,float(*matchintro%3)});square.setPosition({0,144.f});}
         else {engage.setPosition({0,0});square.setPosition({0,144.f});}
         renderTexture.draw(square);
         renderTexture.draw(engage);
