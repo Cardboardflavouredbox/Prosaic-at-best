@@ -9,17 +9,28 @@ Since all the visuals, audio, and coding is all done by one person, don't expect
 The controls can be mapped in the options menu.
 ### P1
 direction keys-WASD
+
 light attack-U
+
 medium attack-I
+
 heavy attack-O
+
 special move-K
+
 grab macro-H
+
 ### P2
 direction keys-direction keys
+
 light attack-Z
+
 medium attack-X
+
 heavy attackC
+
 special move-Left Control on Windows/Left Command on Mac
+
 grab macro-Left Alt on Windows/Left Control on Mac
 
 ## Permissions
