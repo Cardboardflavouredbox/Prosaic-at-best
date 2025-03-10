@@ -1963,7 +1963,7 @@ public:
         if (!m_tileset.loadFromFile(tileset))return false;
         return true;
     }
-    void create(bool right){
+    void create(bool right,sf::Color color1,sf::Color color2){
         m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(16);
         m_tileset.setRepeated(true);
@@ -2010,26 +2010,27 @@ public:
             tri2[4].position = sf::Vector2f(254+slide,74);
             tri2[5].position = sf::Vector2f(254-temp+slide,74);
         }
+        for(short i=0;i<6;i++)tri2[i].color=color1;
         m_vertices3.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices3.resize(16);
         sf::Vertex* tri3 = &m_vertices3[6];
         if(right){
             tri3[0].position = sf::Vector2f(0-slide,64);
-            tri3[1].position = sf::Vector2f(0-slide,80);
+            tri3[1].position = sf::Vector2f(0-slide,78);
             tri3[2].position = sf::Vector2f(44-slide,64);
             tri3[3].position = sf::Vector2f(44-slide,64);
-            tri3[4].position = sf::Vector2f(0-slide,80);
-            tri3[5].position = sf::Vector2f(44-slide,80);
+            tri3[4].position = sf::Vector2f(0-slide,78);
+            tri3[5].position = sf::Vector2f(44-slide,78);
         }
         else{
             tri3[0].position = sf::Vector2f(256+slide,64);
-            tri3[1].position = sf::Vector2f(256+slide,80);
+            tri3[1].position = sf::Vector2f(256+slide,78);
             tri3[2].position = sf::Vector2f(212+slide,64);
             tri3[3].position = sf::Vector2f(212+slide,64);
-            tri3[4].position = sf::Vector2f(256+slide,80);
-            tri3[5].position = sf::Vector2f(212+slide,80);
+            tri3[4].position = sf::Vector2f(256+slide,78);
+            tri3[5].position = sf::Vector2f(212+slide,78);
         }
-        for(short i=0;i<6;i++)tri3[i].color=sf::Color (85, 85, 85);
+        for(short i=0;i<6;i++)tri3[i].color=color2;
     }
 float slide=0,slide2=0;
 
@@ -4213,7 +4214,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     #undef P
 }
 
-void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2input[],short *superstop,short *framedata,float overlap[],float overlap2[]){
+void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2input[],short *superstop,short *framedata,float overlap[],float overlap2[],short matchintro){
     #define P1 (*p1)
     #define P2 (*p2)
 
@@ -4272,7 +4273,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
             effectslist.push_back(temp);
     }
 
-    if(P1.hp>0&&P2.hp>0&&roundframecount/60<99&&dialogue.empty()){//input to action code and roundframe counter
+    if(P1.hp>0&&P2.hp>0&&roundframecount/60<99&&dialogue.empty()&&matchintro<=0){//input to action code and roundframe counter
         if(P1.buffer==0&&!P1.animq.empty()){
             P1.buffer=chooseaction(P1.character,P1.act,1,P1.air,p1input,P1.meter);
             if(P1.cancel[P1.buffer]==false&&P1.animq.size()>10)P1.buffer=0;
@@ -4431,7 +4432,8 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
 void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player *p1,player *p2,superflash sf,healthbar hb,meterbar mb,timeui time,comboui cui,inputlist p1ilist,inputlist p2ilist,
             charactergraphics p1graphics,charactergraphics p2graphics,charactergraphics p1shadow,charactergraphics p2shadow,menu menus,sf::Shader &shader,textbox tbox,
             sf::Text combotext,sf::Text dtext,sf::Text frametext,std::deque<char>p1keylist,std::deque<char>p2keylist,short framedata,std::string dialogue,short superstop,
-            bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool *playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture,sf::Sprite pixelshadowthing,short rounds){
+            bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool *playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture,sf::Sprite pixelshadowthing,short rounds,
+            sf::Sprite engage,short *matchintro){
     #define P1 (*p1)
     #define P2 (*p2)
 
@@ -4460,7 +4462,10 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     else {tempstr = std::to_string(framedata);}
     frametext.setString(tempstr);
     frametext.setOrigin({32,0});
-    if (combo>1)cui.create(P2.comboed||P2.kdowned);
+    if (combo>1&&(P2.comboed||P2.kdowned))cui.create(true,sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)),
+    sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
+    else if(combo>1)cui.create(false,sf::Color(170*((colorpalettes[p2color][0]/4)%2) + 85*(colorpalettes[p2color][0]/8), (1-(colorpalettes[p2color][0]==6)/3.0)*170*((colorpalettes[p2color][0]/2)%2) + 85*(colorpalettes[p2color][0]/8), 170*(colorpalettes[p2color][0]%2) + 85*(colorpalettes[p2color][0]/8)),
+    sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));
 
     p1ilist.create(p1keylist,true);p2ilist.create(p2keylist,false);hb.create(P1.hp,P2.hp,P1.maxhp,P2.maxhp);mb.create(P1.meter,P2.meter);
 
@@ -4605,6 +4610,16 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         if(P2.comboed||P2.kdowned){combotext.setPosition({35.f/*-cui.slide*/,27.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));}
         else{combotext.setPosition({247.f/*+cui.slide*/,27.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));}
         renderTexture.draw(combotext);
+    }
+
+    if(*matchintro>0&&dialogue.empty()){
+        *matchintro-=1;
+        square.setSize({256.f,8.f});
+        square.setFillColor(sf::Color::White);
+        if(*matchintro>30){engage.setPosition({0,float(*matchintro-30)*24.f});square.setPosition({0,float(*matchintro-30)*-16.f+144.f});}
+        else {engage.setPosition({0,0});square.setPosition({0,144.f});}
+        renderTexture.draw(square);
+        renderTexture.draw(engage);
     }
 
     if(!dialogue.empty()){renderTexture.draw(tbox);renderTexture.draw(dtext);}
@@ -5293,7 +5308,7 @@ int main()
             window.display();
         }
         if(!gamequit){
-            short rounds=2;
+            short rounds=2,matchintro=60;
 
             menus.setmenu(6,92,72,0,16,1);
             player p1,p2;
@@ -5301,16 +5316,17 @@ int main()
             p1.character=menux+menuy*4;p2.character=menux2+menuy2*4;
             superflash sf;healthbar hb;meterbar mb;
             timeui time;time.create();comboui cui;inputlist p1ilist,p2ilist;
-            sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture;
+            sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture,matchintrotexture;
             if(!p1ilist.load("assets/images/inputicon.png")||!p2ilist.load("assets/images/inputicon.png")){window.close();gamequit=true;}
             if(!time.load("assets/images/time_ui.png")||!cui.load("assets/images/combo_ui.png")||!metertexture.loadFromFile("assets/images/meter_ui.png")){window.close();gamequit=true;}
             if(!bgtexture.loadFromFile("assets/images/stage1.png")||!hutexture.loadFromFile("assets/images/health_ui.png")){window.close();gamequit=true;}
             if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
+            if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
             p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
-            sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture);
+            sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture),introsprite(matchintrotexture);
             sf::Text combotext(font),dtext(font),frametext(font);
             combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
             dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
@@ -5354,7 +5370,7 @@ int main()
 
                         nextframe=false;
                         if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
-                        matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2);
+                        matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
 
                         if(!sound.empty()){
                             for(int i=0;i<sound.size();i++)if(sound[i].getStatus()==sf::SoundSource::Status::Stopped)sound.erase(sound.begin()+i);  
@@ -5424,7 +5440,7 @@ int main()
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
-                              background,healthui,meterui,p1texture,p2texture,pausedark,rounds);
+                              background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,&matchintro);
                     window.display();
                 }
 
@@ -5477,7 +5493,7 @@ int main()
 
                     nextframe=false;
                     if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
-                    matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2);
+                    matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
 
                     if(!sound.empty()){
                             for(int i=0;i<sound.size();i++)if(sound[i].getStatus()==sf::SoundSource::Status::Stopped)sound.erase(sound.begin()+i);  
@@ -5554,7 +5570,7 @@ int main()
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
-                              background,healthui,meterui,p1texture,p2texture,pausedark,rounds);
+                              background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,&matchintro);
                     window.display();
 
 
@@ -5891,7 +5907,7 @@ int main()
 
                         nextframe=false;
                         if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
-                        matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2);
+                        matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
 
                         if(!sound.empty()){
                             for(int i=0;i<sound.size();i++)if(sound[i].getStatus()==sf::SoundSource::Status::Stopped)sound.erase(sound.begin()+i);  
@@ -6016,7 +6032,7 @@ int main()
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
-                              background,healthui,meterui,p1texture,p2texture,pausedark,rounds);
+                              background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,&matchintro);
                     window.display();
 
                 }
