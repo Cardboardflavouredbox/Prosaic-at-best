@@ -14,9 +14,8 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 if (WIN32)
-    add_library(myLib SHARED ${SOURCE_FILES})
-    set(CMAKE_EXE_LINKER_FLAGS " -static")
-    target_link_libraries(myLib -static-libgcc -static-libstdc++)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -static-libgcc -static-libstdc++")
+
     add_executable(Prosaic_at_best WIN32 src/main.cpp)
 else()
     add_executable(Prosaic_at_best src/main.cpp)
