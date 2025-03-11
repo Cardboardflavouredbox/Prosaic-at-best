@@ -1242,7 +1242,7 @@ static unsigned char animlib[16][128][32][2]=
                    {0},//char 1
                    {0,1,1,1,1,1,1,2,1,1,1,1},//char 2
                    },
-                    colorpalettes[16][3]={
+                    colorpalettes[16][4]={
                     {15,7,8},/*Francis*/
                     {15,3,1},/*Sinclair*/
                     {15,4,0},/*Sinclaircanon?*/
@@ -1384,6 +1384,13 @@ hitbox[16][16][4][2][2]={
                     }//char 2
                     };
 bool flash=true,screenfocused=true;
+
+sf::Color CGAcolor(unsigned char palette[][4],unsigned char colorcode,unsigned char number){
+    return sf::Color(170*((palette[colorcode][number]/4)%2) + 85*(palette[colorcode][number]/8), 
+    (1-(palette[colorcode][number]==6)/3.0)*170*((palette[colorcode][number]/2)%2) + 85*(palette[colorcode][number]/8),
+    170*(palette[colorcode][number]%2) + 85*(palette[colorcode][number]/8));
+}
+
 class mapnpc{
 public:
     unsigned char x=0,y=0,spriteset=0,interaction=0,dir=0;//0=up,1=right,2=down,3=left
@@ -4857,7 +4864,7 @@ int main()
                     currentcolor++;
                     if(currentcolor==6)currentcolor=0;
                 }
-                for(unsigned char i=0;i<4;i++)storycolors[i]=sf::Color(170*((cgapalettes[currentcolor][i]/4)%2) + 85*(cgapalettes[currentcolor][i]/8), (1-(cgapalettes[currentcolor][i]==6)/3.0)*170*((cgapalettes[currentcolor][i]/2)%2) + 85*(cgapalettes[currentcolor][i]/8), 170*(cgapalettes[currentcolor][i]%2) + 85*(cgapalettes[currentcolor][i]/8));
+                for(unsigned char i=0;i<4;i++)storycolors[i]=sf::Color(CGAcolor(cgapalettes,currentcolor,i));
                 dtext.setFillColor(storycolors[3]);
                 
                 if(!dialogue.empty()){//dialogue stuff
@@ -5091,19 +5098,6 @@ int main()
             while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
 
-            if(menuselect==2&&p1control){
-            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
-            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
-            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
-            keypresscheck(heavykey1,&colorkey);
-            }
-            else if(menuselect==2&&!p1control){
-            keypresscheck(lightkey1,&menuconfirm2);keypresscheck(mediumkey1,&menucancel2);
-            keypresscheck(upkey1,&menuup2);keypresscheck(downkey1,&menudown2);
-            keypresscheck(leftkey1,&menuleft2);keypresscheck(rightkey1,&menuright2);
-            keypresscheck(heavykey1,&colorkey2);
-            }
-            else{
             keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
             keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
             keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
@@ -5112,7 +5106,6 @@ int main()
             keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
             keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
             keypresscheck(heavykey2,&colorkey2);
-            }
 
             if(!p1check){
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
@@ -5143,12 +5136,12 @@ int main()
 
             sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f}),crect4({32.f, 32.f}),crect5({32.f, 32.f}),crect6({32.f, 32.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
-            crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
-            crect2.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
-            crect3.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));
-            crect4.setFillColor(sf::Color(170*((colorpalettes[p2color][0]/4)%2) + 85*(colorpalettes[p2color][0]/8), (1-(colorpalettes[p2color][0]==6)/3.0)*170*((colorpalettes[p2color][0]/2)%2) + 85*(colorpalettes[p2color][0]/8), 170*(colorpalettes[p2color][0]%2) + 85*(colorpalettes[p2color][0]/8)));
-            crect5.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));
-            crect6.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));
+            crect1.setFillColor(CGAcolor(colorpalettes,p1color,0));
+            crect2.setFillColor(CGAcolor(colorpalettes,p1color,1));
+            crect3.setFillColor(CGAcolor(colorpalettes,p1color,2));
+            crect4.setFillColor(CGAcolor(colorpalettes,p2color,0));
+            crect5.setFillColor(CGAcolor(colorpalettes,p2color,1));
+            crect6.setFillColor(CGAcolor(colorpalettes,p2color,2));
             rect2.setPosition({0,128});
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
@@ -5497,12 +5490,12 @@ int main()
 
             sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f}),crect4({32.f, 32.f}),crect5({32.f, 32.f}),crect6({32.f, 32.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
-            crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
-            crect2.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
-            crect3.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));
-            crect4.setFillColor(sf::Color(170*((colorpalettes[p2color][0]/4)%2) + 85*(colorpalettes[p2color][0]/8), (1-(colorpalettes[p2color][0]==6)/3.0)*170*((colorpalettes[p2color][0]/2)%2) + 85*(colorpalettes[p2color][0]/8), 170*(colorpalettes[p2color][0]%2) + 85*(colorpalettes[p2color][0]/8)));
-            crect5.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));
-            crect6.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));
+            crect1.setFillColor(CGAcolor(colorpalettes,p1color,0));
+            crect2.setFillColor(CGAcolor(colorpalettes,p1color,1));
+            crect3.setFillColor(CGAcolor(colorpalettes,p1color,2));
+            crect4.setFillColor(CGAcolor(colorpalettes,p2color,0));
+            crect5.setFillColor(CGAcolor(colorpalettes,p2color,1));
+            crect6.setFillColor(CGAcolor(colorpalettes,p2color,2));
             rect2.setPosition({0,128});
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
@@ -5996,28 +5989,19 @@ int main()
         while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
 
-            if(menuselect==2&&p1control){
+            if(!p1check){
             keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
             keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
             keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
             keypresscheck(heavykey1,&colorkey);
             }
-            else if(menuselect==2&&!p1control){
+            else{
             keypresscheck(lightkey1,&menuconfirm2);keypresscheck(mediumkey1,&menucancel2);
             keypresscheck(upkey1,&menuup2);keypresscheck(downkey1,&menudown2);
             keypresscheck(leftkey1,&menuleft2);keypresscheck(rightkey1,&menuright2);
             keypresscheck(heavykey1,&colorkey2);
             }
-            else{
-            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
-            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
-            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
-            keypresscheck(heavykey1,&colorkey);
-            keypresscheck(lightkey2,&menuconfirm2);keypresscheck(mediumkey2,&menucancel2);
-            keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
-            keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
-            keypresscheck(heavykey2,&colorkey2);
-            }
+            
 
             if(!p1check){
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
@@ -6027,7 +6011,8 @@ int main()
             if(menuright2=='2'&&menuleft2!='2'){menux2++;if(menux2>3)menux2=0;}if(menuright2!='2'&&menuleft2=='2'){menux2--;if(menux2<0)menux2=3;}
             if(menudown2=='2'&&menuup2!='2'){menuy2++;if(menuy2>1)menuy2=0;}if(menudown2!='2'&&menuup2=='2'){menuy2--;if(menuy2<0)menuy2=1;}
             }
-            if(menuconfirm=='2')p1check=true;if(menuconfirm2=='2')p2check=true;
+            if(menuconfirm=='2'){p1check=true;menuconfirm='1';menuconfirm2='1';}
+            if(menuconfirm2=='2')p2check=true;
             if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
             if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
             if(p1check&&p2check)break;
@@ -6048,12 +6033,12 @@ int main()
 
             sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f}),crect4({32.f, 32.f}),crect5({32.f, 32.f}),crect6({32.f, 32.f});
             rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
-            crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
-            crect2.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
-            crect3.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));
-            crect4.setFillColor(sf::Color(170*((colorpalettes[p2color][0]/4)%2) + 85*(colorpalettes[p2color][0]/8), (1-(colorpalettes[p2color][0]==6)/3.0)*170*((colorpalettes[p2color][0]/2)%2) + 85*(colorpalettes[p2color][0]/8), 170*(colorpalettes[p2color][0]%2) + 85*(colorpalettes[p2color][0]/8)));
-            crect5.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));
-            crect6.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));
+            crect1.setFillColor(CGAcolor(colorpalettes,p1color,0));
+            crect2.setFillColor(CGAcolor(colorpalettes,p1color,1));
+            crect3.setFillColor(CGAcolor(colorpalettes,p1color,2));
+            crect4.setFillColor(CGAcolor(colorpalettes,p2color,0));
+            crect5.setFillColor(CGAcolor(colorpalettes,p2color,1));
+            crect6.setFillColor(CGAcolor(colorpalettes,p2color,2));
             rect2.setPosition({0,128});
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
