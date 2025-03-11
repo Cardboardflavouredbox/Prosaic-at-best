@@ -5981,6 +5981,7 @@ int main()
         }
         else{//training
 
+        menuconfirm2='0';
         characterselect charselect;
         if (!charselect.load("assets/images/charactericon.png")){}
         charselect.setcharselect(4,2,32,144);
@@ -6012,7 +6013,7 @@ int main()
             if(menudown2=='2'&&menuup2!='2'){menuy2++;if(menuy2>1)menuy2=0;}if(menudown2!='2'&&menuup2=='2'){menuy2--;if(menuy2<0)menuy2=1;}
             }
             if(menuconfirm=='2'){p1check=true;menuconfirm='1';menuconfirm2='1';}
-            if(menuconfirm2=='2'){p2check=true;menuconfirm2='0';}
+            if(menuconfirm2=='2')p2check=true;
             if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
             if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
             if(p1check&&p2check)break;
