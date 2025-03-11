@@ -4615,7 +4615,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     }
 
     if(*matchintro>0&&dialogue.empty()){
-        *matchintro-=1;
+        if(!pause)*matchintro-=1;
         square.setSize({256.f,8.f});
         square.setFillColor(sf::Color::White);
         if(*matchintro>30){engage.setPosition({0,float(*matchintro-30)*24.f});square.setPosition({0,float(*matchintro-30)*-16.f+144.f});}
@@ -5082,131 +5082,13 @@ int main()
             menus.setmenu(6,144,120,0,16,0);
             menuselect=0;
         }
-        else{//the ones where you fight a lot
-        if(menuselect==2){//ipselect
-            sf::Text iptext(font);
-            iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
-            sf::RectangleShape rect({8.f, 4.f});rect.setFillColor(sf::Color::White);
-            short ipx=0;
-            char sideselect='0';
-            while (window.isOpen()&&!gamequit){
-                windowset(window,&gamequit);
-                keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
-                keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
-                keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
-                keypresscheck(heavykey1,&sideselect);
-                if(menuright=='2'&&menuleft!='2'){ipx++;if(ipx>11)ipx=0;}
-                if(menuright!='2'&&menuleft=='2'){ipx--;if(ipx<0)ipx=11;}
-                if(menuup=='2'&&menudown!='2'){
-                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==9)?-900:100;}
-                    if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==9)?-90:10;}
-                    if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==9)?-9:1;}
-                }
-                if(menuup!='2'&&menudown=='2'){
-                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==0)?900:-100;}
-                    if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==0)?90:-10;}
-                    if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==0)?9:-1;}
-                }
-                if(sideselect=='2'){
-                    if(p1control)p1control=false;
-                    else p1control=true;
-                }
-                if(menuconfirm=='2')break;
-                if(menucancel=='2'){gamequit=true;break;}
-
-                std::string tempstr,ipstr;
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P)){
-                    std::string cbstr=sf::Clipboard::getString();
-                    short temp=0,iptemp[4]={0,0,0,0};
-                    bool check=true;
-                    for(short i=0;i<cbstr.length();i++){
-                        if((cbstr[i]>47&&cbstr[i]<58)){
-                            iptemp[temp]*=10;
-                            iptemp[temp]+=cbstr[i]-48;
-                            if(iptemp[temp]>=1000){check=false;break;}
-                            }
-                        else if(cbstr[i]=='.')temp++;
-                        else {check=false;break;}
-                    }
-                    if(check&&temp==3)memcpy(ipint,iptemp,sizeof(iptemp));
-                }
-                for(short i=0;i<4;i++){
-                    tempstr = std::to_string(ipint[i]);
-                    if(ipint[i]>99)ipstr=ipstr+tempstr+'.';
-                    else if(ipint[i]>9)ipstr=ipstr+' '+tempstr+'.';
-                    else ipstr=ipstr+' '+' '+tempstr+'.';
-                    }
-                ipstr.pop_back();
-                if(p1control)ipstr=ipstr+' '+'P'+'1';
-                else ipstr=ipstr+' '+'P'+'2';
-                
-                iptext.setString(ipstr);
-                iptext.setPosition({32.f,120.f});
-                rect.setPosition({32.f+(ipx+ipx/3)*9.f,136.f});
-
-                window.clear();
-                renderTexture.clear();
-                renderTexture.draw(iptext);
-                renderTexture.draw(rect);
-                renderTexture.display();
-                const sf::Texture& texture = renderTexture.getTexture();
-                sf::Sprite rt(texture);
-                window.draw(rt);
-                window.display();
-            }
-        }
-        std::string tempstr,ipstr;
-        for(short i=0;i<4;i++){
-            tempstr = std::to_string(ipint[i]);
-            ipstr=ipstr+tempstr+'.';
-        }
-        ipstr.pop_back();
-        auto ipvalue2=sf::IpAddress::resolve(ipstr);
-        sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
-        if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
-        if(menuselect==2&&!gamequit){//ipwaitscreen
-            sf::Text iptext(font);
-            iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
-            short loadcnt=0; 
-            while(window.isOpen()&&!gamequit){
-                windowset(window,&gamequit);
-                keypresscheck(mediumkey1,&menucancel);if(menucancel=='2'){gamequit=true;break;}
-                sf::Packet packet;
-                std::uint8_t onlinecheck;
-                if(p1control)onlinecheck=1;
-                else onlinecheck=2;
-                
-                packet<<onlinecheck;
-                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                packet>>onlinecheck;
-                if((p1control&&onlinecheck==2)||(!p1control&&onlinecheck==1)||onlinecheck==3){packet<<onlinecheck;while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}break;}
-
-                loadcnt++;
-                if(loadcnt>179)loadcnt=0;
-                std::string waitstr("waiting for player");
-                for(short i=0;i<(loadcnt/60)+1;i++)waitstr=waitstr+'.';
-                
-                iptext.setString(waitstr);
-                iptext.setPosition({32.f,120.f});
-
-                window.clear();
-                renderTexture.clear();
-                renderTexture.draw(iptext);
-                renderTexture.display();
-                const sf::Texture& texture = renderTexture.getTexture();
-                sf::Sprite rt(texture);
-                window.draw(rt);
-                window.display();
-            }
-        }
-
-        characterselect charselect;
-        if (!charselect.load("assets/images/charactericon.png")){}
-        charselect.setcharselect(4,2,32,144);
-        short menux=0,menuy=0,menux2=3,menuy2=0;
-        bool p1check=false,p2check=false;
-        while (window.isOpen()&&!gamequit){//characterselect
+        else if(menuselect==0){//vsmode
+            characterselect charselect;
+            if (!charselect.load("assets/images/charactericon.png")){}
+            charselect.setcharselect(4,2,32,144);
+            short menux=0,menuy=0,menux2=3,menuy2=0;
+            bool p1check=false,p2check=false;
+            while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
 
             if(menuselect==2&&p1control){
@@ -5271,28 +5153,6 @@ int main()
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
 
-            if(menuselect==2){
-                sf::Packet packet;
-                std::uint8_t onlinecode=3,onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
-                if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
-                else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
-                packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
-                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
-                    packet>>onlinecode;
-                    if(onlinecode==4){p1check=true;p2check=true;break;}
-                    packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
-                    if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
-                    else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
-                    if(p1check&&p2check){
-                        if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
-                        else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
-                        packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
-                        while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
-                    }
-                }
-            }
-
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             sf::Sprite bg(bgtexture);
@@ -5310,9 +5170,9 @@ int main()
             window.draw(rt);
             window.display();
         }
-        if(!gamequit){
-            short rounds=2,matchintro=60;
 
+            if(!gamequit){
+            short rounds=2,matchintro=60;
             menus.setmenu(6,92,72,0,16,1);
             player p1,p2;
             p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
@@ -5340,12 +5200,9 @@ int main()
             if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
             if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
 
-            if(menuselect==0){
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
             else if(p1.character==0&&p2.character==2)dialogue="1Wow you're depressing$2...Excuse me?$1You look depressing$2...I see??$";
-            }
-            if(menuselect==0){//vsmode
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
@@ -5460,7 +5317,263 @@ int main()
                 dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
                 }
             }
-            if(menuselect==2){//online
+            gamequit=false;
+            menus.setmenu(6,144,120,0,16,0);
+            }
+        else if(menuselect==2){//online
+            sf::Text iptext(font);
+            iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
+            sf::RectangleShape rect({8.f, 4.f});rect.setFillColor(sf::Color::White);
+            short ipx=0;
+            char sideselect='0';
+            while (window.isOpen()&&!gamequit){//ipselect
+                windowset(window,&gamequit);
+                keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+                keypresscheck(heavykey1,&sideselect);
+                if(menuright=='2'&&menuleft!='2'){ipx++;if(ipx>11)ipx=0;}
+                if(menuright!='2'&&menuleft=='2'){ipx--;if(ipx<0)ipx=11;}
+                if(menuup=='2'&&menudown!='2'){
+                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==9)?-900:100;}
+                    if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==9)?-90:10;}
+                    if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==9)?-9:1;}
+                }
+                if(menuup!='2'&&menudown=='2'){
+                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==0)?900:-100;}
+                    if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==0)?90:-10;}
+                    if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==0)?9:-1;}
+                }
+                if(sideselect=='2'){
+                    if(p1control)p1control=false;
+                    else p1control=true;
+                }
+                if(menuconfirm=='2')break;
+                if(menucancel=='2'){gamequit=true;break;}
+
+                std::string tempstr,ipstr;
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P)){
+                    std::string cbstr=sf::Clipboard::getString();
+                    short temp=0,iptemp[4]={0,0,0,0};
+                    bool check=true;
+                    for(short i=0;i<cbstr.length();i++){
+                        if((cbstr[i]>47&&cbstr[i]<58)){
+                            iptemp[temp]*=10;
+                            iptemp[temp]+=cbstr[i]-48;
+                            if(iptemp[temp]>=1000){check=false;break;}
+                            }
+                        else if(cbstr[i]=='.')temp++;
+                        else {check=false;break;}
+                    }
+                    if(check&&temp==3)memcpy(ipint,iptemp,sizeof(iptemp));
+                }
+                for(short i=0;i<4;i++){
+                    tempstr = std::to_string(ipint[i]);
+                    if(ipint[i]>99)ipstr=ipstr+tempstr+'.';
+                    else if(ipint[i]>9)ipstr=ipstr+' '+tempstr+'.';
+                    else ipstr=ipstr+' '+' '+tempstr+'.';
+                    }
+                ipstr.pop_back();
+                if(p1control)ipstr=ipstr+' '+'P'+'1';
+                else ipstr=ipstr+' '+'P'+'2';
+                
+                iptext.setString(ipstr);
+                iptext.setPosition({32.f,120.f});
+                rect.setPosition({32.f+(ipx+ipx/3)*9.f,136.f});
+
+                window.clear();
+                renderTexture.clear();
+                renderTexture.draw(iptext);
+                renderTexture.draw(rect);
+                renderTexture.display();
+                const sf::Texture& texture = renderTexture.getTexture();
+                sf::Sprite rt(texture);
+                window.draw(rt);
+                window.display();
+            
+            }
+            std::string tempstr,ipstr;
+            for(short i=0;i<4;i++){
+                tempstr = std::to_string(ipint[i]);
+                ipstr=ipstr+tempstr+'.';
+            }
+            ipstr.pop_back();
+            auto ipvalue2=sf::IpAddress::resolve(ipstr);
+            sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
+            if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
+            if(!gamequit){//ipwaitscreen
+            sf::Text iptext(font);
+            iptext.setCharacterSize(16);iptext.setFillColor(sf::Color::White);
+            short loadcnt=0; 
+            while(window.isOpen()&&!gamequit){
+                windowset(window,&gamequit);
+                keypresscheck(mediumkey1,&menucancel);if(menucancel=='2'){gamequit=true;break;}
+                sf::Packet packet;
+                std::uint8_t onlinecheck;
+                if(p1control)onlinecheck=1;
+                else onlinecheck=2;
+                
+                packet<<onlinecheck;
+                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                packet>>onlinecheck;
+                if((p1control&&onlinecheck==2)||(!p1control&&onlinecheck==1)||onlinecheck==3){packet<<onlinecheck;while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}break;}
+
+                loadcnt++;
+                if(loadcnt>179)loadcnt=0;
+                std::string waitstr("waiting for player");
+                for(short i=0;i<(loadcnt/60)+1;i++)waitstr=waitstr+'.';
+                
+                iptext.setString(waitstr);
+                iptext.setPosition({32.f,120.f});
+
+                window.clear();
+                renderTexture.clear();
+                renderTexture.draw(iptext);
+                renderTexture.display();
+                const sf::Texture& texture = renderTexture.getTexture();
+                sf::Sprite rt(texture);
+                window.draw(rt);
+                window.display();
+            }
+        }
+             characterselect charselect;
+            if (!charselect.load("assets/images/charactericon.png")){}
+            charselect.setcharselect(4,2,32,144);
+            short menux=0,menuy=0,menux2=3,menuy2=0;
+            bool p1check=false,p2check=false;
+            while (window.isOpen()&&!gamequit){//characterselect
+            windowset(window,&gamequit);
+
+            if(menuselect==2&&p1control){
+            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+            keypresscheck(heavykey1,&colorkey);
+            }
+            else if(menuselect==2&&!p1control){
+            keypresscheck(lightkey1,&menuconfirm2);keypresscheck(mediumkey1,&menucancel2);
+            keypresscheck(upkey1,&menuup2);keypresscheck(downkey1,&menudown2);
+            keypresscheck(leftkey1,&menuleft2);keypresscheck(rightkey1,&menuright2);
+            keypresscheck(heavykey1,&colorkey2);
+            }
+            else{
+            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+            keypresscheck(heavykey1,&colorkey);
+            keypresscheck(lightkey2,&menuconfirm2);keypresscheck(mediumkey2,&menucancel2);
+            keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
+            keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
+            keypresscheck(heavykey2,&colorkey2);
+            }
+
+            if(!p1check){
+            if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
+            if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
+            }
+            if(!p2check){
+            if(menuright2=='2'&&menuleft2!='2'){menux2++;if(menux2>3)menux2=0;}if(menuright2!='2'&&menuleft2=='2'){menux2--;if(menux2<0)menux2=3;}
+            if(menudown2=='2'&&menuup2!='2'){menuy2++;if(menuy2>1)menuy2=0;}if(menudown2!='2'&&menuup2=='2'){menuy2--;if(menuy2<0)menuy2=1;}
+            }
+            if(menuconfirm=='2')p1check=true;if(menuconfirm2=='2')p2check=true;
+            if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
+            if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
+            if(p1check&&p2check)break;
+            charselect.setselect(4,2,menux,menuy,menux2,menuy2);
+
+            if(colorkey=='2'){
+                    if(p1color>8)p1color=0;
+                    else p1color++;
+                    if(p1color==p2color){p1color++;if(p1color>8)p1color=0;}
+            }
+            if(colorkey2=='2'){
+                    if(p2color>8)p2color=0;
+                    else p2color++;
+                    if(p1color==p2color){p2color++;if(p2color>8)p2color=0;}
+            }
+
+            if(p1color==p2color&&menux==menux2&&menuy==menuy2){p2color++;if(p2color>8)p2color=0;}
+
+            sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f}),crect4({32.f, 32.f}),crect5({32.f, 32.f}),crect6({32.f, 32.f});
+            rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
+            crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
+            crect2.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
+            crect3.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));
+            crect4.setFillColor(sf::Color(170*((colorpalettes[p2color][0]/4)%2) + 85*(colorpalettes[p2color][0]/8), (1-(colorpalettes[p2color][0]==6)/3.0)*170*((colorpalettes[p2color][0]/2)%2) + 85*(colorpalettes[p2color][0]/8), 170*(colorpalettes[p2color][0]%2) + 85*(colorpalettes[p2color][0]/8)));
+            crect5.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));
+            crect6.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));
+            rect2.setPosition({0,128});
+            crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
+            crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
+
+            if(menuselect==2){
+                sf::Packet packet;
+                std::uint8_t onlinecode=3,onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
+                if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
+                else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
+                packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
+                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+                if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
+                    packet>>onlinecode;
+                    if(onlinecode==4){p1check=true;p2check=true;break;}
+                    packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
+                    if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
+                    else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
+                    if(p1check&&p2check){
+                        if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
+                        else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
+                        packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
+                        while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
+                    }
+                }
+            }
+
+            sf::Texture bgtexture;
+            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
+            sf::Sprite bg(bgtexture);
+            bg.setPosition({-125.f,0.f});
+
+            window.clear();
+            renderTexture.clear();
+            renderTexture.draw(bg);renderTexture.draw(rect);
+            renderTexture.draw(rect2);renderTexture.draw(charselect);
+            renderTexture.draw(crect1);renderTexture.draw(crect2);renderTexture.draw(crect3);
+            renderTexture.draw(crect4);renderTexture.draw(crect5);renderTexture.draw(crect6);
+            renderTexture.display();
+            const sf::Texture& texture = renderTexture.getTexture();
+            sf::Sprite rt(texture);
+            window.draw(rt);
+            window.display();
+        }
+            if(!gamequit){//online vs
+            short rounds=2,matchintro=60;
+            menus.setmenu(6,92,72,0,16,1);
+            player p1,p2;
+            p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
+            p1.character=menux+menuy*4;p2.character=menux2+menuy2*4;
+            superflash sf;healthbar hb;meterbar mb;
+            timeui time;time.create();comboui cui;inputlist p1ilist,p2ilist;
+            sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture,matchintrotexture;
+            if(!p1ilist.load("assets/images/inputicon.png")||!p2ilist.load("assets/images/inputicon.png")){window.close();gamequit=true;}
+            if(!time.load("assets/images/time_ui.png")||!cui.load("assets/images/combo_ui.png")||!metertexture.loadFromFile("assets/images/meter_ui.png")){window.close();gamequit=true;}
+            if(!bgtexture.loadFromFile("assets/images/stage1.png")||!hutexture.loadFromFile("assets/images/health_ui.png")){window.close();gamequit=true;}
+            if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
+            if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
+            charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
+
+            p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
+            p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
+            sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture),introsprite(matchintrotexture);
+            sf::Text combotext(font),dtext(font),frametext(font);
+            combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
+            dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
+            frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
+            std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
+
+            p1.maxhp=950.0;p2.maxhp=950.0;
+            if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
+            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
                 std::deque<player> precord;
                 std::deque<std::deque<char>> dirrecord,urecord,irecord,orecord,krecord;
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
@@ -5856,7 +5969,6 @@ int main()
                     }
                 }
 
-
                 if(p1.hp>0&&p2.hp<=0)p1.wins++;
                 else if(p1.hp<=0&&p2.hp>0)p2.wins++;
                 dialogue.erase();
@@ -5869,7 +5981,130 @@ int main()
                 dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
                 dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
                 }
-                }
+            
+            }
+            gamequit=false;
+            menus.setmenu(6,144,120,0,16,0);
+        }
+        else{//training
+
+        characterselect charselect;
+        if (!charselect.load("assets/images/charactericon.png")){}
+        charselect.setcharselect(4,2,32,144);
+        short menux=0,menuy=0,menux2=3,menuy2=0;
+        bool p1check=false,p2check=false;
+        while (window.isOpen()&&!gamequit){//characterselect
+            windowset(window,&gamequit);
+
+            if(menuselect==2&&p1control){
+            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+            keypresscheck(heavykey1,&colorkey);
+            }
+            else if(menuselect==2&&!p1control){
+            keypresscheck(lightkey1,&menuconfirm2);keypresscheck(mediumkey1,&menucancel2);
+            keypresscheck(upkey1,&menuup2);keypresscheck(downkey1,&menudown2);
+            keypresscheck(leftkey1,&menuleft2);keypresscheck(rightkey1,&menuright2);
+            keypresscheck(heavykey1,&colorkey2);
+            }
+            else{
+            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
+            keypresscheck(heavykey1,&colorkey);
+            keypresscheck(lightkey2,&menuconfirm2);keypresscheck(mediumkey2,&menucancel2);
+            keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
+            keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
+            keypresscheck(heavykey2,&colorkey2);
+            }
+
+            if(!p1check){
+            if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
+            if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
+            }
+            if(!p2check){
+            if(menuright2=='2'&&menuleft2!='2'){menux2++;if(menux2>3)menux2=0;}if(menuright2!='2'&&menuleft2=='2'){menux2--;if(menux2<0)menux2=3;}
+            if(menudown2=='2'&&menuup2!='2'){menuy2++;if(menuy2>1)menuy2=0;}if(menudown2!='2'&&menuup2=='2'){menuy2--;if(menuy2<0)menuy2=1;}
+            }
+            if(menuconfirm=='2')p1check=true;if(menuconfirm2=='2')p2check=true;
+            if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
+            if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
+            if(p1check&&p2check)break;
+            charselect.setselect(4,2,menux,menuy,menux2,menuy2);
+
+            if(colorkey=='2'){
+                    if(p1color>8)p1color=0;
+                    else p1color++;
+                    if(p1color==p2color){p1color++;if(p1color>8)p1color=0;}
+            }
+            if(colorkey2=='2'){
+                    if(p2color>8)p2color=0;
+                    else p2color++;
+                    if(p1color==p2color){p2color++;if(p2color>8)p2color=0;}
+            }
+
+            if(p1color==p2color&&menux==menux2&&menuy==menuy2){p2color++;if(p2color>8)p2color=0;}
+
+            sf::RectangleShape rect({256.f, 32.f}),rect2({256.f, 112.f}),crect1({32.f, 32.f}),crect2({32.f, 32.f}),crect3({32.f, 32.f}),crect4({32.f, 32.f}),crect5({32.f, 32.f}),crect6({32.f, 32.f});
+            rect.setFillColor(sf::Color(85, 85, 85));rect2.setFillColor(sf::Color(85, 85, 85));
+            crect1.setFillColor(sf::Color(170*((colorpalettes[p1color][0]/4)%2) + 85*(colorpalettes[p1color][0]/8), (1-(colorpalettes[p1color][0]==6)/3.0)*170*((colorpalettes[p1color][0]/2)%2) + 85*(colorpalettes[p1color][0]/8), 170*(colorpalettes[p1color][0]%2) + 85*(colorpalettes[p1color][0]/8)));
+            crect2.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));
+            crect3.setFillColor(sf::Color(170*((colorpalettes[p1color][2]/4)%2) + 85*(colorpalettes[p1color][2]/8), (1-(colorpalettes[p1color][2]==6)/3.0)*170*((colorpalettes[p1color][2]/2)%2) + 85*(colorpalettes[p1color][2]/8), 170*(colorpalettes[p1color][2]%2) + 85*(colorpalettes[p1color][2]/8)));
+            crect4.setFillColor(sf::Color(170*((colorpalettes[p2color][0]/4)%2) + 85*(colorpalettes[p2color][0]/8), (1-(colorpalettes[p2color][0]==6)/3.0)*170*((colorpalettes[p2color][0]/2)%2) + 85*(colorpalettes[p2color][0]/8), 170*(colorpalettes[p2color][0]%2) + 85*(colorpalettes[p2color][0]/8)));
+            crect5.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));
+            crect6.setFillColor(sf::Color(170*((colorpalettes[p2color][2]/4)%2) + 85*(colorpalettes[p2color][2]/8), (1-(colorpalettes[p2color][2]==6)/3.0)*170*((colorpalettes[p2color][2]/2)%2) + 85*(colorpalettes[p2color][2]/8), 170*(colorpalettes[p2color][2]%2) + 85*(colorpalettes[p2color][2]/8)));
+            rect2.setPosition({0,128});
+            crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
+            crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
+
+            sf::Texture bgtexture;
+            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
+            sf::Sprite bg(bgtexture);
+            bg.setPosition({-125.f,0.f});
+
+            window.clear();
+            renderTexture.clear();
+            renderTexture.draw(bg);renderTexture.draw(rect);
+            renderTexture.draw(rect2);renderTexture.draw(charselect);
+            renderTexture.draw(crect1);renderTexture.draw(crect2);renderTexture.draw(crect3);
+            renderTexture.draw(crect4);renderTexture.draw(crect5);renderTexture.draw(crect6);
+            renderTexture.display();
+            const sf::Texture& texture = renderTexture.getTexture();
+            sf::Sprite rt(texture);
+            window.draw(rt);
+            window.display();
+        }
+        
+        if(!gamequit){
+            short rounds=2,matchintro=60;
+
+            menus.setmenu(6,92,72,0,16,1);
+            player p1,p2;
+            p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
+            p1.character=menux+menuy*4;p2.character=menux2+menuy2*4;
+            superflash sf;healthbar hb;meterbar mb;
+            timeui time;time.create();comboui cui;inputlist p1ilist,p2ilist;
+            sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture,matchintrotexture;
+            if(!p1ilist.load("assets/images/inputicon.png")||!p2ilist.load("assets/images/inputicon.png")){window.close();gamequit=true;}
+            if(!time.load("assets/images/time_ui.png")||!cui.load("assets/images/combo_ui.png")||!metertexture.loadFromFile("assets/images/meter_ui.png")){window.close();gamequit=true;}
+            if(!bgtexture.loadFromFile("assets/images/stage1.png")||!hutexture.loadFromFile("assets/images/health_ui.png")){window.close();gamequit=true;}
+            if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
+            if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
+            charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
+
+            p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
+            p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
+            sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture),introsprite(matchintrotexture);
+            sf::Text combotext(font),dtext(font),frametext(font);
+            combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
+            dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
+            frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
+            std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
+
+            p1.maxhp=950.0;p2.maxhp=950.0;
+            if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
+            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
             if(menuselect==3){//training
                 music.play();
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
