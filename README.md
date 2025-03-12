@@ -89,7 +89,7 @@ doesn't have much of note as of now.
 Costs one bar.
 
 **special while being hit: Combo breaker**
-Backdashes out of a combo while triggering projectiles.
+Backdashes out of a combo while triggering projectiles and slowing the opponent down.
 
 ## Credits
 Old-School Shonen SFX by Helton Yan.

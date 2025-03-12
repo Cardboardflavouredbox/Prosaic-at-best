@@ -4899,9 +4899,10 @@ int main()
             if(!mapui.load("assets/images/walltexture.png")){window.close();gamequit=true;}
             mapcompass compass;
             sf::Text dtext(font);dtext.setCharacterSize(16);
-            sf::Texture stattexture,icontexture;
+            sf::Texture stattexture,icontexture,npctexture[64];
             if(!stattexture.loadFromFile("assets/images/characterstatart.png")){window.close();gamequit=true;}
             if(!icontexture.loadFromFile("assets/images/charactericon.png")){window.close();gamequit=true;}
+            if(!npctexture[0].loadFromFile("assets/images/npc0.png")){window.close();gamequit=true;}
             mapnpc npcs[64][16];
             npcs[0][0].dir=3;npcs[0][0].x=5;npcs[0][0].y=1;
             bool checkwall[10]={false};
@@ -5022,7 +5023,7 @@ int main()
                 window.clear();
                 renderTexture.clear();
 
-                sf::RectangleShape rectangle({4.f, 4.f}),npc({32.f,64.f}),border({256.f,48.f}),
+                sf::RectangleShape rectangle({4.f, 4.f}),border({256.f,48.f}),
                                     hp({64.f, 16.f}),floor({256.f,36.f});
 
                 border.setFillColor(storycolors[0]);
@@ -5035,12 +5036,50 @@ int main()
                 renderTexture.draw(floor);
 
                 renderTexture.draw(mapui);
+                
+                sf::VertexArray m_vertices;
+                sf::RenderStates tempstates;
+                shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
+                shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
+                shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][3]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][3]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][3]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][3]%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));
+                shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
+
                 for(unsigned char i=0;i<npccount;i++){
-                    if(npcs[currentmap][i].dir-dir==2||int(npcs[currentmap][i].dir)-dir==-2)npc.setPosition({112.f,136.f});
-                    else if(npcs[currentmap][i].dir-dir==1||int(npcs[currentmap][i].dir)-dir==-1)npc.setPosition({48.f,136.f});
-                    else npc.setPosition({176.f,136.f});
-                    npc.setFillColor(storycolors[3]);
-                    if((npcs[currentmap][i].dir!=dir)&&(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy))renderTexture.draw(npc);
+                    tempstates.texture=&npctexture[0];tempstates.shader=&shader;
+                    m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+                    m_vertices.resize(16);
+                    sf::Vertex* tri = &m_vertices[6];
+                    tri[0].texCoords = sf::Vector2f((npcs[currentmap][i].dir-dir)*32,0);
+                    tri[1].texCoords = sf::Vector2f((npcs[currentmap][i].dir-dir)*32+32,0);
+                    tri[2].texCoords = sf::Vector2f((npcs[currentmap][i].dir-dir)*32+32,64);
+                    tri[3].texCoords = sf::Vector2f((npcs[currentmap][i].dir-dir)*32,64);
+                    tri[4].texCoords = sf::Vector2f((npcs[currentmap][i].dir-dir)*32,0);
+                    tri[5].texCoords = sf::Vector2f((npcs[currentmap][i].dir-dir)*32+32,64);
+                    if(npcs[currentmap][i].dir-dir==2||int(npcs[currentmap][i].dir)-dir==-2){
+                        tri[0].position = sf::Vector2f(112,136);
+                        tri[1].position = sf::Vector2f(144,136);
+                        tri[2].position = sf::Vector2f(144,200);
+                        tri[3].position = sf::Vector2f(112,200);
+                        tri[4].position = sf::Vector2f(112,136);
+                        tri[5].position = sf::Vector2f(144,200);
+                    }
+                    else if(npcs[currentmap][i].dir-dir==1||int(npcs[currentmap][i].dir)-dir==-1){
+                        tri[0].position = sf::Vector2f(48,136);
+                        tri[1].position = sf::Vector2f(80,136);
+                        tri[2].position = sf::Vector2f(80,200);
+                        tri[3].position = sf::Vector2f(48,200);
+                        tri[4].position = sf::Vector2f(48,136);
+                        tri[5].position = sf::Vector2f(80,200);
+                    }
+                    else {
+                        tri[0].position = sf::Vector2f(176,136);
+                        tri[1].position = sf::Vector2f(208,136);
+                        tri[2].position = sf::Vector2f(208,200);
+                        tri[3].position = sf::Vector2f(176,200);
+                        tri[4].position = sf::Vector2f(176,136);
+                        tri[5].position = sf::Vector2f(208,200);
+                    }
+                    if((npcs[currentmap][i].dir!=dir)&&(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy))renderTexture.draw(m_vertices,tempstates);
                     }
 
                 renderTexture.draw(border);
@@ -5062,12 +5101,6 @@ int main()
                 renderTexture.draw(compass);
                 }
 
-                sf::VertexArray m_vertices;
-                sf::RenderStates tempstates;
-                shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
-                shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
-                shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][3]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][3]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][3]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][3]%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));
-                shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
                 tempstates.texture=&icontexture;tempstates.shader=&shader;
                 if(!statscreen){
                 m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
