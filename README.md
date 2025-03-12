@@ -68,7 +68,6 @@ Projectile that is initially slow, but becomes fast after being triggered.
 Weak versions can be triggered by using the special key.
 Medium versions don't exist yet lol.
 Heavy versions get triggered automatically after some time.
-Special versions are triggered from the start, but have slower startup.
 
 **214+normal:shoulder bash**
 Goes further the heavier it is, and the heavy version does two hits.
