@@ -2960,10 +2960,10 @@ int chooseaction(short character,short previousact,int playercode, bool air, cha
                     c236[0][3]='0';
                 }
                 else if(keyinput[4]=='2'){
-                    c236[0][3]='2';
+                    c236[0][4]='2';
                     if(cmdcheck(playercode,4,c236))return 19;//special A gimmick
                     else return 15;//gimmick
-                    c236[0][3]='0';
+                    c236[0][4]='0';
                 }
                 return 0;
                 }
@@ -3034,12 +3034,15 @@ void boolfill(bool *arr,bool value,short a[]){
     }
 }
 
-void projectiledata(player *p,short superstop){
+void projectiledata(player *p,short superstop,short enemycharacter,short enemygimmick[]){
     #define P (*p)
     for(short i=0;i<P.proj.size();i++){
         if(superstop==0){
             if(P.proj[i].hit){P.proj[i].hit=false;P.proj[i].hitcount--;}
-            if(P.proj[i].x<-128||P.proj[i].x>384||P.proj[i].y<0||P.proj[i].y>240){P.proj.erase(P.proj.begin()+i);return;}
+            if(P.proj[i].x<-128||P.proj[i].x>384||P.proj[i].y<0||P.proj[i].y>240){
+                if(P.character==2&&P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
+                else P.proj.erase(P.proj.begin()+i);return;
+                }
             if(P.proj[i].hitcount<=0){
                 if(P.proj[i].endanim.empty()){P.proj.erase(P.proj.begin()+i);return;}
                 else{
@@ -3066,15 +3069,20 @@ void projectiledata(player *p,short superstop){
                             if(P.proj[i].right)P.proj[i].movex=-2;
                             else P.proj[i].movex=2;
                             P.proj[i].code=2;
-                            if(P.proj[i].y>210)P.proj[i].y=210;
                             P.proj[i].movey=-3;
                             P.proj[i].hitcount=-1;
                             P.proj[i].animloop=0;
                         }
                         else{
                             P.proj[i].movey+=0.5;
-                            P.proj[i].x+=P.proj[i].movex;
-                            P.proj[i].y+=P.proj[i].movey;
+                            if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
+                                P.proj[i].x+=P.proj[i].movex/2;
+                                P.proj[i].y+=P.proj[i].movey/2;
+                            }
+                            else{
+                                P.proj[i].x+=P.proj[i].movex;
+                                P.proj[i].y+=P.proj[i].movey;
+                            }
                             P.proj[i].frame=P.proj[i].endanim[P.proj[i].animloop];
                             if(P.proj[i].animloop==0)P.proj[i].animloop=1;
                             else P.proj[i].animloop=0;
@@ -3086,9 +3094,16 @@ void projectiledata(player *p,short superstop){
             else if(P.proj[i].hitstopped>0&&superstop==0)P.proj[i].hitstopped-=1;
             else{
                 P.proj[i].existed++;
-                if(P.proj[i].right)P.proj[i].x+=P.proj[i].movex;
-                else P.proj[i].x-=P.proj[i].movex;
-                P.proj[i].y+=P.proj[i].movey;
+                if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
+                    if(P.proj[i].right)P.proj[i].x+=P.proj[i].movex/2;
+                    else P.proj[i].x-=P.proj[i].movex/2;
+                    P.proj[i].y+=P.proj[i].movey/2;
+                }
+                else{
+                    if(P.proj[i].right)P.proj[i].x+=P.proj[i].movex;
+                    else P.proj[i].x-=P.proj[i].movex;
+                    P.proj[i].y+=P.proj[i].movey;
+                }
                 P.proj[i].animloop+=1;
                 if(P.proj[i].looplen<=P.proj[i].animloop)P.proj[i].animloop=0;
                 P.proj[i].frame=P.proj[i].loopanim[P.proj[i].animloop];
@@ -3107,14 +3122,15 @@ void projectiledata(player *p,short superstop){
                     }
                 }
                 else if(P.character==2){
-                    if(P.proj[i].y>210)P.proj[i].hitcount=0;
+                    if(P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
+                    if(P.proj[i].code==1)P.proj[i].movey+=1;
                     if(P.proj[i].code==2&&P.proj[i].existed>90){
                         P.proj[i].movex+=0.5;
                         if(P.proj[i].movey!=0)P.proj[i].movey+=0.25;
                     }
                     if(P.proj[i].code==2&&P.proj[i].existed==90){
                         P.proj[i].dmg=28;
-                        P.proj[i].hitstun=12;P.proj[i].blockstun=3;
+                        P.proj[i].hitstun=16;P.proj[i].blockstun=5;
                         P.proj[i].looplen=2;//make the animation get faster later
                         P.proj[i].loopanim[0]=42;
                         P.proj[i].loopanim[1]=43;
@@ -3824,6 +3840,20 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
                 break;
             }
+            case 19:{//special A (k)
+                if(P.air){
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,36,37,37,38,38,27,27,28,28,29,29,30,30,31,31,32,32,33,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16});
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,36,37,37,38,38,27,27,28,28,29,29,30,30,31,31,32,32,33,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15});
+                    P.cancel[32]=true;
+                }
+                break;
+            }
             case 21:{//special B(u)
                 P.col=0;P.hitcount=1;P.hitstop=0;P.kback=0;P.hitstun=60;P.blockstun=5;P.slide=true;P.movewaitx=6;P.dmg=0;P.movetype=4;P.grab[0]=27;P.grab[1]=15;P.grabstate=2;
                 P.animq.insert(P.animq.begin(),{53,53,53,53,53,53,53,53,53,53,53,54,55,55,55,55,55,55,55,55,55,55,55,55,54,53,53,53,53});
@@ -4079,7 +4109,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             case 1:
             case 3:
             case 8:
-            case 10:{//projectile
+            case 10:
+            case 15:
+            case 16:{//projectile
                 soundfxlist.push_back(10);
                 sfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.meter+=P.mgain;
@@ -4090,6 +4122,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.y=P.y;
                 temp.movex=0.5;
                 if(P.atkfx[0]==8||P.atkfx[0]==10){temp.movey=0.25;P.jumpy=-3;}
+                else if(P.atkfx[0]==16){temp.movex=1.5;temp.movey=-4;P.jumpy=-3;}
+                else if(P.atkfx[0]==15){temp.movex=1.5;temp.movey=-4;}
                 else temp.movey=0;
                 temp.hitcount=1;
                 temp.moveact=P.moveact;
@@ -4117,6 +4151,26 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.endanim.push_back(43);
                 if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
                 else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
+                else if(P.atkfx[0]==15||P.atkfx[0]==16){
+                    temp.code=1;
+                    temp.movex*=20;
+                    temp.dmg=28;
+                    temp.looplen=2;
+                    temp.loopanim[0]=42;
+                    temp.loopanim[1]=43;
+                    temp.hitstun=10;temp.blockstun=2;
+                    effects tempfx;
+                    tempfx.color1=sf::Color (85, 255, 255);
+                    tempfx.len=4;
+                    tempfx.x=temp.x;tempfx.y=temp.y-5;
+                    if(temp.right)tempfx.x+=8;
+                    else tempfx.x-=8;
+                    tempfx.code=2;tempfx.speed=0.7;
+                    effectslist.push_back(tempfx);
+                    tempfx.speed=2;
+                    effectslist.push_back(tempfx);
+                    tempfx.code=1;
+                }
                 temp.launch=P.launch;
                 //temp.endanim.insert(temp.endanim.begin(),{42});
                 if(P.proj.size()<32)P.proj.push_back(temp);
@@ -4319,7 +4373,6 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
     if(!p2preblock)for(short i=0;i<P1.proj.size();i++)
             if(abs(int(P1.proj[i].x-P2.x))<64&&abs(int(P1.proj[i].y-P2.y))<64&&P1.proj[i].hitcount>0){p2preblock=true;break;}
 
-    //make an attack clashing system at some point
     if(P1.hit){
         if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick,p1preblock);
         if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick,p2preblock);
@@ -4328,8 +4381,8 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
         if(P2.hitstopped==0&&*superstop==0)characterdata(&P2,P1.x,P1.y,&P1.pushaway,P1.grabstate,&*superstop,P1.character,P1.gimmick,p2preblock);
         if(P1.hitstopped==0&&*superstop==0)characterdata(&P1,P2.x,P2.y,&P2.pushaway,P2.grabstate,&*superstop,P2.character,P2.gimmick,p1preblock);
                         }
-    if(!P1.proj.empty())projectiledata(&P1,*superstop);
-    if(!P2.proj.empty())projectiledata(&P2,*superstop);
+    if(!P1.proj.empty())projectiledata(&P1,*superstop,P2.character,P2.gimmick);
+    if(!P2.proj.empty())projectiledata(&P2,*superstop,P1.character,P1.gimmick);
     if(combo==0)comboscaling=100;
     if(P1.hp>P1.maxhp)P1.hp=P1.maxhp;
     if(P2.hp>P2.maxhp)P2.hp=P2.maxhp;
@@ -6067,7 +6120,7 @@ int main()
 
             menus.setmenu(6,92,72,0,16,1);
             player p1,p2;
-            p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
+            p1.color=p1color;p2.color=p2color;p1.meter=1000.0;p2.meter=1000.0;
             p1.character=menux+menuy*4;p2.character=menux2+menuy2*4;
             superflash sf;healthbar hb;meterbar mb;
             timeui time;time.create();comboui cui;inputlist p1ilist,p2ilist;
