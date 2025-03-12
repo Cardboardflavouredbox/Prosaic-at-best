@@ -88,6 +88,9 @@ A counter that slows down the opponent.
 doesn't have much of note as of now.
 Costs one bar.
 
+**special while being hit: Combo breaker**
+Backdashes out of a combo while triggering projectiles.
+
 ## Credits
 Old-School Shonen SFX by Helton Yan.
 https://heltonyan.itch.io/retroanimesfx
@@ -95,4 +98,4 @@ https://creativecommons.org/licenses/by/4.0/
 
 ## Permissions
 
-Please do not use the code and assets of this project without the consent of the author.
+Please do not use or distribute the code and assets of this project without the consent of the author.
