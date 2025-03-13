@@ -3123,7 +3123,10 @@ void projectiledata(player *p,short superstop,short enemycharacter,short enemygi
                 }
                 else if(P.character==2){
                     if(P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
-                    if(P.proj[i].code==3)P.proj[i].movey+=0.5;
+                    if(P.proj[i].code==3){
+                        if(P.proj[i].dmg==28)P.proj[i].movey+=2.5;
+                        else P.proj[i].movey+=0.125;
+                    }
                     if(P.proj[i].code==2&&P.proj[i].existed>90){
                         P.proj[i].movex+=0.5;
                         if(P.proj[i].movey!=0)P.proj[i].movey+=0.25;
@@ -4138,8 +4141,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.y=P.y;
                 temp.movex=0.5;
                 if(P.atkfx[0]==8||P.atkfx[0]==10||P.atkfx[0]==16){temp.movey=0.25;P.jumpy=-3;}
-                else if(P.atkfx[0]==18){temp.movex=1.5;temp.movey=-8;P.jumpy=-3;}
-                else if(P.atkfx[0]==17){temp.movex=1.5;temp.movey=-8;}
+                else if(P.atkfx[0]==18){temp.movex=1.5;temp.movey=-5;P.jumpy=-3;}
+                else if(P.atkfx[0]==17){temp.movex=1.5;temp.movey=-5;}
                 else temp.movey=0;
                 temp.hitcount=1;
                 temp.moveact=P.moveact;
@@ -4217,8 +4220,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                         effectslist.push_back(temp);
                     }
                     else if(P.proj[i].movex<5&&P.proj[i].code==3){
-                        P.proj[i].movex*=20;
-                        P.proj[i].movey*=20;
+                        P.proj[i].movex*=10;
+                        P.proj[i].movey+=25;
                         P.proj[i].dmg=28;
                         P.proj[i].looplen=2;
                         P.proj[i].loopanim[0]=42;
