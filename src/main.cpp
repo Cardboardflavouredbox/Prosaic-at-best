@@ -3123,7 +3123,7 @@ void projectiledata(player *p,short superstop,short enemycharacter,short enemygi
                 }
                 else if(P.character==2){
                     if(P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
-                    if(P.proj[i].code==1)P.proj[i].movey+=1;
+                    if(P.proj[i].code==3)P.proj[i].movey+=0.5;
                     if(P.proj[i].code==2&&P.proj[i].existed>90){
                         P.proj[i].movex+=0.5;
                         if(P.proj[i].movey!=0)P.proj[i].movey+=0.25;
@@ -3826,6 +3826,20 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
                 break;
             }
+            case 17:{//special A (i)
+                if(P.air){
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,18});
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{36,37,38,27,28,28,29,30,31,32,33,34,34,35,35,35,35,35,35,35,35,39,39,40,40,41,41});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,0,0,17});
+                    P.cancel[32]=true;
+                }
+                break;
+            }
             case 18:{//special A (o)
                 if(P.air){
                     P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=6;P.blockstun=2;P.movetype=2;P.mgain=7;
@@ -4111,7 +4125,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             case 8:
             case 10:
             case 15:
-            case 16:{//projectile
+            case 16:
+            case 17:
+            case 18:{//projectile
                 soundfxlist.push_back(10);
                 sfxx.push_back((bgx+P.x-128.f)/256.f);
                 P.meter+=P.mgain;
@@ -4121,9 +4137,9 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 else temp.x=P.x-32;
                 temp.y=P.y;
                 temp.movex=0.5;
-                if(P.atkfx[0]==8||P.atkfx[0]==10){temp.movey=0.25;P.jumpy=-3;}
-                else if(P.atkfx[0]==16){temp.movex=1.5;temp.movey=-4;P.jumpy=-3;}
-                else if(P.atkfx[0]==15){temp.movex=1.5;temp.movey=-4;}
+                if(P.atkfx[0]==8||P.atkfx[0]==10||P.atkfx[0]==16){temp.movey=0.25;P.jumpy=-3;}
+                else if(P.atkfx[0]==18){temp.movex=1.5;temp.movey=-8;P.jumpy=-3;}
+                else if(P.atkfx[0]==17){temp.movex=1.5;temp.movey=-8;}
                 else temp.movey=0;
                 temp.hitcount=1;
                 temp.moveact=P.moveact;
@@ -4151,9 +4167,11 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.endanim.push_back(43);
                 if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
                 else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
+                else if(P.atkfx[0]==17||P.atkfx[0]==18)temp.code=3;
                 else if(P.atkfx[0]==15||P.atkfx[0]==16){
                     temp.code=1;
                     temp.movex*=20;
+                    temp.movey*=20;
                     temp.dmg=28;
                     temp.looplen=2;
                     temp.loopanim[0]=42;
@@ -4180,6 +4198,25 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 P.cancel[24]=true;P.movetype=0;
                 for(short i=0;i<P.proj.size();i++){
                     if(P.proj[i].movex<5&&P.proj[i].code==0){
+                        P.proj[i].movex*=20;
+                        P.proj[i].movey*=20;
+                        P.proj[i].dmg=28;
+                        P.proj[i].looplen=2;
+                        P.proj[i].loopanim[0]=42;
+                        P.proj[i].loopanim[1]=43;
+                        P.proj[i].hitstun=10;P.proj[i].blockstun=2;
+                        effects temp;
+                        temp.color1=sf::Color (85, 255, 255);
+                        temp.len=4;
+                        temp.x=P.proj[i].x;temp.y=P.proj[i].y-5;
+                        if(P.proj[i].right)temp.x+=8;
+                        else temp.x-=8;
+                        temp.code=2;temp.speed=0.7;
+                        effectslist.push_back(temp);
+                        temp.speed=2;
+                        effectslist.push_back(temp);
+                    }
+                    else if(P.proj[i].movex<5&&P.proj[i].code==3){
                         P.proj[i].movex*=20;
                         P.proj[i].movey*=20;
                         P.proj[i].dmg=28;
@@ -4430,7 +4467,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
 
     //projectile collision
     for(short j=0;j<P1.proj.size();j++){
-            if(P1.proj[j].hitstopped==0){
+            if(P1.proj[j].hitstopped==0&&P1.proj[j].hitcount>0){
             for(short i=0;i<hurtboxcount[P1.character][P1.proj[j].frame];i++){
             if(P1.proj[j].right==true){
                 temp[0]=hurtbox[P1.character][P1.proj[j].frame][i][0][0]+int(P1.proj[j].x);
@@ -4446,7 +4483,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
             }
 
             for(short l=0;l<P2.proj.size();l++){
-                if(P2.proj[l].hitstopped==0){
+                if(P2.proj[l].hitstopped==0&&P2.proj[l].hitcount>0){
                 for(short k=0;k<hurtboxcount[P2.character][P2.proj[l].frame];k++){
                     if(P2.proj[l].right==true){
                         temp3[0]=hurtbox[P2.character][P2.proj[l].frame][k][0][0]+int(P2.proj[l].x);
