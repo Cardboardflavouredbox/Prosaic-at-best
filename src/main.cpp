@@ -4882,6 +4882,7 @@ int main()
         else if(menuselect==1){//story mode
             menus.setmenu(6,176,48,0,24,2);
             unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,currentleader=0,dir=0;//0=up,1=right,2=down,3=left
+            std::deque<unsigned char> dportrait;
             short dialoguecnt=0;
             float partyhp[16]={450.f,0.f,800.f},partymaxhp[16]={500.f,0.f,800.f};
             bool partylist[16]={1,0,1},partylockedmoves[16][64]={},//true==lockedmove
@@ -4899,10 +4900,11 @@ int main()
             if(!mapui.load("assets/images/walltexture.png")){window.close();gamequit=true;}
             mapcompass compass;
             sf::Text dtext(font);dtext.setCharacterSize(16);
-            sf::Texture stattexture,icontexture,npctexture[64];
+            sf::Texture stattexture,icontexture,npctexture[64],chartalktexture;
             if(!stattexture.loadFromFile("assets/images/characterstatart.png")){window.close();gamequit=true;}
             if(!icontexture.loadFromFile("assets/images/charactericon.png")){window.close();gamequit=true;}
             if(!npctexture[0].loadFromFile("assets/images/npc0.png")){window.close();gamequit=true;}
+            if(!chartalktexture.loadFromFile("assets/images/chartalk.png")){window.close();gamequit=true;}
             mapnpc npcs[64][16];
             npcs[0][0].dir=3;npcs[0][0].x=5;npcs[0][0].y=1;
             bool checkwall[10]={false};
@@ -4925,7 +4927,7 @@ int main()
                         char temp='$';
                         dtext.setString(dialogue.substr(0,dialoguecnt));
                             if(dialogue[dialoguecnt]==temp){
-                                if(menuconfirm=='2'){dialogue.erase(0,dialoguecnt+1);dialoguecnt=0;dtext.setString(dialogue.substr(0,dialoguecnt));}
+                                if(menuconfirm=='2'||menucancel=='2'){dialogue.erase(0,dialoguecnt+1);dialoguecnt=0;dtext.setString(dialogue.substr(0,dialoguecnt));dportrait.pop_front();dportrait.pop_front();}
                             }
                             else{
                                 if(menucancel=='2')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
@@ -4952,9 +4954,9 @@ int main()
                     for(unsigned i=0;i<npccount;i++)
                         if(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy)
                             switch(npcs[currentmap][i].interaction){
-                                case 0:{
-                                    if(currentleader==0)dialogue="Hello this one is\na test$Haha I'm a test character\ntoo good talk sir$";
-                                    else if(currentleader==2)dialogue="Hello this one is\na test$...What's a test?$";
+                                case 0:{//testnpc
+                                    if(currentleader==0){dialogue="Hello this one is\na test$Haha I'm a test character\ntoo good talk sir$";dportrait.insert(dportrait.begin(),{0,0,0,0});}
+                                    else if(currentleader==2){dialogue="Hello this one is\na test$...What's a test?$";dportrait.insert(dportrait.begin(),{0,0, 1,1});}
                                     break;
                                 }
                             }
@@ -5101,8 +5103,9 @@ int main()
                 renderTexture.draw(compass);
                 }
 
-                tempstates.texture=&icontexture;tempstates.shader=&shader;
+                
                 if(!statscreen){
+                tempstates.texture=&icontexture;tempstates.shader=&shader;
                 m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
                 m_vertices.resize(16);
                 sf::Vertex* tri = &m_vertices[6];
@@ -5127,7 +5130,29 @@ int main()
                 hp.setSize({roundf(64.f*(partyhp[currentleader]/partymaxhp[currentleader])),16.f});
                 renderTexture.draw(hp);
                 }
-                if(!dialogue.empty())renderTexture.draw(dtext);
+                if(!dialogue.empty()){
+                    renderTexture.draw(dtext);
+                    if(dportrait[0]>0){
+                    tempstates.texture=&chartalktexture;tempstates.shader=&shader;
+                    m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+                    m_vertices.resize(16);
+                    sf::Vertex* tri = &m_vertices[6];
+                    tri[0].position = sf::Vector2f(dportrait[1]*64,32);
+                    tri[1].position = sf::Vector2f(128+dportrait[1]*64,32);
+                    tri[2].position = sf::Vector2f(128+dportrait[1]*64,192);
+                    tri[3].position = sf::Vector2f(dportrait[1]*64,192);
+                    tri[4].position = sf::Vector2f(dportrait[1]*64,32);
+                    tri[5].position = sf::Vector2f(128+dportrait[1]*64,192);
+
+                    tri[0].texCoords = sf::Vector2f((dportrait[0]-1)*128,0);
+                    tri[1].texCoords = sf::Vector2f((dportrait[0]-1)*128+128,0);
+                    tri[2].texCoords = sf::Vector2f((dportrait[0]-1)*128+128,160);
+                    tri[3].texCoords = sf::Vector2f((dportrait[0]-1)*128,160);
+                    tri[4].texCoords = sf::Vector2f((dportrait[0]-1)*128,0);
+                    tri[5].texCoords = sf::Vector2f((dportrait[0]-1)*128+128,160);
+                    renderTexture.draw(m_vertices,tempstates);
+                    }
+                }
 
                 if(pause||statscreen)renderTexture.draw(pausedark);
                 if(statscreen&&pause){
@@ -5514,9 +5539,9 @@ int main()
                 sf::Sprite rt(texture);
                 window.draw(rt);
                 window.display();
+                }
             }
-        }
-             characterselect charselect;
+            characterselect charselect;
             if (!charselect.load("assets/images/charactericon.png")){}
             charselect.setcharselect(4,2,32,144);
             short menux=0,menuy=0,menux2=3,menuy2=0;
@@ -5524,27 +5549,17 @@ int main()
             while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
 
-            if(menuselect==2&&p1control){
+            if(p1control){
             keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
             keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
             keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
             keypresscheck(heavykey1,&colorkey);
             }
-            else if(menuselect==2&&!p1control){
+            else{
             keypresscheck(lightkey1,&menuconfirm2);keypresscheck(mediumkey1,&menucancel2);
             keypresscheck(upkey1,&menuup2);keypresscheck(downkey1,&menudown2);
             keypresscheck(leftkey1,&menuleft2);keypresscheck(rightkey1,&menuright2);
             keypresscheck(heavykey1,&colorkey2);
-            }
-            else{
-            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
-            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
-            keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
-            keypresscheck(heavykey1,&colorkey);
-            keypresscheck(lightkey2,&menuconfirm2);keypresscheck(mediumkey2,&menucancel2);
-            keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
-            keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
-            keypresscheck(heavykey2,&colorkey2);
             }
 
             if(!p1check){
@@ -5586,27 +5601,26 @@ int main()
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
 
-            if(menuselect==2){
-                sf::Packet packet;
-                std::uint8_t onlinecode=3,onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
-                if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
-                else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
-                packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
-                if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
-                if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
-                    packet>>onlinecode;
-                    if(onlinecode==4){p1check=true;p2check=true;break;}
-                    packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
-                    if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
-                    else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
-                    if(p1check&&p2check){
-                        if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
-                        else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
-                        packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
-                        while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
-                    }
+            sf::Packet packet;
+            std::uint8_t onlinecode=3,onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
+            if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
+            else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
+            packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
+            if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
+            if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
+                packet>>onlinecode;
+                if(onlinecode==4){p1check=true;p2check=true;break;}
+                packet>>onlinecolor>>onlinemenux>>onlinemenuy>>onlinecheck;
+                if(p1control){p2color=onlinecolor;menux2=onlinemenux;menuy2=onlinemenuy;p2check=onlinecheck;}
+                else{p1color=onlinecolor;menux=onlinemenux;menuy=onlinemenuy;p1check=onlinecheck;}
+                if(p1check&&p2check){
+                    if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
+                    else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
+                    packet<<onlinecode<<onlinecolor<<onlinemenux<<onlinemenuy<<onlinecheck;
+                    while(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
                 }
             }
+        
 
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
@@ -6064,6 +6078,7 @@ int main()
             }
             gamequit=false;
             menus.setmenu(6,144,120,0,16,0);
+            socket.unbind();
         }
         else{//training
 
