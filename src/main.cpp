@@ -2066,7 +2066,7 @@ public:
         if (!m_tileset.loadFromFile(tileset))return false;
         return true;
     }
-    void create(bool check[],sf::Color wallcolor){
+    void create(bool check[]){
         m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
         m_vertices.resize(180);
         m_tileset.setRepeated(true);
@@ -2078,7 +2078,6 @@ public:
             tri[57].position = sf::Vector2f(64,64);
             tri[58].position = sf::Vector2f(0,208);
             tri[59].position = sf::Vector2f(64,176);
-            for(short i=0;i<6;i++)tri[i+54].color=wallcolor;
         }
         else if(check[0]){//left front
             tri[54].position = sf::Vector2f(-48,64);
@@ -2087,9 +2086,8 @@ public:
             tri[57].position = sf::Vector2f(64,64);
             tri[58].position = sf::Vector2f(-48,176);
             tri[59].position = sf::Vector2f(64,176);
-            for(short i=0;i<6;i++)tri[i+54].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+54].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+54].position=sf::Vector2f(-1,-1);
 
         if(check[4]){//right
             tri[48].position = sf::Vector2f(192,64);
@@ -2098,7 +2096,6 @@ public:
             tri[51].position = sf::Vector2f(256,32);
             tri[52].position = sf::Vector2f(192,176);
             tri[53].position = sf::Vector2f(256,208);
-            for(short i=0;i<6;i++)tri[i+48].color=wallcolor;
         }
         else if(check[2]){//right front
             tri[48].position = sf::Vector2f(192,64);
@@ -2107,9 +2104,8 @@ public:
             tri[51].position = sf::Vector2f(304,64);
             tri[52].position = sf::Vector2f(192,176);
             tri[53].position = sf::Vector2f(304,176);
-            for(short i=0;i<6;i++)tri[i+48].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+48].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+48].position=sf::Vector2f(-1,-1);
 
         if(check[1]){
             tri[42].position = sf::Vector2f(64,64);
@@ -2118,9 +2114,8 @@ public:
             tri[45].position = sf::Vector2f(192,64);
             tri[46].position = sf::Vector2f(64,176);
             tri[47].position = sf::Vector2f(192,176);
-            for(short i=0;i<6;i++)tri[i+42].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+42].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+42].position=sf::Vector2f(-1,-1);
 
         if(!check[1]&&check[0]){
             tri[36].position = sf::Vector2f(64,64);
@@ -2129,9 +2124,8 @@ public:
             tri[39].position = sf::Vector2f(96,80);
             tri[40].position = sf::Vector2f(64,176);
             tri[41].position = sf::Vector2f(96,160);
-            for(short i=0;i<6;i++)tri[i+36].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+36].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+36].position=sf::Vector2f(-1,-1);
 
         if(!check[1]&&check[2]){
             tri[30].position = sf::Vector2f(160,80);
@@ -2140,9 +2134,8 @@ public:
             tri[33].position = sf::Vector2f(192,64);
             tri[34].position = sf::Vector2f(160,160);
             tri[35].position = sf::Vector2f(192,176);
-            for(short i=0;i<6;i++)tri[i+30].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+30].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+30].position=sf::Vector2f(-1,-1);
 
         if(check[6]&&!check[1]){
             tri[24].position = sf::Vector2f(96,80);
@@ -2151,9 +2144,8 @@ public:
             tri[27].position = sf::Vector2f(160,80);
             tri[28].position = sf::Vector2f(96,160);
             tri[29].position = sf::Vector2f(160,160);
-            for(short i=0;i<6;i++)tri[i+24].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+24].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+24].position=sf::Vector2f(-1,-1);
 
         if(check[5]&&!check[0]){
             tri[18].position = sf::Vector2f(32,80);
@@ -2162,9 +2154,8 @@ public:
             tri[21].position = sf::Vector2f(96,80);
             tri[22].position = sf::Vector2f(32,160);
             tri[23].position = sf::Vector2f(96,160);
-            for(short i=0;i<6;i++)tri[i+18].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+18].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+18].position=sf::Vector2f(-1,-1);
 
         if(check[7]&&!check[2]){
             tri[12].position = sf::Vector2f(160,80);
@@ -2173,9 +2164,8 @@ public:
             tri[15].position = sf::Vector2f(224,80);
             tri[16].position = sf::Vector2f(160,160);
             tri[17].position = sf::Vector2f(224,160);
-            for(short i=0;i<6;i++)tri[i+12].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+12].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+12].position=sf::Vector2f(-1,-1);
 
         if(check[8]&&!check[0]){
             tri[6].position = sf::Vector2f(0,64);
@@ -2184,9 +2174,8 @@ public:
             tri[9].position = sf::Vector2f(32,80);
             tri[10].position = sf::Vector2f(0,176);
             tri[11].position = sf::Vector2f(32,160);
-            for(short i=0;i<6;i++)tri[i+6].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i+6].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i+6].position=sf::Vector2f(-1,-1);
         if(check[9]&&!check[2]){
             tri[0].position = sf::Vector2f(224,80);
             tri[1].position = sf::Vector2f(256,64);
@@ -2194,9 +2183,8 @@ public:
             tri[3].position = sf::Vector2f(256,64);
             tri[4].position = sf::Vector2f(224,160);
             tri[5].position = sf::Vector2f(256,176);
-            for(short i=0;i<6;i++)tri[i].color=wallcolor;
         }
-        else for(short i=0;i<6;i++)tri[i].color=sf::Color::Transparent;
+        else for(short i=0;i<6;i++)tri[i].position=sf::Vector2f(-1,-1);
 
         for(short i=0;i<10;i++){
             tri[i*6].texCoords=sf::Vector2f(0,0);
@@ -2696,8 +2684,18 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
                 }
             if(combo==0)for(unsigned i=0;i<64;i++){P1.movescaling[i]=0;P2.movescaling[i]=0;}
             if(P2.hitstop!=0||P2.dmg!=0)combo++;
-            if(P2.hitcount==1)P2.movescaling[P2.moveact]++;
-            if(P2.movescaling[P2.moveact]>2)comboscaling=comboscaling/20.f*18.f;
+            if(projcheck){
+                for(short i=0;i<P2.proj.size();i++)
+                    if(P2.proj[i].hit){
+                        if(P2.proj[i].hitcount==1)P2.movescaling[P2.proj[i].moveact]++;
+                        if(P2.movescaling[P2.proj[i].moveact]>2)comboscaling=comboscaling/20.f*18.f;
+                        break;
+                   }
+            }
+            else{
+                if(P2.hitcount==1)P2.movescaling[P2.moveact]++;
+                if(P2.movescaling[P2.moveact]>2)comboscaling=comboscaling/20.f*18.f;
+            }
             if(combo>3)comboscaling=comboscaling/20.f*19.f;
             P1.meter+=P2.mgain/7*8;
             if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
@@ -3124,8 +3122,17 @@ void projectiledata(player *p,short superstop,short enemycharacter,short enemygi
                 else if(P.character==2){
                     if(P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
                     if(P.proj[i].code==3){
-                        if(P.proj[i].dmg==28)P.proj[i].movey+=2.5;
-                        else P.proj[i].movey+=0.125;
+                        if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
+                            P.proj[i].movey+=0.0625;
+                        }
+                        else{
+                            P.proj[i].movey+=0.125;
+                            if(P.proj[i].dmg<28){
+                                if(P.proj[i].right)P.proj[i].x-=P.proj[i].movex/5;
+                                else P.proj[i].x+=P.proj[i].movex/5;
+                                P.proj[i].y-=P.proj[i].movey/5;
+                            }
+                        }
                     }
                     if(P.proj[i].code==2&&P.proj[i].existed>90){
                         P.proj[i].movex+=0.5;
@@ -4220,8 +4227,6 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                         effectslist.push_back(temp);
                     }
                     else if(P.proj[i].movex<5&&P.proj[i].code==3){
-                        P.proj[i].movex*=10;
-                        P.proj[i].movey+=25;
                         P.proj[i].dmg=28;
                         P.proj[i].looplen=2;
                         P.proj[i].loopanim[0]=42;
@@ -4979,11 +4984,11 @@ int main()
                     if(menuright=='2'&&menuleft!='2')dir++;
                     if(menuleft=='2'&&menuright!='2')dir--;
                     if(dir==255)dir=3;if(dir==4)dir=0;
-                    if(menuup=='2'&&menudown!='2'){
+                    if((menuup=='2'&&menudown!='2')||(menuup!='0'&&menudown=='0'&&menucancel!='0')){
                         if(dir==0&&!map[currentmap][mapx+(mapy-1)*mapxsize])mapy--;else if(dir==1&&!map[currentmap][mapx+1+(mapy)*mapxsize])mapx++;
                         else if(dir==2&&!map[currentmap][mapx+(mapy+1)*mapxsize])mapy++;else if(dir==3&&!map[currentmap][mapx-1+(mapy)*mapxsize])mapx--;
                     }
-                    if(menuup!='2'&&menudown=='2'){
+                    if((menuup!='2'&&menudown=='2')||(menuup=='0'&&menudown!='0'&&menucancel!='0')){
                         if(dir==0&&!map[currentmap][mapx+(mapy+1)*mapxsize])mapy++;else if(dir==1&&!map[currentmap][mapx-1+(mapy)*mapxsize])mapx--;
                         else if(dir==2&&!map[currentmap][mapx+(mapy-1)*mapxsize])mapy--;else if(dir==3&&!map[currentmap][mapx+1+(mapy)*mapxsize])mapx++;
                     }
@@ -5060,7 +5065,7 @@ int main()
                         break;
                     }
                 }
-                mapui.create(checkwall,storycolors[1]);
+                mapui.create(checkwall);
                 compass.create(dir,storycolors[2],storycolors[3]);
                 window.clear();
                 renderTexture.clear();
@@ -5077,7 +5082,11 @@ int main()
                 floor.setFillColor(storycolors[3]);
                 renderTexture.draw(floor);
 
-                renderTexture.draw(mapui);
+                shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
+                shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
+                shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][3]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][3]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][3]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][3]%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));
+                shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
+                renderTexture.draw(mapui,&shader);
                 
                 sf::VertexArray m_vertices;
                 sf::RenderStates tempstates;
