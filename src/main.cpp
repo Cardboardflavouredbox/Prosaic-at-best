@@ -3123,14 +3123,15 @@ void projectiledata(player *p,short superstop,short enemycharacter,short enemygi
                     if(P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
                     if(P.proj[i].code==3){
                         if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
-                            P.proj[i].movey+=0.0625;
+                            P.proj[i].movey+=0.125;
                         }
                         else{
-                            P.proj[i].movey+=0.125;
-                            if(P.proj[i].dmg<28){
-                                if(P.proj[i].right)P.proj[i].x-=P.proj[i].movex/5;
-                                else P.proj[i].x+=P.proj[i].movex/5;
-                                P.proj[i].y-=P.proj[i].movey/5;
+                            P.proj[i].movey+=0.25;
+                            if(P.proj[i].looplen>2){
+                                if(P.proj[i].right)P.proj[i].x-=P.proj[i].movex*4/5;
+                                else P.proj[i].x+=P.proj[i].movex*4/5;
+                                P.proj[i].movey-=0.25*4/5;
+                                P.proj[i].y-=P.proj[i].movey*4/5;
                             }
                         }
                     }
@@ -4125,6 +4126,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.loopanim[1]=55;
                 temp.launch=P.launch;
                 temp.endanim.insert(temp.endanim.begin(),{58,59,60});
+                temp.frame=54;
                 if(P.proj.size()<32)P.proj.push_back(temp);
                     }
         }
@@ -4148,8 +4150,8 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 temp.y=P.y;
                 temp.movex=0.5;
                 if(P.atkfx[0]==8||P.atkfx[0]==10||P.atkfx[0]==16){temp.movey=0.25;P.jumpy=-3;}
-                else if(P.atkfx[0]==18){temp.movex=1.5;temp.movey=-5;P.jumpy=-3;}
-                else if(P.atkfx[0]==17){temp.movex=1.5;temp.movey=-5;}
+                else if(P.atkfx[0]==18){temp.movex=5;temp.movey=-4;P.jumpy=-3;}
+                else if(P.atkfx[0]==17){temp.movex=5;temp.movey=-4;}
                 else temp.movey=0;
                 temp.hitcount=1;
                 temp.moveact=P.moveact;
@@ -4200,6 +4202,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     tempfx.code=1;
                 }
                 temp.launch=P.launch;
+                temp.frame=42;
                 //temp.endanim.insert(temp.endanim.begin(),{42});
                 if(P.proj.size()<32)P.proj.push_back(temp);
                 break;
@@ -4226,7 +4229,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                         temp.speed=2;
                         effectslist.push_back(temp);
                     }
-                    else if(P.proj[i].movex<5&&P.proj[i].code==3){
+                    else if(P.proj[i].looplen>2&&P.proj[i].code==3){
                         P.proj[i].dmg=28;
                         P.proj[i].looplen=2;
                         P.proj[i].loopanim[0]=42;
@@ -5079,7 +5082,7 @@ int main()
                 floor.setFillColor(storycolors[2]);
                 renderTexture.draw(floor);
                 floor.setPosition({0.f,44.f});
-                floor.setFillColor(storycolors[3]);
+                floor.setFillColor(storycolors[0]);
                 renderTexture.draw(floor);
 
                 shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
