@@ -1393,8 +1393,10 @@ sf::Color CGAcolor(unsigned char palette[][4],unsigned char colorcode,unsigned c
 
 class mapnpc{
 public:
-    unsigned char x=0,y=0,spriteset=0,interaction=0,dir=0;//0=up,1=right,2=down,3=left
-    bool interactable=true;
+    unsigned char x=0,y=0,spriteset=0,interaction=0,dir=0,//0=up,1=right,2=down,3=left
+    battlecharacter=0;
+    float battlehp=500;
+    bool interactable=true,battle=false;
 };
 
 class attackdata{
@@ -2829,9 +2831,11 @@ int chooseaction(short character,short previousact,int playercode, bool air, cha
         c63236[6][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'3','0','0','0','0'},{'6','0','0','0','0'}},
         c6236[5][5]={{'0','0','0','0','0'},{'6','0','0','0','0'},{'3','0','0','0','0'},{'2','0','0','0','0'},{'6','0','0','0','0'}};
             if(!air){
-                if(keyinput[0]=='1'||keyinput[0]=='2'||keyinput[0]=='3'){
-                    //crouching actions
-                    if(keyinput[3]=='2'){
+                if(keyinput[0]=='1'||keyinput[0]=='2'||keyinput[0]=='3'){//crouching actions
+                    if((keyinput[1]=='2'&&keyinput[2]=='2')||(keyinput[2]=='2'&&keyinput[3]=='2')||(keyinput[1]=='2'&&keyinput[3]=='2')){
+                        return 25;//grab
+                    }
+                    else if(keyinput[3]=='2'){
                         c623[0][3]='2';c323[0][3]='2';
                         if(cmdcheck(playercode,4,c623)||cmdcheck(playercode,4,c323))return 23;//special B strong
                         else return 14;//strong normal
@@ -4929,7 +4933,7 @@ int main()
         }
         else if(menuselect==1){//story mode
             menus.setmenu(6,176,48,0,24,2);
-            unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,currentleader=0,dir=0;//0=up,1=right,2=down,3=left
+            unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,currentleader=0,currentnpc=255,dir=0;//0=up,1=right,2=down,3=left
             std::deque<unsigned char> dportrait;
             short dialoguecnt=0;
             float partyhp[16]={450.f,0.f,800.f},partymaxhp[16]={500.f,0.f,800.f};
@@ -4954,7 +4958,7 @@ int main()
             if(!npctexture[0].loadFromFile("assets/images/npc0.png")){window.close();gamequit=true;}
             if(!chartalktexture.loadFromFile("assets/images/chartalk.png")){window.close();gamequit=true;}
             mapnpc npcs[64][16];
-            npcs[0][0].dir=3;npcs[0][0].x=5;npcs[0][0].y=1;
+            npcs[0][0].dir=3;npcs[0][0].x=5;npcs[0][0].y=1;npcs[0][0].battle=true;
             bool checkwall[10]={false};
             sf::Color storycolors[4];
             while (window.isOpen()&&!gamequit){
@@ -4999,8 +5003,9 @@ int main()
                     if(mapy==255)mapy=0;if(mapy==mapysize)mapy--;
 
                     if(menuconfirm=='2')
-                    for(unsigned i=0;i<npccount;i++)
-                        if(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy)
+                    for(unsigned char i=0;i<npccount;i++)
+                        if(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy){
+                            currentnpc=i;
                             switch(npcs[currentmap][i].interaction){
                                 case 0:{//testnpc
                                     if(currentleader==0){dialogue="Hello this one is\na test$Haha I'm a test character\ntoo good talk sir$";dportrait.insert(dportrait.begin(),{0,0,0,0});}
@@ -5008,6 +5013,138 @@ int main()
                                     break;
                                 }
                             }
+                        }
+                }
+                if(npcs[currentmap][currentnpc].battle&&dialogue.empty()){//battlecode
+                short rounds=1,matchintro=60;
+                menus.setmenu(6,92,72,0,16,1);
+                player p1,p2;
+                p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
+                p1.character=currentleader;p2.character=npcs[currentmap][currentnpc].battlecharacter;
+                superflash sf;healthbar hb;meterbar mb;
+                timeui time;time.create();comboui cui;inputlist p1ilist,p2ilist;
+                sf::Texture bgtexture,hutexture,p1texture,p2texture,metertexture,matchintrotexture;
+                if(!p1ilist.load("assets/images/inputicon.png")||!p2ilist.load("assets/images/inputicon.png")){window.close();gamequit=true;}
+                if(!time.load("assets/images/time_ui.png")||!cui.load("assets/images/combo_ui.png")||!metertexture.loadFromFile("assets/images/meter_ui.png")){window.close();gamequit=true;}
+                if(!bgtexture.loadFromFile("assets/images/stage1.png")||!hutexture.loadFromFile("assets/images/health_ui.png")){window.close();gamequit=true;}
+                if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
+                if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
+                charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
+
+                p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
+                p1shadow.load(p1texture,true);p2shadow.load(p2texture,true);
+                sf::Sprite background(bgtexture),healthui(hutexture),meterui(metertexture),introsprite(matchintrotexture);
+                sf::Text combotext(font),dtext(font),frametext(font);
+                combotext.setCharacterSize(32);combotext.setFillColor(sf::Color::Black);
+                dtext.setCharacterSize(16);dtext.setFillColor(sf::Color::White);
+                frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
+                std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
+
+                p1.maxhp=partymaxhp[p1.character];p2.maxhp=npcs[currentmap][currentnpc].battlehp;
+
+                if(p1.character==2){p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
+                if(p2.character==2){p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+                    while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
+                    float overlap[2],overlap2[2];
+                    bgx=0;
+                        p1.x=100.0;p1.y=176.0;p1.hp=partyhp[p1.character];p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
+                        for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
+                    short superstop=0,roundwait=90,framedata=0;
+                    bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
+                        p1.right=true;p2.right=false;
+                    while (window.isOpen()&&!gamequit){
+                        windowset(window,&gamequit);
+                        if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
+                        if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
+
+                        inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
+                        inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
+
+                        if((!pause||(pause&&nextframe))){//main match code stuff
+                            dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
+                            if(dirkeys.size()>20)dirkeys.pop_back();if(ukey.size()>20)ukey.pop_back();
+                            if(ikey.size()>20)ikey.pop_back();if(okey.size()>20)okey.pop_back();if(kkey.size()>20)kkey.pop_back();
+
+                            dirkeys2.push_front(p2input[0]);ukey2.push_front(p2input[1]);ikey2.push_front(p2input[2]);okey2.push_front(p2input[3]);kkey2.push_front(p2input[4]);
+                            if(dirkeys2.size()>20)dirkeys2.pop_back();if(ukey2.size()>20)ukey2.pop_back();
+                            if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
+
+                            nextframe=false;
+                            if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                            matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
+
+                            if(!sound.empty()){
+                                for(int i=0;i<sound.size();i++)if(sound[i].getStatus()==sf::SoundSource::Status::Stopped)sound.erase(sound.begin()+i);  
+                            }
+                            if(!soundfxlist.empty()){//sound effects
+                                if(soundfxlist[0]>0){
+                                    sf::Sound temp(soundfx[soundfxlist[0]-1]);
+                                    //sound.setBuffer(soundfx[soundfxlist[0]-1]);
+                                    temp.setPosition({sfxx[0],0.f,sfxx[0]<0.f?-sfxx[0]-1.f:sfxx[0]-1.f});
+                                    sound.push_front(temp);
+                                    sound[0].play();
+                                }
+                                sfxx.pop_front();
+                                soundfxlist.pop_front();
+                            }
+                            if(!hitsfxlist.empty()){//hit sound effects
+                                if(hitsfxlist[0]>0){
+                                    hitsound.setBuffer(soundfx[hitsfxlist[0]-1]);
+                                    hitsound.setPosition({hsfxx[0],0.f,hsfxx[0]<0.f?-hsfxx[0]-1.f:hsfxx[0]-1.f});
+                                    hitsound.play();
+                                }
+                                hsfxx.pop_front();
+                                hitsfxlist.pop_front();
+                            }
+                            if(!voicesfxlist.empty()){//voice effects
+                                if(voicesfxlist[0]>0){
+                                    voice.setBuffer(soundfx[voicesfxlist[0]-1]);
+                                    voice.setPosition({vsfxx[0],0.f,vsfxx[0]<0.f?-vsfxx[0]-1.f:vsfxx[0]-1.f});
+                                    voice.play();
+                                }
+                                vsfxx.pop_front();
+                                voicesfxlist.pop_front();
+                            }
+
+                            if(superstop>0)superstop--;
+                            roundframecount++;
+                            for(short i=0;i<effectslist.size();i++){effectslist[i].create();if(effectslist[i].frame>effectslist[i].len)effectslist.erase(effectslist.begin()+i);}
+                        }
+
+                        menus.setcolor(6,false,menuselect);
+                        if(pause){//pause menu
+                            keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
+                            keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
+                            if(menuup=='2'){menuselect--;if(menuselect<0)menuselect=5;}
+                            else if(menudown=='2'){menuselect++;if(menuselect>5)menuselect=0;}
+                            if((menuconfirm=='2'&&menuselect==0)||menucancel=='2')pause=false;
+                            else if(menuconfirm=='2'&&menuselect==1)if(seeboxes)seeboxes=false;else seeboxes=true;
+                            else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
+                            else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
+                        }
+
+                        drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                                dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
+                                background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,&matchintro);
+                        window.display();
+                    }
+
+                    if(p1.hp>0&&p2.hp<=0)p1.wins++;
+                    else if(p1.hp<=0&&p2.hp>0)p2.wins++;
+                    dialogue.erase();
+                    effectslist.clear();
+                    menuselect=0;combo=0;roundframecount=0;comboscaling=100.0;
+                    p1.animq.clear();p1.idleanim.clear();p1.atkfx.clear();p1.hitboxanim.clear();p1.proj.clear();
+                    p1.air=false;p1.buffer=0;p1.act=0;p1.kdowned=0;p1.hit=false;
+                    p2.animq.clear();p2.idleanim.clear();p2.atkfx.clear();p2.hitboxanim.clear();p2.proj.clear();
+                    p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
+                    dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
+                    dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
+                    }
+                    gamequit=false;
+                    menus.setmenu(6,176,48,0,24,2);
+                    currentnpc=255;
+                    partyhp[p1.character]=p1.hp;
                 }
 
                 if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)&&dialogue.empty()){if(!Enterkey){menuselect=0;Enterkey=true;if(pause&&statscreen){pause=false;statscreen=false;menuselect=0;}else if(pause)pause=false;else pause=true;}}else Enterkey=false;
@@ -5093,11 +5230,6 @@ int main()
                 
                 sf::VertexArray m_vertices;
                 sf::RenderStates tempstates;
-                shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
-                shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
-                shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][3]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][3]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][3]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][3]%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));
-                shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
-
                 for(unsigned char i=0;i<npccount;i++){
                     tempstates.texture=&npctexture[0];tempstates.shader=&shader;
                     m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
@@ -5135,7 +5267,6 @@ int main()
                     }
                     if((npcs[currentmap][i].dir!=dir)&&(npcs[currentmap][i].x==mapx&&npcs[currentmap][i].y==mapy))renderTexture.draw(m_vertices,tempstates);
                     }
-
                 renderTexture.draw(border);
                 border.setPosition({0.f,192.f});
                 renderTexture.draw(border);
@@ -5154,7 +5285,6 @@ int main()
                 compass.setPosition({140.f,24.f});
                 renderTexture.draw(compass);
                 }
-
                 
                 if(!statscreen){
                 tempstates.texture=&icontexture;tempstates.shader=&shader;
