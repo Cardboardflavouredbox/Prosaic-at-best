@@ -2971,6 +2971,37 @@ int chooseaction(short character,short previousact,int playercode, bool air, cha
                 }
 }
 
+void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,unsigned char difficulty){
+    #define P1 (*p1)
+    #define P2 (*p2)
+    std::uniform_int_distribution<unsigned char> dis(0,255);
+    switch(*currentmove){
+        case 0:{//idle
+            if(difficulty>=dis(gen)){//decide act
+                bool preblock;
+                if(P2.movetype>0&&(abs(int(P1.x-P2.x))<64))preblock=true;
+                if(!preblock)for(short i=0;i<P2.proj.size();i++)if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){preblock=true;break;}
+
+                if(preblock)*currentmove=1;//block
+            }
+            else *currentmove=0;
+            break;
+        }
+        case 1:{//block
+            input[0]='4';
+        }
+        case 2:{//basic chain combo
+            input[0]='5';
+            if(input[1]=='2'){input[1]='0';input[2]='2';}
+            else if(input[2]=='2'){input[2]='0';input[3]='2';}
+            else if(input[3]=='2'){input[3]='0';*currentmove=0;}
+            else input[1]='2';
+        }
+    }
+    #undef P1
+    #undef P2
+}
+
 void inputcode(char pinput[],sf::Keyboard::Key upkey,sf::Keyboard::Key leftkey,sf::Keyboard::Key downkey,sf::Keyboard::Key rightkey,sf::Keyboard::Key lightkey,
                sf::Keyboard::Key mediumkey,sf::Keyboard::Key heavykey,sf::Keyboard::Key specialkey,sf::Keyboard::Key grabkey,short px,short enemyx){
     bool w=false,a=false,s=false,d=false;
@@ -5017,6 +5048,7 @@ int main()
                 }
                 if(npcs[currentmap][currentnpc].battle&&dialogue.empty()){//battlecode
                 short rounds=1,matchintro=60;
+                unsigned char cpuactioncode=0;
                 menus.setmenu(6,92,72,0,16,1);
                 player p1,p2;
                 p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
@@ -5058,7 +5090,7 @@ int main()
                         if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
 
                         inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
-                        inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
+                        cpuopponent(p2input,&cpuactioncode,&p2,&p1,255);
 
                         if((!pause||(pause&&nextframe))){//main match code stuff
                             dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
