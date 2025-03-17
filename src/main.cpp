@@ -3001,14 +3001,17 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
     switch(*currentmove){
         case 0:{//idle
             if(difficulty>=dis(gen)){//decide act
-                bool preblock;
+                bool preblock=false;
                 if(P2.movetype>0&&(abs(int(P1.x-P2.x))<64))preblock=true;
                 if(!preblock)for(short i=0;i<P2.proj.size();i++)if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){preblock=true;break;}
 
                 if(preblock)*currentmove=1;//block
-                else if(abs(int(P1.x-P2.x))<64)*currentmove=2;//attack
-                else if(dis(gen)<=aggressive)input[0]='6';
-                else if(dis(gen)<=aggressive)*currentmove=3;//projectile
+                else if(abs(int(P1.x-P2.x))<64){
+                    if(P1.y>P2.y)*currentmove=5;//dragon punch special move
+                    else *currentmove=2;//attack
+                    }
+                else if(dis(gen)<=aggressive)input[0]='6';//move forward
+                else if(dis(gen)>=aggressive&&dis(gen)<=difficulty)*currentmove=3;//projectile
                 else {*currentmove=0;}
             }
             else {*currentmove=0;input[0]='5';}
@@ -3026,6 +3029,7 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
             else if(input[3]=='2'){
                 input[3]='0';
                 if(difficulty>=dis(gen))*currentmove=4;//clap special
+                else if(difficulty>=dis(gen))*currentmove=5;//dragon punch special
                 else *currentmove=0;
                 }
             else input[1]='2';
@@ -3047,6 +3051,17 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
             if(temp<80){cpudir.push_back('6');cpuu.push_back('2');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');}
             else if(temp<160){cpudir.push_back('6');cpuu.push_back('0');cpui.push_back('2');cpuo.push_back('0');cpuk.push_back('0');}
             else{cpudir.push_back('6');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('2');cpuk.push_back('0');}
+            cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            break;
+        }
+        case 5:{//dragon punch special
+            cpudir.push_back('6');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('2');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('3');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            unsigned char temp=dis(gen);
+            if(temp<80){cpudir.push_back('3');cpuu.push_back('2');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');}
+            else if(temp<160){cpudir.push_back('3');cpuu.push_back('0');cpui.push_back('2');cpuo.push_back('0');cpuk.push_back('0');}
+            else{cpudir.push_back('3');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('2');cpuk.push_back('0');}
             cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
             break;
         }
@@ -5235,6 +5250,7 @@ int main()
                     gamequit=false;
                     menus.setmenu(6,176,48,0,24,2);
                     currentnpc=255;
+                    if(p1.hp<0)p1.hp=0;
                     partyhp[p1.character]=p1.hp;
                 }
 
