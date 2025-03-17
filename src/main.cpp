@@ -2765,6 +2765,15 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
         effectslist.push_back(fxtemp);
         fxtemp.code=2;
         effectslist.push_back(fxtemp);
+        fxtemp.color1=sf::Color (255, 255, 255);
+        std::uniform_int_distribution<int> dis(0,360),dis2(1,5);
+        fxtemp.len=P1.hitstopped;if(fxtemp.len<10&&fxtemp.len>0)fxtemp.len=10;
+        for(short i=0;i<3;i++){
+            fxtemp.code=3;fxtemp.dir=dis(gen);
+            fxtemp.fxsize=dis2(gen);
+            effectslist.push_back(fxtemp);
+        }
+        //some sort of lightning affect
         P1.hitcount--;
         P2.hitcount--;
         P1.movetype=0;P2.movetype=0;
@@ -3014,7 +3023,11 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
             input[0]='5';
             if(input[1]=='2'){input[1]='0';input[2]='2';}
             else if(input[2]=='2'){input[2]='0';input[3]='2';}
-            else if(input[3]=='2'){input[3]='0';*currentmove=0;}
+            else if(input[3]=='2'){
+                input[3]='0';
+                if(difficulty>=dis(gen))*currentmove=4;//clap special
+                else *currentmove=0;
+                }
             else input[1]='2';
             break;
         }
@@ -3023,6 +3036,17 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
             cpudir.push_back('1');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
             cpudir.push_back('4');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
             cpudir.push_back('4');cpuu.push_back('0');cpui.push_back('2');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            break;
+        }
+        case 4:{//clap special
+            cpudir.push_back('2');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('3');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('6');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            unsigned char temp=dis(gen);
+            if(temp<80){cpudir.push_back('6');cpuu.push_back('2');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');}
+            else if(temp<160){cpudir.push_back('6');cpuu.push_back('0');cpui.push_back('2');cpuo.push_back('0');cpuk.push_back('0');}
+            else{cpudir.push_back('6');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('2');cpuk.push_back('0');}
             cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
             break;
         }
@@ -5079,6 +5103,11 @@ int main()
                 if(npcs[currentmap][currentnpc].battle&&dialogue.empty()){//battlecode
                 short rounds=1,matchintro=60;
                 unsigned char cpuactioncode=0;
+                cpudir.clear();
+                cpuu.clear();cpui.clear();
+                cpuo.clear();cpuk.clear();
+                p2input[0]='5';
+                for(unsigned char i=1;i<5;i++)p2input[i]='0';
                 menus.setmenu(6,92,72,0,16,1);
                 player p1,p2;
                 p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
