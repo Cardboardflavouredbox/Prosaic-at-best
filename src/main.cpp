@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2;
+std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2,cpudir,cpuu,cpui,cpuo,cpuk;
 
 std::deque<unsigned char> soundfxlist,hitsfxlist,voicesfxlist;
 std::deque<float> sfxx,hsfxx,vsfxx;
@@ -2971,9 +2971,23 @@ int chooseaction(short character,short previousact,int playercode, bool air, cha
                 }
 }
 
-void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,unsigned char difficulty){
+void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,unsigned char difficulty,unsigned char aggressive){
     #define P1 (*p1)
     #define P2 (*p2)
+    if(!cpudir.empty()){
+        input[0]=cpudir[0];
+        input[1]=cpuu[0];
+        input[2]=cpui[0];
+        input[3]=cpuo[0];
+        input[4]=cpuk[0];
+        cpudir.pop_front();
+        cpuu.pop_front();
+        cpui.pop_front();
+        cpuo.pop_front();
+        cpuk.pop_front();
+        if(cpudir.empty())*currentmove=0;
+    }
+    else{
     std::uniform_int_distribution<unsigned char> dis(0,255);
     switch(*currentmove){
         case 0:{//idle
@@ -2983,12 +2997,18 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
                 if(!preblock)for(short i=0;i<P2.proj.size();i++)if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){preblock=true;break;}
 
                 if(preblock)*currentmove=1;//block
+                else if(abs(int(P1.x-P2.x))<64)*currentmove=2;//attack
+                else if(dis(gen)<=aggressive)input[0]='6';
+                else if(dis(gen)<=aggressive)*currentmove=3;//projectile
+                else {*currentmove=0;}
             }
-            else *currentmove=0;
+            else {*currentmove=0;input[0]='5';}
             break;
         }
         case 1:{//block
             input[0]='4';
+            *currentmove=0;
+            break;
         }
         case 2:{//basic chain combo
             input[0]='5';
@@ -2996,7 +3016,17 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
             else if(input[2]=='2'){input[2]='0';input[3]='2';}
             else if(input[3]=='2'){input[3]='0';*currentmove=0;}
             else input[1]='2';
+            break;
         }
+        case 3:{//projectile
+            cpudir.push_back('2');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('1');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('4');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('4');cpuu.push_back('0');cpui.push_back('2');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            break;
+        }
+    }
     }
     #undef P1
     #undef P2
@@ -5090,7 +5120,7 @@ int main()
                         if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
 
                         inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
-                        cpuopponent(p2input,&cpuactioncode,&p2,&p1,255);
+                        cpuopponent(p2input,&cpuactioncode,&p2,&p1,150,200);
 
                         if((!pause||(pause&&nextframe))){//main match code stuff
                             dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
