@@ -3014,7 +3014,10 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
                     if(P1.y>P2.y)*currentmove=5;//dragon punch special move
                     else if(abs(int(P1.y-P2.y))<48){
                         if(dis(gen)<127)*currentmove=8;//grab
-                        else *currentmove=2;//attack
+                        else{
+                            if(64<dis(gen))input[0]='5';
+                            else input[0]='2';
+                            *currentmove=2;}//attack
                         }
                     }
                 else if(dis(gen)<=aggressive)input[0]='6';//move forward
@@ -3031,7 +3034,6 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
             break;
         }
         case 2:{//basic chain combo
-            input[0]='5';
             if(input[1]=='2'){input[1]='0';input[2]='2';}
             else if(input[2]=='2'){input[2]='0';input[3]='2';}
             else if(input[3]=='2'){
@@ -4572,8 +4574,8 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
     else{P1.act=0;P2.act=0;}
 
     bool p1preblock=false,p2preblock=false;
-    if(P2.movetype>0&&(abs(int(P1.x-P2.x))<64))p1preblock=true;
-    if(P1.movetype>0&&(abs(int(P1.x-P2.x))<64))p2preblock=true;
+    if(P2.movetype>0&&P2.movetype<4&&(abs(int(P1.x-P2.x))<64))p1preblock=true;
+    if(P1.movetype>0&&P1.movetype<4&&(abs(int(P1.x-P2.x))<64))p2preblock=true;
     if(!p1preblock)for(short i=0;i<P2.proj.size();i++)
             if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){p1preblock=true;break;}
     if(!p2preblock)for(short i=0;i<P1.proj.size();i++)
