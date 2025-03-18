@@ -3815,6 +3815,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             case 2:{//left dash
                 P.col=0;P.slide=true;if(P.right)P.jumpx=-10;else P.jumpx=10;P.iframes=3;
                 P.animq.insert(P.animq.begin(),{51,47,47,47,47,47,47,47,47,48,48,49,49,50,50,50,50,50,51});
+                P.atkfx.insert(P.atkfx.begin(),{11});
                 break;
             }
             case 3:{//right walk
@@ -6458,8 +6459,8 @@ int main()
             }
             if(menuconfirm=='2'){p1check=true;menuconfirm='1';menuconfirm2='1';}
             if(menuconfirm2=='2')p2check=true;
-            if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
-            if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
+            if(menucancel=='2'){gamequit=true;break;}
+            if(menucancel2=='2'){p1check=false;menucancel='1';menucancel2='1';}
             if(p1check&&p2check)break;
             charselect.setselect(4,2,menux,menuy,menux2,menuy2);
 
