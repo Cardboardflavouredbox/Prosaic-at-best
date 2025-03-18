@@ -3005,12 +3005,18 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
                 if(P2.movetype>0&&(abs(int(P1.x-P2.x))<64))preblock=true;
                 if(!preblock)for(short i=0;i<P2.proj.size();i++)if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){preblock=true;break;}
 
-                if(preblock)*currentmove=1;//block
+                if(P1.comboed&&difficulty>=dis(gen)&&aggressive<=dis(gen)&&P1.meter>=200)*currentmove=6;//special
+                else if(P1.comboed&&P2.grabstate==3&&difficulty>=dis(gen))*currentmove=8;//grab
+                else if(preblock)*currentmove=1;//block
                 else if(abs(int(P1.x-P2.x))<64){
                     if(P1.y>P2.y)*currentmove=5;//dragon punch special move
-                    else *currentmove=2;//attack
+                    else if(abs(int(P1.y-P2.y))<48){
+                        if(dis(gen)<127)*currentmove=8;//grab
+                        else *currentmove=2;//attack
+                        }
                     }
                 else if(dis(gen)<=aggressive)input[0]='6';//move forward
+                else if(dis(gen)<=aggressive)input[0]='9';//jump forward
                 else if(dis(gen)>=aggressive&&dis(gen)<=difficulty)*currentmove=3;//projectile
                 else {*currentmove=0;}
             }
@@ -3030,6 +3036,7 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
                 input[3]='0';
                 if(difficulty>=dis(gen))*currentmove=4;//clap special
                 else if(difficulty>=dis(gen))*currentmove=5;//dragon punch special
+                else if(difficulty>=dis(gen)&&dis(gen)<=aggressive&&P1.meter>=100)*currentmove=7;//super
                 else *currentmove=0;
                 }
             else input[1]='2';
@@ -3062,6 +3069,27 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
             if(temp<80){cpudir.push_back('3');cpuu.push_back('2');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');}
             else if(temp<160){cpudir.push_back('3');cpuu.push_back('0');cpui.push_back('2');cpuo.push_back('0');cpuk.push_back('0');}
             else{cpudir.push_back('3');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('2');cpuk.push_back('0');}
+            cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            break;
+        }
+        case 6:{//special
+            input[0]='5';
+            if(input[4]=='2'){
+                input[4]='0';*currentmove=0;
+                }
+            else input[4]='2';
+            break;
+        }
+        case 7:{//super
+            cpudir.push_back('2');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('1');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('4');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            cpudir.push_back('4');cpuu.push_back('0');cpui.push_back('2');cpuo.push_back('2');cpuk.push_back('0');
+            cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            break;
+        }
+        case 8:{//grab
+            cpudir.push_back('5');cpuu.push_back('2');cpui.push_back('2');cpuo.push_back('2');cpuk.push_back('0');
             cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
             break;
         }
@@ -3571,6 +3599,24 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
             case 15:{//k (gimmick)
                 if(P.comboed){
+                effects temp;
+                temp.color1=sf::Color (255, 85, 255);
+                temp.code=2;
+                temp.len=4;
+                temp.x=P.x;
+                temp.y=P.y;
+                temp.speed=3;
+                effectslist.push_back(temp);
+                temp.speed=6;
+                effectslist.push_back(temp);
+                std::uniform_int_distribution<int> dis(0,360),dis2(3,5);
+                temp.code=0;
+                temp.len=16;
+                for(short i=0;i<32;i++){
+                    temp.dir=dis(gen);
+                    temp.speed=dis2(gen);
+                    effectslist.push_back(temp);
+                }
                 P.comboed=false;combo=0;P.iframes=3;
                 if(P.block==2){P.block=-1;P.meter-=100;}
                 else P.meter-=200;
