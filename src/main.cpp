@@ -3002,12 +3002,14 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
         case 0:{//idle
             if(difficulty>=dis(gen)){//decide act
                 bool preblock=false;
-                if(P2.movetype>0&&(abs(int(P1.x-P2.x))<64))preblock=true;
-                if(!preblock)for(short i=0;i<P2.proj.size();i++)if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){preblock=true;break;}
+                unsigned char movetype;//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
+                if(P2.movetype>0&&(abs(int(P1.x-P2.x))<64)){preblock=true;movetype=P2.movetype;}
+                if(!preblock)for(short i=0;i<P2.proj.size();i++)if(abs(int(P2.proj[i].x-P1.x))<64&&abs(int(P2.proj[i].y-P1.y))<64&&P2.proj[i].hitcount>0){preblock=true;movetype=P2.proj[i].movetype;break;}
 
                 if(P1.comboed&&difficulty>=dis(gen)&&aggressive<=dis(gen)&&P1.meter>=200)*currentmove=6;//special
                 else if(P1.comboed&&P2.grabstate==3&&difficulty>=dis(gen))*currentmove=8;//grab
-                else if(preblock)*currentmove=1;//block
+                else if(preblock&&(movetype==3||movetype==2))*currentmove=1;//block
+                else if(preblock&&movetype==1)*currentmove=9;//block
                 else if(abs(int(P1.x-P2.x))<64){
                     if(P1.y>P2.y)*currentmove=5;//dragon punch special move
                     else if(abs(int(P1.y-P2.y))<48){
@@ -3091,6 +3093,11 @@ void cpuopponent(char input[],unsigned char *currentmove,player *p1,player *p2,u
         case 8:{//grab
             cpudir.push_back('5');cpuu.push_back('2');cpui.push_back('2');cpuo.push_back('2');cpuk.push_back('0');
             cpudir.push_back('5');cpuu.push_back('0');cpui.push_back('0');cpuo.push_back('0');cpuk.push_back('0');
+            break;
+        }
+        case 9:{//low block
+            input[0]='1';
+            *currentmove=0;
             break;
         }
     }
@@ -5079,7 +5086,7 @@ int main()
         }
         else if(menuselect==1){//story mode
             menus.setmenu(6,176,48,0,24,2);
-            unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,currentleader=0,currentnpc=255,dir=0;//0=up,1=right,2=down,3=left
+            unsigned char currentcolor=0,currentmap=0,mapxsize=14,mapysize=8,mapx=3,mapy=3,npccount=1,currentleader=0,currentnpc=255,cpudifficulty=0,cpuaggressive=0,dir=0;//0=up,1=right,2=down,3=left
             std::deque<unsigned char> dportrait;
             short dialoguecnt=0;
             float partyhp[16]={450.f,0.f,800.f},partymaxhp[16]={500.f,0.f,800.f};
@@ -5156,6 +5163,7 @@ int main()
                                 case 0:{//testnpc
                                     if(currentleader==0){dialogue="Hello this one is\na test$Haha I'm a test character\ntoo good talk sir$";dportrait.insert(dportrait.begin(),{0,0,0,0});}
                                     else if(currentleader==2){dialogue="Hello this one is\na test$...What's a test?$";dportrait.insert(dportrait.begin(),{0,0, 1,1});}
+                                    cpudifficulty=200;cpuaggressive=150;
                                     break;
                                 }
                             }
@@ -5210,7 +5218,7 @@ int main()
                         if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
 
                         inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
-                        cpuopponent(p2input,&cpuactioncode,&p2,&p1,150,200);
+                        cpuopponent(p2input,&cpuactioncode,&p2,&p1,cpudifficulty,cpuaggressive);
 
                         if((!pause||(pause&&nextframe))){//main match code stuff
                             dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
