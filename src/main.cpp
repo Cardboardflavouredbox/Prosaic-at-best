@@ -5662,6 +5662,9 @@ int main()
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
             else if(p1.character==0&&p2.character==2)dialogue="1Wow you're depressing$2...Excuse me?$1You look depressing$2...I see??$";
+            else if(p1.character==2&&p2.character==2)dialogue="1You...look...\nexactly like me.$2Wha- why do you-\nWHO THE HELL ARE YOU?!$";
+            if(!music.openFromFile("assets/music/Time and time again.wav")){window.close();gamequit=true;}
+            music.play();
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
@@ -5774,6 +5777,59 @@ int main()
                 p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
                 dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
                 dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
+                }
+                music.stop();
+
+                menuconfirm='1';menuconfirm2='1';
+                if(p1.wins>p2.wins){
+                    if(p1.character==0&&p2.character==0)dialogue="HERESY, HERESY!$";
+                    else if(p1.character==2&&p2.character==0)dialogue="Are you supposed to look\nhuman??$";
+                    else if(p1.character==0&&p2.character==2)dialogue="Imagine being depressed.\nlol.$";
+                    else if(p1.character==2&&p2.character==2)dialogue="You didn't have to\npanic like that.$";
+                }
+                else{
+                    if(p1.character==0&&p2.character==0)dialogue="I don't think we're\nsome... test.$";
+                    else if(p1.character==2&&p2.character==0)dialogue="Ruuuuuude$";
+                    else if(p1.character==0&&p2.character==2)dialogue="Do I really look\nthat sad???$";
+                    else if(p1.character==2&&p2.character==2)dialogue="I... I...\n...Should calm down, god.$";
+                }
+                while(!gamequit){//win screen
+                    windowset(window,&gamequit);
+                    keypresscheck(lightkey1,&menuconfirm);
+                    keypresscheck(lightkey2,&menuconfirm2);
+                    keypresscheck(mediumkey1,&menucancel);
+                    keypresscheck(mediumkey2,&menucancel2);
+                    if(dialogue.empty())break;
+                    else{//dialogue stuff
+                        char temp='$';
+                        dtext.setString(dialogue.substr(0,dialoguecnt+1));
+                        if(dialogue[dialoguecnt+1]==temp){
+                            if(menuconfirm=='2'||menuconfirm2=='2'||menucancel!='0'||menucancel2!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
+                        }
+                        else{
+                            if(menucancel!='0'||menucancel2!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
+                            else dialoguecnt++;
+                        }
+                        dtext.setPosition({16.f,168.f});
+                    }
+
+                    sf::RectangleShape square({256,240});
+                    square.setFillColor(sf::Color::Blue);square.setPosition({0.f,0.f});
+                    
+                    window.clear();
+                    renderTexture.clear();
+                    renderTexture.draw(square);
+
+                    square.setFillColor(sf::Color::Black);
+                    square.setSize({240.f,64.f});square.setPosition({8.f,168.f});
+                    renderTexture.draw(square);
+
+                    renderTexture.draw(dtext);
+                    renderTexture.display();
+                    const sf::Texture& texture = renderTexture.getTexture();
+                    sf::Sprite rt(texture);
+                    window.draw(rt);
+                    window.display();
                 }
             }
             gamequit=false;
