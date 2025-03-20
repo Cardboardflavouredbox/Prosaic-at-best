@@ -4962,7 +4962,6 @@ int main()
     if(!font.openFromFile("assets/fonts/PerfectDOSVGA437.ttf"))window.close();
     sf::UdpSocket socket;
     socket.setBlocking(false);
-    unsigned short port=53924;
     char p1input[5]={'5','0','0','0','0'},p2input[5]={'5','0','0','0','0'},menuup='0',menudown='0',menuleft='0',menuright='0',menuconfirm='0',menucancel='0',colorkey='0',
     menuup2='0',menudown2='0',menuleft2='0',menuright2='0',menuconfirm2='0',menucancel2='0',colorkey2='0';
     short menuselect=0,ipint[4]={0,0,0,0};
@@ -5863,6 +5862,7 @@ int main()
             ipstr.pop_back();
             auto ipvalue2=sf::IpAddress::resolve(ipstr);
             sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
+            unsigned short port=53924;
             if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
             if(!gamequit){//ipwaitscreen
             sf::Text iptext(font);
