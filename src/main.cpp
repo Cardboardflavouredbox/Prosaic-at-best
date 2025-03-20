@@ -5795,14 +5795,16 @@ int main()
                 if(menuright=='2'&&menuleft!='2'){ipx++;if(ipx>11)ipx=0;}
                 if(menuright!='2'&&menuleft=='2'){ipx--;if(ipx<0)ipx=11;}
                 if(menuup=='2'&&menudown!='2'){
-                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==9)?-900:100;}
-                    if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==9)?-90:10;}
-                    if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==9)?-9:1;}
+                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==2)?-200:100;}
+                    if(ipx%3==1){ipint[ipx/3]+=ipint[ipx/3]>249?-50:(((ipint[ipx/3]%100)/10==9)?-90:10);}
+                    if(ipx%3==2){ipint[ipx/3]+=ipint[ipx/3]==255?-5:((ipint[ipx/3]%10==9)?-9:1);}
+                    if(ipint[ipx/3]>255)ipint[ipx/3]=255;
                 }
                 if(menuup!='2'&&menudown=='2'){
-                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==0)?900:-100;}
+                    if(ipx%3==0){ipint[ipx/3]+=(ipint[ipx/3]/100==0)?200:-100;}
                     if(ipx%3==1){ipint[ipx/3]+=((ipint[ipx/3]%100)/10==0)?90:-10;}
                     if(ipx%3==2){ipint[ipx/3]+=(ipint[ipx/3]%10==0)?9:-1;}
+                    if(ipint[ipx/3]>255)ipint[ipx/3]=255;
                 }
                 if(sideselect=='2'){
                     if(p1control)p1control=false;
@@ -5825,7 +5827,8 @@ int main()
                         else if(cbstr[i]=='.')temp++;
                         else {check=false;break;}
                     }
-                    if(check&&temp==3)memcpy(ipint,iptemp,sizeof(iptemp));
+                    if(check&&temp==3)for(unsigned char i=0;i<4;i++)ipint[i]=iptemp[i];
+                    
                 }
                 for(short i=0;i<4;i++){
                     tempstr = std::to_string(ipint[i]);
@@ -6729,8 +6732,8 @@ int main()
                 p2.air=false;p2.buffer=0;p2.act=0;p2.kdowned=0;p2.hit=false;
                 dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
                 dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
-                music.stop();
                 }
+                music.stop();
             }
         }
         gamequit=false;
