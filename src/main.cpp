@@ -5212,6 +5212,9 @@ int main()
 
                 if(p1.character==2){p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
                 if(p2.character==2){p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+
+                if(!music.openFromFile("assets/music/Time and time again.wav")){window.close();gamequit=true;}
+                music.play();
                     while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                     float overlap[2],overlap2[2];
                     bgx=0;
@@ -5309,6 +5312,7 @@ int main()
                     dirkeys.clear();ukey.clear();ikey.clear();okey.clear();kkey.clear();
                     dirkeys2.clear();ukey2.clear();ikey2.clear();okey2.clear();kkey2.clear();
                     }
+                    music.stop();
                     gamequit=false;
                     menus.setmenu(6,176,48,0,24,2);
                     currentnpc=255;
@@ -6547,6 +6551,7 @@ int main()
             if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
             if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
             if(menuselect==3){//training
+                if(!music.openFromFile("assets/music/practice mode.wav")){window.close();gamequit=true;}
                 music.play();
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
