@@ -4780,9 +4780,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     if(*playertop){
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
-        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+        shader.setUniform("color1",float(colorpalettes[p1color][0]));
+        shader.setUniform("color3",float(colorpalettes[p1color][1]));
+        shader.setUniform("color2",float(colorpalettes[p1color][2]));
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         renderTexture.draw(p1graphics,&shader);
         if(!P1.proj.empty()){
@@ -4797,9 +4797,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     }
 
     if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
-    shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
-    shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
-    shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));
+        shader.setUniform("color1",float(colorpalettes[p2color][0]));
+        shader.setUniform("color3",float(colorpalettes[p2color][1]));
+        shader.setUniform("color2",float(colorpalettes[p2color][2]));
     if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
     renderTexture.draw(p2graphics,&shader);
     if(!P2.proj.empty()){
@@ -4814,9 +4814,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     if(!*playertop){
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
-        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+        shader.setUniform("color1",float(colorpalettes[p1color][0]));
+        shader.setUniform("color3",float(colorpalettes[p1color][1]));
+        shader.setUniform("color2",float(colorpalettes[p1color][2]));
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         renderTexture.draw(p1graphics,&shader);
         if(!P1.proj.empty()){
@@ -4864,14 +4864,15 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     if(keylistshow){renderTexture.draw(p1ilist);renderTexture.draw(p2ilist);}
 
     if(combo>1){
-        if(P2.comboed||P2.kdowned){shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-            shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-            shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
-            shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g4",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));}
-        else{shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
-            shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
-            shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));
-            shader.setUniform("r4",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g4",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b4",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));}
+        if(P2.comboed||P2.kdowned){
+            shader.setUniform("color1",float(colorpalettes[p1color][0]));
+            shader.setUniform("color3",float(colorpalettes[p1color][1]));
+            shader.setUniform("color2",float(colorpalettes[p1color][2]));
+            shader.setUniform("color4",float(colorpalettes[p1color][2]));}
+        else{shader.setUniform("color1",float(colorpalettes[p2color][0]));
+            shader.setUniform("color3",float(colorpalettes[p2color][1]));
+            shader.setUniform("color2",float(colorpalettes[p2color][2]));
+            shader.setUniform("color4",float(colorpalettes[p2color][2]));}
         renderTexture.draw(cui,&shader);
         if(P2.comboed||P2.kdowned){combotext.setPosition({36.f/*-cui.slide*/,26.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p1color][1]/4)%2) + 85*(colorpalettes[p1color][1]/8), (1-(colorpalettes[p1color][1]==6)/3.0)*170*((colorpalettes[p1color][1]/2)%2) + 85*(colorpalettes[p1color][1]/8), 170*(colorpalettes[p1color][1]%2) + 85*(colorpalettes[p1color][1]/8)));}
         else {combotext.setPosition({248.f/*+cui.slide*/,26.f});combotext.setFillColor(sf::Color(170*((colorpalettes[p2color][1]/4)%2) + 85*(colorpalettes[p2color][1]/8), (1-(colorpalettes[p2color][1]==6)/3.0)*170*((colorpalettes[p2color][1]/2)%2) + 85*(colorpalettes[p2color][1]/8), 170*(colorpalettes[p2color][1]%2) + 85*(colorpalettes[p2color][1]/8)));}
@@ -5393,11 +5394,11 @@ int main()
                 floor.setPosition({0.f,44.f});
                 floor.setFillColor(storycolors[0]);
                 renderTexture.draw(floor);
-
-                shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
-                shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
-                shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][3]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][3]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][3]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][3]%2) + 1.0/3.0*(cgapalettes[currentcolor][3]/8)));
-                shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
+                
+                shader.setUniform("color2",float(cgapalettes[currentcolor][0]));
+                shader.setUniform("color4",float(cgapalettes[currentcolor][2]));
+                shader.setUniform("color1",float(cgapalettes[currentcolor][3]));
+                shader.setUniform("color3",float(cgapalettes[currentcolor][1]));
                 renderTexture.draw(mapui,&shader);
                 
                 sf::VertexArray m_vertices;
@@ -5537,10 +5538,10 @@ int main()
                     renderTexture.draw(hp);
                 }
                 else if(pause){
-                    shader.setUniform("r1",float(2.0/3.0*((cgapalettes[currentcolor][0]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("g1",float((1-(cgapalettes[currentcolor][0]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][0]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));shader.setUniform("b1",float(2.0/3.0*(cgapalettes[currentcolor][0]%2) + 1.0/3.0*(cgapalettes[currentcolor][0]/8)));
-                    shader.setUniform("r3",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g3",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b3",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
-                    shader.setUniform("r4",float(2.0/3.0*((cgapalettes[currentcolor][2]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("g4",float((1-(cgapalettes[currentcolor][2]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][2]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));shader.setUniform("b4",float(2.0/3.0*(cgapalettes[currentcolor][2]%2) + 1.0/3.0*(cgapalettes[currentcolor][2]/8)));
-                    shader.setUniform("r2",float(2.0/3.0*((cgapalettes[currentcolor][1]/4)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("g2",float((1-(cgapalettes[currentcolor][1]==6)/3.0)*2.0/3.0*((cgapalettes[currentcolor][1]/2)%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));shader.setUniform("b2",float(2.0/3.0*(cgapalettes[currentcolor][1]%2) + 1.0/3.0*(cgapalettes[currentcolor][1]/8)));
+                    shader.setUniform("color1",float(cgapalettes[currentcolor][0]));
+                    shader.setUniform("color3",float(cgapalettes[currentcolor][1]));
+                    shader.setUniform("color4",float(cgapalettes[currentcolor][2]));
+                    shader.setUniform("color2",float(cgapalettes[currentcolor][1]));
                     renderTexture.draw(menus,&shader);
                     }
 
@@ -5827,14 +5828,14 @@ int main()
 
                     square.setTexture(&wintexture2);
                     if(p1.wins>p2.wins){
-                        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
-                        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
-                        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+                        shader.setUniform("color1",float(colorpalettes[p1color][0]));
+                        shader.setUniform("color3",float(colorpalettes[p1color][1]));
+                        shader.setUniform("color2",float(colorpalettes[p1color][2]));
                     }
                     else{
-                        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
-                        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
-                        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));
+                        shader.setUniform("color1",float(colorpalettes[p2color][0]));
+                        shader.setUniform("color3",float(colorpalettes[p2color][1]));
+                        shader.setUniform("color2",float(colorpalettes[p2color][2]));
                     }
                     renderTexture.draw(square,&shader);
 
