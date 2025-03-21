@@ -4698,7 +4698,7 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
 }
 
 void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player *p1,player *p2,superflash sf,healthbar hb,meterbar mb,timeui time,comboui cui,inputlist p1ilist,inputlist p2ilist,
-            charactergraphics p1graphics,charactergraphics p2graphics,charactergraphics p1shadow,charactergraphics p2shadow,menu menus,sf::Shader &shader,textbox tbox,
+            charactergraphics p1graphics,charactergraphics p2graphics,charactergraphics p1shadow,charactergraphics p2shadow,menu menus,sf::Shader &shader,sf::Shader &darkscreen,textbox tbox,
             sf::Text combotext,sf::Text dtext,sf::Text frametext,std::deque<char>p1keylist,std::deque<char>p2keylist,short framedata,std::string dialogue,short superstop,
             bool pause,bool seeboxes,bool keylistshow,bool framedatashow,bool *playertop,sf::Sprite background,sf::Sprite healthui,sf::Sprite meterui,sf::Texture p1texture,sf::Texture p2texture,sf::Sprite pixelshadowthing,short rounds,
             sf::Sprite engage,sf::Texture engagetexture,short *matchintro){
@@ -4748,9 +4748,10 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
     window.clear();renderTexture.clear();
 
-    if((P2.character==2&&(P2.gimmick[1]>0))||(P1.character==2&&(P1.gimmick[1]>0)))background.setColor(sf::Color (0, 170, 170));
-    else background.setColor(sf::Color (255, 255, 255));
-    renderTexture.draw(background);
+    darkscreen.setUniform("texture", sf::Shader::CurrentTexture);
+
+    if((P2.character==2&&(P2.gimmick[1]>0))||(P1.character==2&&(P1.gimmick[1]>0)))renderTexture.draw(background,&darkscreen);
+    else renderTexture.draw(background);
     renderTexture.draw(p1shadow);renderTexture.draw(p2shadow);
     if(!P1.proj.empty()){
         charactergraphics p_graphics[P1.proj.size()];
@@ -4968,9 +4969,9 @@ int main()
     short menuselect=0,ipint[4]={0,0,0,0};
     bool gamequit=false,p1control=true;
     std::string dialogue;
-    sf::Shader shader;
-    if (!shader.loadFromFile("assets/shaders/shader.frag",sf::Shader::Type::Fragment)){}
-
+    sf::Shader shader,darkscreen;
+    if(!shader.loadFromFile("assets/shaders/shader.frag",sf::Shader::Type::Fragment))window.close();
+    if(!darkscreen.loadFromFile("assets/shaders/darkscreen.frag",sf::Shader::Type::Fragment))window.close();
 
     while(window.isOpen()){
         windowset(window,&gamequit);
@@ -5294,7 +5295,7 @@ int main()
                             else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
                         }
 
-                        drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                        drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,darkscreen,tbox,combotext,
                                 dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
                                 background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,matchintrotexture,&matchintro);
                         window.display();
@@ -5761,7 +5762,7 @@ int main()
                         dtext.setPosition({16,8});
                     }
 
-                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,darkscreen,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
                               background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,matchintrotexture,&matchintro);
                     window.display();
@@ -6213,7 +6214,7 @@ int main()
                         dtext.setPosition({16,8});
                     }
 
-                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,darkscreen,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
                               background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,matchintrotexture,&matchintro);
                     window.display();
@@ -6793,7 +6794,7 @@ int main()
                         dtext.setPosition({16,8});
                     }
 
-                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,tbox,combotext,
+                    drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,darkscreen,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,pause,seeboxes,keylistshow,framedatashow,&playertop,
                               background,healthui,meterui,p1texture,p2texture,pausedark,rounds,introsprite,matchintrotexture,&matchintro);
                     window.display();
