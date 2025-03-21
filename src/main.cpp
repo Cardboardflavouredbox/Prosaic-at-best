@@ -5657,7 +5657,7 @@ int main()
 
             p1.maxhp=950.0;p2.maxhp=950.0;
             if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
-            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+            if(p2.character==2){p2.maxhp=10.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
 
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
@@ -5793,6 +5793,9 @@ int main()
                     else if(p1.character==0&&p2.character==2)dialogue="Do I really look\nthat sad???$";
                     else if(p1.character==2&&p2.character==2)dialogue="I... I...\n...Should calm down, god.$";
                 }
+                sf::Texture wintexture,wintexture2;
+                if(!wintexture.loadFromFile("assets/images/winbg.png")){window.close();gamequit=true;}
+                if(!wintexture2.loadFromFile("assets/images/char2_win.png")){window.close();gamequit=true;}
                 while(!gamequit){//win screen
                     windowset(window,&gamequit);
                     keypresscheck(lightkey1,&menuconfirm);
@@ -5814,12 +5817,28 @@ int main()
                     }
 
                     sf::RectangleShape square({256,240});
-                    square.setFillColor(sf::Color::Blue);square.setPosition({0.f,0.f});
+                    square.setFillColor(sf::Color::White);square.setPosition({0.f,0.f});
+                    square.setTexture(&wintexture);
                     
                     window.clear();
                     renderTexture.clear();
                     renderTexture.draw(square);
 
+
+                    square.setTexture(&wintexture2);
+                    if(p1.wins>p2.wins){
+                        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p1color][0]/4)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p1color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][0]/2)%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p1color][0]%2) + 1.0/3.0*(colorpalettes[p1color][0]/8)));
+                        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p1color][1]/4)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p1color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][1]/2)%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p1color][1]%2) + 1.0/3.0*(colorpalettes[p1color][1]/8)));
+                        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p1color][2]/4)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p1color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p1color][2]/2)%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p1color][2]%2) + 1.0/3.0*(colorpalettes[p1color][2]/8)));
+                    }
+                    else{
+                        shader.setUniform("r1",float(2.0/3.0*((colorpalettes[p2color][0]/4)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("g1",float((1-(colorpalettes[p2color][0]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][0]/2)%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));shader.setUniform("b1",float(2.0/3.0*(colorpalettes[p2color][0]%2) + 1.0/3.0*(colorpalettes[p2color][0]/8)));
+                        shader.setUniform("r3",float(2.0/3.0*((colorpalettes[p2color][1]/4)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("g3",float((1-(colorpalettes[p2color][1]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][1]/2)%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));shader.setUniform("b3",float(2.0/3.0*(colorpalettes[p2color][1]%2) + 1.0/3.0*(colorpalettes[p2color][1]/8)));
+                        shader.setUniform("r2",float(2.0/3.0*((colorpalettes[p2color][2]/4)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("g2",float((1-(colorpalettes[p2color][2]==6)/3.0)*2.0/3.0*((colorpalettes[p2color][2]/2)%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));shader.setUniform("b2",float(2.0/3.0*(colorpalettes[p2color][2]%2) + 1.0/3.0*(colorpalettes[p2color][2]/8)));
+                    }
+                    renderTexture.draw(square,&shader);
+
+                    square.setTexture(&wintexture);
                     square.setFillColor(sf::Color::Black);
                     square.setSize({240.f,64.f});square.setPosition({8.f,168.f});
                     renderTexture.draw(square);
