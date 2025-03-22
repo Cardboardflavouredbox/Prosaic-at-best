@@ -2707,11 +2707,18 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             fxtemp.color1=sf::Color (255, 255, 255);
             std::uniform_int_distribution<int> dis(0,360),dis2(1,5);
             fxtemp.len=P1.hitstopped;if(fxtemp.len<10&&fxtemp.len>0)fxtemp.len=10;
-            if(P2.hitstop>13)
+            if(P2.hitstop>13){
             for(short i=0;i<3;i++){
                 fxtemp.code=3;fxtemp.dir=dis(gen);
                 fxtemp.fxsize=dis2(gen);
                 effectslist.push_back(fxtemp);
+            }
+            fxtemp.len-=2;
+            fxtemp.speed=1.5;
+            fxtemp.code=2;
+            effectslist.push_back(fxtemp);
+            fxtemp.speed=1;
+            fxtemp.len+=2;
             }
             *framedata=P2.hitstun-P2.animq.size();
             std::uniform_int_distribution<int> dis3(1,2);
@@ -2773,6 +2780,12 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             fxtemp.fxsize=dis2(gen);
             effectslist.push_back(fxtemp);
         }
+        fxtemp.len-=2;
+        fxtemp.speed=1.5;
+        fxtemp.code=2;
+        effectslist.push_back(fxtemp);
+        fxtemp.speed=1;
+        fxtemp.len+=2;
         //some sort of lightning affect
         P1.hitcount--;
         P2.hitcount--;
@@ -4884,7 +4897,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         renderTexture.draw(combotext);
     }
 
-    if(*matchintro>0&&dialogue.empty()){
+    if(roundwait<91&&*matchintro>0&&dialogue.empty()){
         if(!pause)*matchintro-=1;
         square.setSize({256.f,8.f});
         square.setFillColor(sf::Color::White);
@@ -4905,9 +4918,9 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     if(pause){renderTexture.draw(pixelshadowthing);renderTexture.draw(menus);}renderTexture.display();
     const sf::Texture& texture = renderTexture.getTexture();sf::Sprite rt(texture);
 
-    if(roundwait<31){darkscreen.setUniform("texture", sf::Shader::CurrentTexture);window.draw(rt,&darkscreen);}
+    if(roundwait<31||149<roundwait){darkscreen.setUniform("texture", sf::Shader::CurrentTexture);window.draw(rt,&darkscreen);}
     else window.draw(rt);
-    if(roundwait<16){sf::RectangleShape square({256,240});square.setFillColor(sf::Color::Black);window.draw(square);}
+    if(roundwait<16||164<roundwait){sf::RectangleShape square({256,240});square.setFillColor(sf::Color::Black);window.draw(square);}
 
     if(seeboxes){
         window.draw(collisionbox1);window.draw(collisionbox2);
@@ -5223,7 +5236,7 @@ int main()
                     bgx=0;
                         p1.x=100.0;p1.y=176.0;p1.hp=partyhp[p1.character];p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
                         for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
-                    short superstop=0,roundwait=90,framedata=0;
+                    short superstop=0,roundwait=180,framedata=0;
                     bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                         p1.right=true;p2.right=false;
                     while (window.isOpen()&&!gamequit){
@@ -5244,7 +5257,7 @@ int main()
                             if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
 
                             nextframe=false;
-                            if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                            if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0||roundwait>90)roundwait--;
                             matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
 
                             if(!sound.empty()){
@@ -5661,7 +5674,7 @@ int main()
 
             p1.maxhp=950.0;p2.maxhp=950.0;
             if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
-            if(p2.character==2){p2.maxhp=10.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
 
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
@@ -5674,7 +5687,7 @@ int main()
                 bgx=0;
                     p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
-                short superstop=0,roundwait=90,framedata=0;
+                short superstop=0,roundwait=180,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;p2.right=false;
                 while (window.isOpen()&&!gamequit){
@@ -5695,7 +5708,7 @@ int main()
                         if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
 
                         nextframe=false;
-                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0||roundwait>90)roundwait--;
                         matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
 
                         if(!sound.empty()){
@@ -5747,7 +5760,7 @@ int main()
                         else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
                         else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
                     }
-                    if(!dialogue.empty()){//dialogue stuff
+                    if(!dialogue.empty()&&roundwait<91){//dialogue stuff
                         char temp='$',temp1='1';
                         if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
                         else tbox.create(p2.x+bgx+8,p2.y-16);
@@ -6113,7 +6126,7 @@ int main()
                     p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
-                short superstop=0,roundwait=90,framedata=0;
+                short superstop=0,roundwait=180,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;p2.right=false;
 
@@ -6140,7 +6153,7 @@ int main()
                     if(ikey2.size()>30)ikey2.pop_back();if(okey2.size()>30)okey2.pop_back();if(kkey2.size()>30)kkey2.pop_back();
 
                     nextframe=false;
-                    if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                    if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0||roundwait>90)roundwait--;
                     matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
 
                     if(!sound.empty()){
@@ -6492,7 +6505,7 @@ int main()
                             if(dironline2.size()>20)dironline2.pop_back();if(uonline2.size()>20)uonline2.pop_back();
                             if(ionline2.size()>20)ionline2.pop_back();if(oonline2.size()>20)oonline2.pop_back();if(konline2.size()>20)konline2.pop_back();
                             
-                            //if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                            //if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0||roundwait>90)roundwait--;
                             matchcode(&playertemp1,&playertemp2,dialogue,onlineinput1,onlineinput2,0,&bgx,&framedata,overlap,overlap2);
                         }
                         */
@@ -6642,7 +6655,7 @@ int main()
 
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
-                short superstop=0,roundwait=90,framedata=0;
+                short superstop=0,roundwait=180,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;
                     p2.right=false;
@@ -6672,7 +6685,7 @@ int main()
                         if(ikey2.size()>20)ikey2.pop_back();if(okey2.size()>20)okey2.pop_back();if(kkey2.size()>20)kkey2.pop_back();
 
                         nextframe=false;
-                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0)roundwait--;
+                        if(roundwait<=0)break;else if(p1.hp<=0||p2.hp<=0||roundwait>90)roundwait--;
                         matchcode(&p1,&p2,dialogue,p1input,p2input,&superstop,&framedata,overlap,overlap2,matchintro);
 
                         if(!sound.empty()){
@@ -6779,22 +6792,8 @@ int main()
                         else if(menuconfirm=='2'&&menuselect==2)if(keylistshow)keylistshow=false;else keylistshow=true;
                         else if(menuconfirm=='2'&&menuselect==5)gamequit=true;
                     }
-                    if(!dialogue.empty()){//dialogue stuff
-                        char temp='$',temp1='1';
-                        if(dialogue[0]==temp1)tbox.create(p1.x+bgx+8,p1.y-16);
-                        else tbox.create(p2.x+bgx+8,p2.y-16);
-                        dtext.setString(dialogue.substr(1,dialoguecnt));
-                        if(!pause||nextframe){
-                            if(dialogue[dialoguecnt+1]==temp){
-                                if(p1input[1]=='2'||p2input[1]=='2'||p1input[2]!='0'||p2input[2]!='0'){dialogue.erase(0,dialoguecnt+2);dialoguecnt=0;}
-                            }
-                            else{
-                                if(p1input[2]!='0'||p2input[2]!='0')while(dialogue[dialoguecnt+1]!=temp)dialoguecnt++;
-                                else dialoguecnt++;
-                            }
-                        }
-                        dtext.setPosition({16,8});
-                    }
+                    if(!dialogue.empty())dialogue.clear();
+                    
 
                     drawstuff(window,renderTexture,&p1,&p2,sf,hb,mb,time,cui,p1ilist,p2ilist,p1graphics,p2graphics,p1shadow,p2shadow,menus,shader,darkscreen,tbox,combotext,
                               dtext,frametext,p1keylist,p2keylist,framedata,dialogue,superstop,roundwait,pause,seeboxes,keylistshow,framedatashow,&playertop,
