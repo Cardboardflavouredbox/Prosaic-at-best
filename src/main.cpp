@@ -5577,7 +5577,7 @@ int main()
             charselect.setcharselect(4,2,32,144);
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
-            short menux=0,menuy=0,menux2=3,menuy2=0;
+            short menux=0,menuy=0,menux2=3,menuy2=0,fadein=-1;
             bool p1check=false,p2check=false;
             while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
@@ -5591,6 +5591,7 @@ int main()
             keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
             keypresscheck(heavykey2,&colorkey2);
 
+            if(fadein==-1){
             if(!p1check){
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
             if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
@@ -5602,7 +5603,10 @@ int main()
             if(menuconfirm=='2')p1check=true;if(menuconfirm2=='2')p2check=true;
             if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
             if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
-            if(p1check&&p2check)break;
+            }
+            if(p1check&&p2check&&fadein==-1)fadein=15;
+            if(fadein>0)fadein--;
+            else if(fadein==0)break;
             charselect.setselect(4,2,menux,menuy,menux2,menuy2);
 
             if(colorkey=='2'){
@@ -5642,7 +5646,8 @@ int main()
             renderTexture.display();
             const sf::Texture& texture = renderTexture.getTexture();
             sf::Sprite rt(texture);
-            window.draw(rt);
+            if(fadein==-1)window.draw(rt);
+            else if(fadein>8)window.draw(rt,&darkscreen);
             window.display();
         }
 
@@ -5999,7 +6004,7 @@ int main()
             charselect.setcharselect(4,2,32,144);
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
-            short menux=0,menuy=0,menux2=3,menuy2=0;
+            short menux=0,menuy=0,menux2=3,menuy2=0,fadein=-1;
             bool p1check=false,p2check=false;
             while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
@@ -6017,6 +6022,7 @@ int main()
             keypresscheck(heavykey1,&colorkey2);
             }
 
+            if(fadein==-1){
             if(!p1check){
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
             if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
@@ -6028,7 +6034,10 @@ int main()
             if(menuconfirm=='2')p1check=true;if(menuconfirm2=='2')p2check=true;
             if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
             if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
-            if(p1check&&p2check)break;
+            }
+            if(p1check&&p2check&&fadein==-1)fadein=15;
+            if(fadein>0)fadein--;
+            else if(fadein==0)break;
             charselect.setselect(4,2,menux,menuy,menux2,menuy2);
 
             if(colorkey=='2'){
@@ -6088,7 +6097,8 @@ int main()
             renderTexture.display();
             const sf::Texture& texture = renderTexture.getTexture();
             sf::Sprite rt(texture);
-            window.draw(rt);
+            if(fadein==-1)window.draw(rt);
+            else if(fadein>8)window.draw(rt,&darkscreen);
             window.display();
         }
             if(!gamequit){//online vs
@@ -6559,7 +6569,7 @@ int main()
             keypresscheck(heavykey1,&colorkey2);
             }
             
-
+            if(fadein==-1){
             if(!p1check){
             if(menuright=='2'&&menuleft!='2'){menux++;if(menux>3)menux=0;}if(menuright!='2'&&menuleft=='2'){menux--;if(menux<0)menux=3;}
             if(menudown=='2'&&menuup!='2'){menuy++;if(menuy>1)menuy=0;}if(menudown!='2'&&menuup=='2'){menuy--;if(menuy<0)menuy=1;}
@@ -6572,6 +6582,7 @@ int main()
             if(menuconfirm2=='2')p2check=true;
             if(menucancel=='2'){gamequit=true;break;}
             if(menucancel2=='2'){p1check=false;menucancel='1';menucancel2='1';}
+            }
             if(p1check&&p2check&&fadein==-1)fadein=15;
             if(fadein>0)fadein--;
             else if(fadein==0)break;
@@ -6615,7 +6626,7 @@ int main()
             const sf::Texture& texture = renderTexture.getTexture();
             sf::Sprite rt(texture);
             if(fadein==-1)window.draw(rt);
-            if(fadein>-1&&fadein<16&&fadein>8)window.draw(rt,&darkscreen); 
+            else if(fadein>8)window.draw(rt,&darkscreen);
             window.display();
         }
         
