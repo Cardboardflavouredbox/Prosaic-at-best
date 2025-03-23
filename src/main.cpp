@@ -5797,6 +5797,7 @@ int main()
                 }
                 music.stop();
 
+                if(!gamequit){
                 menuconfirm='1';menuconfirm2='1';
                 if(p1.wins>p2.wins){
                     if(p1.character==0&&p2.character==0)dialogue="HERESY, HERESY!$";
@@ -5866,6 +5867,7 @@ int main()
                     sf::Sprite rt(texture);
                     window.draw(rt);
                     window.display();
+                }
                 }
             }
             gamequit=false;

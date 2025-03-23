@@ -43,7 +43,7 @@ Test guy's gimmick is feinting. The special variation of all his moves are feint
 **236+normal:some sort of clap attack**
 Weak version doesn't do much.
 Medium version does a hard knockdown.
-Heavy version launches.
+Heavy version launches and is jump cancellable.
 
 **623+normal:crappy dragon punch**
 Doesn't really function as an anti-air that much.
