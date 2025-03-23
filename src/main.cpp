@@ -5575,6 +5575,8 @@ int main()
             characterselect charselect;
             if (!charselect.load("assets/images/charactericon.png")){}
             charselect.setcharselect(4,2,32,144);
+            sf::Texture bgtexture;
+            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             short menux=0,menuy=0,menux2=3,menuy2=0;
             bool p1check=false,p2check=false;
             while (window.isOpen()&&!gamequit){//characterselect
@@ -5628,8 +5630,6 @@ int main()
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
 
-            sf::Texture bgtexture;
-            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             sf::Sprite bg(bgtexture);
             bg.setPosition({-125.f,0.f});
 
@@ -5997,6 +5997,8 @@ int main()
             characterselect charselect;
             if (!charselect.load("assets/images/charactericon.png")){}
             charselect.setcharselect(4,2,32,144);
+            sf::Texture bgtexture;
+            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             short menux=0,menuy=0,menux2=3,menuy2=0;
             bool p1check=false,p2check=false;
             while (window.isOpen()&&!gamequit){//characterselect
@@ -6074,9 +6076,6 @@ int main()
                 }
             }
         
-
-            sf::Texture bgtexture;
-            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             sf::Sprite bg(bgtexture);
             bg.setPosition({-125.f,0.f});
 
@@ -6539,8 +6538,10 @@ int main()
         menuconfirm2='0';
         characterselect charselect;
         if (!charselect.load("assets/images/charactericon.png")){}
+        sf::Texture bgtexture;
+        if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
         charselect.setcharselect(4,2,32,144);
-        short menux=0,menuy=0,menux2=3,menuy2=0;
+        short menux=0,menuy=0,menux2=3,menuy2=0,fadein=-1;
         bool p1check=false,p2check=false;
         while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
@@ -6571,7 +6572,9 @@ int main()
             if(menuconfirm2=='2')p2check=true;
             if(menucancel=='2'){gamequit=true;break;}
             if(menucancel2=='2'){p1check=false;menucancel='1';menucancel2='1';}
-            if(p1check&&p2check)break;
+            if(p1check&&p2check&&fadein==-1)fadein=15;
+            if(fadein>0)fadein--;
+            else if(fadein==0)break;
             charselect.setselect(4,2,menux,menuy,menux2,menuy2);
 
             if(colorkey=='2'){
@@ -6599,8 +6602,6 @@ int main()
             crect1.setPosition({16,0});crect2.setPosition({48,0});crect3.setPosition({80,0});
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
 
-            sf::Texture bgtexture;
-            if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             sf::Sprite bg(bgtexture);
             bg.setPosition({-125.f,0.f});
 
@@ -6613,7 +6614,8 @@ int main()
             renderTexture.display();
             const sf::Texture& texture = renderTexture.getTexture();
             sf::Sprite rt(texture);
-            window.draw(rt);
+            if(fadein==-1)window.draw(rt);
+            if(fadein>-1&&fadein<16&&fadein>8)window.draw(rt,&darkscreen); 
             window.display();
         }
         
@@ -6653,16 +6655,13 @@ int main()
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
                 float overlap[2],overlap2[2];
                 bgx=0;
-                    p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
-
-                    for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
+                p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
+                for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
                 short superstop=0,roundwait=180,framedata=0;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;
                     p2.right=false;
-
-
 
                 while (window.isOpen()&&!gamequit){
                     windowset(window,&gamequit);
