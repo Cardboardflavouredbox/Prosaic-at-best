@@ -1649,18 +1649,39 @@ private:
 class superflash : public sf::Drawable, public sf::Transformable
 {
 public:
-    void create(short frame,float py){
-        frame=frame/2-4;
-        if(frame<1)frame=1;
+    bool load(const std::string& tileset)
+    {
+        if (!m_tileset.loadFromFile(tileset))return false;
+        return true;
+    }
+    void create(short frame,float px,float py){
         m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-        m_vertices.resize(16);
-        sf::Vertex* triangles = &m_vertices[6];
+        m_vertices.resize(8);
+        sf::Vertex* triangles = &m_vertices[3];
+        /*
         triangles[0].position = sf::Vector2f(0,py-frame+1);
         triangles[1].position = sf::Vector2f(256,py-frame+1);
         triangles[2].position = sf::Vector2f(0,py+frame);
         triangles[3].position = sf::Vector2f(0,py+frame);
         triangles[4].position = sf::Vector2f(256,py+frame);
         triangles[5].position = sf::Vector2f(256,py-frame+1);
+        */
+        triangles[0].position = sf::Vector2f(px,py-frame+1);
+        triangles[1].position = sf::Vector2f(256-64*(frame-10),-240);
+        triangles[2].position = sf::Vector2f(0-64*(frame-10),-240);
+        triangles[0].texCoords = sf::Vector2f(px,py-frame+1);
+        triangles[1].texCoords = sf::Vector2f(256-64*(frame-10),-240);
+        triangles[2].texCoords = sf::Vector2f(0-64*(frame-10),-240);
+
+        m_vertices2.setPrimitiveType(sf::PrimitiveType::Lines);
+        m_vertices2.resize(16);
+        sf::Vertex* tri = &m_vertices2[6];
+        tri[0].position = sf::Vector2f(px,py-frame+1);
+        tri[1].position = sf::Vector2f(256-64*(frame-10),-240);
+        tri[2].position = sf::Vector2f(256-64*(frame-10),-240);
+        tri[3].position = sf::Vector2f(0-64*(frame-10),-240);
+        tri[4].position = sf::Vector2f(0-64*(frame-10),-240);
+        tri[5].position = sf::Vector2f(px,py-frame+1);
     }
 
 private:
@@ -1669,12 +1690,13 @@ private:
     {
         states.transform *= getTransform();
 
-        states.texture = NULL;
+        states.texture = &m_tileset;
 
         target.draw(m_vertices, states);
+        target.draw(m_vertices2);
     }
-   sf::VertexArray m_vertices;
-
+    sf::VertexArray m_vertices,m_vertices2;
+    sf::Texture m_tileset;
 };
 
 class effects : public sf::Drawable, public sf::Transformable
@@ -4726,7 +4748,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     for(short i=0;i<P1.proj.size();i++)P_Hitbox1[i].create(floor(P1.proj[i].x+bgx),int(P1.proj[i].y),hurtbox[P1.character][P1.proj[i].frame],P1.proj[i].right,hurtboxcount[P1.character][P1.proj[i].frame],sf::Color::Red);
     for(short i=0;i<P2.proj.size();i++)P_Hitbox2[i].create(floor(P2.proj[i].x+bgx),int(P2.proj[i].y),hurtbox[P2.character][P2.proj[i].frame],P2.proj[i].right,hurtboxcount[P2.character][P2.proj[i].frame],sf::Color::Red);
 
-    if(superstop>0){if(P1.super)sf.create(superstop,P1.y-8);else if(P2.super)sf.create(superstop,P2.y-8);}
+    if(superstop>0){if(P1.super)sf.create(superstop,P1.x+bgx,P1.y-8);else if(P2.super)sf.create(superstop,P2.x+bgx,P2.y-8);}
     /*
     if(combo>1&&cui.slide==0&&cui.slide2==0){cui.slide=64;cui.slide2=12;}
     if(cui.slide>0)cui.slide-=cui.slide2--;
@@ -5211,6 +5233,7 @@ int main()
                 if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
                 if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
                 if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
+                if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
                 charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
                 p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
@@ -5668,6 +5691,7 @@ int main()
             if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
             if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
+            if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
@@ -6120,6 +6144,7 @@ int main()
             if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
             if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
+            if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
@@ -6650,6 +6675,7 @@ int main()
             if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
             if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
+            if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
