@@ -4581,8 +4581,6 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
         }
         else if(!P2.animq.empty()&&(!P2.whiff||P2.movetype==0||(P2.comboed&&P2.buffer==15&&(P2.meter>=200||(P2.meter>=100&&P2.block==2)))||(P2.block!=-1&&P2.buffer==25)))P2.act=P2.buffer;
         if(P2.animq.empty()){if(!P2.whiff){P2.act=P2.buffer;}P2.buffer=0;}
-
-
     }
     else{P1.act=0;P2.act=0;}
 
@@ -5578,14 +5576,17 @@ int main()
             sf::Texture bgtexture;
             if (!bgtexture.loadFromFile("assets/images/stage1.png")){}
             short menux=0,menuy=0,menux2=3,menuy2=0,fadein=-1;
-            bool p1check=false,p2check=false;
+            bool p1check=false,p2check=false,p2ai=false;
+            char aiselectkey='0';
             while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
 
+            
             keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
             keypresscheck(upkey1,&menuup);keypresscheck(downkey1,&menudown);
             keypresscheck(leftkey1,&menuleft);keypresscheck(rightkey1,&menuright);
-            keypresscheck(heavykey1,&colorkey);
+            keypresscheck(heavykey1,&colorkey);keypresscheck(specialkey1,&aiselectkey);
+
             keypresscheck(lightkey2,&menuconfirm2);keypresscheck(mediumkey2,&menucancel2);
             keypresscheck(upkey2,&menuup2);keypresscheck(downkey2,&menudown2);
             keypresscheck(leftkey2,&menuleft2);keypresscheck(rightkey2,&menuright2);
@@ -5604,6 +5605,7 @@ int main()
             if(menucancel=='2'){if(p1check)p1check=false;else{gamequit=true;break;}}
             if(menucancel2=='2'){if(p2check)p2check=false;else{gamequit=true;break;}}
             }
+            if(aiselectkey=='2'){if(p2ai)p2ai=0;else p2ai=1;}
             if(p1check&&p2check&&fadein==-1)fadein=15;
             if(fadein>0)fadein--;
             else if(fadein==0)break;
@@ -5652,7 +5654,7 @@ int main()
         }
 
             if(!gamequit){
-            short rounds=2,matchintro=120;
+            short rounds=2;
             menus.setmenu(6,92,72,0,16,1);
             player p1,p2;
             p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
@@ -5692,16 +5694,18 @@ int main()
                 bgx=0;
                     p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
-                short superstop=0,roundwait=180,framedata=0;
+                short superstop=0,roundwait=180,framedata=0,matchintro=120;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;p2.right=false;
+                unsigned char cpuactioncode=0,cpudifficulty=255,cpuaggressive=128;
                 while (window.isOpen()&&!gamequit){
                     windowset(window,&gamequit);
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
 
                     inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
-                    inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
+                    if(p2ai&&dialogue.empty())cpuopponent(p2input,&cpuactioncode,&p2,&p1,cpudifficulty,cpuaggressive);
+                    else inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
 
                     if((!pause||(pause&&nextframe))){//main match code stuff
                         dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);ikey.push_front(p1input[2]);okey.push_front(p1input[3]);kkey.push_front(p1input[4]);
@@ -6102,7 +6106,7 @@ int main()
             window.display();
         }
             if(!gamequit){//online vs
-            short rounds=2,matchintro=120;
+            short rounds=2;
             menus.setmenu(6,92,72,0,16,1);
             player p1,p2;
             p1.color=p1color;p2.color=p2color;p1.meter=100.0;p2.meter=100.0;
@@ -6137,7 +6141,7 @@ int main()
                     p1.x=100.0;p1.y=176.0;p1.hp=p1.maxhp;p2.x=156.0;p2.y=176.0;p2.hp=p2.maxhp;
                     for(unsigned char i=0;i<8;i++){p1.gimmick[i]=0;p2.gimmick[i]=0;}
                     
-                short superstop=0,roundwait=180,framedata=0;
+                short superstop=0,roundwait=180,framedata=0,matchintro=120;
                 bool seeboxes=false,F2key=false,F3key=false,pause=false,Enterkey=false,nextframe=false,backslash=false,playertop=false,keylistshow=false,framedatashow=false;
                     p1.right=true;p2.right=false;
 
@@ -6829,7 +6833,6 @@ int main()
         gamequit=false;
         menus.setmenu(6,144,120,0,16,0);
         }
-
         }
     }
 	return 0;
