@@ -18,7 +18,7 @@ std::mt19937 gen(rd());
 short combo=0,roundframecount=0;
 static unsigned char animlib[16][128][32][2]=
             {
-                {
+                {//char 0
                     {
                     {2,3},{1,3},
 
@@ -444,9 +444,43 @@ static unsigned char animlib[16][128][32][2]=
                     {17,13},
                     {255,255}
                     }//projectile end3(60)
-                   },//char 0
-                   {255,255},//char 1
-                   {
+                   },
+                   {//char 1
+                    {//idle1 (0)
+                    {2,4},{1,4},
+
+                    {0,0},{1,0},
+                    {0,1},{1,1},
+                    {0,2},{1,2},
+                    {0,3},{1,3}
+                    },
+                    {//idle2 (1)
+                    {2,4},{1,4},
+
+                    {2,0},{3,0},
+                    {2,1},{3,1},
+                    {2,2},{3,2},
+                    {2,3},{3,3}
+                    },
+                    {//idle3 (2)
+                    {2,4},{1,4},
+
+                    {4,0},{5,0},
+                    {4,1},{5,1},
+                    {4,2},{5,2},
+                    {4,3},{5,3}
+                    },
+                    {//stand light1(3)
+                    {3,4},{1,4},
+
+                    {0,0},{1,0},{255,255},
+                    {0,1},{1,1},{255,255},
+                    {0,2},{1,4},{2,4},
+                    {0,5},{1,5},{0,4}
+                    },
+                    
+                   },
+                   {//char2(Sinclair)
                     {
                     {2,4},{1,4},
 
@@ -1231,10 +1265,10 @@ static unsigned char animlib[16][128][32][2]=
                     {28,15},{29,15},
                     {28,16},{29,16}
                     },//jump heavy2(98)
-                   }//char2(Sinclair)
+                   }
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
-                    {0},//char1
+                    {2,2,2},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
                     2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},//char2(Sinclair)
                     },
@@ -1279,7 +1313,7 @@ colbox[16][8][1][2][2]={
                     },//char 2(Sinclair)
                     },
 hurtbox[16][128][8][2][2]={
-                    {
+                    {//char 0
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},/*idle (0)*/
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}},{{4,0},{18,9}}},/*stand u1 (1)*/{{{-11,0},{11,32}},{{-7,-15},{9,0}},{{4,0},{20,6}}},/*stand u2 (2)*/
                     {{{-11,0},{14,32}},{{-7,-15},{9,0}}},/*stand i1 (3)*/{{{-11,0},{15,32}},{{-7,-15},{9,0}}},/*stand i2 (4)*/{{{-11,0},{14,32}},{{-7,-15},{9,0}}},/*stand i3 (5)*/
@@ -1307,9 +1341,10 @@ hurtbox[16][128][8][2][2]={
                     {{{0,-4},{13,12}}},/*projectile1(54)*/{{{0,-4},{13,12}}},/*projectile2(55)*/
                     {{{-11,0},{11,32}},{{-7,-15},{9,0}}},/*hit2 (56)*/{{{-11,9},{13,32}},{{-7,-6},{9,9}}},/*crouch hit2(57)*/
                     {-1},/*projectile end1(58)*/{-1},/*projectile end2(59)*/{-1},/*projectile end3(60)*/
-                    },//char 0
-                    {-1},//char 1
-                    {
+                    },
+                    {//char 1
+                    {{{-9,-10},{9,32}},{{-7,-25},{7,-10}}},/*idle1 (0)*/{{{-9,-10},{9,32}},{{-7,-25},{7,-10}}},/*idle2 (1)*/{{{-9,-10},{9,32}},{{-7,-25},{7,-10}}},/*idle3 (2)*/},
+                    {//char 2(Sinclair)
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle (0)*/{{{-11,0},{16,32}},{{-1,-15},{15,0}}},/*crouch (1)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*stand u1 (2)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-14},{24,-4}}},/*stand u2 (3)*/
                     {{{-11,0},{16,32}},{{-1,-15},{15,0}},{{4,0},{30,14}}},/*crouch u1 (4)*/{{{-11,0},{16,32}},{{-1,-15},{15,0}},{{4,0},{35,8}}},/*crouch u2 (5)*/
@@ -1352,7 +1387,7 @@ hurtbox[16][128][8][2][2]={
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*run3 (93)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*run4 (94)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*run5 (95)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*run6 (96)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*jump heavy1 (97)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*jump heavy2 (98)*/
-                    },//char 2(Sinclair)
+                    },
                     },
 hitbox[16][16][4][2][2]={
                     {{0},//idle (0)
@@ -3503,7 +3538,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         else P.block=-1;
         switch (P.character){
         case 0:{
-            switch (P.act){
+            switch(P.act){
             case 0:{//neutural
                 if(!P.air){
                     if(P.x<enemyx)P.right=true;
@@ -3825,6 +3860,19 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 if(P.right)P.jumpx=-9;else P.jumpx=9;
                 break;
                 }
+            }
+            break;
+        }
+        case 1:{//Francis
+            switch(P.act){
+            case 0:{//neatural
+                if(!P.air){
+                    if(P.x<enemyx)P.right=true;else P.right=false;
+                    if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2});
+                }
+                P.col=0;P.frame=0;P.block=-1;
+                break;
+            }
             }
             break;
         }
@@ -4810,9 +4858,11 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     if(superstop>0){renderTexture.draw(pixelshadowthing);
     if(P1.super){shader.setUniform("color1",float(colorpalettes[p1color][0]));
         shader.setUniform("color3",float(colorpalettes[p1color][1]));
+        shader.setUniform("color4",float(colorpalettes[p1color][2]));
         shader.setUniform("color2",float(colorpalettes[p1color][2]));}
     else if(P2.super){shader.setUniform("color1",float(colorpalettes[p2color][0]));
         shader.setUniform("color3",float(colorpalettes[p2color][1]));
+        shader.setUniform("color4",float(colorpalettes[p2color][2]));
         shader.setUniform("color2",float(colorpalettes[p2color][2]));
     }
     renderTexture.draw(sf,&shader);}
@@ -4826,6 +4876,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         shader.setUniform("color1",float(colorpalettes[p1color][0]));
         shader.setUniform("color3",float(colorpalettes[p1color][1]));
+        shader.setUniform("color4",float(colorpalettes[p1color][2]));
         shader.setUniform("color2",float(colorpalettes[p1color][2]));
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         renderTexture.draw(p1graphics,&shader);
@@ -4843,6 +4894,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
         shader.setUniform("color1",float(colorpalettes[p2color][0]));
         shader.setUniform("color3",float(colorpalettes[p2color][1]));
+        shader.setUniform("color4",float(colorpalettes[p2color][2]));
         shader.setUniform("color2",float(colorpalettes[p2color][2]));
     if((P1.character==2&&(P1.gimmick[0]>0||P1.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p2color][i]=15-colorpalettes[p2color][i];
     renderTexture.draw(p2graphics,&shader);
@@ -4860,6 +4912,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         shader.setUniform("color1",float(colorpalettes[p1color][0]));
         shader.setUniform("color3",float(colorpalettes[p1color][1]));
+        shader.setUniform("color4",float(colorpalettes[p1color][2]));
         shader.setUniform("color2",float(colorpalettes[p1color][2]));
         if((P2.character==2&&(P2.gimmick[0]>0||P2.gimmick[1]>0)))for(short i=0;i<3;i++)colorpalettes[p1color][i]=15-colorpalettes[p1color][i];
         renderTexture.draw(p1graphics,&shader);
