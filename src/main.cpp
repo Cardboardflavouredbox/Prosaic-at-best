@@ -4714,11 +4714,11 @@ void matchcode(player *p1,player *p2,std::string dialogue,char p1input[],char p2
     if(P1.meter>1000)P1.meter=1000;
     if(P2.meter>1000)P2.meter=1000;
 
-    while((P1.x+bgx<32&&P2.x+bgx<224)||(P2.x+bgx<32&&P1.x+bgx<224)){
+    while((P1.x+bgx<32&&P2.x+bgx<224)||(P2.x+bgx<32&&P1.x+bgx<224)||(P1.x+bgx<96&&P2.x+bgx<96)){
             if(bgx<125)bgx+=1;
             else break;
     }
-    while((P1.x+bgx>224&&P2.x+bgx>32)||(P2.x+bgx>224&&P1.x+bgx>32)){
+    while((P1.x+bgx>224&&P2.x+bgx>32)||(P2.x+bgx>224&&P1.x+bgx>32)||(P1.x+bgx>160&&P2.x+bgx>160)){
             if(bgx>-119)bgx-=1;
             else break;
     }
