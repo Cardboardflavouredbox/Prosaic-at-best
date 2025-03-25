@@ -5713,7 +5713,7 @@ int main()
             frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
-            p1.maxhp=950.0;p2.maxhp=10.0;
+            p1.maxhp=950.0;p2.maxhp=950.0;
             if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
             if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
 
