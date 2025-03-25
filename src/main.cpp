@@ -1654,34 +1654,36 @@ public:
         if (!m_tileset.loadFromFile(tileset))return false;
         return true;
     }
-    void create(short frame,float px,float py){
+    void create(short frame,float px,float py,short character){
         m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-        m_vertices.resize(8);
-        sf::Vertex* triangles = &m_vertices[3];
-        /*
-        triangles[0].position = sf::Vector2f(0,py-frame+1);
-        triangles[1].position = sf::Vector2f(256,py-frame+1);
-        triangles[2].position = sf::Vector2f(0,py+frame);
-        triangles[3].position = sf::Vector2f(0,py+frame);
-        triangles[4].position = sf::Vector2f(256,py+frame);
-        triangles[5].position = sf::Vector2f(256,py-frame+1);
-        */
+        m_vertices.resize(16);
+        sf::Vertex* triangles = &m_vertices[6];
+
         triangles[0].position = sf::Vector2f(px,py-frame+1);
-        triangles[1].position = sf::Vector2f(256-64*(frame-10),-240);
-        triangles[2].position = sf::Vector2f(0-64*(frame-10),-240);
-        triangles[0].texCoords = sf::Vector2f(px,py-frame+1);
-        triangles[1].texCoords = sf::Vector2f(256-64*(frame-10),-240);
-        triangles[2].texCoords = sf::Vector2f(0-64*(frame-10),-240);
+        triangles[1].position = sf::Vector2f(px+256-512*std::sin((frame-10)*3.14/20),py-512*std::cos((frame-10)*3.14/20));
+        triangles[2].position = sf::Vector2f(px-512*std::sin((frame-10)*3.14/20),py-512*std::cos((frame-10)*3.14/20));
+        triangles[3].position = sf::Vector2f(px,py-frame+1);
+        triangles[4].position = sf::Vector2f(px-256-512*std::sin((frame+170)*3.14/20),py-512*std::cos((frame+170)*3.14/20));
+        triangles[5].position = sf::Vector2f(px-512*std::sin((frame+170)*3.14/20),py-512*std::cos((frame+170)*3.14/20));
+
+        triangles[0].texCoords = sf::Vector2f(character*256+px,py-frame+1);
+        triangles[1].texCoords = sf::Vector2f(character*256+px+256-512*std::sin((frame-10)*3.14/20),py-512*std::cos((frame-10)*3.14/20));
+        triangles[2].texCoords = sf::Vector2f(character*256+px-512*std::sin((frame-10)*3.14/20),py-512*std::cos((frame-10)*3.14/20));
+        triangles[3].texCoords = sf::Vector2f(character*256+px,py-frame+1);
+        triangles[4].texCoords = sf::Vector2f(character*256+px-256-512*std::sin((frame+170)*3.14/20),py-512*std::cos((frame+170)*3.14/20));
+        triangles[5].texCoords = sf::Vector2f(character*256+px-512*std::sin((frame+170)*3.14/20),py-512*std::cos((frame+170)*3.14/20));
 
         m_vertices2.setPrimitiveType(sf::PrimitiveType::Lines);
         m_vertices2.resize(16);
-        sf::Vertex* tri = &m_vertices2[6];
+        sf::Vertex* tri = &m_vertices2[8];
         tri[0].position = sf::Vector2f(px,py-frame+1);
-        tri[1].position = sf::Vector2f(256-64*(frame-10),-240);
-        tri[2].position = sf::Vector2f(256-64*(frame-10),-240);
-        tri[3].position = sf::Vector2f(0-64*(frame-10),-240);
-        tri[4].position = sf::Vector2f(0-64*(frame-10),-240);
-        tri[5].position = sf::Vector2f(px,py-frame+1);
+        tri[1].position = sf::Vector2f(px+256-512*std::sin((frame-10)*3.14/20),py-512*std::cos((frame-10)*3.14/20));
+        tri[2].position = sf::Vector2f(px-512*std::sin((frame-10)*3.14/20),py-512*std::cos((frame-10)*3.14/20));
+        tri[3].position = sf::Vector2f(px,py-frame+1);
+        tri[4].position = sf::Vector2f(px,py-frame+1);
+        tri[5].position = sf::Vector2f(px-256-512*std::sin((frame+170)*3.14/20),py-512*std::cos((frame+170)*3.14/20));
+        tri[6].position = sf::Vector2f(px-512*std::sin((frame+170)*3.14/20),py-512*std::cos((frame+170)*3.14/20));
+        tri[7].position = sf::Vector2f(px,py-frame+1);
     }
 
 private:
@@ -4748,7 +4750,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     for(short i=0;i<P1.proj.size();i++)P_Hitbox1[i].create(floor(P1.proj[i].x+bgx),int(P1.proj[i].y),hurtbox[P1.character][P1.proj[i].frame],P1.proj[i].right,hurtboxcount[P1.character][P1.proj[i].frame],sf::Color::Red);
     for(short i=0;i<P2.proj.size();i++)P_Hitbox2[i].create(floor(P2.proj[i].x+bgx),int(P2.proj[i].y),hurtbox[P2.character][P2.proj[i].frame],P2.proj[i].right,hurtboxcount[P2.character][P2.proj[i].frame],sf::Color::Red);
 
-    if(superstop>0){if(P1.super)sf.create(superstop,P1.x+bgx,P1.y-8);else if(P2.super)sf.create(superstop,P2.x+bgx,P2.y-8);}
+    if(superstop>0){if(P1.super)sf.create(superstop,P1.x+bgx,P1.y-8,P1.character);else if(P2.super)sf.create(superstop,P2.x+bgx,P2.y-8,P2.character);}
     /*
     if(combo>1&&cui.slide==0&&cui.slide2==0){cui.slide=64;cui.slide2=12;}
     if(cui.slide>0)cui.slide-=cui.slide2--;
@@ -4805,7 +4807,15 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
         }
     }
 
-    if(superstop>0){renderTexture.draw(pixelshadowthing);renderTexture.draw(sf);}
+    if(superstop>0){renderTexture.draw(pixelshadowthing);
+    if(P1.super){shader.setUniform("color1",float(colorpalettes[p1color][0]));
+        shader.setUniform("color3",float(colorpalettes[p1color][1]));
+        shader.setUniform("color2",float(colorpalettes[p1color][2]));}
+    else if(P2.super){shader.setUniform("color1",float(colorpalettes[p2color][0]));
+        shader.setUniform("color3",float(colorpalettes[p2color][1]));
+        shader.setUniform("color2",float(colorpalettes[p2color][2]));
+    }
+    renderTexture.draw(sf,&shader);}
 
     if(P1.hit)*playertop=true;else if(P2.hit)*playertop=false;
 
@@ -5233,7 +5243,7 @@ int main()
                 if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
                 if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
                 if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
-                if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
+                if(!sf.load("assets/images/char_win.png")){window.close();gamequit=true;}
                 charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
                 p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
@@ -5691,7 +5701,7 @@ int main()
             if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
             if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
-            if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
+            if(!sf.load("assets/images/char_win.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
@@ -5703,7 +5713,7 @@ int main()
             frametext.setCharacterSize(16);frametext.setFillColor(sf::Color::White);
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
-            p1.maxhp=950.0;p2.maxhp=950.0;
+            p1.maxhp=950.0;p2.maxhp=10.0;
             if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
             if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
 
@@ -5846,7 +5856,7 @@ int main()
                 }
                 sf::Texture wintexture,wintexture2;
                 if(!wintexture.loadFromFile("assets/images/winbg.png")){window.close();gamequit=true;}
-                if(!wintexture2.loadFromFile("assets/images/char2_win.png")){window.close();gamequit=true;}
+                if(!wintexture2.loadFromFile("assets/images/char_win.png")){window.close();gamequit=true;}
                 while(!gamequit){//win screen
                     windowset(window,&gamequit);
                     keypresscheck(lightkey1,&menuconfirm);
@@ -5887,6 +5897,7 @@ int main()
                         shader.setUniform("color3",float(colorpalettes[p2color][1]));
                         shader.setUniform("color2",float(colorpalettes[p2color][2]));
                     }
+                    square.setTextureRect({{(p1.wins>p2.wins?p1.character:p2.character)*256,0},{256,240}});
                     renderTexture.draw(square,&shader);
 
                     square.setTexture(&wintexture);
@@ -6144,7 +6155,7 @@ int main()
             if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
             if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
-            if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
+            if(!sf.load("assets/images/char_win.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
@@ -6675,7 +6686,7 @@ int main()
             if(!p1texture.loadFromFile("assets/images/char"+std::to_string(p1.character)+"_sprites.png")||!p2texture.loadFromFile("assets/images/char"+std::to_string(p2.character)+"_sprites.png")){window.close();gamequit=true;}
             if(!matchintrotexture.loadFromFile("assets/images/ENGAGE.png")){window.close();gamequit=true;}
             if(!matchintrotexture2.loadFromFile("assets/images/READY OR NOT.png")){window.close();gamequit=true;}
-            if(!sf.load("assets/images/char2_win.png")){window.close();gamequit=true;}
+            if(!sf.load("assets/images/char_win.png")){window.close();gamequit=true;}
             charactergraphics p1graphics,p2graphics,p1shadow,p2shadow;textbox tbox;
 
             p1graphics.load(p1texture,false);p2graphics.load(p2texture,false);
