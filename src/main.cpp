@@ -473,12 +473,68 @@ static unsigned char animlib[16][128][32][2]=
                     {//stand light1(3)
                     {3,4},{1,4},
 
-                    {0,0},{1,0},{255,255},
-                    {0,1},{1,1},{255,255},
-                    {0,2},{1,4},{2,4},
+                    {2,0},{3,0},{255,255},
+                    {2,1},{3,1},{255,255},
+                    {2,2},{1,4},{2,4},
                     {0,5},{1,5},{0,4}
                     },
-                    
+                    {//stand light2(4)
+                    {3,4},{1,4},
+
+                    {4,0},{5,0},{255,255},
+                    {4,1},{5,1},{255,255},
+                    {4,2},{4,4},{5,4},
+                    {3,5},{4,5},{3,4}
+                    },
+                    {//stand light3(5)
+                    {3,4},{1,4},
+
+                    {0,0},{1,0},{255,255},
+                    {0,1},{1,1},{255,255},
+                    {0,2},{6,4},{7,4},
+                    {5,5},{6,5},{7,5}
+                    },
+                    {//stand medium1(6)
+                    {2,4},{1,4},
+
+                    {6,0},{7,0},
+                    {6,1},{7,1},
+                    {6,2},{7,2},
+                    {6,3},{7,3}
+                    },
+                    {//stand medium2(7)
+                    {3,4},{1,4},
+
+                    {8,0},{9,0},{9,4},
+                    {8,1},{9,1},{9,5},
+                    {8,2},{9,2},{9,6},
+                    {8,3},{9,3},{255,255},
+                    },
+                    {//stand medium3(8)
+                    {3,4},{1,4},
+
+                    {10,0},{11,0},{8,4},
+                    {10,1},{11,1},{8,5},
+                    {10,2},{11,2},{255,255},
+                    {10,3},{11,3},{255,255},
+                    },
+                    {//stand medium4(9)
+                    {2,4},{1,4},
+
+                    {12,0},{13,0},
+                    {12,1},{13,1},
+                    {12,2},{13,2},
+                    {12,3},{13,3}
+                    },
+                    {//stand medium5(10)
+                    {2,4},{1,4},
+
+                    {14,0},{15,0},
+                    {14,1},{15,1},
+                    {14,2},{15,2},
+                    {14,3},{15,3}
+                    },
+
                    },
                    {//char2(Sinclair)
                     {
@@ -1268,12 +1324,12 @@ static unsigned char animlib[16][128][32][2]=
                    }
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
-                    {2,2,2},//char1
+                    {2,2,2,2,3,3},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
                     2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},//char2(Sinclair)
                     },
                    hitboxcount[16][256]={{0,1,1,1,1,1,1,1,1,1,1,1},//char 0
-                   {0},//char 1
+                   {0,1,1},//char 1
                    {0,1,1,1,1,1,1,2,1,1,1,1},//char 2
                    },
                     colorpalettes[16][4]={
@@ -1300,17 +1356,24 @@ static unsigned char animlib[16][128][32][2]=
 unsigned char p1color=0,p2color=0;
 float comboscaling=100.0,bgx=0,
 colbox[16][8][1][2][2]={
-                    {{{{-7,-10},{9,32}}},//standing
+                    {//char 0
+                    {{{-7,-10},{9,32}}},//standing
                     {{{-7,-1},{9,32}}},//crouching
                     {{{-31,20},{16,32}}},//knockdown
                     {{{0,0},{0,0}}},//grabbed
-                    },//char 0
-                    {-1},//char 1
-                    {{{{-7,-24},{9,32}}},//standing
+                    },
+                    {//char 1
+                    {{{-7,-10},{9,32}}},//standing
+                    {{{-7,-4},{12,32}}},//crouching
+                    {{{-31,20},{16,32}}},//knockdown
+                    {{{0,0},{0,0}}},//grabbed
+                    },
+                    {//char 2(Sinclair)
+                    {{{-7,-24},{9,32}}},//standing
                     {{{-7,-8},{12,32}}},//crouching
                     {{{-31,20},{16,32}}},//knockdown
                     {{{0,0},{0,0}}},//grabbed
-                    },//char 2(Sinclair)
+                    },
                     },
 hurtbox[16][128][8][2][2]={
                     {//char 0
@@ -1343,7 +1406,9 @@ hurtbox[16][128][8][2][2]={
                     {-1},/*projectile end1(58)*/{-1},/*projectile end2(59)*/{-1},/*projectile end3(60)*/
                     },
                     {//char 1
-                    {{{-9,-10},{9,32}},{{-7,-25},{7,-10}}},/*idle1 (0)*/{{{-9,-10},{9,32}},{{-7,-25},{7,-10}}},/*idle2 (1)*/{{{-9,-10},{9,32}},{{-7,-25},{7,-10}}},/*idle3 (2)*/},
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*idle1 (0)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*idle2 (1)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*idle3 (2)*/
+                    {{{-9,-10},{12,32}},{{-8,-25},{6,-10}}},/*stand light1 (3)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}},{{9,10},{25,28}}},/*stand light2 (4)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}},{{9,10},{25,28}}},/*stand light3 (5)*/
+                    },
                     {//char 2(Sinclair)
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle (0)*/{{{-11,0},{16,32}},{{-1,-15},{15,0}}},/*crouch (1)*/
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*stand u1 (2)*/{{{-11,-16},{11,32}},{{-8,-31},{8,-16}},{{4,-14},{24,-4}}},/*stand u2 (3)*/
@@ -1390,7 +1455,8 @@ hurtbox[16][128][8][2][2]={
                     },
                     },
 hitbox[16][16][4][2][2]={
-                    {{0},//idle (0)
+                    {//char 0
+                    {0},//idle (0)
                     {{{4,-1},{22,7}}},//stand u(1)
                     {{{5,11},{30,20}}},//stand i(2)
                     {{{5,25},{26,32}}},//crouch u(3)
@@ -1402,9 +1468,14 @@ hitbox[16][16][4][2][2]={
                     {{{9,8},{27,15}}},//crouch i(9)
                     {{{0,16},{18,32}}},//jump u(10)
                     {{{-2,0},{24,12}}},//grab(11)
-                    },//char 0
-                    {-1},//char 1
-                    {{0},//idle (0)
+                    },
+                    {//char 1
+                    {0},
+                    {{{7,12},{28,28}}},//stand u(1)
+                    {{{3,-26},{27,-10}}},//stand i(2)
+                    },
+                    {//char 2
+                    {0},//idle (0)
                     {{{4,-16},{26,0}}},//stand u(1)
                     {{{4,-1},{37,10}}},//crouch u(2)
                     {{{6,12},{42,32}}},//stand i(3)
@@ -1416,7 +1487,7 @@ hitbox[16][16][4][2][2]={
                     {{{4,-18},{30,1}}},//jump u(9)
                     {{{4,-27},{33,6}}},//special C(10)
                     {{{4,-18},{20,23}}},//jump o(11)
-                    }//char 2
+                    }
                     };
 bool flash=true,screenfocused=true;
 
@@ -3477,11 +3548,12 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     }
 
     if(P.wallcrashed&&(P.x+bgx>=240||P.x+bgx<=16)){
-        P.jumpx*=-1;
-        P.jumpy=-11;
+        P.jumpx*=-0.25;
+        P.jumpy=-17;
         P.movewaitx=12;
         P.movewaity=11;
         P.wallcrashed=false;
+        P.y+=P.jumpy;
         effects temp;
         temp.color1=sf::Color (255, 255, 255);
         temp.len=4;
@@ -3871,6 +3943,41 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2});
                 }
                 P.col=0;P.frame=0;P.block=-1;
+                break;
+            }
+            case 8:{//u (light normal)
+                if(P.air){
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=2;P.hitstun=11;P.blockstun=5;P.dmg=12;P.movetype=3;P.landdelay=3;P.mgain=4;
+                    P.animq.insert(P.animq.begin(),{75,75,75,75,76,76,76});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,9,9,9,9,9,9,9,9});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,11});
+                    short temp[3]={8,9,10};boolfill(P.cancel,true,temp);
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=4;P.hitstun=12;P.blockstun=9;P.dmg=14;P.movetype=2;P.mgain=4;
+                    P.animq.insert(P.animq.begin(),{3,3,4,4,5,5,5,5,4,4,3,3,3});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,1,1});
+                    //P.atkfx.insert(P.atkfx.begin(),{0,0,0,11});
+                    short temp[17]={8,9,10,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+                }
+                break;
+            }
+            case 9:{//i (middle normal)
+                if(P.air){
+                    P.col=0;P.hitcount=1;P.hitstop=13;P.kback=3;P.hitstun=16;P.blockstun=8;P.dmg=27;P.movetype=3;P.landdelay=3;P.mgain=6;
+                    P.animq.insert(P.animq.begin(),{19,19,19,19,20,21,21,21,21,21,21,21,21,21,21,21,21});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,3,3,3,3,3});
+                    short temp[1]={10};boolfill(P.cancel,true,temp);
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=16;P.blockstun=10;P.slide=true;P.dmg=28;P.movetype=2;P.mgain=6;
+                    P.animq.insert(P.animq.begin(),{6,6,6,6,6,6,6,7,7,8,8,9,9,9,9,9,9,9,10,10,10,10});
+                    P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,2,2});
+                    short temp[15]={10,15,16,17,18,19,21,22,23,24,28,29,30,31,32};boolfill(P.cancel,true,temp);
+                    P.movewaitx=7;
+                    if(P.right)P.jumpx=3;
+                    else P.jumpx=-3;
+                }
                 break;
             }
             }
@@ -4290,8 +4397,10 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     if(P.movewaity>0&&(enemycharacter!=2||(enemygimmick[0]%2==0&&(enemygimmick[1]%2==0||(P.character==2&&P.gimmick[1]>0)))))P.movewaity-=1;
     else{
         if(P.jumpy<0)P.air=true;
+        if(!P.wallcrashed){
         if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0))))P.y+=P.jumpy/2;
         else P.y+=P.jumpy;
+        }
         P.movewaity=-1;
     }
     if(P.slide&&P.movewaitx==-1){
@@ -4312,7 +4421,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     else if(P.character==2)P.idleanim.insert(P.idleanim.begin(),{45,45,45,46,46,46});
                 }
             }
-            if(P.y>=176){
+            if(P.y>=176&&!P.wallcrashed){
                 if(P.kdowned>0){}//add downed landing animation
                 if(!P.comboed){P.col=1;P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();if(P.x<enemyx)P.right=true;else P.right=false;for(short i=0;i<P.landdelay;i++)P.animq.push_back(8);}
                 P.landdelay=0;
