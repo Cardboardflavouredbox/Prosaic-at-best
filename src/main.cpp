@@ -534,6 +534,61 @@ static unsigned char animlib[16][128][32][2]=
                     {14,2},{15,2},
                     {14,3},{15,3}
                     },
+                    {//midhit1(11)
+                    {2,4},{1,4},
+
+                    {0,6},{1,6},
+                    {0,7},{1,7},
+                    {0,8},{1,8},
+                    {0,9},{1,9}
+                    },
+                    {//midhit2(12)
+                    {2,4},{1,4},
+
+                    {2,6},{3,6},
+                    {2,7},{3,7},
+                    {2,8},{3,8},
+                    {2,9},{3,9}
+                    },
+                    {//overheadhit1(13)
+                    {3,3},{2,3},
+
+                    {0,10},{1,10},{2,10},
+                    {0,11},{1,11},{2,11},
+                    {255,255},{1,12},{2,12}
+                    },
+                    {//overheadhit2(14)
+                    {3,4},{2,4},
+
+                    {3,11},{4,9},{255,255},
+                    {3,10},{4,10},{5,10},
+                    {255,255},{4,11},{5,11},
+                    {255,255},{4,12},{5,12}
+                    },
+                    {//walk1(15)
+                    {2,4},{1,4},
+
+                    {4,6},{5,6},
+                    {4,7},{5,7},
+                    {4,8},{5,8},
+                    {3,12},{5,9}
+                    },
+                    {//walk2(16)
+                    {2,4},{1,4},
+
+                    {6,6},{7,6},
+                    {6,7},{7,7},
+                    {6,8},{7,8},
+                    {6,9},{7,9}
+                    },
+                    {//walk3(17)
+                    {2,4},{1,4},
+
+                    {6,6},{7,6},
+                    {6,7},{7,7},
+                    {8,8},{9,8},
+                    {8,9},{9,9}
+                    },
 
                    },
                    {//char2(Sinclair)
@@ -1324,7 +1379,7 @@ static unsigned char animlib[16][128][32][2]=
                    }
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
-                    {2,2,2,2,3,3},//char1
+                    {2,2,2,2,3,3,2,3,3,2,2,2,2,2,2,2,2,2},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
                     2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},//char2(Sinclair)
                     },
@@ -1408,6 +1463,16 @@ hurtbox[16][128][8][2][2]={
                     {//char 1
                     {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*idle1 (0)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*idle2 (1)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*idle3 (2)*/
                     {{{-9,-10},{12,32}},{{-8,-25},{6,-10}}},/*stand light1 (3)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}},{{9,10},{25,28}}},/*stand light2 (4)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}},{{9,10},{25,28}}},/*stand light3 (5)*/
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*stand medium1 (6)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}},{{9,-20},{25,10}}},/*stand medium2 (7)*/
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}},{{9,-24},{24,-10}}},/*stand medium3 (8)*/{{{-9,-10},{9,32}},{{-8,-30},{6,-10}}},/*stand medium4 (9)*/
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*stand medium5 (10)*/
+                    {{{-9,-10},{9,32}},{{-8,-20},{6,-5}}},/*midhit1 (11)*/
+                    {{{-9,-10},{9,32}},{{-8,-20},{6,-5}}},/*midhit2 (12)*/
+                    {{{-9,-10},{9,32}},{{-12,-20},{2,-5}}},/*overheadhit1 (13)*/
+                    {{{-9,-10},{9,32}},{{-10,-20},{4,-5}}},/*overheadhit2 (14)*/
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk1 (15)*/
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk2 (16)*/
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk3 (17)*/
                     },
                     {//char 2(Sinclair)
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle (0)*/{{{-11,0},{16,32}},{{-1,-15},{15,0}}},/*crouch (1)*/
@@ -1539,6 +1604,16 @@ public:
     bool cancel[64]={},air=false,whiff=true,right,hit=false,slide=false,neutural=true,comboed=false,hitbefore=false,super=false,wallcrash=false,wallcrashed=false,running=false,counter=false;
     float x=0,y=176.0,jumpx=0,jumpy=0,kback=0,launch=0,hp=1000.0,maxhp=1000.0,dmg=0,pushaway=0,grab[2]={},meter=100,mgain=0;
 };
+
+void playerset(player *p){
+    #define p1 (*p)
+    p1.maxhp=950.0;
+    switch(p1.character){
+        case 1:{p1.maxhp=875.0;p1.hurtframes[0]=11;p1.hurtframes[3]=11;p1.hurtframes[5]=13;p1.hurtframes[6]=14;p1.hurtframes[7]=89;p1.hurtframes[8]=90;break;}
+        case 2:{p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;break;}
+    }
+    #undef p1
+}
 
 class characterselect : public sf::Drawable, public sf::Transformable
 {
@@ -2790,9 +2865,10 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
     if(((P2.hitstopped==0&&hitcheck)||projcheck)&&!(P1.counter||clashed)){
         effects fxtemp;
         fxtemp.code=1;fxtemp.x=overlap[0];fxtemp.y=overlap[1];
-        if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){
-            if(P1.block==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[4]],sizeof(animlib[P1.character][P1.hurtframes[4]]));
-            else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[3]],sizeof(animlib[P1.character][P1.hurtframes[3]]));
+        if(((P2.movetype==1||P2.movetype==2)&&P1.block==1)||((P2.movetype==3||P2.movetype==2)&&P1.block==0)||P1.block==2){//blocked
+            if(P1.block==1)P1.frame=P1.hurtframes[4];
+            else P1.frame=P1.hurtframes[3];
+            memcpy(P1.anim,animlib[P1.character][P1.frame],sizeof(animlib[P1.character][P1.frame]));
             P1.meter+=P2.mgain/10*11;
             if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
             P2.dmg/=5;
@@ -2807,13 +2883,14 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             hitsfxlist.push_back(13);
             hsfxx.push_back((bgx+overlap[0]-128.f)/256.f);
         }
-        else{
-            if(P1.col==1)memcpy(P1.anim,animlib[P1.character][P1.hurtframes[2]],sizeof(animlib[P1.character][P1.hurtframes[2]]));
+        else{//hit
+            if(P1.col==1)P1.frame=P1.hurtframes[2];
             else {
-                if(overlap[1]<P1.y-10){P1.frame=P1.hurtframes[5];memcpy(P1.anim,animlib[P1.character][P1.hurtframes[5]],sizeof(animlib[P1.character][P1.hurtframes[5]]));}
-                else if(P2.movetype==1){P1.frame=P1.hurtframes[7];memcpy(P1.anim,animlib[P1.character][P1.hurtframes[7]],sizeof(animlib[P1.character][P1.hurtframes[7]]));}
-                else memcpy(P1.anim,animlib[P1.character][P1.hurtframes[0]],sizeof(animlib[P1.character][P1.hurtframes[0]]));
+                if(overlap[1]<P1.y-10)P1.frame=P1.hurtframes[5];
+                else if(P2.movetype==1)P1.frame=P1.hurtframes[7];
+                else P1.frame=P1.hurtframes[0];
                 }
+            memcpy(P1.anim,animlib[P1.character][P1.frame],sizeof(animlib[P1.character][P1.frame]));
             if(combo==0)for(unsigned i=0;i<64;i++){P1.movescaling[i]=0;P2.movescaling[i]=0;}
             if(P2.hitstop!=0||P2.dmg!=0)combo++;
             if(projcheck){
@@ -3440,8 +3517,11 @@ void projectiledata(player *p,short superstop,short enemycharacter,short enemygi
 void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short enemygstate,short *superstop,short enemycharacter,short enemygimmick[],bool preblock){
     #define P (*p)
     float walkspeed,runspeed,jumprise,jumpfall;
-    if(P.character==0){walkspeed=3;runspeed=6;jumprise=-12;jumpfall=0.8;}
-    else if(P.character==2){walkspeed=2.2;runspeed=5;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}}
+    switch(P.character){
+        case 0:{walkspeed=3;runspeed=6;jumprise=-12;jumpfall=0.8;break;}
+        case 1:{walkspeed=3;runspeed=6;jumprise=-12;jumpfall=0.8;break;}
+        case 2:{walkspeed=2.2;runspeed=5;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}break;}
+    }
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
             walkspeed/=2;runspeed/=2;jumpfall/=2;
@@ -3501,6 +3581,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 if(P.character==2){
                     if(i<2)P.animq.push_back(16);
                     else P.animq.push_back(57);}
+                else if(P.character==1)P.animq.push_back(12);
                 else P.animq.push_back(9);
             }
             if(P.attack.kdown==2||P.hp<=0)P.kdowned=2;
@@ -3943,6 +4024,25 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2});
                 }
                 P.col=0;P.frame=0;P.block=-1;
+                break;
+            }
+            case 1:{//left walk
+                P.col=0;
+                if(preblock){
+                    P.animq.push_back(18);
+                    }
+                else{
+                    if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{17,17,17,17,17,17,17,17,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,15,15,15,15,15,15,15,15});
+                    if(P.x<enemyx)P.right=true;else P.right=false;
+                    if(P.right)P.x-=walkspeed;else P.x+=walkspeed;
+                    }
+                break;
+            }
+            case 3:{//right walk
+                P.col=0;
+                if(P.idleanim.empty())P.idleanim.insert(P.idleanim.begin(),{16,16,16,16,16,16,16,16,15,15,15,15,15,15,15,15,17,17,17,17,17,17,17,17,15,15,15,15,15,15,15,15});
+                if(P.x<enemyx)P.right=true;else P.right=false;
+                if(P.right)P.x+=walkspeed;else P.x-=walkspeed;
                 break;
             }
             case 8:{//u (light normal)
@@ -5419,8 +5519,7 @@ int main()
 
                 p1.maxhp=partymaxhp[p1.character];p2.maxhp=npcs[currentmap][currentnpc].battlehp;
 
-                if(p1.character==2){p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
-                if(p2.character==2){p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+                playerset(&p1);playerset(&p2);
 
                 if(!music.openFromFile("assets/music/Time and time again.wav")){window.close();gamequit=true;}
                 music.play();
@@ -5876,8 +5975,7 @@ int main()
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
             p1.maxhp=950.0;p2.maxhp=950.0;
-            if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
-            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+            playerset(&p1);playerset(&p2);
 
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
@@ -6330,8 +6428,7 @@ int main()
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
             p1.maxhp=950.0;p2.maxhp=950.0;
-            if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
-            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+            playerset(&p1);playerset(&p2);
                 std::deque<player> precord;
                 std::deque<std::deque<char>> dirrecord,urecord,irecord,orecord,krecord;
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
@@ -6861,8 +6958,7 @@ int main()
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
             p1.maxhp=950.0;p2.maxhp=950.0;
-            if(p1.character==2){p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;}
-            if(p2.character==2){p2.maxhp=900.0;p2.hurtframes[0]=15;p2.hurtframes[3]=17;p2.hurtframes[5]=87;p2.hurtframes[6]=88;p2.hurtframes[7]=89;p2.hurtframes[8]=90;}
+            playerset(&p1);playerset(&p2);
             if(menuselect==3){//training
                 if(!music.openFromFile("assets/music/practice mode.wav")){window.close();gamequit=true;}
                 music.play();
