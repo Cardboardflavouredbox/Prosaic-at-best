@@ -1636,7 +1636,7 @@ public:
     attackdata attack;
     unsigned char anim[64][2]={},color=0;
     short gimmick[8]={},hbframe=0,act=0,col=0,frame=0,block=-1,//-1=not blocking,0=stand blocking,1=crouch blocking.2=all blocking
-    hitstun=0,blockstun=0,hitstop=0,wins=0,character=0,hurtframes[9]={56,56,57,32,33,56,56,56,56},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block,5=overhead1,6=overhead2,7=low,8=low
+    hitstun=0,blockstun=0,hitstop=0,wins=0,character=0,hurtframes[9]={56,9,57,32,33,56,9,56,9},//0=stand,1=stand2,2=crouch,3=stand block,4=crouch block,5=overhead1,6=overhead2,7=low,8=low
     buffer=0,kdown=0,kdowned=0,movewaitx=0,movewaity=0,movetype=0,//-1=can't do anything,0=whiff cancelable,1=low,2=middle,3=overhead,4=unblockable
     landdelay=0,hitstopped=0,grabstate=-1,//-1=neutural,0=grab escape,1=normal grab,2=command grab,3=grab confirmed normal,4=grab confirmed command
     iframes=0,grabiframes=0,hitcount=0,
@@ -1926,64 +1926,72 @@ class effects : public sf::Drawable, public sf::Transformable
 {
 public:
     void create(){
-        if(code==0){//basic particles
-            m_vertices.setPrimitiveType(sf::PrimitiveType::Points);
-            m_vertices.resize(3);
-            sf::Vertex* point = &m_vertices[1];
-            point[0].position = sf::Vector2f(x+bgx+std::cos(dir*3.14/180)*frame*speed,y+std::sin(dir*3.14/180)*frame*speed);
-            point[0].color = color1;
-        }
-        else if(code==1){//hit lines
-            m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
-            m_vertices.resize(32);
-            for(short i=0;i<8;i++){
-                float angle=i * 3.14f / 4.f;
+        switch(code){
+            case 0:{//basic particles
+                m_vertices.setPrimitiveType(sf::PrimitiveType::Points);
+                m_vertices.resize(3);
+                sf::Vertex* point = &m_vertices[1];
+                point[0].position = sf::Vector2f(x+bgx+std::cos(dir*3.14/180)*frame*speed,y+std::sin(dir*3.14/180)*frame*speed);
+                point[0].color = color1;
+                break;
+            }
+            case 1:{//hit lines
+                m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
+                m_vertices.resize(32);
+                for(short i=0;i<8;i++){
+                    float angle=i * 3.14f / 4.f;
+                    float xtemp=std::cos(angle),ytemp=std::sin(angle);
+                    sf::Vertex* line = &m_vertices[i*2];
+                    if(frame==0){
+                        line[i*2].position = sf::Vector2f(x+xtemp+bgx,y+ytemp);line[i*2+1].position = sf::Vector2f(xtemp*16+x+bgx,ytemp*16+y);
+                    }
+                    else{
+                        line[i*2].position = sf::Vector2f(xtemp*(frame+8)+bgx+x,ytemp*(frame+8)+y);
+                        line[i*2+1].position = sf::Vector2f(xtemp*(float(frame)/8+16)+bgx+x,ytemp*(float(frame)/8+16)+y);
+                    }
+                    if(frame>3&&frame%2==1&&flash){line[i*2].color=sf::Color::Transparent;line[i*2+1].color=sf::Color::Transparent;}
+                    else {line[i*2].color=color1;line[i*2+1].color=color1;}
+                }
+                break;
+            }
+            case 2:{//hit circle
+                m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
+                m_vertices.resize(192);
+                sf::Vertex* circle = &m_vertices[96];
+                for(unsigned int i=0;i<36;i++){
+                    float angle=i * 3.14f / 18.f,angle2=(i+1) * 3.14f / 18.f;
+                    circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)*speed+x+bgx,(std::sin(angle))*(4+frame)*speed+y);
+                    circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)*speed+x+bgx,(std::sin(angle2))*(4+frame)*speed+y);
+                    if(frame>3&&frame%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
+                    else {circle[i*2].color=color1;circle[i*2+1].color=color1;}
+                }
+                break;
+            }
+            case 3:{//hit flash
+                m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+                m_vertices.resize(9);
+                sf::Vertex* tri = &m_vertices[3];
+                tri[0].position = sf::Vector2f(std::cos((dir)*3.14/180)*4+x+bgx,std::sin((dir)*3.14/180)*4+y);
+                tri[1].position = sf::Vector2f(std::cos((dir+fxsize/2)*3.14/180)*512+x+bgx,std::sin((dir+fxsize/2)*3.14/180)*512+y);
+                tri[2].position = sf::Vector2f(std::cos((dir-fxsize/2)*3.14/180)*480+x+bgx,std::sin((dir-fxsize/2)*3.14/180)*480+y);
+                if(frame%2==0&&frame>3&&flash){tri[0].color = sf::Color::Transparent;tri[1].color = sf::Color::Transparent;tri[+2].color = sf::Color::Transparent;}
+                else{tri[0].color = color1;tri[1].color = color1;tri[2].color = color1;}
+                break;
+            }
+            case 4:{//lines
+                m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
+                m_vertices.resize(8);
+                float angle=speed * dir * 3.14f / 4.f;
                 float xtemp=std::cos(angle),ytemp=std::sin(angle);
-                sf::Vertex* line = &m_vertices[i*2];
-                if(frame==0){
-                    line[i*2].position = sf::Vector2f(x+xtemp+bgx,y+ytemp);line[i*2+1].position = sf::Vector2f(xtemp*16+x+bgx,ytemp*16+y);
-                }
-                else{
-                    line[i*2].position = sf::Vector2f(xtemp*(frame+8)+bgx+x,ytemp*(frame+8)+y);
-                    line[i*2+1].position = sf::Vector2f(xtemp*(float(frame)/8+16)+bgx+x,ytemp*(float(frame)/8+16)+y);
-                }
-                if(frame>3&&frame%2==1&&flash){line[i*2].color=sf::Color::Transparent;line[i*2+1].color=sf::Color::Transparent;}
-                else {line[i*2].color=color1;line[i*2+1].color=color1;}
+                sf::Vertex* line = &m_vertices[2];
+                line[0].position = sf::Vector2f(bgx+x,y);
+                line[1].position = sf::Vector2f(xtemp*fxsize+bgx+x,ytemp*fxsize+y);
+                if(frame>3&&frame%2==1&&flash){line[0].color=sf::Color::Transparent;line[1].color=sf::Color::Transparent;}
+                else {line[0].color=color1;line[1].color=color1;}
+                break;
             }
         }
-        else if(code==2){//hit circle
-            m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
-            m_vertices.resize(192);
-            sf::Vertex* circle = &m_vertices[96];
-            for(unsigned int i=0;i<36;i++){
-                float angle=i * 3.14f / 18.f,angle2=(i+1) * 3.14f / 18.f;
-                circle[i*2].position = sf::Vector2f((std::cos(angle))*(4+frame)*speed+x+bgx,(std::sin(angle))*(4+frame)*speed+y);
-                circle[i*2+1].position = sf::Vector2f((std::cos(angle2))*(4+frame)*speed+x+bgx,(std::sin(angle2))*(4+frame)*speed+y);
-                if(frame>3&&frame%2==1&&flash){circle[i*2].color=sf::Color::Transparent;circle[i*2+1].color=sf::Color::Transparent;}
-                else {circle[i*2].color=color1;circle[i*2+1].color=color1;}
-            }
-        }
-        else if(code==3){//hit flash
-            m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-            m_vertices.resize(9);
-            sf::Vertex* tri = &m_vertices[3];
-            tri[0].position = sf::Vector2f(std::cos((dir)*3.14/180)*4+x+bgx,std::sin((dir)*3.14/180)*4+y);
-            tri[1].position = sf::Vector2f(std::cos((dir+fxsize/2)*3.14/180)*512+x+bgx,std::sin((dir+fxsize/2)*3.14/180)*512+y);
-            tri[2].position = sf::Vector2f(std::cos((dir-fxsize/2)*3.14/180)*480+x+bgx,std::sin((dir-fxsize/2)*3.14/180)*480+y);
-            if(frame%2==0&&frame>3&&flash){tri[0].color = sf::Color::Transparent;tri[1].color = sf::Color::Transparent;tri[+2].color = sf::Color::Transparent;}
-            else{tri[0].color = color1;tri[1].color = color1;tri[2].color = color1;}
-        }
-        else if(code==4){//lines
-            m_vertices.setPrimitiveType(sf::PrimitiveType::Lines);
-            m_vertices.resize(8);
-            float angle=speed * dir * 3.14f / 4.f;
-            float xtemp=std::cos(angle),ytemp=std::sin(angle);
-            sf::Vertex* line = &m_vertices[2];
-            line[0].position = sf::Vector2f(bgx+x,y);
-            line[1].position = sf::Vector2f(xtemp*fxsize+bgx+x,ytemp*fxsize+y);
-            if(frame>3&&frame%2==1&&flash){line[0].color=sf::Color::Transparent;line[1].color=sf::Color::Transparent;}
-            else {line[0].color=color1;line[1].color=color1;}
-        }
+
         frame++;
     }
 
@@ -2956,18 +2964,26 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             fxtemp.ontopofplayer=false;
             for(short i=0;i<60;i++){
                 fxtemp.code=0;
-                fxtemp.dir=atan2f(P1.y-P2.y,P1.x-P2.x)*180/3.14+(dis(gen)-180)/9;
+                fxtemp.y=overlap[1]+(dis(gen)-180)/90;
+                fxtemp.dir=atan2f(P1.y-P2.y,P1.x-P2.x)*180/3.14+(dis(gen)-180)/6;
                 fxtemp.speed=2+dis(gen)/120.f;
-                fxtemp.color1=sf::Color(255,255,255);
+                fxtemp.color1=sf::Color::Black;
                 fxtemp.len=10+dis2(gen);
                 effectslist.push_back(fxtemp);
             }
             */
-           
             fxtemp.ontopofplayer=true;
             fxtemp.color1=sf::Color (255, 255, 255);
             fxtemp.len=P1.hitstopped;if(fxtemp.len<10&&fxtemp.len>0)fxtemp.len=10;
             if(P2.hitstop>13){
+            for(short i=0;i<15;i++){
+                fxtemp.code=0;
+                fxtemp.dir=dis(gen);
+                fxtemp.speed=2+dis(gen)/120.f;
+                fxtemp.len=10+dis2(gen)*2;
+                effectslist.push_back(fxtemp);
+            }
+            fxtemp.len=P1.hitstopped;if(fxtemp.len<10&&fxtemp.len>0)fxtemp.len=10;
             fxtemp.speed=1;
             for(short i=0;i<3;i++){
                 fxtemp.code=3;fxtemp.dir=dis(gen);
@@ -3659,7 +3675,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         short temp[1]={-1};boolfill(P.cancel,true,temp);
         }
     }
-    else if(P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1){
+    else if(P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1){//hit ended
         if(P.comboed&&P.kdowned>0&&!P.air){
             P.col=2;P.comboed=false;
             if(P.x<enemyx)P.right=true;
@@ -3683,7 +3699,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
     }
 
-    if(P.wallcrashed&&(P.x+bgx>=240||P.x+bgx<=16)){
+    if(P.wallcrashed&&(P.x+bgx>=240||P.x+bgx<=16)){//wallcrashed
         P.jumpx*=-0.25;
         P.jumpy=-17;
         P.movewaitx=12;
@@ -3706,7 +3722,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         }
     }
 
-    if(enemygstate==3&&P.act==25){
+    if(enemygstate==3&&P.act==25){//grabbed
             P.grabstate=0;
             P.slide=true;
             if(P.x<enemyx)P.jumpx=-8;
@@ -3716,7 +3732,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             for(short i=0;i<20;i++)P.animq.push_back(32);
         }
 
-    if(P.grabstate==1&&!P.whiff)P.grabstate=3;
+    if(P.grabstate==1&&!P.whiff)P.grabstate=3;//grab
     if(P.grabstate==2&&!P.whiff)P.grabstate=4;
     if(P.grabstate==3){
             if(enemygstate==0){
@@ -3734,7 +3750,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     }
     if((P.comboed&&P.act==15&&(P.meter>=200||(P.meter>=100&&P.block==2)))||(P.block==2&&P.act==25)||(!P.hit&&((P.animq.empty()&&P.movewaitx==-1&&P.movewaity==-1)||((P.cancel[P.act]==true)&&((!P.whiff)||P.movetype==0||P.grabstate==3||P.grabstate==4))))){
         P.moveact=P.act;
-        if(P.cancel[P.act]==true||(P.comboed&&P.act==15)||(P.block==2&&P.act==25)){
+        if(P.cancel[P.act]==true||(P.comboed&&P.act==15)||(P.block==2&&P.act==25)){//cancel set
             P.buffer=0;P.slide=false;P.hitstun=0;P.blockstun=0;P.kback=0;P.dmg=0;P.launch=0;P.kdown=0;P.movewaitx=-1;P.movewaity=-1;
             P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.landdelay=0;if(!P.air){P.jumpx=0;P.jumpy=0;}P.mgain=0;P.super=false;
             short temp[0]={};boolfill(P.cancel,true,temp);P.cancel[0]=false;P.iframes=0;P.wallcrash=false;
@@ -4473,7 +4489,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
                 }
             case 28:{//special C (u)
-                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=12;P.blockstun=7;P.dmg=34;P.slide=true;P.movetype=2;P.mgain=7;
+                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=12;P.blockstun=7;P.dmg=34;P.slide=true;P.movetype=2;P.mgain=7;P.iframes=3;
                 P.animq.insert(P.animq.begin(),{78,78,78,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,10,10,10,10,10});
                 short temp[2]={15,32};boolfill(P.cancel,true,temp);
@@ -4483,7 +4499,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 29:{//special C (i)
-                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=43;P.slide=true;P.movetype=2;P.mgain=7;
+                P.col=0;P.hitcount=1;P.hitstop=13;P.kback=5;P.hitstun=17;P.blockstun=14;P.dmg=43;P.slide=true;P.movetype=2;P.mgain=7;P.iframes=3;
                 P.animq.insert(P.animq.begin(),{78,78,78,78,79,79,79,79,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,10,10,10,10,10});
                 short temp[2]={15,32};boolfill(P.cancel,true,temp);
@@ -4493,7 +4509,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 break;
             }
             case 30:{//special C (o)
-                P.col=0;P.hitcount=2;P.hitstop=13;P.kback=6;P.hitstun=19;P.blockstun=12;P.dmg=30;P.slide=true;P.movetype=2;P.mgain=7;
+                P.col=0;P.hitcount=2;P.hitstop=13;P.kback=6;P.hitstun=19;P.blockstun=12;P.dmg=30;P.slide=true;P.movetype=2;P.mgain=7;P.iframes=3;
                 P.animq.insert(P.animq.begin(),{78,78,78,78,78,78,79,79,79,79,79,79,80,80,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,81,82,82,82});
                 P.hitboxanim.insert(P.hitboxanim.begin(),{0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,10});
                 short temp[2]={15,32};boolfill(P.cancel,true,temp);
@@ -4623,7 +4639,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         P.y=enemyy-P.attack.grab[1];
         if(P.y<176)P.air=true;
     }
-    if(!P.atkfx.empty()){
+    if(!P.atkfx.empty()){//atkfxs
         switch(P.character){
             case 0:{
                 if(P.atkfx[0]==5){*superstop=20;P.super=true;P.meter-=100;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);}
@@ -4837,6 +4853,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     break;
                 }
                 case 7:{
+                    P.iframes=3;
                     std::uniform_int_distribution<int> dis(1,3),dis2(-16,14),dis3(0,1);
                     effects temp;
                     temp.code=0;
