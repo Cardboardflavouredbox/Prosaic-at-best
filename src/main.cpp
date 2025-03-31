@@ -589,6 +589,46 @@ static unsigned char animlib[16][128][32][2]=
                     {8,8},{9,8},
                     {8,9},{9,9}
                     },
+                    {//specialA1 (18)
+                    {2,5},{1,5},
+
+                    {255,255},{10,4},
+                    {0,0},{10,5},
+                    {0,1},{10,6},
+                    {0,2},{10,7},
+                    {0,3},{1,3}
+                    },
+                    {//specialA2 (19)
+                    {3,5},{1,5},
+
+                    {255,255},{11,4},{12,4},
+                    {0,0},{11,5},{12,5},
+                    {0,1},{11,6},{12,6},
+                    {0,2},{11,7},{12,7},
+                    {0,3},{1,3},{255,255}
+                    },
+                    {//specialA3 (20)
+                    {2,4},{1,4},
+
+                    {0,0},{13,5},
+                    {0,1},{13,6},
+                    {0,2},{13,7},
+                    {0,3},{1,3}
+                    },
+                    {//special projectile1 (21)
+                    {2,3},{1,3},
+
+                    {10,8},{11,8},
+                    {255,255},{11,9},
+                    {10,10},{11,10}
+                    },
+                    {//special projectile2 (22)
+                    {2,3},{1,3},
+
+                    {12,8},{13,8},
+                    {255,255},{13,9},
+                    {12,10},{13,10}
+                    },
 
                    },
                    {//char2(Sinclair)
@@ -1379,7 +1419,7 @@ static unsigned char animlib[16][128][32][2]=
                    }
                 },
                    hurtboxcount[16][256]={{2,3,3,2,2,2,3,3,2,2,3,3,2,3,3,2,2,2,2,0,2,2,2,2,3,3,2,3,3,3,3,3,2,2,0,2,3,3,2,2,2,3,3,2,2,2,2,2,2,2,3,3,3,2,1,1,2,2,1,1,1},
-                    {2,2,2,2,3,3,2,3,3,2,2,2,2,2,2,2,2,2},//char1
+                    {2,2,2,2,3,3,2,3,3,2,2,2,2,2,2,2,2,2,2,2,1,1},//char1
                     {2,2,2,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,1,1,2,2,2,3,3,3,3,3,3,2,2,3,2,2,3,3,
                     2,2,2,3,3,3,2,2,2,2,2,2,2,3,0,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},//char2(Sinclair)
                     },
@@ -1471,6 +1511,8 @@ hurtbox[16][128][8][2][2]={
                     {{{-9,-10},{9,32}},{{-25,-15},{-11,0}}},/*overheadhit1 (13)*/
                     {{{-9,-10},{9,32}},{{-20,-20},{-6,-5}}},/*overheadhit2 (14)*/
                     {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk1 (15)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk2 (16)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk3 (17)*/
+                    {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*specialA1 (18)*/{{{-9,-10},{15,32}},{{-8,-25},{6,-10}}},/*specialA2 (19)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*specialA3 (20)*/
+                    {{{-9,-32},{9,32}}},/*specialA projectile1 (21)*/{{{-9,-32},{9,32}}},/*specialA projectile1 (22)*/
                     },
                     {//char 2(Sinclair)
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle (0)*/{{{-11,0},{16,32}},{{-1,-15},{15,0}}},/*crouch (1)*/
@@ -4094,6 +4136,20 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                 }
                 break;
             }
+            case 16:{//special A (u)
+                if(P.air){
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{18,18,18,18,18,18,18,18,18,19,20,20,20,20,20,20,20,20,20,20,20,20});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,1});
+                }
+                else{
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.animq.insert(P.animq.begin(),{18,18,18,18,18,18,18,18,18,19,20,20,20,20,20,20,20,20,20,20,20,20});
+                    P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,1});
+                    P.cancel[32]=true;
+                }
+                break;
+            }
             }
             break;
         }
@@ -4568,222 +4624,260 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         if(P.y<176)P.air=true;
     }
     if(!P.atkfx.empty()){
-        if(P.character==0){
-            if(P.atkfx[0]==5){*superstop=20;P.super=true;P.meter-=100;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);}
-            if(P.atkfx[0]==1||P.atkfx[0]==2||P.atkfx[0]==3||P.atkfx[0]==4){//projectile
-                P.meter+=P.mgain;
-                projectile temp;
-                temp.movetype=P.movetype;
-                temp.x=P.x;temp.y=P.y;
-                if(P.atkfx[0]==1)temp.movex=4;
-                else if(P.atkfx[0]==2)temp.movex=5;
-                else if(P.atkfx[0]==3)temp.movex=6;
-                else if(P.atkfx[0]==4)temp.movex=12;
-                temp.movey=0;
-                temp.moveact=P.moveact;
-                temp.hitcount=1;
-                temp.hitstop=P.hitstop;
-                temp.hitstun=P.hitstun;temp.blockstun=P.blockstun;
-                temp.dmg=P.dmg;
-                temp.mgain=P.mgain;
-                temp.kback=P.kback;
-                temp.right=P.right;
-                temp.looplen=2;
-                temp.knockdown=P.kdown;
-                temp.loopanim[0]=54;
-                temp.loopanim[1]=55;
-                temp.launch=P.launch;
-                temp.endanim.insert(temp.endanim.begin(),{58,59,60});
-                temp.frame=54;
-                if(P.proj.size()<32)P.proj.push_back(temp);
-                    }
-        }
-        else if(P.character==2){
-        switch (P.atkfx[0]){
-            case 1:
-            case 3:
-            case 8:
-            case 10:
-            case 15:
-            case 16:
-            case 17:
-            case 18:{//projectile
-                soundfxlist.push_back(10);
-                sfxx.push_back((bgx+P.x-128.f)/256.f);
-                P.meter+=P.mgain;
-                projectile temp;
-                temp.movetype=P.movetype;
-                if(P.right)temp.x=P.x+32;
-                else temp.x=P.x-32;
-                temp.y=P.y;
-                temp.movex=0.5;
-                if(P.atkfx[0]==8||P.atkfx[0]==10||P.atkfx[0]==16){temp.movey=0.25;P.jumpy=-3;}
-                else if(P.atkfx[0]==18){temp.movex=5;temp.movey=-4;P.jumpy=-3;}
-                else if(P.atkfx[0]==17){temp.movex=5;temp.movey=-4;}
-                else temp.movey=0;
-                temp.hitcount=1;
-                temp.moveact=P.moveact;
-                temp.hitstop=P.hitstop;
-                temp.hitstun=P.hitstun;temp.blockstun=P.blockstun;
-                temp.dmg=14;
-                temp.mgain=P.mgain;
-                temp.kback=P.kback;
-                temp.right=P.right;
-                temp.looplen=12;
-                temp.knockdown=P.kdown;
-                temp.loopanim[0]=42;
-                temp.loopanim[1]=42;
-                temp.loopanim[2]=42;
-                temp.loopanim[3]=42;
-                temp.loopanim[4]=42;
-                temp.loopanim[5]=42;
-                temp.loopanim[6]=43;
-                temp.loopanim[7]=43;
-                temp.loopanim[8]=43;
-                temp.loopanim[9]=43;
-                temp.loopanim[10]=43;
-                temp.loopanim[11]=43;
-                temp.endanim.push_back(42);
-                temp.endanim.push_back(43);
-                if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
-                else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
-                else if(P.atkfx[0]==17||P.atkfx[0]==18)temp.code=3;
-                else if(P.atkfx[0]==15||P.atkfx[0]==16){
-                    temp.code=1;
-                    temp.movex*=20;
-                    temp.movey*=20;
-                    temp.dmg=28;
+        switch(P.character){
+            case 0:{
+                if(P.atkfx[0]==5){*superstop=20;P.super=true;P.meter-=100;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);}
+                if(P.atkfx[0]==1||P.atkfx[0]==2||P.atkfx[0]==3||P.atkfx[0]==4){//projectile
+                    P.meter+=P.mgain;
+                    projectile temp;
+                    temp.movetype=P.movetype;
+                    temp.x=P.x;temp.y=P.y;
+                    if(P.atkfx[0]==1)temp.movex=4;
+                    else if(P.atkfx[0]==2)temp.movex=5;
+                    else if(P.atkfx[0]==3)temp.movex=6;
+                    else if(P.atkfx[0]==4)temp.movex=12;
+                    temp.movey=0;
+                    temp.moveact=P.moveact;
+                    temp.hitcount=1;
+                    temp.hitstop=P.hitstop;
+                    temp.hitstun=P.hitstun;temp.blockstun=P.blockstun;
+                    temp.dmg=P.dmg;
+                    temp.mgain=P.mgain;
+                    temp.kback=P.kback;
+                    temp.right=P.right;
                     temp.looplen=2;
+                    temp.knockdown=P.kdown;
+                    temp.loopanim[0]=54;
+                    temp.loopanim[1]=55;
+                    temp.launch=P.launch;
+                    temp.endanim.insert(temp.endanim.begin(),{58,59,60});
+                    temp.frame=54;
+                    if(P.proj.size()<32)P.proj.push_back(temp);
+                        }
+                break;
+            }
+            case 1:{
+                switch (P.atkfx[0]){
+                    case 1:{
+                    P.meter+=P.mgain;
+                    if(P.hp>10)P.hp-=10;
+                    projectile temp;
+                    temp.movetype=P.movetype;
+                    temp.x=P.x;temp.y=P.y-16;
+                    if(P.atkfx[0]==1)temp.movex=4;
+                    else if(P.atkfx[0]==2)temp.movex=5;
+                    else if(P.atkfx[0]==3)temp.movex=6;
+                    else if(P.atkfx[0]==4)temp.movex=12;
+                    temp.movey=0;
+                    temp.moveact=P.moveact;
+                    temp.hitcount=1;
+                    temp.hitstop=P.hitstop;
+                    temp.hitstun=P.hitstun;temp.blockstun=P.blockstun;
+                    temp.dmg=P.dmg;
+                    temp.mgain=P.mgain;
+                    temp.kback=P.kback;
+                    temp.right=P.right;
+                    temp.looplen=2;
+                    temp.knockdown=P.kdown;
+                    temp.loopanim[0]=21;
+                    temp.loopanim[1]=22;
+                    temp.launch=P.launch;
+                    //temp.endanim.insert(temp.endanim.begin(),{21,21,21});
+                    temp.frame=21;
+                    if(P.proj.size()<32)P.proj.push_back(temp);
+                    break;
+                    }
+                }
+                break;
+            }
+            case 2:{
+                switch (P.atkfx[0]){
+                case 1:
+                case 3:
+                case 8:
+                case 10:
+                case 15:
+                case 16:
+                case 17:
+                case 18:{//projectile
+                    soundfxlist.push_back(10);
+                    sfxx.push_back((bgx+P.x-128.f)/256.f);
+                    P.meter+=P.mgain;
+                    projectile temp;
+                    temp.movetype=P.movetype;
+                    if(P.right)temp.x=P.x+32;
+                    else temp.x=P.x-32;
+                    temp.y=P.y;
+                    temp.movex=0.5;
+                    if(P.atkfx[0]==8||P.atkfx[0]==10||P.atkfx[0]==16){temp.movey=0.25;P.jumpy=-3;}
+                    else if(P.atkfx[0]==18){temp.movex=5;temp.movey=-4;P.jumpy=-3;}
+                    else if(P.atkfx[0]==17){temp.movex=5;temp.movey=-4;}
+                    else temp.movey=0;
+                    temp.hitcount=1;
+                    temp.moveact=P.moveact;
+                    temp.hitstop=P.hitstop;
+                    temp.hitstun=P.hitstun;temp.blockstun=P.blockstun;
+                    temp.dmg=14;
+                    temp.mgain=P.mgain;
+                    temp.kback=P.kback;
+                    temp.right=P.right;
+                    temp.looplen=12;
+                    temp.knockdown=P.kdown;
                     temp.loopanim[0]=42;
-                    temp.loopanim[1]=43;
-                    temp.hitstun=10;temp.blockstun=2;
-                    effects tempfx;
-                    tempfx.color1=sf::Color (85, 255, 255);
-                    tempfx.len=4;
-                    tempfx.x=temp.x;tempfx.y=temp.y-5;
-                    if(temp.right)tempfx.x+=8;
-                    else tempfx.x-=8;
-                    tempfx.code=2;tempfx.speed=0.7;
-                    effectslist.push_back(tempfx);
-                    tempfx.speed=2;
-                    effectslist.push_back(tempfx);
-                    tempfx.code=1;
+                    temp.loopanim[1]=42;
+                    temp.loopanim[2]=42;
+                    temp.loopanim[3]=42;
+                    temp.loopanim[4]=42;
+                    temp.loopanim[5]=42;
+                    temp.loopanim[6]=43;
+                    temp.loopanim[7]=43;
+                    temp.loopanim[8]=43;
+                    temp.loopanim[9]=43;
+                    temp.loopanim[10]=43;
+                    temp.loopanim[11]=43;
+                    temp.endanim.push_back(42);
+                    temp.endanim.push_back(43);
+                    if(P.atkfx[0]==1||P.atkfx[0]==8)temp.code=0;
+                    else if(P.atkfx[0]==3||P.atkfx[0]==10)temp.code=2;
+                    else if(P.atkfx[0]==17||P.atkfx[0]==18)temp.code=3;
+                    else if(P.atkfx[0]==15||P.atkfx[0]==16){
+                        temp.code=1;
+                        temp.movex*=20;
+                        temp.movey*=20;
+                        temp.dmg=28;
+                        temp.looplen=2;
+                        temp.loopanim[0]=42;
+                        temp.loopanim[1]=43;
+                        temp.hitstun=10;temp.blockstun=2;
+                        effects tempfx;
+                        tempfx.color1=sf::Color (85, 255, 255);
+                        tempfx.len=4;
+                        tempfx.x=temp.x;tempfx.y=temp.y-5;
+                        if(temp.right)tempfx.x+=8;
+                        else tempfx.x-=8;
+                        tempfx.code=2;tempfx.speed=0.7;
+                        effectslist.push_back(tempfx);
+                        tempfx.speed=2;
+                        effectslist.push_back(tempfx);
+                        tempfx.code=1;
+                    }
+                    temp.launch=P.launch;
+                    temp.frame=42;
+                    //temp.endanim.insert(temp.endanim.begin(),{42});
+                    if(P.proj.size()<32)P.proj.push_back(temp);
+                    break;
                 }
-                temp.launch=P.launch;
-                temp.frame=42;
-                //temp.endanim.insert(temp.endanim.begin(),{42});
-                if(P.proj.size()<32)P.proj.push_back(temp);
-                break;
-            }
-            case 4:{//gimmick
-                P.cancel[24]=true;P.movetype=0;
-                for(short i=0;i<P.proj.size();i++){
-                    if(P.proj[i].movex<5&&P.proj[i].code==0){
-                        P.proj[i].movex*=20;
-                        P.proj[i].movey*=20;
-                        P.proj[i].dmg=28;
-                        P.proj[i].looplen=2;
-                        P.proj[i].loopanim[0]=42;
-                        P.proj[i].loopanim[1]=43;
-                        P.proj[i].hitstun=10;P.proj[i].blockstun=2;
-                        effects temp;
-                        temp.color1=sf::Color (85, 255, 255);
-                        temp.len=4;
-                        temp.x=P.proj[i].x;temp.y=P.proj[i].y-5;
-                        if(P.proj[i].right)temp.x+=8;
-                        else temp.x-=8;
-                        temp.code=2;temp.speed=0.7;
-                        effectslist.push_back(temp);
-                        temp.speed=2;
+                case 4:{//gimmick
+                    P.cancel[24]=true;P.movetype=0;
+                    for(short i=0;i<P.proj.size();i++){
+                        if(P.proj[i].movex<5&&P.proj[i].code==0){
+                            P.proj[i].movex*=20;
+                            P.proj[i].movey*=20;
+                            P.proj[i].dmg=28;
+                            P.proj[i].looplen=2;
+                            P.proj[i].loopanim[0]=42;
+                            P.proj[i].loopanim[1]=43;
+                            P.proj[i].hitstun=10;P.proj[i].blockstun=2;
+                            effects temp;
+                            temp.color1=sf::Color (85, 255, 255);
+                            temp.len=4;
+                            temp.x=P.proj[i].x;temp.y=P.proj[i].y-5;
+                            if(P.proj[i].right)temp.x+=8;
+                            else temp.x-=8;
+                            temp.code=2;temp.speed=0.7;
+                            effectslist.push_back(temp);
+                            temp.speed=2;
+                            effectslist.push_back(temp);
+                        }
+                        else if(P.proj[i].looplen>2&&P.proj[i].code==3){
+                            P.proj[i].dmg=28;
+                            P.proj[i].looplen=2;
+                            P.proj[i].loopanim[0]=42;
+                            P.proj[i].loopanim[1]=43;
+                            P.proj[i].hitstun=10;P.proj[i].blockstun=2;
+                            effects temp;
+                            temp.color1=sf::Color (85, 255, 255);
+                            temp.len=4;
+                            temp.x=P.proj[i].x;temp.y=P.proj[i].y-5;
+                            if(P.proj[i].right)temp.x+=8;
+                            else temp.x-=8;
+                            temp.code=2;temp.speed=0.7;
+                            effectslist.push_back(temp);
+                            temp.speed=2;
+                            effectslist.push_back(temp);
+                        }
+                    }
+                    effects temp;
+                    temp.color1=sf::Color (85, 255, 255);
+                    temp.len=4;
+                    temp.x=P.x;temp.y=P.y-12;
+                    if(P.right)temp.x-=15;
+                    else temp.x+=15;
+                    temp.code=2;temp.speed=1;
+                    effectslist.push_back(temp);
+                    temp.speed=3;
+                    effectslist.push_back(temp);
+                    break;
+                }
+                case 5:{*superstop=20;P.super=true;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}
+                case 6:{
+                    if(P.gimmick[1]>0)P.gimmick[1]=0;
+                    else P.gimmick[1]=32767;
+                    soundfxlist.push_back(12);sfxx.push_back((bgx+P.x-128.f)/256.f);
+                    effects temp;
+                    temp.color1=sf::Color (85, 255, 255);
+                    temp.len=7;
+                    temp.x=P.x;temp.y=P.y-12;
+                    if(P.right)temp.x-=15;
+                    else temp.x+=15;
+                    temp.code=2;temp.speed=3;
+                    effectslist.push_back(temp);
+                    temp.speed=9;
+                    effectslist.push_back(temp);
+                    break;
+                }
+                case 7:{
+                    std::uniform_int_distribution<int> dis(1,3),dis2(-16,14),dis3(0,1);
+                    effects temp;
+                    temp.code=0;
+                    temp.frame=0;
+                    temp.len=2;
+                    temp.color1=(sf::Color(170*((colorpalettes[P.color][1]/4)%2) + 85*(colorpalettes[P.color][1]/8), (1-(colorpalettes[P.color][1]==6)/3.0)*170*((colorpalettes[P.color][1]/2)%2) + 85*(colorpalettes[P.color][1]/8), 170*(colorpalettes[P.color][1]%2) + 85*(colorpalettes[P.color][1]/8)));
+                    for(short j=0;j<128;j++){
+                        if(dis3(gen)==0)temp.speed=-dis(gen);
+                        else temp.speed=dis(gen);
+                        temp.x=P.x+dis2(gen)/2.f;
+                        temp.y=P.y+4+dis2(gen)*2;
                         effectslist.push_back(temp);
                     }
-                    else if(P.proj[i].looplen>2&&P.proj[i].code==3){
-                        P.proj[i].dmg=28;
-                        P.proj[i].looplen=2;
-                        P.proj[i].loopanim[0]=42;
-                        P.proj[i].loopanim[1]=43;
-                        P.proj[i].hitstun=10;P.proj[i].blockstun=2;
-                        effects temp;
-                        temp.color1=sf::Color (85, 255, 255);
-                        temp.len=4;
-                        temp.x=P.proj[i].x;temp.y=P.proj[i].y-5;
-                        if(P.proj[i].right)temp.x+=8;
-                        else temp.x-=8;
-                        temp.code=2;temp.speed=0.7;
-                        effectslist.push_back(temp);
-                        temp.speed=2;
+                    if(P.y==enemyy){
+                        if(P.right)P.x=enemyx-48;
+                        else P.x=enemyx+48;
+                    }
+                    else{
+                        if(P.right)P.x+=64;
+                        else P.x-=64;
+                    }
+                    for(short j=0;j<128;j++){
+                        if(dis3(gen)==0)temp.speed=-dis(gen);
+                        else temp.speed=dis(gen);
+                        temp.x=P.x+dis2(gen)/2.f;
+                        temp.y=P.y+4+dis2(gen)*2;
                         effectslist.push_back(temp);
                     }
+                    break;
                 }
-                effects temp;
-                temp.color1=sf::Color (85, 255, 255);
-                temp.len=4;
-                temp.x=P.x;temp.y=P.y-12;
-                if(P.right)temp.x-=15;
-                else temp.x+=15;
-                temp.code=2;temp.speed=1;
-                effectslist.push_back(temp);
-                temp.speed=3;
-                effectslist.push_back(temp);
+                case 11:{soundfxlist.push_back(9);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}
+                case 12:{
+                    voicesfxlist.push_back(5);vsfxx.push_back((bgx+P.x-128.f)/256.f);
+                    soundfxlist.push_back(6);sfxx.push_back((bgx+P.x-128.f)/256.f);
+                    break;
+                }
+                case 13:{P.counter=true;P.meter-=100;break;}
+                case 14:{P.counter=false;break;}
+            }
                 break;
             }
-            case 5:{*superstop=20;P.super=true;soundfxlist.push_back(11);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}
-            case 6:{
-                if(P.gimmick[1]>0)P.gimmick[1]=0;
-                else P.gimmick[1]=32767;
-                soundfxlist.push_back(12);sfxx.push_back((bgx+P.x-128.f)/256.f);
-                effects temp;
-                temp.color1=sf::Color (85, 255, 255);
-                temp.len=7;
-                temp.x=P.x;temp.y=P.y-12;
-                if(P.right)temp.x-=15;
-                else temp.x+=15;
-                temp.code=2;temp.speed=3;
-                effectslist.push_back(temp);
-                temp.speed=9;
-                effectslist.push_back(temp);
-                break;
-            }
-            case 7:{
-                std::uniform_int_distribution<int> dis(1,3),dis2(-16,14),dis3(0,1);
-                effects temp;
-                temp.code=0;
-                temp.frame=0;
-                temp.len=2;
-                temp.color1=(sf::Color(170*((colorpalettes[P.color][1]/4)%2) + 85*(colorpalettes[P.color][1]/8), (1-(colorpalettes[P.color][1]==6)/3.0)*170*((colorpalettes[P.color][1]/2)%2) + 85*(colorpalettes[P.color][1]/8), 170*(colorpalettes[P.color][1]%2) + 85*(colorpalettes[P.color][1]/8)));
-                for(short j=0;j<128;j++){
-                    if(dis3(gen)==0)temp.speed=-dis(gen);
-                    else temp.speed=dis(gen);
-                    temp.x=P.x+dis2(gen)/2.f;
-                    temp.y=P.y+4+dis2(gen)*2;
-                    effectslist.push_back(temp);
-                }
-                if(P.y==enemyy){
-                    if(P.right)P.x=enemyx-48;
-                    else P.x=enemyx+48;
-                }
-                else{
-                    if(P.right)P.x+=64;
-                    else P.x-=64;
-                }
-                for(short j=0;j<128;j++){
-                    if(dis3(gen)==0)temp.speed=-dis(gen);
-                    else temp.speed=dis(gen);
-                    temp.x=P.x+dis2(gen)/2.f;
-                    temp.y=P.y+4+dis2(gen)*2;
-                    effectslist.push_back(temp);
-                }
-                break;
-            }
-            case 11:{soundfxlist.push_back(9);sfxx.push_back((bgx+P.x-128.f)/256.f);break;}
-            case 12:{
-                voicesfxlist.push_back(5);vsfxx.push_back((bgx+P.x-128.f)/256.f);
-                soundfxlist.push_back(6);sfxx.push_back((bgx+P.x-128.f)/256.f);
-                break;
-            }
-            case 13:{P.counter=true;P.meter-=100;break;}
-            case 14:{P.counter=false;break;}
-        }
         }
         P.atkfx.pop_front();
         if(enemycharacter==2&&(enemygimmick[0]%2==1||(enemygimmick[1]%2==1&&(P.character!=2||P.gimmick[1]==0))))P.atkfx.push_front(0);
