@@ -1947,6 +1947,7 @@ public:
 
     short frame=0,code=0,len=0;
     float dir=0,x,y,fxsize=1,speed=1;
+    bool ontopofplayer=true;
     sf::Color color1=sf::Color(255, 255, 255);
 
 private:
@@ -2836,9 +2837,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
         else if(hitcheck==true&&P2.hitcount==1&&P1.hitbefore==false)P1.hitbefore=true;
         else if(P1.hitbefore)hitcheck=false;
     }
-    else if(projcheck){
-        if(P1.hitbefore)hitcheck=false;
-    }
+    else if(projcheck&&P1.hitbefore)hitcheck=false;
     projcheck=false;
     for(short i=0;i<P2.proj.size();i++){
         if(hitcheck)P2.proj[i].hit=false;
@@ -2903,16 +2902,31 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
                 if(P2.hitcount==1)P2.movescaling[P2.moveact]++;
                 if(P2.movescaling[P2.moveact]>2)comboscaling=comboscaling/20.f*18.f;
             }
-            if(combo>3)comboscaling=comboscaling/20.f*19.f;
+            if(combo>3&&P2.hitcount==1)comboscaling=comboscaling/20.f*19.f;
             P1.meter+=P2.mgain/7*8;
             if(!projcheck&&(P2.gimmick[1]==0||P2.character!=2))P2.meter+=P2.mgain;
             P2.dmg=P2.dmg/100.f*comboscaling;
             P1.hitstopped=P2.hitstop;
             if(!projcheck)P2.hitstopped=P1.hitstopped;
-            fxtemp.color1=sf::Color (255, 255, 255);
             std::uniform_int_distribution<int> dis(0,360),dis2(1,5);
+
+            /*
+            fxtemp.ontopofplayer=false;
+            for(short i=0;i<60;i++){
+                fxtemp.code=0;
+                fxtemp.dir=atan2f(P1.y-P2.y,P1.x-P2.x)*180/3.14+(dis(gen)-180)/9;
+                fxtemp.speed=2+dis(gen)/120.f;
+                fxtemp.color1=sf::Color(255,255,255);
+                fxtemp.len=10+dis2(gen);
+                effectslist.push_back(fxtemp);
+            }
+            */
+           
+            fxtemp.ontopofplayer=true;
+            fxtemp.color1=sf::Color (255, 255, 255);
             fxtemp.len=P1.hitstopped;if(fxtemp.len<10&&fxtemp.len>0)fxtemp.len=10;
             if(P2.hitstop>13){
+            fxtemp.speed=1;
             for(short i=0;i<3;i++){
                 fxtemp.code=3;fxtemp.dir=dis(gen);
                 fxtemp.fxsize=dis2(gen);
@@ -2931,6 +2945,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
             else hitsfxlist.push_back(dis3(gen));
             hsfxx.push_back((bgx+overlap[0]-128.f)/256.f);
         }
+        fxtemp.speed=1;
         fxtemp.code=1;
         effectslist.push_back(fxtemp);
         fxtemp.code=2;
@@ -5075,8 +5090,10 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     }
     renderTexture.draw(sf,&shader);}
 
-    if(P1.hit)*playertop=true;else if(P2.hit)*playertop=false;
 
+    for(short i=0;i<effectslist.size();i++)if(!effectslist[i].ontopofplayer)renderTexture.draw(effectslist[i]);
+
+    if(P1.hit)*playertop=true;else if(P2.hit)*playertop=false;
     shader.setUniform("texture", sf::Shader::CurrentTexture);
 
 
@@ -5136,7 +5153,7 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
     }
 
 
-    for(short i=0;i<effectslist.size();i++)renderTexture.draw(effectslist[i]);
+    for(short i=0;i<effectslist.size();i++)if(effectslist[i].ontopofplayer)renderTexture.draw(effectslist[i]);
 
 
     renderTexture.draw(hb);renderTexture.draw(healthui);
