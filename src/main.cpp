@@ -2892,6 +2892,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
     for(short i=0;i<P2.proj.size();i++){
         if(hitcheck)P2.proj[i].hit=false;
         if(P2.proj[i].hit){
+                if(P2.character==1)P2.gimmick[0]=120;
                 projcheck=true;
                 P2.grabstate=-1;
                 P2.grab[0]=0;
@@ -3477,46 +3478,68 @@ void projectiledata(player *p,short superstop,short enemycharacter,short enemygi
                 if(P.proj[i].endanim.empty()){P.proj.erase(P.proj.begin()+i);return;}
                 else{
                     P.proj[i].dmg=0;P.proj[i].hitstop=0;P.proj[i].hitstun=0;P.proj[i].blockstun=0;
-                    if(P.character==0){
-                        std::uniform_int_distribution<int> dis(-150,-30),dis2(-4,4);
-                        effects temp;
-                        temp.code=0;
-                        temp.frame=0;
-                        temp.len=16;
-                        temp.color1=(sf::Color(170*((colorpalettes[P.color][0]/4)%2) + 85*(colorpalettes[P.color][0]/8), (1-(colorpalettes[P.color][0]==6)/3.0)*170*((colorpalettes[P.color][0]/2)%2) + 85*(colorpalettes[P.color][0]/8), 170*(colorpalettes[P.color][0]%2) + 85*(colorpalettes[P.color][0]/8)));
-                        for(short j=0;j<8;j++){
-                            if(P.proj[i].right){temp.dir=270+dis(gen);temp.x=P.proj[i].x+8+dis2(gen);}
-                            else{temp.dir=270-dis(gen);temp.x=P.proj[i].x-8+dis2(gen);}
+                    switch(P.character){
+                        case 0:{
+                            std::uniform_int_distribution<int> dis(-150,-30),dis2(-4,4);
+                            effects temp;
+                            temp.code=0;
+                            temp.frame=0;
+                            temp.len=16;
+                            temp.color1=(sf::Color(170*((colorpalettes[P.color][0]/4)%2) + 85*(colorpalettes[P.color][0]/8), (1-(colorpalettes[P.color][0]==6)/3.0)*170*((colorpalettes[P.color][0]/2)%2) + 85*(colorpalettes[P.color][0]/8), 170*(colorpalettes[P.color][0]%2) + 85*(colorpalettes[P.color][0]/8)));
+                            for(short j=0;j<8;j++){
+                                if(P.proj[i].right){temp.dir=270+dis(gen);temp.x=P.proj[i].x+8+dis2(gen);}
+                                else{temp.dir=270-dis(gen);temp.x=P.proj[i].x-8+dis2(gen);}
 
-                            temp.y=P.proj[i].y+4+dis2(gen);
-                            effectslist.push_back(temp);
+                                temp.y=P.proj[i].y+4+dis2(gen);
+                                effectslist.push_back(temp);
+                            }
+                            P.proj[i].frame=P.proj[i].endanim[0];
+                            P.proj[i].endanim.pop_front();
+                            break;
                         }
-                        P.proj[i].frame=P.proj[i].endanim[0];
-                        P.proj[i].endanim.pop_front();
-                    }
-                    else if(P.character==2){
-                        if(P.proj[i].hitcount==0){
-                            if(P.proj[i].right)P.proj[i].movex=-2;
-                            else P.proj[i].movex=2;
-                            P.proj[i].code=2;
-                            P.proj[i].movey=-3;
-                            P.proj[i].hitcount=-1;
-                            P.proj[i].animloop=0;
+                        case 1:{
+                            std::uniform_int_distribution<int> dis(-150,-30),dis2(-4,4);
+                            effects temp;
+                            temp.code=0;
+                            temp.frame=0;
+                            temp.len=16;
+                            temp.color1=(sf::Color(170*((colorpalettes[P.color][0]/4)%2) + 85*(colorpalettes[P.color][0]/8), (1-(colorpalettes[P.color][0]==6)/3.0)*170*((colorpalettes[P.color][0]/2)%2) + 85*(colorpalettes[P.color][0]/8), 170*(colorpalettes[P.color][0]%2) + 85*(colorpalettes[P.color][0]/8)));
+                            for(short j=0;j<8;j++){
+                                if(P.proj[i].right){temp.dir=270+dis(gen);temp.x=P.proj[i].x+8+dis2(gen);}
+                                else{temp.dir=270-dis(gen);temp.x=P.proj[i].x-8+dis2(gen);}
+
+                                temp.y=P.proj[i].y+4+dis2(gen);
+                                effectslist.push_back(temp);
+                            }
+                            P.proj[i].frame=P.proj[i].endanim[0];
+                            P.proj[i].endanim.pop_front();
+                            break;
                         }
-                        else{
-                            P.proj[i].movey+=0.5;
-                            if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
-                                P.proj[i].x+=P.proj[i].movex/2;
-                                P.proj[i].y+=P.proj[i].movey/2;
+                        case 2:{
+                            if(P.proj[i].hitcount==0){
+                                if(P.proj[i].right)P.proj[i].movex=-2;
+                                else P.proj[i].movex=2;
+                                P.proj[i].code=2;
+                                P.proj[i].movey=-3;
+                                P.proj[i].hitcount=-1;
+                                P.proj[i].animloop=0;
                             }
                             else{
-                                P.proj[i].x+=P.proj[i].movex;
-                                P.proj[i].y+=P.proj[i].movey;
+                                P.proj[i].movey+=0.5;
+                                if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
+                                    P.proj[i].x+=P.proj[i].movex/2;
+                                    P.proj[i].y+=P.proj[i].movey/2;
+                                }
+                                else{
+                                    P.proj[i].x+=P.proj[i].movex;
+                                    P.proj[i].y+=P.proj[i].movey;
+                                }
+                                P.proj[i].frame=P.proj[i].endanim[P.proj[i].animloop];
+                                if(P.proj[i].animloop==0)P.proj[i].animloop=1;
+                                else P.proj[i].animloop=0;
+                                if(P.proj[i].y>210){P.proj[i].endanim.erase(P.proj[i].endanim.begin(),P.proj[i].endanim.end());/*soundfxlist.push_back(7);*/}
                             }
-                            P.proj[i].frame=P.proj[i].endanim[P.proj[i].animloop];
-                            if(P.proj[i].animloop==0)P.proj[i].animloop=1;
-                            else P.proj[i].animloop=0;
-                            if(P.proj[i].y>210){P.proj[i].endanim.erase(P.proj[i].endanim.begin(),P.proj[i].endanim.end());/*soundfxlist.push_back(7);*/}
+                            break;
                         }
                     }
                 }
@@ -3590,12 +3613,15 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     float walkspeed,runspeed,jumprise,jumpfall;
     switch(P.character){
         case 0:{walkspeed=3;runspeed=6;jumprise=-12;jumpfall=0.8;break;}
-        case 1:{walkspeed=3;runspeed=6;jumprise=-13;jumpfall=0.9;break;}
+        case 1:{walkspeed=3;runspeed=6;jumprise=-13;jumpfall=0.9;if(P.gimmick[0]>0)P.gimmick[0]--;break;}
         case 2:{walkspeed=2.2;runspeed=5;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}break;}
     }
     if(P.iframes>0)P.iframes--;
     if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
             walkspeed/=2;runspeed/=2;jumpfall/=2;
+    }
+    if(enemycharacter==1&&(enemygimmick[0]>0)){
+        if(P.hp>1)P.hp-=1;
     }
 
     if(P.kdowned==1&&P.animq.size()<28&&!P.comboed&&P.act==1&&P.hp>0){//quick rise
@@ -3611,7 +3637,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
         if(P.counter){for(short i=0;i<64;i++)if(P.cancel[i]){P.act=i;break;}}
         else{
         P.animq.clear();P.hitboxanim.clear();P.atkfx.clear();
-        P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.grabstate=-1;P.landdelay=0;P.movewaitx=-1;P.movewaity=-1;
+        P.movetype=-1;P.grab[0]=0;P.grab[1]=0;P.grabstate=-1;P.landdelay=0;P.movewaitx=-1;P.movewaity=-1;P.jumpx=0;P.jumpy=0;
         P.mgain=0;P.super=false;P.wallcrash=false;
         if(P.air&&P.attack.launch==0){
                 P.jumpy=P.attack.kback/6*5*(comboscaling+100)/200;
@@ -4154,12 +4180,12 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             }
             case 16:{//special A (u)
                 if(P.air){
-                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;P.dmg=10;
                     P.animq.insert(P.animq.begin(),{18,18,18,18,18,18,18,18,18,19,20,20,20,20,20,20,20,20,20,20,20,20});
                     P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,1});
                 }
                 else{
-                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;
+                    P.col=0;P.hitcount=1;P.hitstop=12;P.kback=3;P.hitstun=7;P.blockstun=3;P.movetype=2;P.mgain=7;P.dmg=10;
                     P.animq.insert(P.animq.begin(),{18,18,18,18,18,18,18,18,18,19,20,20,20,20,20,20,20,20,20,20,20,20});
                     P.atkfx.insert(P.atkfx.begin(),{0,0,0,0,0,0,0,0,0,1});
                     P.cancel[32]=true;
@@ -4698,7 +4724,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
                     temp.loopanim[0]=21;
                     temp.loopanim[1]=22;
                     temp.launch=P.launch;
-                    //temp.endanim.insert(temp.endanim.begin(),{21,21,21});
+                    temp.endanim.insert(temp.endanim.begin(),{21,21,21});
                     temp.frame=21;
                     if(P.proj.size()<32)P.proj.push_back(temp);
                     break;
