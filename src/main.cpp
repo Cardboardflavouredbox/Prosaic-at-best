@@ -3560,46 +3560,65 @@ void projectiledata(player *p,short superstop,short enemycharacter,short enemygi
                 P.proj[i].animloop+=1;
                 if(P.proj[i].looplen<=P.proj[i].animloop)P.proj[i].animloop=0;
                 P.proj[i].frame=P.proj[i].loopanim[P.proj[i].animloop];
-                if(P.character==0){
-                    std::uniform_int_distribution<int> dis(-120,-60),dis2(-4,4);
-                    effects temp;
-                    temp.code=0;
-                    temp.len=8;
-                    temp.color1=(sf::Color(170*((colorpalettes[P.color][0]/4)%2) + 85*(colorpalettes[P.color][0]/8), (1-(colorpalettes[P.color][0]==6)/3.0)*170*((colorpalettes[P.color][0]/2)%2) + 85*(colorpalettes[P.color][0]/8), 170*(colorpalettes[P.color][0]%2) + 85*(colorpalettes[P.color][0]/8)));
-                    for(short j=0;j<8;j++){
-                        if(P.proj[i].right)temp.dir=270+dis(gen);
-                        else temp.dir=270-dis(gen);
-                        temp.x=P.proj[i].x+dis2(gen);
-                        temp.y=P.proj[i].y+4+dis2(gen);
-                        effectslist.push_back(temp);
-                    }
-                }
-                else if(P.character==2){
-                    if(P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
-                    if(P.proj[i].code==3){
-                        if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
-                            P.proj[i].movey+=0.125;
+                switch(P.character){
+                    case 0:{
+                        std::uniform_int_distribution<int> dis(-120,-60),dis2(-4,4);
+                        effects temp;
+                        temp.code=0;
+                        temp.len=8;
+                        temp.color1=(sf::Color(170*((colorpalettes[P.color][0]/4)%2) + 85*(colorpalettes[P.color][0]/8), (1-(colorpalettes[P.color][0]==6)/3.0)*170*((colorpalettes[P.color][0]/2)%2) + 85*(colorpalettes[P.color][0]/8), 170*(colorpalettes[P.color][0]%2) + 85*(colorpalettes[P.color][0]/8)));
+                        for(short j=0;j<8;j++){
+                            if(P.proj[i].right)temp.dir=270+dis(gen);
+                            else temp.dir=270-dis(gen);
+                            temp.x=P.proj[i].x+dis2(gen);
+                            temp.y=P.proj[i].y+4+dis2(gen);
+                            effectslist.push_back(temp);
                         }
-                        else{
-                            P.proj[i].movey+=0.25;
-                            if(P.proj[i].looplen>2){
-                                if(P.proj[i].right)P.proj[i].x-=P.proj[i].movex*4/5;
-                                else P.proj[i].x+=P.proj[i].movex*4/5;
-                                P.proj[i].movey-=0.25*4/5;
-                                P.proj[i].y-=P.proj[i].movey*4/5;
+                        break;
+                    }
+                    case 1:{
+                        std::uniform_int_distribution<int> dis(-120,-60),dis2(-24,24);
+                        effects temp;
+                        temp.code=0;
+                        temp.len=8;
+                        temp.color1=(sf::Color(170*((colorpalettes[P.color][1]/4)%2) + 85*(colorpalettes[P.color][1]/8), (1-(colorpalettes[P.color][1]==6)/3.0)*170*((colorpalettes[P.color][1]/2)%2) + 85*(colorpalettes[P.color][1]/8), 170*(colorpalettes[P.color][1]%2) + 85*(colorpalettes[P.color][1]/8)));
+                        for(short j=0;j<8;j++){
+                            if(P.proj[i].right)temp.dir=270+dis(gen);
+                            else temp.dir=270-dis(gen);
+                            temp.x=P.proj[i].x+dis2(gen)/6;
+                            temp.y=P.proj[i].y+8+dis2(gen);
+                            effectslist.push_back(temp);
+                        }
+                        break;
+                    }
+                    case 2:{
+                        if(P.proj[i].y>210){P.proj[i].y=210;P.proj[i].hitcount=0;}
+                        if(P.proj[i].code==3){
+                            if(enemycharacter==2&&(enemygimmick[0]>0||(enemygimmick[1]>0&&(P.character!=2||P.gimmick[1]==0)))){
+                                P.proj[i].movey+=0.125;
+                            }
+                            else{
+                                P.proj[i].movey+=0.25;
+                                if(P.proj[i].looplen>2){
+                                    if(P.proj[i].right)P.proj[i].x-=P.proj[i].movex*4/5;
+                                    else P.proj[i].x+=P.proj[i].movex*4/5;
+                                    P.proj[i].movey-=0.25*4/5;
+                                    P.proj[i].y-=P.proj[i].movey*4/5;
+                                }
                             }
                         }
-                    }
-                    if(P.proj[i].code==2&&P.proj[i].existed>90){
-                        P.proj[i].movex+=0.5;
-                        if(P.proj[i].movey!=0)P.proj[i].movey+=0.25;
-                    }
-                    if(P.proj[i].code==2&&P.proj[i].existed==90){
-                        P.proj[i].dmg=28;
-                        P.proj[i].hitstun=16;P.proj[i].blockstun=5;
-                        P.proj[i].looplen=2;//make the animation get faster later
-                        P.proj[i].loopanim[0]=42;
-                        P.proj[i].loopanim[1]=43;
+                        if(P.proj[i].code==2&&P.proj[i].existed>90){
+                            P.proj[i].movex+=0.5;
+                            if(P.proj[i].movey!=0)P.proj[i].movey+=0.25;
+                        }
+                        if(P.proj[i].code==2&&P.proj[i].existed==90){
+                            P.proj[i].dmg=28;
+                            P.proj[i].hitstun=16;P.proj[i].blockstun=5;
+                            P.proj[i].looplen=2;//make the animation get faster later
+                            P.proj[i].loopanim[0]=42;
+                            P.proj[i].loopanim[1]=43;
+                        }
+                        break;
                     }
                 }
             }
