@@ -7,6 +7,13 @@
 #include <string.h>
 #include <math.h>
 
+/*
+#if TARGET_OS_MAC
+    #include <mach-o/dyld.h>
+    #include "unistd.h"
+#endif
+*/
+
 
 std::deque<char>dirkeys,ukey,ikey,okey,kkey,dirkeys2,ukey2,ikey2,okey2,kkey2,cpudir,cpuu,cpui,cpuo,cpuk;
 
@@ -5406,6 +5413,15 @@ void drawstuff(sf::RenderWindow& window,sf::RenderTexture& renderTexture,player 
 
 int main()
 {
+    /*
+    #if TARGET_OS_MAC
+        char path[1024];
+        uint32_t size = sizeof(path);
+        if (_NSGetExecutablePath(path, &size)){}
+        chdir(path);
+    #endif
+    */
+
     sf::RenderWindow window(sf::VideoMode({256,240}), "Prosaic at Best");
     
     std::optional event=window.pollEvent();
@@ -6310,7 +6326,7 @@ int main()
                     keypresscheck(mediumkey1,&menucancel);
                     keypresscheck(mediumkey2,&menucancel2);
                     if(dialogue.empty())break;
-                    else{//dialogue stuff
+                    else if(dark==0){//dialogue stuff
                         char temp='$';
                         dtext.setString(dialogue.substr(0,dialoguecnt+1));
                         if(dialogue[dialoguecnt+1]==temp){
