@@ -3447,6 +3447,41 @@ void inputcode(char pinput[],sf::Keyboard::Key upkey,sf::Keyboard::Key leftkey,s
     }
 }
 
+void joystickinput(char pinput[],unsigned char joystickcode,short px,short enemyx){
+    bool w=false,a=false,s=false,d=false;
+    if(screenfocused&&sf::Joystick::getAxisPosition(joystickcode, sf::Joystick::Axis::X)>631)w=true;
+    if(screenfocused&&sf::Joystick::getAxisPosition(joystickcode, sf::Joystick::Axis::Y)<631)a=true;
+    if(screenfocused&&sf::Joystick::getAxisPosition(joystickcode, sf::Joystick::Axis::X)<261)s=true;
+    if(screenfocused&&sf::Joystick::getAxisPosition(joystickcode, sf::Joystick::Axis::Y)>631)d=true;
+    if(w&&s){w=true;s=false;}
+    if(a&&d){a=false;d=false;}
+
+    if(screenfocused&&(sf::Joystick::isButtonPressed(joystickcode,4)||sf::Joystick::isButtonPressed(joystickcode,5)||sf::Joystick::isButtonPressed(joystickcode,2))){if(pinput[1]=='0')pinput[1]='2';else if(pinput[1]=='2')pinput[1]='1';}else pinput[1]='0';
+    if(screenfocused&&(sf::Joystick::isButtonPressed(joystickcode,4)||sf::Joystick::isButtonPressed(joystickcode,5)||sf::Joystick::isButtonPressed(joystickcode,3))){if(pinput[2]=='0')pinput[2]='2';else if(pinput[2]=='2')pinput[2]='1';}else pinput[2]='0';
+    if(screenfocused&&(sf::Joystick::isButtonPressed(joystickcode,4)||sf::Joystick::isButtonPressed(joystickcode,5)||sf::Joystick::isButtonPressed(joystickcode,1))){if(pinput[3]=='0')pinput[3]='2';else if(pinput[3]=='2')pinput[3]='1';}else pinput[3]='0';
+
+    if(screenfocused&&sf::Joystick::isButtonPressed(joystickcode,0)){if(pinput[4]=='0')pinput[4]='2';else if(pinput[4]=='2')pinput[4]='1';}else pinput[4]='0';
+
+
+    if(w&&!a&&!s&&!d)pinput[0]='8';
+    else if(!w&&a&&!s&&!d)pinput[0]='4';
+    else if(!w&&!a&&s&&!d)pinput[0]='2';
+    else if(!w&&!a&&!s&&d)pinput[0]='6';
+    else if(w&&a&&!s&&!d)pinput[0]='7';
+    else if(!w&&a&&s&&!d)pinput[0]='1';
+    else if(!w&&!a&&s&&d)pinput[0]='3';
+    else if(w&&!a&&!s&&d)pinput[0]='9';
+    else pinput[0]='5';
+    if(px>enemyx){
+        if(pinput[0]=='7')pinput[0]='9';
+        else if(pinput[0]=='9')pinput[0]='7';
+        else if(pinput[0]=='4')pinput[0]='6';
+        else if(pinput[0]=='6')pinput[0]='4';
+        else if(pinput[0]=='3')pinput[0]='1';
+        else if(pinput[0]=='1')pinput[0]='3';
+    }
+}
+
 void windowset(sf::RenderWindow& window,bool *gamequit){
     while (std::optional event = window.pollEvent()){
             if (event->is<sf::Event::Closed>()){window.close();*gamequit=true;}
@@ -5731,6 +5766,7 @@ int main()
                         if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
                         if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
 
+                        if(sf::Joystick::isConnected(0))joystickinput(p1input,0,p1.x,p2.x);else
                         inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
                         cpuopponent(p2input,&cpuactioncode,&p2,&p1,cpudifficulty,cpuaggressive);
 
@@ -6198,8 +6234,10 @@ int main()
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F3)){if(!F3key){F3key=true;if(flash)flash=false;else flash=true;}}else F3key=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
 
+                    if(sf::Joystick::isConnected(0))joystickinput(p1input,0,p1.x,p2.x);else
                     inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
                     if(p2ai&&dialogue.empty())cpuopponent(p2input,&cpuactioncode,&p2,&p1,cpudifficulty,cpuaggressive);
+                    else if(sf::Joystick::isConnected(1))joystickinput(p2input,1,p2.x,p1.x);
                     else inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
 
                     if((!pause||(pause&&nextframe))){//main match code stuff
@@ -6652,8 +6690,8 @@ int main()
                     //if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
-                    if(p1control)inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
-                    else inputcode(p2input,upkey1,rightkey1,downkey1,leftkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
+                    if(p1control){if(sf::Joystick::isConnected(0))joystickinput(p1input,0,p1.x,p2.x);else inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);}
+                    else {if(sf::Joystick::isConnected(0))joystickinput(p2input,0,p1.x,p2.x);else inputcode(p2input,upkey1,rightkey1,downkey1,leftkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);}
 
                     //main match code stuff
                     dirkeys.push_front(p1input[0]);ukey.push_front(p1input[1]);
@@ -7185,7 +7223,9 @@ int main()
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)){if(!Enterkey){menuselect=0;Enterkey=true;if(pause)pause=false;else pause=true;}}else Enterkey=false;
                     if(screenfocused&&sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backslash)){if(backslash==false){backslash=true;nextframe=true;}}else backslash=false;
 
+                    if(sf::Joystick::isConnected(0))joystickinput(p1input,0,p1.x,p2.x);else
                     inputcode(p1input,upkey1,leftkey1,downkey1,rightkey1,lightkey1,mediumkey1,heavykey1,specialkey1,grabkey1,p1.x,p2.x);
+                    if(sf::Joystick::isConnected(1))joystickinput(p2input,1,p2.x,p1.x);else
                     inputcode(p2input,upkey2,leftkey2,downkey2,rightkey2,lightkey2,mediumkey2,heavykey2,specialkey2,grabkey2,p2.x,p1.x);
 
                     if((!pause||(pause&&nextframe))){//main match code stuff
