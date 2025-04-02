@@ -1645,12 +1645,12 @@ public:
     float x=0,y=176.0,jumpx=0,jumpy=0,kback=0,launch=0,hp=1000.0,maxhp=1000.0,dmg=0,pushaway=0,grab[2]={},meter=100,mgain=0;
 };
 
-void playerset(player *p){
+void playerset(player *p,bool resetmaxhp){
     #define p1 (*p)
-    p1.maxhp=950.0;
+    if(resetmaxhp)p1.maxhp=950.0;
     switch(p1.character){
-        case 1:{p1.maxhp=875.0;p1.hurtframes[0]=11;p1.hurtframes[3]=11;p1.hurtframes[5]=13;p1.hurtframes[6]=14;p1.hurtframes[7]=89;p1.hurtframes[8]=90;break;}
-        case 2:{p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;break;}
+        case 1:{if(resetmaxhp)p1.maxhp=875.0;p1.hurtframes[0]=11;p1.hurtframes[3]=11;p1.hurtframes[5]=13;p1.hurtframes[6]=14;p1.hurtframes[7]=89;p1.hurtframes[8]=90;break;}
+        case 2:{if(resetmaxhp)p1.maxhp=900.0;p1.hurtframes[0]=15;p1.hurtframes[3]=17;p1.hurtframes[5]=87;p1.hurtframes[6]=88;p1.hurtframes[7]=89;p1.hurtframes[8]=90;break;}
     }
     #undef p1
 }
@@ -3053,6 +3053,13 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
         effectslist.push_back(fxtemp);
         fxtemp.color1=sf::Color (255, 255, 255);
         std::uniform_int_distribution<int> dis(0,360),dis2(1,5);
+        for(short i=0;i<15;i++){
+                fxtemp.code=0;
+                fxtemp.dir=dis(gen);
+                fxtemp.speed=2+dis(gen)/120.f;
+                fxtemp.len=10+dis2(gen)*2;
+                effectslist.push_back(fxtemp);
+            }
         fxtemp.len=P1.hitstopped;if(fxtemp.len<10&&fxtemp.len>0)fxtemp.len=10;
         for(short i=0;i<3;i++){
             fxtemp.code=3;fxtemp.dir=dis(gen);
@@ -5691,7 +5698,7 @@ int main()
 
                 p1.maxhp=partymaxhp[p1.character];p2.maxhp=npcs[currentmap][currentnpc].battlehp;
 
-                playerset(&p1);playerset(&p2);
+                playerset(&p1,0);playerset(&p2,0);
 
                 if(!music.openFromFile("assets/music/Time and time again.wav")){window.close();gamequit=true;}
                 music.play();
@@ -6044,6 +6051,8 @@ int main()
             short menux=0,menuy=0,menux2=3,menuy2=0,fadein=-1;
             bool p1check=false,p2check=false,p2ai=false;
             char aiselectkey='0';
+            sf::Text vscputext(font);
+            vscputext.setCharacterSize(16);vscputext.setFillColor(sf::Color::White);
             while (window.isOpen()&&!gamequit){//characterselect
             windowset(window,&gamequit);
 
@@ -6087,6 +6096,8 @@ int main()
                     else p2color++;
                     if(p1color==p2color){p2color++;if(p2color>8)p2color=0;}
             }
+            vscputext.setPosition({16,32});
+            vscputext.setString("CPU activated");
 
             if(p1color==p2color&&menux==menux2&&menuy==menuy2){p2color++;if(p2color>8)p2color=0;}
 
@@ -6111,6 +6122,8 @@ int main()
             renderTexture.draw(rect2);renderTexture.draw(charselect);
             renderTexture.draw(crect1);renderTexture.draw(crect2);renderTexture.draw(crect3);
             renderTexture.draw(crect4);renderTexture.draw(crect5);renderTexture.draw(crect6);
+
+            if(p2ai)renderTexture.draw(vscputext);
             renderTexture.display();
             const sf::Texture& texture = renderTexture.getTexture();
             sf::Sprite rt(texture);
@@ -6147,7 +6160,7 @@ int main()
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
             p1.maxhp=950.0;p2.maxhp=950.0;
-            playerset(&p1);playerset(&p2);
+            playerset(&p1,1);playerset(&p2,1);
 
             if(p1.character==0&&p2.character==0)dialogue="1Hello\nthis is a test thingy hi$2Do you really think that?\nI don't.$1HERESY.$";
             else if(p1.character==2&&p2.character==0)dialogue="1...What.$2hi tall guy$1Holy crap it can talk$1It doesn't even have a\nbloody mouth how$2rude$";
@@ -6274,6 +6287,7 @@ int main()
 
                 if(!gamequit){
                 menuconfirm='1';menuconfirm2='1';
+                unsigned char dark=15;
                 if(p1.wins>p2.wins){
                     if(p1.character==0&&p2.character==0)dialogue="HERESY, HERESY!$";
                     else if(p1.character==2&&p2.character==0)dialogue="Are you supposed to look\nhuman??$";
@@ -6341,7 +6355,9 @@ int main()
                     renderTexture.display();
                     const sf::Texture& texture = renderTexture.getTexture();
                     sf::Sprite rt(texture);
-                    window.draw(rt);
+                    darkscreen.setUniform("texture", sf::Shader::CurrentTexture);
+                    if(dark>0){window.draw(rt,&darkscreen);dark--;}
+                    else window.draw(rt);
                     window.display();
                 }
                 }
@@ -6355,6 +6371,7 @@ int main()
             sf::RectangleShape rect({8.f, 4.f});rect.setFillColor(sf::Color::White);
             short ipx=0;
             char sideselect='0';
+            unsigned short port=53924;
             while (window.isOpen()&&!gamequit){//ipselect
                 windowset(window,&gamequit);
                 keypresscheck(lightkey1,&menuconfirm);keypresscheck(mediumkey1,&menucancel);
@@ -6406,8 +6423,8 @@ int main()
                     else ipstr=ipstr+' '+' '+tempstr+'.';
                     }
                 ipstr.pop_back();
-                if(p1control)ipstr=ipstr+' '+'P'+'1';
-                else ipstr=ipstr+' '+'P'+'2';
+                if(p1control)ipstr=ipstr+" P1";
+                else ipstr=ipstr+" P2";
                 
                 iptext.setString(ipstr);
                 iptext.setPosition({32.f,120.f});
@@ -6432,7 +6449,6 @@ int main()
             ipstr.pop_back();
             auto ipvalue2=sf::IpAddress::resolve(ipstr);
             sf::IpAddress ipvalue(ipint[0],ipint[1],ipint[2],ipint[3]);
-            unsigned short port=53924;
             if (socket.bind(port) != sf::Socket::Status::Done){window.close();gamequit=true;}
             if(!gamequit){//ipwaitscreen
             sf::Text iptext(font);
@@ -6600,7 +6616,7 @@ int main()
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
             p1.maxhp=950.0;p2.maxhp=950.0;
-            playerset(&p1);playerset(&p2);
+            playerset(&p1,1);playerset(&p2,1);
                 std::deque<player> precord;
                 std::deque<std::deque<char>> dirrecord,urecord,irecord,orecord,krecord;
                 while(p1.wins<rounds&&p2.wins<rounds&&!gamequit){
@@ -7130,7 +7146,7 @@ int main()
             std::deque<char>p1keylist,p2keylist;short dialoguecnt=0;
 
             p1.maxhp=950.0;p2.maxhp=950.0;
-            playerset(&p1);playerset(&p2);
+            playerset(&p1,1);playerset(&p2,1);
             if(menuselect==3){//training
                 if(!music.openFromFile("assets/music/practice mode.wav")){window.close();gamequit=true;}
                 music.play();
