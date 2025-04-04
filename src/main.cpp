@@ -1519,7 +1519,7 @@ hurtbox[16][128][8][2][2]={
                     {{{-9,-10},{9,32}},{{-20,-20},{-6,-5}}},/*overheadhit2 (14)*/
                     {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk1 (15)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk2 (16)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*walk3 (17)*/
                     {{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*specialA1 (18)*/{{{-9,-10},{15,32}},{{-8,-25},{6,-10}}},/*specialA2 (19)*/{{{-9,-10},{9,32}},{{-8,-25},{6,-10}}},/*specialA3 (20)*/
-                    {{{-9,-32},{9,32}}},/*specialA projectile1 (21)*/{{{-9,-32},{9,32}}},/*specialA projectile1 (22)*/
+                    {{{-9,-24},{9,32}}},/*specialA projectile1 (21)*/{{{-9,-24},{9,32}}},/*specialA projectile2 (22)*/
                     },
                     {//char 2(Sinclair)
                     {{{-11,-16},{11,32}},{{-8,-31},{8,-16}}},/*idle (0)*/{{{-11,0},{16,32}},{{-1,-15},{15,0}}},/*crouch (1)*/
@@ -1865,8 +1865,6 @@ sf::Packet& operator>>(sf::Packet& packet, player& p)
 
     return packet;
 }
-
-
 
 void playerset(player *p,bool resetmaxhp){
     #define p1 (*p)
@@ -3115,7 +3113,7 @@ void collisionchecks(player *p1,player *p2,float overlap[],short *framedata){
     for(short i=0;i<P2.proj.size();i++){
         if(hitcheck)P2.proj[i].hit=false;
         if(P2.proj[i].hit){
-                if(P2.character==1)P2.gimmick[0]=120;
+                if(P2.character==1){P2.gimmick[0]=120;P2.gimmick[1]++;}//Francis poison effect
                 projcheck=true;
                 P2.grabstate=-1;
                 P2.grab[0]=0;
@@ -3897,7 +3895,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
     float walkspeed,runspeed,jumprise,jumpfall;
     switch(P.character){
         case 0:{walkspeed=3;runspeed=6;jumprise=-12;jumpfall=0.8;break;}
-        case 1:{walkspeed=3;runspeed=6;jumprise=-13;jumpfall=0.9;if(P.gimmick[0]>0)P.gimmick[0]--;break;}
+        case 1:{walkspeed=3;runspeed=6;jumprise=-13;jumpfall=0.9;if(P.gimmick[0]>0)P.gimmick[0]--;else if(P.gimmick[0]==0)P.gimmick[1]=0;break;}
         case 2:{walkspeed=2.2;runspeed=5;jumprise=-11;jumpfall=0.7;if(P.gimmick[0]>0)P.gimmick[0]--;if(P.gimmick[1]>0&&P.meter<=0){P.gimmick[1]=0;P.meter=0;}else if(P.gimmick[1]>0){P.meter-=2;P.gimmick[1]--;}break;}
     }
     if(P.iframes>0)P.iframes--;
@@ -3905,7 +3903,7 @@ void characterdata(player *p,float enemyx,float enemyy,float *enemypaway,short e
             walkspeed/=2;runspeed/=2;jumpfall/=2;
     }
     if(enemycharacter==1&&(enemygimmick[0]>0)){
-        if(P.hp>1)P.hp-=1;
+        if(P.hp>enemygimmick[1])P.hp-=(float)enemygimmick[1]/4.f;
     }
 
     if(P.kdowned==1&&P.animq.size()<28&&!P.comboed&&P.act==1&&P.hp>0){//quick rise
