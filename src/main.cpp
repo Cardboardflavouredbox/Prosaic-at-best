@@ -1652,6 +1652,222 @@ public:
     float x=0,y=176.0,jumpx=0,jumpy=0,kback=0,launch=0,hp=1000.0,maxhp=1000.0,dmg=0,pushaway=0,grab[2]={},meter=100,mgain=0;
 };
 
+sf::Packet& operator<<(sf::Packet& packet, const player& p)
+{
+    std::int16_t temp,len,len2;
+    temp=p.act;packet<<temp;
+    packet<<p.air;
+    len=p.animq.size();packet<<len;for(short i=0;i<len;i++){temp=p.animq[i];packet<<temp;}
+    len=p.atkfx.size();packet<<len;for(short i=0;i<len;i++){temp=p.atkfx[i];packet<<temp;}
+    temp=p.attack.blockstun;packet<<temp;
+    temp=p.attack.grab[0];packet<<temp;temp=p.attack.grab[1];packet<<temp;
+    temp=p.attack.hitstun;packet<<temp;
+    temp=p.attack.hitwait;packet<<temp;
+    packet<<p.attack.kback;
+    temp=p.attack.kdown;packet<<temp;
+    packet<<p.attack.launch;
+    temp=p.attack.movetype;packet<<temp;
+    packet<<p.attack.pushaway;
+    packet<<p.attack.wallcrash;
+    temp=p.block;packet<<temp;
+    temp=p.blockstun;packet<<temp;
+    temp=p.buffer;packet<<temp;
+    for(short i=0;i<64;i++)packet<<p.cancel[i];
+    temp=p.character;packet<<temp;
+    temp=p.col;packet<<temp;
+    temp=p.color;packet<<temp;
+    packet<<p.comboed;
+    packet<<p.counter;
+    packet<<p.dmg;
+    temp=p.frame;packet<<temp;
+    for(short i=0;i<8;i++){temp=p.gimmick[i];packet<<temp;}
+    packet<<p.grab[0];packet<<p.grab[1];
+    temp=p.grabiframes;packet<<temp;
+    temp=p.grabstate;packet<<temp;
+    temp=p.hbframe;packet<<temp;
+    packet<<p.hit;
+    packet<<p.hitbefore;
+    len=p.hitboxanim.size();packet<<len;for(short i=0;i<len;i++){temp=p.hitboxanim[i];packet<<temp;}
+    temp=p.hitcount;packet<<temp;
+    temp=p.hitstop;packet<<temp;
+    temp=p.hitstopped;packet<<temp;
+    temp=p.hitstun;packet<<temp;
+    packet<<p.hp;
+    for(short i=0;i<9;i++){temp=p.hurtframes[i];packet<<temp;}
+    len=p.idleanim.size();packet<<len;for(short i=0;i<len;i++){temp=p.idleanim[i];packet<<temp;}
+    temp=p.iframes;packet<<temp;
+    packet<<p.jumpx;
+    packet<<p.jumpy;
+    packet<<p.kback;
+    temp=p.kdown;packet<<temp;
+    temp=p.kdowned;packet<<temp;
+    temp=p.landdelay;packet<<temp;
+    packet<<p.launch;
+    packet<<p.maxhp;
+    packet<<p.meter;
+    packet<<p.mgain;
+    temp=p.moveact;packet<<temp;
+    for(short i=0;i<64;i++){temp=p.movescaling[i];packet<<temp;}
+    temp=p.movetype;packet<<temp;
+    temp=p.movewaitx;packet<<temp;
+    temp=p.movewaity;packet<<temp;
+    packet<<p.neutural;
+
+    len=p.proj.size();packet<<len;for(short i=0;i<len;i++){//projectile
+        temp=p.proj[i].animloop;packet<<temp;
+        temp=p.proj[i].blockstun;packet<<temp;
+        temp=p.proj[i].code;packet<<temp;
+        packet<<p.proj[i].dmg;
+        len2=p.proj[i].endanim.size();packet<<len2;for(short j=0;j<len2;j++){temp=p.proj[i].endanim[j];packet<<temp;}
+        temp=p.proj[i].existed;packet<<temp;
+        temp=p.proj[i].frame;packet<<temp;
+        packet<<p.proj[i].hit;
+        temp=p.proj[i].hitcount;packet<<temp;
+        temp=p.proj[i].hitstop;packet<<temp;
+        temp=p.proj[i].hitstopped;packet<<temp;
+        temp=p.proj[i].hitstun;packet<<temp;
+        packet<<p.proj[i].kback;
+        temp=p.proj[i].knockdown;packet<<temp;
+        packet<<p.proj[i].launch;
+        len2=p.proj[i].looplen;packet<<len2;for(short j=0;j<len2;j++){temp=p.proj[i].loopanim[j];packet<<temp;}
+        packet<<p.proj[i].mgain;
+        temp=p.proj[i].moveact;packet<<temp;
+        temp=p.proj[i].movetype;packet<<temp;
+        packet<<p.proj[i].movex;
+        packet<<p.proj[i].movey;
+        packet<<p.proj[i].right;
+        packet<<p.proj[i].x;
+        packet<<p.proj[i].y;
+        }
+
+    packet<<p.pushaway;
+    packet<<p.right;
+    packet<<p.running;
+    packet<<p.slide;
+    packet<<p.super;
+    packet<<p.wallcrash;
+    packet<<p.wallcrashed;
+    packet<<p.whiff;
+    temp=p.wins;packet<<temp;
+    packet<<p.x;
+    packet<<p.y;
+
+    return packet;
+}
+
+sf::Packet& operator>>(sf::Packet& packet, player& p)
+{
+    std::int16_t len,len2;
+    packet>>p.act;
+    packet>>p.air;
+    p.animq.clear();
+    packet>>len;for(short i=0;i<len;i++){std::int16_t temp;packet>>temp;p.animq.push_back(temp);}
+    p.atkfx.clear();
+    packet>>len;for(short i=0;i<len;i++){std::int16_t temp;packet>>temp;p.atkfx.push_back(temp);}
+    packet>>p.attack.blockstun;
+    packet>>p.attack.grab[0];packet>>p.attack.grab[1];
+    packet>>p.attack.hitstun;
+    packet>>p.attack.hitwait;
+    packet>>p.attack.kback;
+    packet>>p.attack.kdown;
+    packet>>p.attack.launch;
+    packet>>p.attack.movetype;
+    packet>>p.attack.pushaway;
+    packet>>p.attack.wallcrash;
+    packet>>p.block;
+    packet>>p.blockstun;
+    packet>>p.buffer;
+    for(short i=0;i<64;i++)packet>>p.cancel[i];
+    packet>>p.character;
+    packet>>p.col;
+    packet>>p.color;
+    packet>>p.comboed;
+    packet>>p.counter;
+    packet>>p.dmg;
+    packet>>p.frame;
+    for(short i=0;i<8;i++){packet>>p.gimmick[i];}
+    packet>>p.grab[0];packet>>p.grab[1];
+    packet>>p.grabiframes;
+    packet>>p.grabstate;
+    packet>>p.hbframe;
+    packet>>p.hit;
+    packet>>p.hitbefore;
+    p.hitboxanim.clear();
+    packet>>len;for(short i=0;i<len;i++){std::int16_t temp;packet>>temp;p.hitboxanim.push_back(temp);}
+    packet>>p.hitcount;
+    packet>>p.hitstop;
+    packet>>p.hitstopped;
+    packet>>p.hitstun;
+    packet>>p.hp;
+    for(short i=0;i<9;i++){packet>>p.hurtframes[i];}
+    p.idleanim.clear();
+    packet>>len;for(short i=0;i<len;i++){std::int16_t temp;packet>>temp;p.idleanim.push_back(temp);}
+    packet>>p.iframes;
+    packet>>p.jumpx;
+    packet>>p.jumpy;
+    packet>>p.kback;
+    packet>>p.kdown;
+    packet>>p.kdowned;
+    packet>>p.landdelay;
+    packet>>p.launch;
+    packet>>p.maxhp;
+    packet>>p.meter;
+    packet>>p.mgain;
+    packet>>p.moveact;
+    for(short i=0;i<64;i++){packet>>p.movescaling[i];}
+    packet>>p.movetype;
+    packet>>p.movewaitx;
+    packet>>p.movewaity;
+    packet>>p.neutural;
+
+    p.proj.clear();
+    packet>>len;for(short i=0;i<len;i++){//projectile
+        projectile temp;
+        packet>>temp.animloop;
+        packet>>temp.blockstun;
+        packet>>temp.code;
+        packet>>temp.dmg;
+        temp.endanim.clear();
+        packet>>len2;for(short j=0;j<len2;j++){std::int16_t temp2;packet>>temp2;temp.endanim.push_back(temp2);}
+        packet>>temp.existed;
+        packet>>temp.frame;
+        packet<<temp.hit;
+        packet>>temp.hitcount;
+        packet>>temp.hitstop;
+        packet>>temp.hitstopped;
+        packet>>temp.hitstun;
+        packet>>temp.kback;
+        packet>>temp.knockdown;
+        packet>>temp.launch;
+        packet>>temp.looplen;for(short j=0;j<temp.looplen;j++){packet>>temp.loopanim[j];}
+        packet>>temp.mgain;
+        packet>>temp.moveact;
+        packet>>temp.movetype;
+        packet>>temp.movex;
+        packet>>temp.movey;
+        packet>>temp.right;
+        packet>>temp.x;
+        packet>>temp.y;
+        p.proj.push_back(temp);
+        }
+
+    packet>>p.pushaway;
+    packet>>p.right;
+    packet>>p.running;
+    packet>>p.slide;
+    packet>>p.super;
+    packet>>p.wallcrash;
+    packet>>p.wallcrashed;
+    packet>>p.whiff;
+    packet>>p.wins;
+    packet>>p.x;
+    packet>>p.y;
+
+    return packet;
+}
+
+
+
 void playerset(player *p,bool resetmaxhp){
     #define p1 (*p)
     if(resetmaxhp)p1.maxhp=950.0;
@@ -6516,6 +6732,7 @@ int main()
                 if(p1control)onlinecheck=1;
                 else onlinecheck=2;
                 
+                packet.clear();
                 packet<<onlinecheck;
                 if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
                 if(socket.receive(packet,ipvalue2,port)!=sf::Socket::Status::Done){/*window.close();gamequit=true;*/}
@@ -6607,6 +6824,7 @@ int main()
             crect4.setPosition({144,0});crect5.setPosition({176,0});crect6.setPosition({208,0});
 
             sf::Packet packet;
+            packet.clear();
             std::uint8_t onlinecode=3,onlinecolor,onlinemenux,onlinemenuy,onlinecheck;
             if(p1control){onlinecolor=p1color;onlinemenux=menux;onlinemenuy=menuy;onlinecheck=p1check;}
             else{onlinecolor=p2color;onlinemenux=menux2;onlinemenuy=menuy2;onlinecheck=p2check;}
@@ -6788,232 +7006,18 @@ int main()
 
 
                     sf::Packet packet;
-                    std::uint8_t onlinecode=4,dir,U,I,O,K,len;
+                    packet.clear();
+                    std::uint8_t onlinecode=4,dir,U,I,O,K;
                     std::int16_t onlineframe=roundframecount,temp;
                     std::deque<char>dironline,uonline,ionline,oonline,konline,
                                     dironline2,uonline2,ionline2,oonline2,konline2;
-                    packet<<onlinecode;
+                    packet<<onlinecode<<p1;
                     
-                    if(p1control){
-                        dir=p1input[0];U=p1input[1];I=p1input[2];O=p1input[3];K=p1input[4];
-                        packet<<p1.x<<p1.y<<p1.jumpx<<p1.jumpy<<p1.kback<<p1.launch<<p1.hp<<p1.maxhp<<p1.dmg<<
-                        p1.pushaway<<p1.grab[0]<<p1.grab[1]<<p1.meter<<p1.mgain<<onlineframe<<dir<<U<<I<<O<<K;
-
-                        len=p1.animq.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.animq[i];packet<<temp;}
-                        len=p1.idleanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.idleanim[i];packet<<temp;}
-                        len=p1.atkfx.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.atkfx[i];packet<<temp;}
-                        len=p1.hitboxanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p1.hitboxanim[i];packet<<temp;}
-                        len=dirkeys.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=dirkeys[i];packet<<temp;}
-                        len=ukey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ukey[i];packet<<temp;}
-                        len=ikey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ikey[i];packet<<temp;}
-                        len=okey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=okey[i];packet<<temp;}
-                        len=kkey.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey[i];packet<<temp;}
-
-                        for(unsigned char i=0;i<8;i++){temp=p1.gimmick[i];packet<<temp;}
-                        for(unsigned char i=0;i<5;i++){temp=p1.hurtframes[i];packet<<temp;}
-                        temp=p1.hbframe;packet<<temp;temp=p1.act;packet<<temp;temp=p1.col;packet<<temp;temp=p1.frame;packet<<temp;
-                        temp=p1.block;packet<<temp;temp=p1.hitstop;packet<<temp;temp=p1.hitstun;packet<<temp;temp=p1.blockstun;packet<<temp;
-                        temp=p1.wins;packet<<temp;temp=p1.character;packet<<temp;temp=p1.buffer;packet<<temp;temp=p1.kdown;packet<<temp;
-                        temp=p1.kdowned;packet<<temp;temp=p1.movewaitx;packet<<temp;temp=p1.movewaity;packet<<temp;temp=p1.movetype;packet<<temp;
-                        temp=p1.landdelay;packet<<temp;temp=p1.hitstopped;packet<<temp;temp=p1.grabstate;packet<<temp;temp=p1.iframes;packet<<temp;
-                        temp=p1.grabiframes;packet<<temp;temp=p1.hitcount;packet<<temp;
-
-                        for(unsigned char i=0;i<64;i++){packet<<p1.cancel[i];}
-                        packet<<p1.air<<p1.whiff<<p1.right<<p1.hit<<p1.slide<<p1.neutural<<p1.comboed<<p1.hitbefore<<p1.super;
-
-                        //attackdata
-                        temp=p1.attack.movetype;packet<<temp;temp=p1.attack.hitstun;packet<<temp;temp=p1.attack.blockstun;packet<<temp;
-                        temp=p1.attack.kdown;packet<<temp;temp=p1.attack.hitwait;packet<<temp;
-                        packet<<p1.attack.kback<<p1.attack.launch<<p1.attack.grab[0]<<p1.attack.grab[1]<<p1.attack.pushaway;
-                        //projdata
-                        len=p1.proj.size();packet<<len;
-                        for(unsigned char i=0;i<len;i++){
-                            packet<<p1.proj[i].x<<p1.proj[i].y<<p1.proj[i].movex<<p1.proj[i].movey<<
-                            p1.proj[i].dmg<<p1.proj[i].kback<<p1.proj[i].mgain<<p1.proj[i].launch<<p1.proj[i].right<<p1.proj[i].hit;
-                            temp=p1.proj[i].movetype;packet<<temp;temp=p1.proj[i].animloop;packet<<temp;
-                            temp=p1.proj[i].looplen;packet<<temp;
-                            for(unsigned char j=0;j<p1.proj[i].looplen;j++){temp=p1.proj[i].loopanim[j];packet<<temp;}
-                            temp=p1.proj[i].frame;packet<<temp;temp=p1.proj[i].hitstop;packet<<temp;
-                            temp=p1.proj[i].hitstun;packet<<temp;temp=p1.proj[i].blockstun;packet<<temp;
-                            temp=p1.proj[i].hitcount;packet<<temp;temp=p1.proj[i].hitstopped;packet<<temp;
-                            temp=p1.proj[i].knockdown;packet<<temp;temp=p1.proj[i].code;packet<<temp;
-                            temp=p1.proj[i].existed;packet<<temp;
-                            temp=p1.proj[i].endanim.size();packet<<temp;
-                            for(unsigned char j=0;j<p1.proj[i].endanim.size();j++){temp=p1.proj[i].endanim[j];packet<<temp;}
-                        }
-                    }
-                    else{
-                        dir=p2input[0];U=p2input[1];I=p2input[2];O=p2input[3];K=p2input[4];
-                        packet<<p2.x<<p2.y<<p2.jumpx<<p2.jumpy<<p2.kback<<p2.launch<<p2.hp<<p2.maxhp<<p2.dmg<<
-                        p2.pushaway<<p2.grab[0]<<p2.grab[1]<<p2.meter<<p2.mgain<<onlineframe<<dir<<U<<I<<O<<K;
-
-                        len=p2.animq.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.animq[i];packet<<temp;}
-                        len=p2.idleanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.idleanim[i];packet<<temp;}
-                        len=p2.atkfx.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.atkfx[i];packet<<temp;}
-                        len=p2.hitboxanim.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=p2.hitboxanim[i];packet<<temp;}
-                        len=dirkeys.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=dirkeys2[i];packet<<temp;}
-                        len=ukey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ukey2[i];packet<<temp;}
-                        len=ikey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=ikey2[i];packet<<temp;}
-                        len=okey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=okey2[i];packet<<temp;}
-                        len=kkey2.size();packet<<len;for(unsigned char i=0;i<len;i++){temp=kkey2[i];packet<<temp;}
-
-                        for(unsigned char i=0;i<8;i++){temp=p2.gimmick[i];packet<<temp;}
-                        for(unsigned char i=0;i<5;i++){temp=p2.hurtframes[i];packet<<temp;}
-                        temp=p2.hbframe;packet<<temp;temp=p2.act;packet<<temp;temp=p2.col;packet<<temp;temp=p2.frame;packet<<temp;
-                        temp=p2.block;packet<<temp;temp=p2.hitstop;packet<<temp;temp=p2.hitstun;packet<<temp;temp=p2.blockstun;packet<<temp;
-                        temp=p2.wins;packet<<temp;temp=p2.character;packet<<temp;temp=p2.buffer;packet<<temp;temp=p2.kdown;packet<<temp;
-                        temp=p2.kdowned;packet<<temp;temp=p2.movewaitx;packet<<temp;temp=p2.movewaity;packet<<temp;temp=p2.movetype;packet<<temp;
-                        temp=p2.landdelay;packet<<temp;temp=p2.hitstopped;packet<<temp;temp=p2.grabstate;packet<<temp;temp=p2.iframes;packet<<temp;
-                        temp=p2.grabiframes;packet<<temp;temp=p2.hitcount;packet<<temp;
-
-                        for(unsigned char i=0;i<64;i++){packet<<p2.cancel[i];}
-                        packet<<p2.air<<p2.whiff<<p2.right<<p2.hit<<p2.slide<<p2.neutural<<p2.comboed<<p2.hitbefore<<p2.super;
-
-                        //attackdata
-                        temp=p2.attack.movetype;packet<<temp;temp=p2.attack.hitstun;packet<<temp;temp=p2.attack.blockstun;packet<<temp;
-                        temp=p2.attack.kdown;packet<<temp;temp=p2.attack.hitwait;packet<<temp;
-                        packet<<p2.attack.kback<<p2.attack.launch<<p2.attack.grab[0]<<p2.attack.grab[1]<<p2.attack.pushaway;
-                        //projdata
-                        len=p2.proj.size();packet<<len;
-                        for(unsigned char i=0;i<len;i++){
-                            packet<<p2.proj[i].x<<p2.proj[i].y<<p2.proj[i].movex<<p2.proj[i].movey<<
-                            p2.proj[i].dmg<<p2.proj[i].kback<<p2.proj[i].mgain<<p2.proj[i].launch<<p2.proj[i].right<<p2.proj[i].hit;
-                            temp=p2.proj[i].movetype;packet<<temp;temp=p2.proj[i].animloop;packet<<temp;
-                            temp=p2.proj[i].looplen;packet<<temp;
-                            for(unsigned char j=0;j<p2.proj[i].looplen;j++){temp=p2.proj[i].loopanim[j];packet<<temp;}
-                            temp=p2.proj[i].frame;packet<<temp;temp=p2.proj[i].hitstop;packet<<temp;
-                            temp=p2.proj[i].hitstun;packet<<temp;temp=p2.proj[i].blockstun;packet<<temp;
-                            temp=p2.proj[i].hitcount;packet<<temp;temp=p2.proj[i].hitstopped;packet<<temp;
-                            temp=p2.proj[i].knockdown;packet<<temp;temp=p2.proj[i].code;packet<<temp;
-                            temp=p2.proj[i].existed;packet<<temp;
-                            temp=p2.proj[i].endanim.size();packet<<temp;
-                            for(unsigned char j=0;j<p2.proj[i].endanim.size();j++){temp=p2.proj[i].endanim[j];packet<<temp;}
-                        }
-                    }
                     if(socket.send(packet,ipvalue,port)!=sf::Socket::Status::Done){}
                     if(socket.receive(packet,ipvalue2,port)==sf::Socket::Status::Done){
                         player playertemp1=p1,playertemp2=p2;
                         //float xtemp=0;
-                        if(p1control){
-                            packet>>onlinecode>>playertemp2.x>>playertemp2.y>>playertemp2.jumpx>>playertemp2.jumpy>>
-                            playertemp2.kback>>playertemp2.launch>>playertemp2.hp>>playertemp2.maxhp>>playertemp2.dmg>>
-                            playertemp2.pushaway>>playertemp2.grab[0]>>playertemp2.grab[1]>>playertemp2.meter>>playertemp2.mgain>>
-                            onlineframe>>dir>>U>>I>>O>>K;
-                            p2input[0]=dir;p2input[1]=U;p2input[2]=I;p2input[3]=O;p2input[4]=K;
-
-                            packet>>len;playertemp2.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.animq.push_back(temp);}
-                            packet>>len;playertemp2.idleanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.idleanim.push_back(temp);}
-                            packet>>len;playertemp2.atkfx.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.atkfx.push_back(temp);}
-                            packet>>len;playertemp2.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp2.hitboxanim.push_back(temp);}
-                            packet>>len;dironline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dironline2.push_back(temp);}
-                            packet>>len;uonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;uonline2.push_back(temp);}
-                            packet>>len;ionline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ionline2.push_back(temp);}
-                            packet>>len;oonline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;oonline2.push_back(temp);}
-                            packet>>len;konline2.clear();for(unsigned char i=0;i<len;i++){packet>>temp;konline2.push_back(temp);}
-
-                            for(unsigned char i=0;i<8;i++){packet>>temp;playertemp2.gimmick[i]=temp;}
-                            for(unsigned char i=0;i<5;i++){packet>>temp;playertemp2.hurtframes[i]=temp;}
-                            packet>>temp;playertemp2.hbframe=temp;packet>>temp;playertemp2.act=temp;
-                            packet>>temp;playertemp2.col=temp;packet>>temp;playertemp2.frame=temp;
-                            packet>>temp;playertemp2.block=temp;packet>>temp;playertemp2.hitstop=temp;
-                            packet>>temp;playertemp2.hitstun=temp;packet>>temp;playertemp2.blockstun=temp;
-                            packet>>temp;playertemp2.wins=temp;packet>>temp;playertemp2.character=temp;
-                            packet>>temp;playertemp2.buffer=temp;packet>>temp;playertemp2.kdown=temp;
-                            packet>>temp;playertemp2.kdowned=temp;packet>>temp;playertemp2.movewaitx=temp;
-                            packet>>temp;playertemp2.movewaity=temp;packet>>temp;playertemp2.movetype=temp;
-                            packet>>temp;playertemp2.landdelay=temp;packet>>temp;playertemp2.hitstopped=temp;
-                            packet>>temp;playertemp2.grabstate=temp;packet>>temp;playertemp2.iframes=temp;
-                            packet>>temp;playertemp2.grabiframes=temp;packet>>temp;playertemp2.hitcount=temp;
-
-                            //attackdata
-                            packet>>temp;playertemp2.attack.movetype=temp;
-                            packet>>temp;playertemp2.attack.hitstun=temp;
-                            packet>>temp;playertemp2.attack.blockstun=temp;
-                            packet>>temp;playertemp2.attack.kdown=temp;
-                            packet>>temp;playertemp2.attack.hitwait=temp;
-                            packet>>playertemp2.attack.kback>>playertemp2.attack.launch>>playertemp2.attack.grab[0]>>playertemp2.attack.grab[1]>>playertemp2.attack.pushaway;
-                            //projdata
-                            
-                            playertemp2.proj.clear();
-                            packet>>len;
-                            for(unsigned char i=0;i<len;i++){
-                            projectile tempproj;
-                            packet>>tempproj.x>>tempproj.y>>tempproj.movex>>tempproj.movey>>
-                            tempproj.dmg>>tempproj.kback>>tempproj.mgain>>tempproj.launch>>tempproj.right>>tempproj.hit;
-                            packet>>temp;tempproj.movetype=temp;packet>>temp;tempproj.animloop=temp;
-                            packet>>temp;tempproj.looplen=temp;
-                            for(unsigned char j=0;j<tempproj.looplen;j++){packet>>temp;tempproj.loopanim[j]=temp;}
-                            packet>>temp;tempproj.frame=temp;packet>>temp;tempproj.hitstop=temp;
-                            packet>>temp;tempproj.hitstun=temp;packet>>temp;tempproj.blockstun=temp;
-                            packet>>temp;tempproj.hitcount=temp;packet>>temp;tempproj.hitstopped=temp;
-                            packet>>temp;tempproj.knockdown=temp;packet>>temp;tempproj.code=temp;
-                            packet>>temp;tempproj.existed=temp;
-                            std::int16_t templen;
-                            packet>>templen;
-                            for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
-                            playertemp2.proj.push_back(tempproj);
-                            }
-                        }
-                        else{
-                            packet>>onlinecode>>playertemp1.x>>playertemp1.y>>playertemp1.jumpx>>playertemp1.jumpy>>
-                            playertemp1.kback>>playertemp1.launch>>playertemp1.hp>>playertemp1.maxhp>>playertemp1.dmg>>
-                            playertemp1.pushaway>>playertemp1.grab[0]>>playertemp1.grab[1]>>playertemp1.meter>>playertemp1.mgain>>
-                            onlineframe>>dir>>U>>I>>O>>K;
-                            p1input[0]=dir;p1input[1]=U;p1input[2]=I;p1input[3]=O;p1input[4]=K;
-
-                            packet>>len;playertemp1.animq.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.animq.push_back(temp);}
-                            packet>>len;playertemp1.idleanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.idleanim.push_back(temp);}
-                            packet>>len;playertemp1.atkfx.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.atkfx.push_back(temp);}
-                            packet>>len;playertemp1.hitboxanim.clear();for(unsigned char i=0;i<len;i++){packet>>temp;playertemp1.hitboxanim.push_back(temp);}
-                            packet>>len;dironline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;dironline.push_back(temp);}
-                            packet>>len;uonline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;uonline.push_back(temp);}
-                            packet>>len;ionline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;ionline.push_back(temp);}
-                            packet>>len;oonline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;oonline.push_back(temp);}
-                            packet>>len;konline.clear();for(unsigned char i=0;i<len;i++){packet>>temp;konline.push_back(temp);}
-
-                            for(unsigned char i=0;i<8;i++){packet>>temp;playertemp1.gimmick[i]=temp;}
-                            for(unsigned char i=0;i<5;i++){packet>>temp;playertemp1.hurtframes[i]=temp;}
-                            packet>>temp;playertemp1.hbframe=temp;packet>>temp;playertemp1.act=temp;
-                            packet>>temp;playertemp1.col=temp;packet>>temp;playertemp1.frame=temp;
-                            packet>>temp;playertemp1.block=temp;packet>>temp;playertemp1.hitstop=temp;
-                            packet>>temp;playertemp1.hitstun=temp;packet>>temp;playertemp1.blockstun=temp;
-                            packet>>temp;playertemp1.wins=temp;packet>>temp;playertemp1.character=temp;
-                            packet>>temp;playertemp1.buffer=temp;packet>>temp;playertemp1.kdown=temp;
-                            packet>>temp;playertemp1.kdowned=temp;packet>>temp;playertemp1.movewaitx=temp;
-                            packet>>temp;playertemp1.movewaity=temp;packet>>temp;playertemp1.movetype=temp;
-                            packet>>temp;playertemp1.landdelay=temp;packet>>temp;playertemp1.hitstopped=temp;
-                            packet>>temp;playertemp1.grabstate=temp;packet>>temp;playertemp1.iframes=temp;
-                            packet>>temp;playertemp1.grabiframes=temp;packet>>temp;playertemp1.hitcount=temp;
-
-                            //attackdata
-                            packet>>temp;playertemp1.attack.movetype=temp;
-                            packet>>temp;playertemp1.attack.hitstun=temp;
-                            packet>>temp;playertemp1.attack.blockstun=temp;
-                            packet>>temp;playertemp1.attack.kdown=temp;
-                            packet>>temp;playertemp1.attack.hitwait=temp;
-                            packet>>playertemp1.attack.kback>>playertemp1.attack.launch>>playertemp1.attack.grab[0]>>playertemp1.attack.grab[1]>>playertemp1.attack.pushaway;
-                            //projdata
-                            
-                            playertemp1.proj.clear();
-                            packet>>len;
-                            for(unsigned char i=0;i<len;i++){
-                            projectile tempproj;
-                            packet>>tempproj.x>>tempproj.y>>tempproj.movex>>tempproj.movey>>
-                            tempproj.dmg>>tempproj.kback>>tempproj.mgain>>tempproj.launch>>tempproj.right>>tempproj.hit;
-                            packet>>temp;tempproj.movetype=temp;packet>>temp;tempproj.animloop=temp;
-                            packet>>temp;tempproj.looplen=temp;
-                            for(unsigned char j=0;j<tempproj.looplen;j++){packet>>temp;tempproj.loopanim[j]=temp;}
-                            packet>>temp;tempproj.frame=temp;packet>>temp;tempproj.hitstop=temp;
-                            packet>>temp;tempproj.hitstun=temp;packet>>temp;tempproj.blockstun=temp;
-                            packet>>temp;tempproj.hitcount=temp;packet>>temp;tempproj.hitstopped=temp;
-                            packet>>temp;tempproj.knockdown=temp;packet>>temp;tempproj.code=temp;
-                            packet>>temp;tempproj.existed=temp;
-                            std::int16_t templen;
-                            packet>>templen;
-                            for(unsigned char j=0;j<templen;j++){packet>>temp;tempproj.endanim[j]=temp;}
-                            playertemp1.proj.push_back(tempproj);
-                            }
-                        }
+                        packet>>onlinecode>>playertemp2;
                         char onlineinput1[5]={},onlineinput2[5]={};
                         
                         /*
